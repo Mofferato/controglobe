@@ -3,7 +3,7 @@
 **An open-source worldbuilding encyclopedia.** From 500 BCE the Global North and the Global South
 trade historical trajectories. Geography stays exactly where it is; everything else moves.
 
-**Live site:** https://USERNAME.github.io/controglobe/
+**Live site:** https://mofferato.github.io/controglobe/
 
 ## Articles
 
