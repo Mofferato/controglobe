@@ -18,7 +18,7 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 | Region | Carries the history of |
 |---|---|
 | Middle East | North America (Arabia = USA, Zagrosia = Canada, Masr = Mexico) |
-| Africa | Europe (Wene wa Kongo = Germany, Jolof = Spain, Derg Union = Russia) |
+| Africa | Europe (Kimfumu kya Kongo = Germany, Jolof = Spain, Derg Union = Russia) |
 | Europe | Africa |
 | North America | Middle East |
 | South Asia | Britain, Japan and China combined |
