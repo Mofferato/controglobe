@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controglobe — Africa: The European Swap</title>
+<style>
+:root{
+  --bg:#f6f3ec; --panel:#fffdf8; --ink:#1d1b16; --muted:#6a6459;
+  --line:#ccc4b4; --accent:#1c6b74; --accent2:#a8571f; --sea:#dfe7ec;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --bg:#15171a; --panel:#1c1f23; --ink:#eae6dd; --muted:#9a948a;
+    --line:#3a3f45; --accent:#66c7cf; --accent2:#e0a05a; --sea:#0f1518;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --panel:#1c1f23; --ink:#eae6dd; --muted:#9a948a;
+  --line:#3a3f45; --accent:#66c7cf; --accent2:#e0a05a; --sea:#0f1518;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  line-height:1.55; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:1000px;margin:0 auto;padding:22px 16px 60px}
+header{border-bottom:2px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+.kicker{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:clamp(23px,5.4vw,36px);margin:.18em 0 .1em;line-height:1.15}
+.sub{color:var(--muted);font-size:14px;margin:0}
+h2{font-size:clamp(17px,4vw,22px);margin:30px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px}
+h3{font-size:15px;margin:20px 0 6px;color:var(--accent2);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  letter-spacing:.05em;text-transform:uppercase}
+p{margin:0 0 10px;font-size:15px}
+.note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+  padding:11px 13px;font-size:14px;margin:14px 0;border-radius:3px}
+.mapbox{background:var(--sea);border:1px solid var(--line);border-radius:5px;
+  overflow-x:auto;overflow-y:hidden;margin:14px 0 6px;-webkit-overflow-scrolling:touch}
+.mapbox svg{display:block;min-width:760px;width:100%;height:auto}
+.hint{font-size:12px;color:var(--muted);margin:0 0 18px;
+  font-family:ui-sans-serif,system-ui,sans-serif}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0 16px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);font-weight:700}
+td.n{white-space:nowrap;font-weight:600}
+td.e{white-space:nowrap;color:var(--accent);font-weight:600}
+td.d{color:var(--muted);font-size:13px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;
+  border:1px solid rgba(0,0,0,.25);vertical-align:baseline}
+.tblwrap{overflow-x:auto}
+.tblwrap table{min-width:520px}
+footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
+  font-size:12px;color:var(--muted)}
+
+.cg-nav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;background:#0e3a42;padding:7px 14px;
+ font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:12.6px}
+.cg-nav a{color:#bfe6ec;text-decoration:none;padding:4px 9px;border-radius:3px}
+.cg-nav a:first-child{color:#fff;font-weight:700;letter-spacing:.4px}
+.cg-nav a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+</style>
+</head>
+<body>
+<nav class="cg-nav"><a href="./">Controglobe</a><a href="united-states-of-arabia.html">United States of Arabia</a><a href="africa.html">Africa</a><a href="https://github.com/USERNAME/controglobe/issues">Feedback</a></nav>
+<div class="wrap">
+<p style="font-size:13px;color:var(--muted);margin:0 0 10px">Companion to the main article on the <a href="united-states-of-arabia.html">United States of Arabia</a>.</p>
+
+<header>
+  <div class="kicker">Controglobe · Reference Atlas</div>
+  <h1>Africa — The European Swap</h1>
+  <p class="sub">Every African nation and its Global-North counterpart, with the revised non-colonial border set. Africa carries Europe's history; the borders below were drawn by African states themselves, not by any conference.</p>
+</header>
+
+<div class="note">
+<strong>Border doctrine.</strong> No frontier on this map descends from a partition conference. There are no meridian or parallel borders — the Libya–Chad, Egypt–Sudan, Algeria–Mali and Niger–Chad straight lines of OTL do not exist. Frontiers follow rivers, escarpments, watersheds, dune-seas, linguistic lines and the settlements of centuries of internal wars, exactly as Europe's did.
+</div>
+
+<div class="mapbox">
+<svg viewBox="-55 -15 790 775" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Political map of Africa in the Controglobe timeline">
+  <defs>
+    <clipPath id="land">
+      <path d="M142,22 L230,12 L300,10 L310,45 L385,72 L400,59 L440,60 L500,68 L520,67 L545,65 L540,100 L550,145 L570,170 L590,230 L633,254 L630,265 L670,265 L714,262 L710,280 L680,330 L653,360 L625,384 L597,420 L593,448 L605,485 L606,525 L549,578 L526,640 L510,679 L479,710 L400,728 L384,720 L352,646 L345,610 L322,532 L332,468 L323,440 L318,428 L294,376 L298,361 L297,340 L283,332 L265,337 L234,316 L212,319 L198,325 L160,327 L123,336 L92,317 L68,295 L63,285 L44,261 L26,233 L35,220 L40,200 L30,170 L40,143 L68,109 L104,76 L124,44 Z
+               M693,500 L702,535 L695,572 L680,612 L670,634 L656,622 L645,588 L638,558 L655,528 L670,510 Z"/>
+    </clipPath>
+    <style>
+      .lbl{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+           fill:#141414;font-weight:700;text-anchor:middle;paint-order:stroke;
+           stroke:rgba(255,255,255,.72);stroke-width:2.4px;stroke-linejoin:round}
+      .eq{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+          fill:#2b2b2b;font-style:italic;font-weight:600;text-anchor:middle;paint-order:stroke;
+          stroke:rgba(255,255,255,.72);stroke-width:2.2px;stroke-linejoin:round}
+      .lead{stroke:#333;stroke-width:.9;fill:none;opacity:.6}
+    </style>
+  </defs>
+
+  <g clip-path="url(#land)" stroke="none">
+    <!-- NORTH -->
+    <polygon fill="#9fc08a" points="160,10 250,-2 330,-5 348,28 355,60 358,105 350,150 322,182 300,205 254,214 210,210 178,188 165,155 150,95 150,60"/>
+    <polygon fill="#d8c07e" points="322,30 400,40 450,44 500,50 505,100 498,165 468,196 430,222 380,224 340,215 318,168 312,120"/>
+    <polygon fill="#b5b5c8" points="478,30 520,34 552,38 560,95 566,124 572,155 548,176 522,188 486,180 460,172 456,128 462,92"/>
+    <polygon fill="#d8c98f" points="425,165 500,158 578,160 606,200 600,232 594,258 560,282 522,295 470,290 438,280 414,246 408,215"/>
+    <polygon fill="#a8d6c4" points="340,145 390,150 434,158 438,226 432,302 402,318 372,324 344,308 332,284 322,240 320,198"/>
+    <polygon fill="#cf9f5f" points="210,175 272,158 342,145 350,200 352,258 320,272 288,280 246,272 220,258 208,215"/>
+    <polygon fill="#7fa88c" points="10,180 80,172 152,158 190,176 205,200 190,230 172,255 110,266 55,272 20,250 0,225"/>
+    <polygon fill="#e8b9a5" points="72,105 120,100 165,102 158,136 148,168 100,182 55,190 24,172 10,150"/>
+    <polygon fill="#d98d7a" points="110,-10 160,4 195,25 190,46 185,68 168,90 152,108 110,114 70,115 45,86 45,55 80,-10"/>
+    <polygon fill="#c2d18a" points="286,-10 312,-12 335,-10 342,22 345,52 326,68 306,80 290,64 282,45"/>
+
+    <!-- SAHEL / WEST -->
+    <polygon fill="#c9a3cc" points="25,200 90,186 152,172 196,174 232,178 242,222 248,268 226,290 202,305 160,308 118,305 78,294 50,278 26,258 18,238"/>
+    <polygon fill="#b07fb0" points="162,200 200,196 232,196 236,220 236,244 204,250 172,250 158,226"/>
+    <polygon fill="#6fae6a" points="18,248 52,248 82,252 86,276 88,298 62,306 38,310 16,298 5,282"/>
+    <polygon fill="#4f9e6e" points="52,266 88,268 118,272 122,296 124,318 96,322 66,322 50,310 44,296"/>
+    <polygon fill="#86c98a" points="54,292 82,288 108,288 112,310 114,330 86,334 60,334 50,312"/>
+    <polygon fill="#3f8f5f" points="82,302 112,298 142,297 146,320 148,344 118,348 92,348 80,326"/>
+    <polygon fill="#c98fa8" points="122,262 168,260 212,262 216,296 218,332 182,340 148,344 128,332 118,318 116,288"/>
+    <polygon fill="#e0a3b8" points="194,272 212,269 230,270 231,300 232,328 214,330 196,330 194,300"/>
+    <polygon fill="#8fbf7a" points="218,266 234,264 250,264 251,296 252,326 236,328 220,328 218,296"/>
+    <polygon fill="#a06fb5" points="238,242 274,244 308,246 313,272 316,300 304,324 292,344 268,342 246,340 236,312 232,284"/>
+
+    <!-- CENTRAL -->
+    <polygon fill="#7fae5f" points="318,350 380,352 442,356 460,378 474,400 486,426 492,452 476,484 456,510 412,516 368,518 340,490 320,458 316,404"/>
+    <polygon fill="#cfe0b0" points="340,270 404,268 468,266 476,292 482,318 462,342 442,362 400,362 356,360 340,338 332,314"/>
+    <polygon fill="#8fb8a8" points="440,264 494,262 548,262 564,280 578,298 564,324 548,348 508,346 468,344 444,324 428,304"/>
+    <polygon fill="#7b5fa8" points="284,286 308,288 332,292 336,324 338,356 326,374 312,390 296,378 284,362 282,324"/>
+    <polygon fill="#9b7fc4" points="284,366 310,363 334,362 336,390 338,418 314,424 292,428 284,398"/>
+    <polygon fill="#b88f5f" points="310,386 336,383 360,382 364,412 366,442 342,448 318,452 310,420"/>
+    <polygon fill="#caa6e0" points="289,350 300,348 310,347 311,360 312,374 300,376 290,377 288,362"/>
+
+    <!-- EAST -->
+    <polygon fill="#9a5f7a" points="524,236 562,238 600,242 634,254 664,268 670,296 674,322 648,346 620,368 580,360 542,352 520,326 508,298 512,264"/>
+    <polygon fill="#d88f6a" points="556,190 592,212 628,232 625,250 622,268 596,260 572,252 556,232 546,212"/>
+    <polygon fill="#c2a8b8" points="612,246 632,250 650,256 648,272 646,286 630,282 616,276 610,260"/>
+    <polygon fill="#7fc4b8" points="624,250 674,250 722,250 720,276 718,302 690,338 662,372 636,384 616,394 612,362 610,330"/>
+    <polygon fill="#5fa89e" points="626,248 670,250 712,252 710,272 708,292 672,296 638,298 630,272"/>
+    <polygon fill="#c08a5f" points="534,336 582,336 628,338 632,370 634,402 618,422 602,438 570,434 542,428 528,402 522,378"/>
+    <polygon fill="#d8b86a" points="488,344 520,342 550,341 554,368 556,396 524,402 496,406 486,376"/>
+    <polygon fill="#6f9fbf" points="488,396 546,406 602,418 606,444 608,472 582,492 558,508 526,508 496,504 478,472 472,442"/>
+    <polygon fill="#a8c26a" points="474,394 494,392 514,392 515,404 516,418 496,420 476,420 474,406"/>
+    <polygon fill="#c25f7a" points="473,416 492,414 511,414 512,428 513,444 494,446 475,446 473,430"/>
+
+    <!-- SOUTHERN -->
+    <polygon fill="#c27f6a" points="312,444 372,446 432,450 442,484 448,518 434,548 422,574 380,578 336,580 318,548 308,516 306,478"/>
+    <polygon fill="#8fae7a" points="414,466 476,470 538,476 544,502 548,530 520,552 492,570 456,566 420,560 410,516"/>
+    <polygon fill="#d4c48f" points="318,514 358,518 398,526 406,562 414,600 404,630 394,658 368,660 342,660 324,626 314,586 312,548"/>
+    <polygon fill="#9fd4c4" points="376,552 422,554 468,556 472,586 476,618 452,638 428,654 404,644 382,632 376,592"/>
+    <polygon fill="#7f7fbf" points="430,546 484,545 538,544 541,572 544,600 506,612 468,622 448,610 432,596"/>
+    <polygon fill="#b06a5f" points="524,486 546,488 568,492 571,524 574,558 552,562 532,564 526,524"/>
+    <polygon fill="#9a6a9a" points="548,492 582,496 616,502 614,532 612,562 584,562 556,560 550,526"/>
+    <polygon fill="#5f9e6a" points="512,550 560,550 608,552 605,586 602,622 566,642 528,660 512,630 506,600 506,574"/>
+    <polygon fill="#6f9e8a" points="432,608 484,612 534,616 531,652 528,690 506,710 484,728 460,716 438,700 432,652"/>
+    <polygon fill="#c9b08f" points="338,618 400,624 462,630 464,666 466,704 442,720 418,734 380,734 344,734 336,676"/>
+    <polygon fill="#b0b0c0" points="462,632 492,635 522,638 523,662 524,688 496,690 468,692 462,662"/>
+    <polygon fill="#e0a85f" points="500,616 516,617 532,618 531,636 530,654 517,653 504,652 500,634"/>
+
+    <!-- MADAGASCAR -->
+    <polygon fill="#b08f7a" points="686,490 710,520 706,560 692,600 672,642 650,630 636,592 630,552 652,520 668,500"/>
+  </g>
+
+  <!-- continent outline -->
+  <path clip-path="url(#land)" d="M142,22 L230,12 L300,10 L310,45 L385,72 L400,59 L440,60 L500,68 L520,67 L545,65 L540,100 L550,145 L570,170 L590,230 L633,254 L630,265 L670,265 L714,262 L710,280 L680,330 L653,360 L625,384 L597,420 L593,448 L605,485 L606,525 L549,578 L526,640 L510,679 L479,710 L400,728 L384,720 L352,646 L345,610 L322,532 L332,468 L323,440 L318,428 L294,376 L298,361 L297,340 L283,332 L265,337 L234,316 L212,319 L198,325 L160,327 L123,336 L92,317 L68,295 L63,285 L44,261 L26,233 L35,220 L40,200 L30,170 L40,143 L68,109 L104,76 L124,44 Z
+           M693,500 L702,535 L695,572 L680,612 L670,634 L656,622 L645,588 L638,558 L655,528 L670,510 Z"
+        fill="none" stroke="#2a2a2a" stroke-width="2" opacity=".55"/>
+
+  <!-- island markers -->
+  <g fill="#8d8d8d" stroke="#2a2a2a" stroke-width=".8">
+    <circle cx="-38" cy="222" r="4"/><circle cx="36" cy="102" r="4"/>
+    <circle cx="266" cy="378" r="3.5"/><circle cx="633" cy="497" r="3.5"/>
+  </g>
+
+  <!-- leader lines -->
+  <g class="lead">
+    <line x1="-12" y1="266" x2="42" y2="276"/>
+    <line x1="4" y1="322" x2="80" y2="311"/>
+    <line x1="18" y1="356" x2="112" y2="326"/>
+    <line x1="212" y1="368" x2="212" y2="302"/>
+    <line x1="256" y1="378" x2="236" y2="300"/>
+    <line x1="246" y1="402" x2="298" y2="364"/>
+    <line x1="694" y1="228" x2="632" y2="266"/>
+    <line x1="-30" y1="236" x2="-38" y2="226"/>
+    <line x1="40" y1="88" x2="36" y2="98"/>
+  </g>
+
+  <!-- LABELS -->
+  <g class="lbl" font-size="12">
+    <text x="118" y="52">Morocco</text>
+    <text x="250" y="104">Algeria</text>
+    <text x="398" y="126">Libya</text>
+    <text x="510" y="106">Egypt</text>
+    <text x="504" y="212">Sudan</text>
+    <text x="378" y="232">Chad</text>
+    <text x="278" y="212">Niger</text>
+    <text x="126" y="236">Jolof</text>
+    <text x="164" y="298">Kong</text>
+    <text x="272" y="288">Nigeria</text>
+    <text x="404" y="308">C.A.R.</text>
+    <text x="500" y="302">South Sudan</text>
+    <text x="584" y="306">Ethiopia</text>
+    <text x="660" y="338">Somalia</text>
+    <text x="574" y="382">Kenya</text>
+    <text x="400" y="446">DR Congo</text>
+    <text x="544" y="454">Tanzania</text>
+    <text x="372" y="512">Angola</text>
+    <text x="478" y="516">Zambia</text>
+    <text x="358" y="588">Namibia</text>
+    <text x="424" y="592">Botswana</text>
+    <text x="486" y="572">Zimbabwe</text>
+    <text x="556" y="596">S. Mozambique</text>
+    <text x="482" y="652">Xhosa Rep.</text>
+    <text x="398" y="676">Cape Republic</text>
+    <text x="668" y="566">Madagascar</text>
+  </g>
+  <g class="eq" font-size="9">
+    <text x="118" y="64">Iceland</text>
+    <text x="250" y="116">Sweden</text>
+    <text x="398" y="138">Finland</text>
+    <text x="510" y="118">Mexico ✻</text>
+    <text x="504" y="224">Belarus</text>
+    <text x="378" y="244">Sápmi ✦</text>
+    <text x="278" y="224">Alps ✦</text>
+    <text x="126" y="248">Spain</text>
+    <text x="164" y="310">France</text>
+    <text x="272" y="300">Britain</text>
+    <text x="404" y="320">Poland</text>
+    <text x="500" y="314">Lithuania</text>
+    <text x="584" y="318">Russia</text>
+    <text x="660" y="350">Ukraine</text>
+    <text x="574" y="394">Romania</text>
+    <text x="400" y="458">Germany</text>
+    <text x="544" y="466">Bulgaria</text>
+    <text x="372" y="524">Italy</text>
+    <text x="478" y="528">Croatia</text>
+    <text x="358" y="600">Bosnia</text>
+    <text x="424" y="604">Slovenia</text>
+    <text x="486" y="584">Serbia</text>
+    <text x="556" y="608">Montenegro</text>
+    <text x="482" y="664">Greece</text>
+    <text x="398" y="688">Turkey</text>
+    <text x="668" y="578">Sicily–Malta</text>
+  </g>
+  <g class="lbl" font-size="9">
+    <text x="75" y="142">Saguia</text>
+    <text x="86" y="212">Mauritania</text>
+    <text x="312" y="36">Tunisia</text>
+    <text x="198" y="222">Songhai</text>
+    <text x="-30" y="262">Kaabu</text>
+    <text x="93" y="296">Fouta Djallon</text>
+    <text x="-8" y="326">Sierra Leone</text>
+    <text x="8" y="360">Liberia</text>
+    <text x="212" y="380">Tem</text>
+    <text x="264" y="390">Dahomey</text>
+    <text x="308" y="330">Cameroon</text>
+    <text x="232" y="414">Eq. Guinea</text>
+    <text x="310" y="392">Gabon</text>
+    <text x="340" y="416">Congo</text>
+    <text x="586" y="226">Eritrea</text>
+    <text x="708" y="222">Djibouti</text>
+    <text x="668" y="274">Somaliland</text>
+    <text x="518" y="374">Uganda</text>
+    <text x="494" y="408">Rwanda</text>
+    <text x="492" y="434">Burundi</text>
+    <text x="548" y="528">Malawi</text>
+    <text x="582" y="532">N. Moz.</text>
+    <text x="492" y="666">Lesotho</text>
+    <text x="516" y="638">Eswatini</text>
+  </g>
+</svg>
+</div>
+<p class="hint">Scroll or pinch the map sideways on a phone. ✦ = custom nation with no single OTL analogue. ✻ = outside the European sphere entirely.</p>
+
+<h2>The full swap list</h2>
+
+<h3>Northern Africa = Northern Europe</h3>
+<div class="tblwrap">
+<table>
+<tr><th>Controglobe nation</th><th>Counterpart</th><th>Why</th></tr>
+<tr><td class="n"><span class="sw" style="background:#d98d7a"></span>Morocco</td><td class="e">Iceland</td><td class="d">Sealed behind the Atlas as Iceland is behind the sea. Tiny population, volcanic-geothermal Atlas, Atlantic fisheries, the oldest continuous parliament on the continent.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#e8b9a5"></span>Saguia el-Hamra</td><td class="e">Faroe Islands</td><td class="d">Self-governing Atlantic-Saharan territory in personal union with Morocco. Fishing fleet, own language standard, perennial independence referenda.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7fa88c"></span>Mauritania</td><td class="e">Norway</td><td class="d">Long Atlantic seaboard west of Algeria exactly as Norway lies west of Sweden. Iron ore, fisheries, very sparse population, the continent's richest per capita.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9fc08a"></span>Algeria</td><td class="e">Sweden</td><td class="d">The largest and most industrial northern state; armed neutrality, sprawling welfare system, iron and arms exports.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c2d18a"></span>Tunisia</td><td class="e">Denmark</td><td class="d">Small, dense, maritime, the north's oldest crown and the gatekeeper of the Sicilian narrows.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d8c07e"></span>Libya</td><td class="e">Finland</td><td class="d">East of Algeria as Finland is east of Sweden. Sparse, neutral, oasis-belt "lake district"; the Sirte petroleum fields make it the north's sovereign-wealth state.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b5b5c8"></span>Egypt ✻</td><td class="e">Mexico</td><td class="d">Not part of the European sphere. Egypt belongs to the Arabian (North-American) world as the great southern neighbour of the United States of Arabia, meeting it across Sinai.</td></tr>
+</table>
+</div>
+
+<h3>The Sahel — two custom nations</h3>
+<div class="tblwrap">
+<table>
+<tr><th>Controglobe nation</th><th>Counterpart</th><th>Why</th></tr>
+<tr><td class="n"><span class="sw" style="background:#cf9f5f"></span>Niger ✦</td><td class="e">The Alps</td><td class="d">A cantonal confederation of the Aïr massif — no single OTL twin. Landlocked, mountainous, armed neutrality, four official languages, the continent's clearing banks, and the passes that every north–south caravan and pipeline must cross.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#a8d6c4"></span>Chad ✦</td><td class="e">Sápmi / Lappland</td><td class="d">Also no single twin: a transhumant nation of the Tibesti and the Lake Chad basin, camel herds instead of reindeer, an indigenous parliament with jurisdiction that crosses four state frontiers, and the only nation here whose borders are defined by herding routes rather than by ground held.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b07fb0"></span>Songhai ✦</td><td class="e">Basque Country</td><td class="d">The Niger Bend republic that Jolof never absorbed. A language isolate, oldest in the west; autonomous since the sixteenth century.</td></tr>
+</table>
+</div>
+
+<h3>Western Africa = Western Europe</h3>
+<div class="tblwrap">
+<table>
+<tr><th>Controglobe nation</th><th>Counterpart</th><th>Why</th></tr>
+<tr><td class="n"><span class="sw" style="background:#c9a3cc"></span>Jolof</td><td class="e">Spain</td><td class="d">The plurinational western crown — Wolof core, Bambara, Mossi and Soninke realms. Runs from the Senegal river to the Volta savannas, stopping at the desert (Mauritania's) and at the Gambia river (Kaabu's).</td></tr>
+<tr><td class="n"><span class="sw" style="background:#6fae6a"></span>Kaabu</td><td class="e">Portugal</td><td class="d">Jolof's Atlantic twin, south of the Gambia river. Earliest ocean-going navy on the continent; its maritime empire reached the Pacific and the Indian Ocean.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#4f9e6e"></span>Fouta Djallon</td><td class="e">Galicia</td><td class="d">Highland kingdom that stayed independent of Kaabu; same liturgical language, different crown.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#86c98a"></span>Sierra Leone</td><td class="e">Aquitaine ✦</td><td class="d">Kong never centralised the west: Aquitaine survives here as its own duchy.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#3f8f5f"></span>Liberia</td><td class="e">Brittany ✦</td><td class="d">The Atlantic cape that juts furthest into the ocean — an independent Celtic-analogue duchy, seafaring and stubbornly unabsorbed.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c98fa8"></span>Kong</td><td class="e">France</td><td class="d">Ivory Coast plus western Ghana. The great Latin-analogue power of the west: centralising monarchy, revolution, empire, and the continent's cultural capital.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#e0a3b8"></span>Tem</td><td class="e">Normandy ✦</td><td class="d">Eastern Ghana and Togo. The duchy that crossed the Bight in 1066-equivalent and conquered Nigeria, permanently welding the two elites together.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#8fbf7a"></span>Dahomey</td><td class="e">Ireland</td><td class="d">Directly west of Nigeria. Centuries under its larger neighbour, famine, mass emigration, late independence, now wealthy and outward-facing.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#a06fb5"></span>Nigeria</td><td class="e">Great Britain</td><td class="d">More isolated than OTL Britain: the Niger delta and the northern marshes make it effectively insular. Naval empire, industrial revolution, parliamentary model exported worldwide.</td></tr>
+</table>
+</div>
+
+<h3>Central Africa = Central Europe</h3>
+<div class="tblwrap">
+<table>
+<tr><th>Controglobe nation</th><th>Counterpart</th><th>Why</th></tr>
+<tr><td class="n"><span class="sw" style="background:#7fae5f"></span>DR Congo</td><td class="e">Germany</td><td class="d">The industrial heart of the continent. Late unification out of dozens of principalities, then two catastrophic continental wars, then partition and reunification.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b88f5f"></span>Congo (Brazzaville)</td><td class="e">Austria</td><td class="d">The smaller sibling that shares the Congo's language and refused its union — Germany and Austria, Congo and Congo, across one river.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9b7fc4"></span>Gabon ✦</td><td class="e">Bavaria (independent)</td><td class="d">The third Congo-speaking crown, never absorbed. Forested, Catholic-analogue, wealthy, permanently semi-detached from Kinshasa.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7b5fa8"></span>Cameroon</td><td class="e">Benelux</td><td class="d">A union of two realms — the coastal trading republic and the Grassfields kingdom — divided by language and joined by customs. Seat of the continental institutions.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#caa6e0"></span>Equatorial Guinea</td><td class="e">Luxembourg</td><td class="d">Third member of the Cameroonian union: tiny, trilingual, absurdly rich, a banking and hydrocarbon microstate.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#cfe0b0"></span>Central African Rep.</td><td class="e">Poland</td><td class="d">Wedged between Congo and Sudan exactly as Poland sits between Germany and Belarus. Partitioned three times, erased from the map, restored.</td></tr>
+</table>
+</div>
+
+<h3>Eastern Africa = Eastern Europe</h3>
+<div class="tblwrap">
+<table>
+<tr><th>Controglobe nation</th><th>Counterpart</th><th>Why</th></tr>
+<tr><td class="n"><span class="sw" style="background:#9a5f7a"></span>Ethiopia</td><td class="e">Russia</td><td class="d">The Orthodox-analogue empire that was never conquered. Highland core, imperial expansion in every direction, revolution, superpower, and the third Rome of its own church.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d8c98f"></span>Sudan</td><td class="e">Belarus</td><td class="d">North-west of Ethiopia as Belarus is north-west of Russia. Same church, same script, permanently in Addis's orbit.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#8fb8a8"></span>South Sudan</td><td class="e">Lithuania</td><td class="d">Broke out of Khartoum's union; once a grand duchy federated with the Central African Republic (Poland).</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d88f6a"></span>Eritrea</td><td class="e">Estonia</td><td class="d">Red Sea coast = Baltic coast. Seceded from the empire, small, coastal, digitised, fiercely separate.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c2a8b8"></span>Djibouti</td><td class="e">Latvia</td><td class="d">The second Red Sea republic; the empire's warm-water port and its most cosmopolitan city.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7fc4b8"></span>Somalia</td><td class="e">Ukraine</td><td class="d">Large, coastal, agricultural, and locked in a generational war with the empire next door over the Ogaden — the Controglobe Donbas.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#5fa89e"></span>Somaliland ✦</td><td class="e">Crimea / Donetsk</td><td class="d">The northern secession, recognised by Addis Ababa and almost no one else.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c08a5f"></span>Kenya</td><td class="e">Romania</td><td class="d">South-west of Somalia as Romania is south-west of Ukraine. Latin-analogue outlier language, oil, and a Carpathian-equivalent highland spine.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d8b86a"></span>Uganda</td><td class="e">Hungary</td><td class="d">Landlocked, fertile, and speaking a language unrelated to every neighbour. Lost two-thirds of its territory in the post-war settlement.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#a8c26a"></span>Rwanda</td><td class="e">Czechia</td><td class="d">Industrial, dense, precision-engineering highland state.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c25f7a"></span>Burundi</td><td class="e">Slovakia</td><td class="d">Rwanda's twin. United for seventy years, then separated peacefully by agreement — the Controglobe Velvet Divorce.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#6f9fbf"></span>Tanzania</td><td class="e">Bulgaria</td><td class="d">South of Kenya as Bulgaria is south of Romania. Orthodox-analogue, Cyrillic-analogue script, the first of the empire's satellites and the first to leave.</td></tr>
+</table>
+</div>
+
+<h3>Southern Africa = Southern Europe</h3>
+<p>Seven of these were one country. The <strong>Union of Zambezia</strong> — Zimbabwe, Zambia, Botswana, Namibia, Malawi, Lesotho and southern Mozambique — was the Controglobe Yugoslavia, and it came apart in the wars of the 1990s.</p>
+<div class="tblwrap">
+<table>
+<tr><th>Controglobe nation</th><th>Counterpart</th><th>Why</th></tr>
+<tr><td class="n"><span class="sw" style="background:#c27f6a"></span>Angola</td><td class="e">Italy</td><td class="d">The long-coasted Latin-analogue great power of the south. Classical empire, city-state fragmentation, late unification, and the seat of the continent's western church.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#8fae7a"></span>Zambia</td><td class="e">Croatia</td><td class="d">Western-rite, long-limbed, faces Angola across the water; first out of the Zambezian union.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9fd4c4"></span>Botswana</td><td class="e">Slovenia</td><td class="d">Smallest, richest, quickest to leave, quickest to rejoin the continental institutions.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d4c48f"></span>Namibia</td><td class="e">Bosnia</td><td class="d">Three constituent peoples, one federation, and the union's worst war.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7f7fbf"></span>Zimbabwe</td><td class="e">Serbia</td><td class="d">The union's centre of gravity and the state that tried to hold it together by force. Borders Greater Lesotho.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b06a5f"></span>Malawi</td><td class="e">North Macedonia</td><td class="d">Landlocked, contested name, wedged between three larger claimants.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9a6a9a"></span>Northern Mozambique</td><td class="e">Moldova</td><td class="d">Split from Tanzania's sphere; smallest and poorest of the successor states, with its own frozen-conflict strip on the Rovuma.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#5f9e6a"></span>Southern Mozambique</td><td class="e">Montenegro</td><td class="d">Coastal, mountainous behind the shore, the last to leave Zimbabwe's union.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b0b0c0"></span>Greater Lesotho</td><td class="e">Kosovo</td><td class="d">Enlarged well beyond the OTL Maloti, the last secession of the Zambezian wars and still not universally recognised.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#e0a85f"></span>Eswatini</td><td class="e">Albania</td><td class="d">Never joined the union. Absolute monarchy, decades of self-imposed isolation, its own language family.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#6f9e8a"></span>Xhosa Republic</td><td class="e">Greece</td><td class="d">Eastern and northern South Africa. The classical civilisation of the far south — its philosophy, drama and alphabet underwrote everything north of it.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c9b08f"></span>Cape Republic</td><td class="e">Turkey</td><td class="d">The Khoisan Cape. An imperial power in its own right that once ruled the whole south-east; secular republic, straddles two worlds, perpetual applicant to the continental union.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b08f7a"></span>Madagascar</td><td class="e">Sicily · Sardinia · Malta</td><td class="d">A single large island kingdom in the Angolan sphere, speaking a language related to nothing on the mainland.</td></tr>
+</table>
+</div>
+
+<h3>The islands — outside the European swap</h3>
+<p>Under the Controglobe rule that Oceania trades places with the Indian Ocean, Macaronesia and the Atlantic islands, these are <em>Pacific-analogue</em> states, not European ones: <strong>Cape Verde</strong>, the <strong>Canaries</strong>, <strong>Madeira</strong>, <strong>São Tomé &amp; Príncipe</strong>, the <strong>Comoros</strong>, <strong>Seychelles</strong>, <strong>Mauritius</strong> and <strong>Réunion</strong>. The two exceptions run the other way: <strong>Iceland is Morocco</strong> and <strong>Greenland is Cyprus</strong>.</p>
+
+<h2>What changed from the first draft</h2>
+<div class="note">
+<p><strong>Niger and Chad</strong> are no longer stand-ins for existing countries. Niger is a cantonal Alpine confederation; Chad is a herders' nation on the Sápmi model, with borders defined by migration routes.</p>
+<p><strong>Angola is Italy</strong>, not North Macedonia — the south needed a great power, and Macedonia moved to Malawi.</p>
+<p><strong>Mauritania is Norway</strong> and <strong>Libya is Finland</strong>, which puts the Nordic-analogues in the right order west to east.</p>
+<p><strong>Mozambique is two countries</strong>: Moldova in the north, Montenegro in the south.</p>
+<p><strong>Kong (France) does not cover the whole west.</strong> Sierra Leone, Liberia and Tem exist as independent duchies because no centralising monarchy ever finished the job.</p>
+<p><strong>Every frontier is redrawn.</strong> No straight lines, no conference borders — the Sahara is divided along dune-seas and wells, the Congo basin along watersheds, the south along the 1990s ceasefire lines.</p>
+</div>
+
+<footer>Controglobe · open-source worldbuilding · Africa reference sheet. Point of divergence 500 BCE.</footer>
+
+</div>
+</body>
+</html>
