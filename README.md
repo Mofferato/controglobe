@@ -11,6 +11,7 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 |---|---|
 | [`index.html`](index.html) | Project hub, premise, rules of the setting |
 | [`united-states-of-arabia.html`](united-states-of-arabia.html) | The featured article: the federal republic of al-Mashriq, modelled on the *United States* article (primary) and *Saudi Arabia* (secondary) |
+| [`history-of-the-united-states-of-arabia.html`](history-of-the-united-states-of-arabia.html) | History of Arabia from prehistory to the present, modelled on *History of the United States* (primary) and *History of Saudi Arabia* (secondary), including the Islamic-era and colonial trades in Europeans |
 | [`africa.html`](africa.html) | Reference atlas: every African nation, its Global-North counterpart, and a map on non-colonial borders |
 
 ## The core swap
