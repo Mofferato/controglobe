@@ -47,6 +47,10 @@ Every page is a single self-contained HTML file. No build step, no framework, no
 no external requests. All artwork &mdash; flags, seals, maps, presidential portraits &mdash; is
 inline SVG. Open any file in a browser and it works.
 
+Every article is laid out the way an encyclopedia lays one out: sections open with a hatnote,
+and the maps, diagrams and charts are **captioned figures** drawn as inline SVG &mdash; the maps of
+the Mashriq all on one coastline, the world maps all on one projection.
+
 Every article carries Wikipedia-style **preview cards**: hovering, tapping or tabbing to a link,
 a section anchor or a marked term opens a summary card, drawn from data held in the same file.
 Cards for cross-article links carry a thumbnail; cards for a section of the current page are
