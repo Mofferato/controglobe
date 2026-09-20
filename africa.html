@@ -72,6 +72,12 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
 #pvcard .pv-x{padding:6px 13px 11px}
 #pvcard .pv-foot{border-top:1px solid var(--line);background:rgba(127,127,127,.09);padding:5px 13px;color:var(--muted);font-size:10.8px}
 @media(max-width:700px){#pvcard{width:290px}}
+.mapwrap{border:1px solid var(--line);background:var(--panel);padding:9px;margin:16px 0 20px}
+.mapwrap svg{display:block;width:100%;height:auto}
+.mapwrap figcaption{text-align:left;color:var(--muted);font-size:12.8px;line-height:1.5;padding:8px 3px 1px}
+.hatnote{font-size:12.8px;color:var(--muted);font-style:italic;margin:6px 0 10px;padding-left:22px}
+.mapwrap .mapscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+@media(max-width:820px){.mapwrap .mapscroll svg{min-width:720px}}
 </style>
 </head>
 <body>
@@ -85,11 +91,8 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
   <p class="sub">Every African nation and its Global-North counterpart, with the revised non-colonial border set. Africa carries Europe's history; the borders below were drawn by African states themselves, not by any conference.</p>
 </header>
 
-<div class="note">
-<strong>Border doctrine.</strong> No frontier on this map descends from a partition conference. There are no meridian or parallel borders — the Libya–Chad, Egypt–Sudan, Algeria–Mali and Niger–Chad straight lines of OTL do not exist. Frontiers follow rivers, escarpments, watersheds, dune-seas, linguistic lines and the settlements of centuries of internal wars, exactly as Europe's did.
-</div>
 
-<div class="mapbox">
+<figure class="mapbox">
 <svg viewBox="-55 -15 790 775" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Political map of Africa in the Controglobe timeline">
   <defs>
     <clipPath id="land">
@@ -279,10 +282,20 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
     <text x="516" y="638">Eswatini</text>
   </g>
 </svg>
-</div>
-<p class="hint">Scroll or pinch the map sideways on a phone. ✦ = custom nation with no single OTL analogue. ✻ = outside the European sphere entirely.</p>
+<figcaption>Every African nation set against the Global-North counterpart whose history it carries, on the revised non-colonial border set. &#10022; marks a custom nation with no single counterpart outside the timeline and &#10043; a state outside the European sphere entirely. Scroll or pinch the map sideways on a phone.</figcaption>
+</figure>
 
-<h2>The full swap list</h2>
+<h2 id="borders">Border doctrine</h2>
+<p class="hatnote">Main article: <a href="united-states-of-arabia.html">United States of Arabia</a>. Further information: <a href="index.html">Controglobe: the premise</a></p>
+<div class="note">
+<strong>Border doctrine.</strong> No frontier on this map descends from a partition conference. There are no meridian or parallel borders — the Libya–Chad, Egypt–Sudan, Algeria–Mali and Niger–Chad straight lines of OTL do not exist. Frontiers follow rivers, escarpments, watersheds, dune-seas, linguistic lines and the settlements of centuries of internal wars, exactly as Europe's did.
+</div>
+<figure class="mapwrap">
+<div class="mapscroll"><svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram contrasting two kinds of frontier: on the left a meridian and a parallel ruled straight across a landscape by a conference, and on the right frontiers that follow a river, an escarpment or watershed, and a ceasefire line that held."><rect width="900" height="400" fill="#fbf9f4"/><g font-family="Helvetica,Arial,sans-serif"><rect x="30" y="52" width="390" height="268" fill="#eef3ee" stroke="#ccc4b4" stroke-width="1.4"/><text x="30" y="34" font-size="14" font-weight="bold" fill="#1d1b16">What this map does not have</text><text x="30" y="342" font-size="12" fill="#6a6459">a frontier drawn at a conference table</text><rect x="480" y="52" width="390" height="268" fill="#eef3ee" stroke="#ccc4b4" stroke-width="1.4"/><text x="480" y="34" font-size="14" font-weight="bold" fill="#1d1b16">What this map has</text><text x="480" y="342" font-size="12" fill="#6a6459">a frontier drawn by the people on either side of it</text><g opacity=".5"><path d="M60 120q60 -26 120 6t120 -14 120 10" fill="none" stroke="#a8571f" stroke-width="2"/><path d="M60 210q70 20 130 -8t130 14 100 -6" fill="none" stroke="#1c6b74" stroke-width="2"/><path d="M120 80v230M250 60v250M360 90v220" stroke="#8a8f94" stroke-width="1" stroke-dasharray="3 4"/></g><g stroke="#b5452e" stroke-width="3.4" fill="none"><path d="M196 60V312"/><path d="M60 186H420"/></g><text x="206" y="80" font-size="11.5" fill="#b5452e">a meridian</text><text x="66" y="178" font-size="11.5" fill="#b5452e">a parallel</text><text x="66" y="300" font-size="11" fill="#6a6459">drawn where no one lived, by people who had not been there</text><g opacity=".5"><path d="M510 120q60 -26 120 6t120 -14 120 10" fill="none" stroke="#a8571f" stroke-width="2"/><path d="M510 210q70 20 130 -8t130 14 100 -6" fill="none" stroke="#1c6b74" stroke-width="2"/></g><g fill="none" stroke-width="3.4"><path d="M510 120q60 -26 120 6t120 -14 120 10" stroke="#2f6f9f"/><path d="M510 210q70 20 130 -8t130 14 100 -6" stroke="#7a5b2e" stroke-dasharray="1 0"/><path d="M560 270q80 14 150 -6t140 6" stroke="#b5452e" stroke-dasharray="9 6"/></g><g font-size="11.5"><text x="516" y="112" fill="#2f6f9f">a river</text><text x="516" y="230" fill="#7a5b2e">an escarpment or a watershed</text><text x="566" y="290" fill="#b5452e">a ceasefire line that held</text></g><text x="516" y="300" font-size="11" fill="#6a6459"></text><text x="450" y="378" text-anchor="middle" font-size="11.5" fill="#6a6459">No meridian or parallel borders: the Libya&ndash;Chad, Egypt&ndash;Sudan, Algeria&ndash;Mali and Niger&ndash;Chad straight lines do not exist here.</text><text x="450" y="394" text-anchor="middle" font-size="11" fill="#6a6459">Frontiers follow rivers, escarpments, watersheds, dune-seas, linguistic lines and the settlements of centuries of internal wars.</text></g></svg></div>
+<figcaption>Two kinds of frontier: the ruled lines of a partition conference, which this map does not use, and the rivers, escarpments and ceasefire lines that it does. The distinction is the one rule of the atlas that every entry below obeys.</figcaption>
+</figure>
+
+<h2 id="swaplist">The full swap list</h2>
 
 <h3>Northern Africa = Northern Europe</h3>
 <div class="tblwrap">
@@ -380,7 +393,7 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
 <h3>The islands — outside the European swap</h3>
 <p>Under the Controglobe rule that Oceania trades places with the Indian Ocean, Macaronesia and the Atlantic islands, these are <em>Pacific-analogue</em> states, not European ones: <strong>Cape Verde</strong>, the <strong>Canaries</strong>, <strong>Madeira</strong>, <strong>São Tomé &amp; Príncipe</strong>, the <strong>Comoros</strong>, <strong>Seychelles</strong>, <strong>Mauritius</strong> and <strong>Réunion</strong>. The two exceptions run the other way: <strong>Iceland is Morocco</strong> and <strong>Greenland is Cyprus</strong>.</p>
 
-<h2>What changed from the first draft</h2>
+<h2 id="changes">What changed from the first draft</h2>
 <div class="note">
 <p><strong>Niger and Chad</strong> are no longer stand-ins for existing countries. Niger is a cantonal Alpine confederation; Chad is a herders' nation on the Sápmi model, with borders defined by migration routes.</p>
 <p><strong>Angola is Italy</strong>, not North Macedonia — the south needed a great power, and Macedonia moved to Malawi.</p>

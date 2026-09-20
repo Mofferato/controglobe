@@ -32,6 +32,36 @@ raising a **question**.
 4. Add your article to the table in `README.md` and to the cards in `index.html`.
 5. Cross-link from at least one existing article.
 
+## Sections and figures
+
+Articles are laid out the way an encyclopedia lays them out. Every substantial section opens
+with a hatnote and, where a picture earns its place, carries a captioned figure:
+
+```html
+<h2 id="colonial">Foreign colonisation (1497&ndash;1763)</h2>
+<p class="hatnote">Main articles: <a href="#">Colonial Arabia</a>, <a href="#">Thirteen Princely Colonies</a></p>
+<figure class="mapwrap">
+<svg viewBox="0 0 920 620" role="img" aria-label="&hellip;">&hellip;</svg>
+<figcaption>The <b>colonial holdings</b> on the Arabian coasts about 1750: &hellip;</figcaption>
+</figure>
+<p>Body text &hellip;</p>
+```
+
+- **Hatnotes** use the usual forms &mdash; *Main article:*, *Main articles:*, *Further
+  information:*, *See also:* &mdash; and link to articles that exist or to `#` for ones that do
+  not, exactly as a red link would.
+- **Captions** say what the picture shows rather than repeating the section. Name the colours
+  ("in pink", "in blue") so the reader can read the key from the caption, and give the date.
+  Links and `<b>` are welcome; a bold term with a preview entry gets a card.
+- **Figures** are `<figure class="mapwrap">` with an inline `<svg>` and a `<figcaption>`. Give
+  every `svg` a `role="img"` and an `aria-label` that describes the whole picture, because the
+  caption alone is not a description.
+- **Maps** of the Mashriq share one canvas, `0 0 920 620`, and one coastline, so that a reader
+  who has learnt the shape once can read every later map. World maps share `0 0 960 500`,
+  equirectangular, regions rather than countries. Keep the key inside the frame where there is
+  sea to put it, and in a white band underneath where there is not.
+- Artwork is inline SVG. No binary images, no external requests, no build step.
+
 ## Preview cards
 
 Every article carries Wikipedia-style preview cards. Hovering, tapping or tabbing to a link,
@@ -69,6 +99,7 @@ summarise: the same entity reads the same way on every page that mentions it.
 - [ ] Custom entities are marked as custom
 - [ ] Nothing depends on a network request
 - [ ] Terms with a preview entry are reachable, and every entry is reached by something
+- [ ] Every substantial section has a hatnote, and every figure a caption
 - [ ] The page is readable on a phone
 
 ## Licence
