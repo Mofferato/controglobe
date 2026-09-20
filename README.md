@@ -47,6 +47,11 @@ Every page is a single self-contained HTML file. No build step, no framework, no
 no external requests. All artwork &mdash; flags, seals, maps, presidential portraits &mdash; is
 inline SVG. Open any file in a browser and it works.
 
+Every article carries Wikipedia-style **preview cards**: hovering, tapping or tabbing to a link,
+a section anchor or a marked term opens a summary card, drawn from data held in the same file.
+Cards for cross-article links carry a thumbnail; cards for a section of the current page are
+built from the page itself. See [CONTRIBUTING.md](CONTRIBUTING.md#preview-cards).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Open an **issue** to argue about canon;
