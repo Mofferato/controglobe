@@ -17,6 +17,14 @@ throughout, and append it here in the same pass.
   keys of `PV` / `LINKS` stay Latin, so links keep working across both editions.
   The keys of `MATCH`, which are on-page display text, *are* translated.
   JavaScript comments stay in English; user-visible strings in the script do not.
+- **Transliterations stay Latin.** Where the English page prints a romanised Arabic
+  term in italics as a gloss (`al-Ittiḥād al-Nabaṭī`, `ʻAhd al-Ābār`, `ḥakam kātib`),
+  the Arabic page keeps the Latin form beside the Arabic one, because it is there to
+  show the romanisation. A real English Wikipedia article title cited as a structural
+  model also stays in Latin.
+- **MATCH keys are what `flat()` yields.** The page folds every whitespace run to a
+  plain space before the lookup, so an Arabic key is written with plain spaces even
+  where the prose prints `&nbsp;`.
 - **SVG labels.** A label centred on a shape (`text-anchor="middle"`) is translated in
   place. Where a diagram's panels carry geometry that may not move, its start-anchored
   labels keep `direction="ltr"` so they stay anchored at their own `x`; only labels whose
@@ -96,6 +104,25 @@ throughout, and append it here in the same pass.
 | Manarat al-Hurriyyah | منارة الحرية |
 | Mansa Jata | مانسا جاتا |
 | Velvet Divorce | الطلاق المخملي |
+| Nabataean Unification | الوحدة النبطية |
+| Long Thirst | العطش الطويل |
+| Well Rolls / Bureau of Wells | سجلات الآبار / ديوان الآبار |
+| Masters of Water | أصحاب الماء |
+| Commanders of the Road | قادة الدرب |
+| Council of the Tribes | مجلس القبائل |
+| Ordinance of Weights / Arabic Ordinance / Water Ordinance | مرسوم الموازين / مرسوم العربية / مرسوم الماء |
+| chancery Arabic | العربية الديوانية |
+| lettered arbitrators (ḥakam kātib) | المحكَّمون من أهل الكتابة |
+| hima | الحِمى |
+| Dedan settlement | تسوية ددان |
+| War of the Two Capitals | حرب العاصمتين |
+| Hisma dam chain | سلسلة سدود حسمى |
+| Hegra archive | أرشيف الحِجر |
+| oasis leagues | عصب الواحات |
+| sela' (coin) | السَّلع |
+| Dushara / Allat / al-'Uzza / Manat | ذو الشرى / اللات / العُزى / مناة |
+| Aretas / Obodas / Malichus / Rabbel (kings) | الحارث / عبادة / مالك / ربئيل |
+| compact school / national school | مدرسة العقد / المدرسة القومية |
 | OTL / the outside timeline | الخط الزمني الخارجي |
 | Motor vehicles | المركبات الآلية |
 
@@ -104,6 +131,15 @@ throughout, and append it here in the same pass.
 | English | العربية |
 |---|---|
 | Petra / Hegra | البتراء / الحِجر |
+| Sela (the rock) | سلع |
+| Dedan / Tayma / Duma | ددان / تيماء / دومة |
+| Hisma / Hejaz / Najd | حسمى / الحجاز / نجد |
+| Jabal Shammar / Yamama / Hawran | جبل شمر / اليمامة / حوران |
+| Gerrha / Najran / Ma'rib | جرها / نجران / مأرب |
+| Edom / Qedar / Lihyan | أدوم / قيدار / لحيان |
+| Nabatu / al-Anbat | نبطو / الأنباط |
+| Characene / Magan / Saba / Himyar | ميسان / مجان / سبأ / حمير |
+| Lakhmids / Ghassanids | اللخميون / الغساسنة |
 | Arabian Peninsula | شبه الجزيرة العربية |
 | Levantine seaboard | الساحل الشامي |
 | Tigris–Euphrates basin | حوض دجلة والفرات |

@@ -27,7 +27,7 @@ is a bare relative filename, a page inside `ar/` links to its Arabic siblings wi
 | [`ar/index.html`](ar/index.html) | translated |
 | `ar/united-states-of-arabia.html` | not yet translated |
 | `ar/history-of-the-united-states-of-arabia.html` | not yet translated |
-| `ar/nabataean-unification.html` | not yet translated |
+| [`ar/nabataean-unification.html`](ar/nabataean-unification.html) | translated |
 | `ar/vehicles.html` | not yet translated |
 | [`ar/africa.html`](ar/africa.html) | translated |
 
