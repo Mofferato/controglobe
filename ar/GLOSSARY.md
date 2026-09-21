@@ -17,6 +17,10 @@ throughout, and append it here in the same pass.
   keys of `PV` / `LINKS` stay Latin, so links keep working across both editions.
   The keys of `MATCH`, which are on-page display text, *are* translated.
   JavaScript comments stay in English; user-visible strings in the script do not.
+- **SVG labels.** A label centred on a shape (`text-anchor="middle"`) is translated in
+  place. Where a diagram's panels carry geometry that may not move, its start-anchored
+  labels keep `direction="ltr"` so they stay anchored at their own `x`; only labels whose
+  row can be mirrored (a map key) are moved across the canvas.
 - **Untranslated targets:** a link to an article that has no Arabic edition yet
   points at `../<file>.html` and carries `class="pending"`, which prints
   "(بالإنجليزية)" after it, the way an interlanguage red link behaves. When the
@@ -52,6 +56,18 @@ throughout, and append it here in the same pass.
 | Hindustani Empire / Hindustan | الإمبراطورية الهندوستانية / هندوستان | Britain, Japan and China |
 | Nusantara | نوسانتارا | China |
 | Aïr | آير | custom (Niger) |
+| Kong / Republic of Kong | كونغ / جمهورية كونغ | France |
+| Kaabu | كابو | Portugal |
+| Ndongo | ندونغو | Italy |
+| Sokoto | سوكوتو | Britain |
+| DN Kongo | دي إن كونغو | Austria; the initials are not expanded, so they are transliterated |
+| Union of Zambezia | اتحاد الزامبيزيا | Yugoslavia; dissolved in the 1990s |
+| Qumur | قُمُر | the in-world state; the islands themselves are جزر القمر |
+| Fouta Djallon | فوتا جالون | Galicia |
+| Saguia el-Hamra | الساقية الحمراء | the Faroes |
+| Greater Lesotho | ليسوتو الكبرى | Kosovo |
+| Xhosa Republic | جمهورية الخوسا | Greece |
+| Cape Republic | جمهورية الكاب | Turkey |
 | Kanem | كانم | custom (Chad) |
 | Songhai | سنغاي | custom |
 | Tem | تم | custom |
@@ -76,6 +92,11 @@ throughout, and append it here in the same pass.
 | Gulf War of 1898 | حرب الخليج 1898 |
 | Mysore method | أسلوب ميسور |
 | oil shocks | صدمات النفط |
+| Kuwait Purchase | صفقة شراء الكويت |
+| Manarat al-Hurriyyah | منارة الحرية |
+| Mansa Jata | مانسا جاتا |
+| Velvet Divorce | الطلاق المخملي |
+| OTL / the outside timeline | الخط الزمني الخارجي |
 | Motor vehicles | المركبات الآلية |
 
 ## Places
