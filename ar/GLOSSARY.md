@@ -146,6 +146,35 @@ throughout, and append it here in the same pass.
 | Lubumbashi / Kananga / Likasi / Kipushi / Kambove | لوبومباشي / كانانغا / ليكاسي / كيبوشي / كامبوفي |
 | Surabaya / Sulawesi / Bangka | سورابايا / سولاويسي / بانغكا |
 | Constanța / Rijeka / Tangier | كونستانتسا / رييكا / طنجة |
+| Interregnum | حقبة الفترة |
+| Saqaliba / Saqaliba Revolt | الصقالبة / ثورة الصقالبة |
+| khidmah / tab'iyyah | الخِدمة / التبعية |
+| Qayd laws | قوانين القَيد |
+| Red Sea Company | شركة البحر الأحمر |
+| thirteen princely colonies | المستعمرات الأميرية الثلاث عشرة |
+| Najd Awakening / New Awakening | صحوة نجد / الصحوة الجديدة |
+| Continental Majlis | المجلس القاري |
+| Declaration of Independence | إعلان الاستقلال |
+| Manumission Proclamation / Manumission Day | إعلان العتق / يوم العتق |
+| Night Road (Darb al-Layl) | درب الليل |
+| Road of Thirst (Darb al-'Atash) | درب العطش |
+| Desert Removal Act | قانون ترحيل الصحراء |
+| Islamic States of Arabia | الدول الإسلامية في الجزيرة العربية |
+| Bleeding Shammar | شمر الدامية |
+| Union party / Ahd / Sha'bi / Asalah | حزب الاتحاد / العهد / الشعبي / الأصالة |
+| Umm al-Qura | أم القرى |
+| Sanctuaries Act | قانون الحرمين |
+| Sharifate of Makkah | شرافة مكة |
+| Ikhwan al-Tawhid / Sabilla | إخوان التوحيد / السبلة |
+| Great Migration | الهجرة الكبرى |
+| Dust Years | سنوات الغبار |
+| Alamut Project | مشروع ألموت |
+| Umm al-Qura Pact / Recovery Programme | حلف أم القرى / برنامج التعافي |
+| Adharbaijan | أذربيجان |
+| Jazirat al-Wasit | جزيرة الواسط |
+| Harat al-Yaman | حارة اليمن |
+| European Arabians / al-Ifranji | العرب الأوروبيون / الإفرنجي |
+| Federal Commission on Servitude | اللجنة الاتحادية للاسترقاق |
 | OTL / the outside timeline | الخط الزمني الخارجي |
 | Motor vehicles | المركبات الآلية |
 
