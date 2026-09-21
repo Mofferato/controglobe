@@ -92,6 +92,33 @@ An entry looks like this:
 Keep entries to one card's worth of text, and keep them consistent with the article they
 summarise: the same entity reads the same way on every page that mentions it.
 
+## Translations
+
+A language edition lives in its own directory under the **same filenames** as the English
+originals &mdash; the Arabic edition is in `ar/`. Because every intra-site link is a bare relative
+filename, a translated page links to its translated siblings with no href changes.
+
+Translating a page means:
+
+- `<html lang="…" dir="…">`, a `<link rel="alternate" hreflang>` pair in the head, and an
+  interlanguage link in the nav back to English.
+- An RTL (or other direction-specific) block appended to the page's own `<style>`. System fonts
+  only: no `@import`, no web fonts, no external requests, still no build step.
+- Prose, `<title>`, the meta descriptions, every SVG `<text>` and every `aria-label`. SVG geometry
+  &mdash; `viewBox`, coordinates, path data, colours, the shared canvases &mdash; does not move. In an RTL
+  edition, `text-anchor="middle"` labels translate in place; a start- or end-anchored label needs
+  `direction="rtl"`, and a two-column key is mirrored across the canvas.
+- The preview-card data: `t`, `s` and `x` in `PV`, and the *keys* of `MATCH`, which are on-page
+  display text. The keys of `PV` and `LINKS`, `data-pv` values, `id` values and `#anchors` stay
+  Latin so both editions keep working. User-visible strings inside the script are translated;
+  code comments are not.
+- A glossary in the edition's directory, binding for every proper noun, updated in the same pass
+  whenever a new name is decided. See [`ar/GLOSSARY.md`](ar/GLOSSARY.md).
+
+A link to an article that edition has not translated yet points at `../<file>.html` and carries
+`class="pending"`, which prints a "(in English)" marker after it, the way an interlanguage red link
+behaves. When that article is translated, drop the `../` and the class.
+
 ## Article checklist
 
 - [ ] Every date, institution and border is internally consistent with existing canon

@@ -16,6 +16,30 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 | [`vehicles.html`](vehicles.html) | Motor vehicles in the Global Swap: the Kongolese invention of the car, Mosul mass production, the Hindustani turn after the oil shocks, Nusantaran electrification, and the regional design traditions, with schematic drawings |
 | [`africa.html`](africa.html) | Reference atlas: every African nation, its Global-North counterpart, and a map on non-colonial borders |
 
+## Arabic edition &mdash; الطبعة العربية
+
+The Arabic edition lives in [`ar/`](ar/), one file per article under the **same filename** as the
+English original, the way Wikipedia keeps a language at its own site. Because every intra-site link
+is a bare relative filename, a page inside `ar/` links to its Arabic siblings with no href changes.
+
+| Page | Status |
+|---|---|
+| [`ar/index.html`](ar/index.html) | translated |
+| `ar/united-states-of-arabia.html` | not yet translated |
+| `ar/history-of-the-united-states-of-arabia.html` | not yet translated |
+| `ar/nabataean-unification.html` | not yet translated |
+| `ar/vehicles.html` | not yet translated |
+| `ar/africa.html` | not yet translated |
+
+[`ar/GLOSSARY.md`](ar/GLOSSARY.md) is the binding authority on every proper noun in Arabic, and on
+the conventions of the edition: MSA in the register of ar.wikipedia, Western Arabic numerals,
+ق.م / م for the eras, and code identifiers (`id`, anchors, `data-pv` and `PV`/`LINKS` keys) left in
+Latin so links keep working across both editions. A link to an article that has no Arabic edition
+yet points at `../<file>.html` and carries `class="pending"`, which prints "(بالإنجليزية)" after it,
+the way an interlanguage red link behaves; when that article is translated, drop the `../` and the
+class. Each page carries `<html lang="ar" dir="rtl">`, a `<link rel="alternate" hreflang>` pair and
+an RTL block appended to its stylesheet &mdash; system fonts only, no external requests.
+
 ## The core swap
 
 | Region | Carries the history of |
