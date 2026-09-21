@@ -119,6 +119,13 @@ A link to an article that edition has not translated yet points at `../<file>.ht
 `class="pending"`, which prints a "(in English)" marker after it, the way an interlanguage red link
 behaves. When that article is translated, drop the `../` and the class.
 
+Two things bite in a right-to-left edition. A numeric range such as `1789&ndash;1797` lays out
+backwards, because the en-dash between two numbers is a neutral and takes the paragraph's
+direction; wrap the range in U+2066 (LRI) and U+2069 (PDI) and it reads left to right again, with
+no markup added. And `margin-inline-start` on the interlanguage link resolves against *the link's*
+`dir`, which is the other language's &mdash; so use the physical side the page's own direction makes
+the far end of the bar (`margin-left:auto` in an LTR page, `margin-right:auto` in an RTL one).
+
 ## Article checklist
 
 - [ ] Every date, institution and border is internally consistent with existing canon

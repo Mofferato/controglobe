@@ -32,7 +32,26 @@ throughout, and append it here in the same pass.
 - **Untranslated targets:** a link to an article that has no Arabic edition yet
   points at `../<file>.html` and carries `class="pending"`, which prints
   "(بالإنجليزية)" after it, the way an interlanguage red link behaves. When the
-  Arabic edition of that article lands, drop `../` and drop the class.
+  Arabic edition of that article lands, drop `../` and drop the class. Every
+  article is translated as of now, so nothing carries the class; the rule stays in
+  each stylesheet for the next article written in English first.
+- **Numeric ranges are isolated.** Between two numbers the en-dash is a neutral and
+  resolves right-to-left, so `1789&ndash;1797` would lay out as 1797 then 1789. Wrap
+  such a range in U+2066 (LRI) and U+2069 (PDI) — invisible characters, no markup —
+  and it reads left to right again. A range with an Arabic word on one side
+  (`1967&ndash;الآن`) already reads correctly and is left alone.
+- **A name written in its own language stays in it.** The swap-key table prints each
+  polity's native name in parentheses (`Staat Ludwigsland`, `Estado de California`,
+  `al-Jumhuriyyah al-Urighuniyyah`); that parenthesis is the name as its own speakers
+  write it, so it is never converted to Arabic script, not even when the language is
+  Arabic. The same holds for the romanisation under an infobox title: where the
+  English page prints the Arabic name and its romanisation beneath an English title,
+  the Arabic page puts the Arabic name in the title and keeps only the romanisation
+  below, so the name is not printed three times.
+- **The interlanguage link's margin is physical.** `.cg-nav a.lang` carries the other
+  language's `dir`, so `margin-inline-start` resolves against *its* direction and lands
+  on the wrong side. English pages use `margin-left:auto`, Arabic pages
+  `margin-right:auto`, so the link sits at the far end of the bar either way.
 
 ## Project and setting
 
@@ -221,3 +240,68 @@ throughout, and append it here in the same pass.
 | § Section of … | § قسم من … |
 | Featured article | مقالة مختارة |
 | Reference atlas | أطلس مرجعي |
+
+## Government, parties and the presidency
+
+| English | العربية | Note |
+|---|---|---|
+| Majlis al-Ittihad | مجلس الاتحاد | the federal legislature |
+| Majlis an-Nuwab (Chamber of Deputies) | مجلس النواب | lower house |
+| Majlis al-Shuyukh (Council of Elders) | مجلس الشيوخ | upper house |
+| Supreme Court | المحكمة العليا | |
+| Supreme Waqf Council | المجلس الأعلى للأوقاف | |
+| Custodianship of the Two Holy Mosques | الوِصاية على الحرمين الشريفين | a trust, not a personal title |
+| Presidential House | دار الرئاسة | |
+| Great Seal | الختم الأكبر | |
+| Nth president | الرئيس الـ… / الرئيسة الـ… | the ordinal agrees in gender: الرئيسة الخامسة والعشرون |
+| Islah / Asalah | إصلاح / أصالة | the two present-day parties, unarticled |
+| Ahd / Union / Progressive | العهد / الاتحاد / التقدمية | historical parties |
+| Ittihadi / Jumhuri / Sha'bi | الاتحادي / الجمهوري / الشعبي | |
+| Non-partisan | مستقل | |
+| Civil Service Act | قانون الخدمة المدنية | |
+| Twenty-Fifth Amendment | التعديل الخامس والعشرون | |
+| electoral college | المجمع الانتخابي | |
+| impeachment | دعوى العزل | |
+
+## Events, programmes and institutions
+
+| English | العربية |
+|---|---|
+| Damascus Convention | مؤتمر دمشق |
+| Farewell Address | خطاب الوداع |
+| Charter of Liberties | ميثاق الحريات |
+| Qasimi Doctrine | مبدأ القاسمي |
+| Tihamah Compromise / Compromise of 1850 | تسوية تهامة / تسوية 1850 |
+| Desert Removal Act | قانون ترحيل الصحراء |
+| Panic of 1837 | ذعر 1837 |
+| Second Bank of Arabia | مصرف العربية الثاني |
+| fugitive servants law | قانون الخدم الآبقين |
+| Hijaz–Jawf Act | قانون الحجاز–الجوف |
+| Gilded Age | العصر المذهَّب |
+| Great Society | المجتمع العظيم |
+| Voting Rights Act | قانون حقوق التصويت |
+| Aqaba accords | اتفاقات العقبة |
+| Kartli Missile Crisis | أزمة صواريخ كارتلي |
+| Green Arabia programme | برنامج العربية الخضراء |
+| Wain movement | حركة وين |
+| Umm al-Qura Pact | حلف أم القرى |
+| Concert of Nations | محفل الأمم |
+| World Heritage listing | إدراج في التراث العالمي |
+| National Parks Act | قانون المتنزهات الوطنية |
+
+## Economy, culture and everyday life
+
+| English | العربية |
+|---|---|
+| Bitrularab | بترولعرب |
+| Jeddah Exchange | بورصة جدة |
+| Arabian riyal | الريال العربي |
+| Wadi ar-Raml | وادي الرمل |
+| Darb Zubaydah | درب زبيدة |
+| Hajj economy | اقتصاد الحج |
+| Al-Ghabah | الغابة |
+| nahham blues | بلوز النهّام |
+| kabsa and qahwa | الكبسة والقهوة |
+| saqr / madrab | الصقر / المضرب |
+| Manumission Day | يوم العتق |
+| European Arabians | العرب الأوروبيون |

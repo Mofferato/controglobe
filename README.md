@@ -21,11 +21,12 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 The Arabic edition lives in [`ar/`](ar/), one file per article under the **same filename** as the
 English original, the way Wikipedia keeps a language at its own site. Because every intra-site link
 is a bare relative filename, a page inside `ar/` links to its Arabic siblings with no href changes.
+Every article has an Arabic edition, and every English article carries an interlanguage link to it.
 
 | Page | Status |
 |---|---|
 | [`ar/index.html`](ar/index.html) | translated |
-| `ar/united-states-of-arabia.html` | not yet translated |
+| [`ar/united-states-of-arabia.html`](ar/united-states-of-arabia.html) | translated |
 | [`ar/history-of-the-united-states-of-arabia.html`](ar/history-of-the-united-states-of-arabia.html) | translated |
 | [`ar/nabataean-unification.html`](ar/nabataean-unification.html) | translated |
 | [`ar/vehicles.html`](ar/vehicles.html) | translated |
@@ -37,8 +38,11 @@ the conventions of the edition: MSA in the register of ar.wikipedia, Western Ara
 Latin so links keep working across both editions. A link to an article that has no Arabic edition
 yet points at `../<file>.html` and carries `class="pending"`, which prints "(بالإنجليزية)" after it,
 the way an interlanguage red link behaves; when that article is translated, drop the `../` and the
-class. Each page carries `<html lang="ar" dir="rtl">`, a `<link rel="alternate" hreflang>` pair and
-an RTL block appended to its stylesheet &mdash; system fonts only, no external requests.
+class. Nothing carries `class="pending"` at the moment &mdash; the rule stays in the stylesheet for
+the next article written in English first. Each page carries `<html lang="ar" dir="rtl">`, a
+`<link rel="alternate" hreflang>` pair and an RTL block appended to its stylesheet &mdash; system
+fonts only, no external requests. A numeric range is wrapped in U+2066/U+2069 so that
+1789&#8211;1797 still reads left to right inside right-to-left text.
 
 ## The core swap
 
