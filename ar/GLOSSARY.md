@@ -123,6 +123,29 @@ throughout, and append it here in the same pass.
 | Dushara / Allat / al-'Uzza / Manat | ذو الشرى / اللات / العُزى / مناة |
 | Aretas / Obodas / Malichus / Rabbel (kings) | الحارث / عبادة / مالك / ربئيل |
 | compact school / national school | مدرسة العقد / المدرسة القومية |
+| sayyārah / wanayt | سيّارة / ونيت |
+| Rashid Motor Company / Rashid Model T | شركة الرشيد للسيارات / رشيد طراز T |
+| Ittihad Motors | اتحاد موتورز |
+| Basra Motor Works / Three of Mosul | مصانع البصرة للسيارات / ثلاثي الموصل |
+| Malonga / Nsimba / Mafuta / Kalala Tshibangu | مالونغا / نسيمبا / مافوتا / كالالا تشيبانغو |
+| Nkangu programme / Type 1 | برنامج نكانغو / طراز 1 |
+| Josephine Kabongo / Nuri al-Rashid / Nadia Khoury | جوزفين كابونغو / نوري الرشيد / نادية خوري |
+| Mysore Loom & Motor / the Mysore method | ميسور للأنوال والمحركات / أسلوب ميسور |
+| chit class | طبقة الأقساط |
+| Kilat / Kivu / Sanwi / Bouaké Motors | كيلات / كيفو / سانوي / بواكيه موتورز |
+| Ombaka 275 / Awash 2101 / Ilorin / Tarma / Chasqui | أومباكا 275 / أواش 2101 / إيلورين / ترما / تشاسكي |
+| Hamil / Hamil Wadi | الحامل / حامل وادي |
+| Kinshasa Regulations | لوائح كينشاسا |
+| Federal Standard 209 | المعيار الاتحادي 209 |
+| Zagros Motor Agreement | اتفاق زاغروس للسيارات |
+| Sinai Border Programme | برنامج حدود سيناء |
+| Kinshasa–Helsinki Raid | سباق كينشاسا–هلسنكي |
+| Najd ovals / Bouna 24 Hours | حلبات نجد البيضاوية / سباق بونا 24 ساعة |
+| shade roof / the fin | السقف الظليل / الزعنفة |
+| traffic side: left/right-hand bloc | جهة السير: الكتلة اليسارية / اليمينية |
+| Lubumbashi / Kananga / Likasi / Kipushi / Kambove | لوبومباشي / كانانغا / ليكاسي / كيبوشي / كامبوفي |
+| Surabaya / Sulawesi / Bangka | سورابايا / سولاويسي / بانغكا |
+| Constanța / Rijeka / Tangier | كونستانتسا / رييكا / طنجة |
 | OTL / the outside timeline | الخط الزمني الخارجي |
 | Motor vehicles | المركبات الآلية |
 

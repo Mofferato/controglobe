@@ -28,7 +28,7 @@ is a bare relative filename, a page inside `ar/` links to its Arabic siblings wi
 | `ar/united-states-of-arabia.html` | not yet translated |
 | `ar/history-of-the-united-states-of-arabia.html` | not yet translated |
 | [`ar/nabataean-unification.html`](ar/nabataean-unification.html) | translated |
-| `ar/vehicles.html` | not yet translated |
+| [`ar/vehicles.html`](ar/vehicles.html) | translated |
 | [`ar/africa.html`](ar/africa.html) | translated |
 
 [`ar/GLOSSARY.md`](ar/GLOSSARY.md) is the binding authority on every proper noun in Arabic, and on
