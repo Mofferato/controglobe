@@ -17,6 +17,14 @@ throughout, and append it here in the same pass.
   keys of `PV` / `LINKS` stay Latin, so links keep working across both editions.
   The keys of `MATCH`, which are on-page display text, *are* translated.
   JavaScript comments stay in English; user-visible strings in the script do not.
+- **Transliterations stay Latin.** Where the English page prints a romanised Arabic
+  term in italics as a gloss (`al-Ittiḥād al-Nabaṭī`, `ʻAhd al-Ābār`, `ḥakam kātib`),
+  the Arabic page keeps the Latin form beside the Arabic one, because it is there to
+  show the romanisation. A real English Wikipedia article title cited as a structural
+  model also stays in Latin.
+- **MATCH keys are what `flat()` yields.** The page folds every whitespace run to a
+  plain space before the lookup, so an Arabic key is written with plain spaces even
+  where the prose prints `&nbsp;`.
 - **SVG labels.** A label centred on a shape (`text-anchor="middle"`) is translated in
   place. Where a diagram's panels carry geometry that may not move, its start-anchored
   labels keep `direction="ltr"` so they stay anchored at their own `x`; only labels whose
@@ -24,7 +32,26 @@ throughout, and append it here in the same pass.
 - **Untranslated targets:** a link to an article that has no Arabic edition yet
   points at `../<file>.html` and carries `class="pending"`, which prints
   "(بالإنجليزية)" after it, the way an interlanguage red link behaves. When the
-  Arabic edition of that article lands, drop `../` and drop the class.
+  Arabic edition of that article lands, drop `../` and drop the class. Every
+  article is translated as of now, so nothing carries the class; the rule stays in
+  each stylesheet for the next article written in English first.
+- **Numeric ranges are isolated.** Between two numbers the en-dash is a neutral and
+  resolves right-to-left, so `1789&ndash;1797` would lay out as 1797 then 1789. Wrap
+  such a range in U+2066 (LRI) and U+2069 (PDI) — invisible characters, no markup —
+  and it reads left to right again. A range with an Arabic word on one side
+  (`1967&ndash;الآن`) already reads correctly and is left alone.
+- **A name written in its own language stays in it.** The swap-key table prints each
+  polity's native name in parentheses (`Staat Ludwigsland`, `Estado de California`,
+  `al-Jumhuriyyah al-Urighuniyyah`); that parenthesis is the name as its own speakers
+  write it, so it is never converted to Arabic script, not even when the language is
+  Arabic. The same holds for the romanisation under an infobox title: where the
+  English page prints the Arabic name and its romanisation beneath an English title,
+  the Arabic page puts the Arabic name in the title and keeps only the romanisation
+  below, so the name is not printed three times.
+- **The interlanguage link's margin is physical.** `.cg-nav a.lang` carries the other
+  language's `dir`, so `margin-inline-start` resolves against *its* direction and lands
+  on the wrong side. English pages use `margin-left:auto`, Arabic pages
+  `margin-right:auto`, so the link sits at the far end of the bar either way.
 
 ## Project and setting
 
@@ -96,6 +123,77 @@ throughout, and append it here in the same pass.
 | Manarat al-Hurriyyah | منارة الحرية |
 | Mansa Jata | مانسا جاتا |
 | Velvet Divorce | الطلاق المخملي |
+| Nabataean Unification | الوحدة النبطية |
+| Long Thirst | العطش الطويل |
+| Well Rolls / Bureau of Wells | سجلات الآبار / ديوان الآبار |
+| Masters of Water | أصحاب الماء |
+| Commanders of the Road | قادة الدرب |
+| Council of the Tribes | مجلس القبائل |
+| Ordinance of Weights / Arabic Ordinance / Water Ordinance | مرسوم الموازين / مرسوم العربية / مرسوم الماء |
+| chancery Arabic | العربية الديوانية |
+| lettered arbitrators (ḥakam kātib) | المحكَّمون من أهل الكتابة |
+| hima | الحِمى |
+| Dedan settlement | تسوية ددان |
+| War of the Two Capitals | حرب العاصمتين |
+| Hisma dam chain | سلسلة سدود حسمى |
+| Hegra archive | أرشيف الحِجر |
+| oasis leagues | عصب الواحات |
+| sela' (coin) | السَّلع |
+| Dushara / Allat / al-'Uzza / Manat | ذو الشرى / اللات / العُزى / مناة |
+| Aretas / Obodas / Malichus / Rabbel (kings) | الحارث / عبادة / مالك / ربئيل |
+| compact school / national school | مدرسة العقد / المدرسة القومية |
+| sayyārah / wanayt | سيّارة / ونيت |
+| Rashid Motor Company / Rashid Model T | شركة الرشيد للسيارات / رشيد طراز T |
+| Ittihad Motors | اتحاد موتورز |
+| Basra Motor Works / Three of Mosul | مصانع البصرة للسيارات / ثلاثي الموصل |
+| Malonga / Nsimba / Mafuta / Kalala Tshibangu | مالونغا / نسيمبا / مافوتا / كالالا تشيبانغو |
+| Nkangu programme / Type 1 | برنامج نكانغو / طراز 1 |
+| Josephine Kabongo / Nuri al-Rashid / Nadia Khoury | جوزفين كابونغو / نوري الرشيد / نادية خوري |
+| Mysore Loom & Motor / the Mysore method | ميسور للأنوال والمحركات / أسلوب ميسور |
+| chit class | طبقة الأقساط |
+| Kilat / Kivu / Sanwi / Bouaké Motors | كيلات / كيفو / سانوي / بواكيه موتورز |
+| Ombaka 275 / Awash 2101 / Ilorin / Tarma / Chasqui | أومباكا 275 / أواش 2101 / إيلورين / ترما / تشاسكي |
+| Hamil / Hamil Wadi | الحامل / حامل وادي |
+| Kinshasa Regulations | لوائح كينشاسا |
+| Federal Standard 209 | المعيار الاتحادي 209 |
+| Zagros Motor Agreement | اتفاق زاغروس للسيارات |
+| Sinai Border Programme | برنامج حدود سيناء |
+| Kinshasa–Helsinki Raid | سباق كينشاسا–هلسنكي |
+| Najd ovals / Bouna 24 Hours | حلبات نجد البيضاوية / سباق بونا 24 ساعة |
+| shade roof / the fin | السقف الظليل / الزعنفة |
+| traffic side: left/right-hand bloc | جهة السير: الكتلة اليسارية / اليمينية |
+| Lubumbashi / Kananga / Likasi / Kipushi / Kambove | لوبومباشي / كانانغا / ليكاسي / كيبوشي / كامبوفي |
+| Surabaya / Sulawesi / Bangka | سورابايا / سولاويسي / بانغكا |
+| Constanța / Rijeka / Tangier | كونستانتسا / رييكا / طنجة |
+| Interregnum | حقبة الفترة |
+| Saqaliba / Saqaliba Revolt | الصقالبة / ثورة الصقالبة |
+| khidmah / tab'iyyah | الخِدمة / التبعية |
+| Qayd laws | قوانين القَيد |
+| Red Sea Company | شركة البحر الأحمر |
+| thirteen princely colonies | المستعمرات الأميرية الثلاث عشرة |
+| Najd Awakening / New Awakening | صحوة نجد / الصحوة الجديدة |
+| Continental Majlis | المجلس القاري |
+| Declaration of Independence | إعلان الاستقلال |
+| Manumission Proclamation / Manumission Day | إعلان العتق / يوم العتق |
+| Night Road (Darb al-Layl) | درب الليل |
+| Road of Thirst (Darb al-'Atash) | درب العطش |
+| Desert Removal Act | قانون ترحيل الصحراء |
+| Islamic States of Arabia | الدول الإسلامية في الجزيرة العربية |
+| Bleeding Shammar | شمر الدامية |
+| Union party / Ahd / Sha'bi / Asalah | حزب الاتحاد / العهد / الشعبي / الأصالة |
+| Umm al-Qura | أم القرى |
+| Sanctuaries Act | قانون الحرمين |
+| Sharifate of Makkah | شرافة مكة |
+| Ikhwan al-Tawhid / Sabilla | إخوان التوحيد / السبلة |
+| Great Migration | الهجرة الكبرى |
+| Dust Years | سنوات الغبار |
+| Alamut Project | مشروع ألموت |
+| Umm al-Qura Pact / Recovery Programme | حلف أم القرى / برنامج التعافي |
+| Adharbaijan | أذربيجان |
+| Jazirat al-Wasit | جزيرة الواسط |
+| Harat al-Yaman | حارة اليمن |
+| European Arabians / al-Ifranji | العرب الأوروبيون / الإفرنجي |
+| Federal Commission on Servitude | اللجنة الاتحادية للاسترقاق |
 | OTL / the outside timeline | الخط الزمني الخارجي |
 | Motor vehicles | المركبات الآلية |
 
@@ -104,6 +202,15 @@ throughout, and append it here in the same pass.
 | English | العربية |
 |---|---|
 | Petra / Hegra | البتراء / الحِجر |
+| Sela (the rock) | سلع |
+| Dedan / Tayma / Duma | ددان / تيماء / دومة |
+| Hisma / Hejaz / Najd | حسمى / الحجاز / نجد |
+| Jabal Shammar / Yamama / Hawran | جبل شمر / اليمامة / حوران |
+| Gerrha / Najran / Ma'rib | جرها / نجران / مأرب |
+| Edom / Qedar / Lihyan | أدوم / قيدار / لحيان |
+| Nabatu / al-Anbat | نبطو / الأنباط |
+| Characene / Magan / Saba / Himyar | ميسان / مجان / سبأ / حمير |
+| Lakhmids / Ghassanids | اللخميون / الغساسنة |
 | Arabian Peninsula | شبه الجزيرة العربية |
 | Levantine seaboard | الساحل الشامي |
 | Tigris–Euphrates basin | حوض دجلة والفرات |
@@ -133,3 +240,68 @@ throughout, and append it here in the same pass.
 | § Section of … | § قسم من … |
 | Featured article | مقالة مختارة |
 | Reference atlas | أطلس مرجعي |
+
+## Government, parties and the presidency
+
+| English | العربية | Note |
+|---|---|---|
+| Majlis al-Ittihad | مجلس الاتحاد | the federal legislature |
+| Majlis an-Nuwab (Chamber of Deputies) | مجلس النواب | lower house |
+| Majlis al-Shuyukh (Council of Elders) | مجلس الشيوخ | upper house |
+| Supreme Court | المحكمة العليا | |
+| Supreme Waqf Council | المجلس الأعلى للأوقاف | |
+| Custodianship of the Two Holy Mosques | الوِصاية على الحرمين الشريفين | a trust, not a personal title |
+| Presidential House | دار الرئاسة | |
+| Great Seal | الختم الأكبر | |
+| Nth president | الرئيس الـ… / الرئيسة الـ… | the ordinal agrees in gender: الرئيسة الخامسة والعشرون |
+| Islah / Asalah | إصلاح / أصالة | the two present-day parties, unarticled |
+| Ahd / Union / Progressive | العهد / الاتحاد / التقدمية | historical parties |
+| Ittihadi / Jumhuri / Sha'bi | الاتحادي / الجمهوري / الشعبي | |
+| Non-partisan | مستقل | |
+| Civil Service Act | قانون الخدمة المدنية | |
+| Twenty-Fifth Amendment | التعديل الخامس والعشرون | |
+| electoral college | المجمع الانتخابي | |
+| impeachment | دعوى العزل | |
+
+## Events, programmes and institutions
+
+| English | العربية |
+|---|---|
+| Damascus Convention | مؤتمر دمشق |
+| Farewell Address | خطاب الوداع |
+| Charter of Liberties | ميثاق الحريات |
+| Qasimi Doctrine | مبدأ القاسمي |
+| Tihamah Compromise / Compromise of 1850 | تسوية تهامة / تسوية 1850 |
+| Desert Removal Act | قانون ترحيل الصحراء |
+| Panic of 1837 | ذعر 1837 |
+| Second Bank of Arabia | مصرف العربية الثاني |
+| fugitive servants law | قانون الخدم الآبقين |
+| Hijaz–Jawf Act | قانون الحجاز–الجوف |
+| Gilded Age | العصر المذهَّب |
+| Great Society | المجتمع العظيم |
+| Voting Rights Act | قانون حقوق التصويت |
+| Aqaba accords | اتفاقات العقبة |
+| Kartli Missile Crisis | أزمة صواريخ كارتلي |
+| Green Arabia programme | برنامج العربية الخضراء |
+| Wain movement | حركة وين |
+| Umm al-Qura Pact | حلف أم القرى |
+| Concert of Nations | محفل الأمم |
+| World Heritage listing | إدراج في التراث العالمي |
+| National Parks Act | قانون المتنزهات الوطنية |
+
+## Economy, culture and everyday life
+
+| English | العربية |
+|---|---|
+| Bitrularab | بترولعرب |
+| Jeddah Exchange | بورصة جدة |
+| Arabian riyal | الريال العربي |
+| Wadi ar-Raml | وادي الرمل |
+| Darb Zubaydah | درب زبيدة |
+| Hajj economy | اقتصاد الحج |
+| Al-Ghabah | الغابة |
+| nahham blues | بلوز النهّام |
+| kabsa and qahwa | الكبسة والقهوة |
+| saqr / madrab | الصقر / المضرب |
+| Manumission Day | يوم العتق |
+| European Arabians | العرب الأوروبيون |
