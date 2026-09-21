@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>كونتروغلوب — أفريقيا: التبادل الأوروبي</title>
+<meta name="description" content="كل أمة أفريقية ونظيرها في الشمال العالمي في خط زمن التبادل الكبير، على حدود غير استعمارية.">
+<link rel="alternate" hreflang="en" href="../africa.html">
+<link rel="alternate" hreflang="ar" href="africa.html">
+<style>
+:root{
+  --bg:#f6f3ec; --panel:#fffdf8; --ink:#1d1b16; --muted:#6a6459;
+  --line:#ccc4b4; --accent:#1c6b74; --accent2:#a8571f; --sea:#dfe7ec;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --bg:#15171a; --panel:#1c1f23; --ink:#eae6dd; --muted:#9a948a;
+    --line:#3a3f45; --accent:#66c7cf; --accent2:#e0a05a; --sea:#0f1518;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --panel:#1c1f23; --ink:#eae6dd; --muted:#9a948a;
+  --line:#3a3f45; --accent:#66c7cf; --accent2:#e0a05a; --sea:#0f1518;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  line-height:1.55; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:1000px;margin:0 auto;padding:22px 16px 60px}
+header{border-bottom:2px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+.kicker{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:clamp(23px,5.4vw,36px);margin:.18em 0 .1em;line-height:1.15}
+.sub{color:var(--muted);font-size:14px;margin:0}
+h2{font-size:clamp(17px,4vw,22px);margin:30px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px}
+h3{font-size:15px;margin:20px 0 6px;color:var(--accent2);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  letter-spacing:.05em;text-transform:uppercase}
+p{margin:0 0 10px;font-size:15px}
+.note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+  padding:11px 13px;font-size:14px;margin:14px 0;border-radius:3px}
+.mapbox{background:var(--sea);border:1px solid var(--line);border-radius:5px;
+  overflow-x:auto;overflow-y:hidden;margin:14px 0 6px;-webkit-overflow-scrolling:touch}
+.mapbox svg{display:block;min-width:760px;width:100%;height:auto}
+.hint{font-size:12px;color:var(--muted);margin:0 0 18px;
+  font-family:ui-sans-serif,system-ui,sans-serif}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0 16px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);font-weight:700}
+td.n{white-space:nowrap;font-weight:600}
+td.e{white-space:nowrap;color:var(--accent);font-weight:600}
+td.d{color:var(--muted);font-size:13px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;
+  border:1px solid rgba(0,0,0,.25);vertical-align:baseline}
+.tblwrap{overflow-x:auto}
+.tblwrap table{min-width:520px}
+footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
+  font-size:12px;color:var(--muted)}
+
+.cg-nav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;background:#0e3a42;padding:7px 14px;
+ font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:12.6px}
+.cg-nav a{color:#bfe6ec;text-decoration:none;padding:4px 9px;border-radius:3px}
+.cg-nav a:first-child{color:#fff;font-weight:700;letter-spacing:.4px}
+.cg-nav a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+.pv-t{border-bottom:1px dotted var(--accent);cursor:help}
+#pvcard{position:absolute;z-index:60;width:320px;max-width:calc(100vw - 24px);background:var(--panel);color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.28);font-size:12.6px;line-height:1.5;display:none;border-radius:4px;overflow:hidden}
+#pvcard .pv-head{display:flex;gap:10px;padding:11px 13px 0}
+#pvcard .pv-head svg{width:74px;height:auto;flex:none;border:1px solid var(--line)}
+#pvcard h4{margin:0 0 2px;font-family:Georgia,serif;font-size:15.5px;font-weight:600}
+#pvcard .pv-sub{color:var(--muted);font-size:11.4px;margin-bottom:4px}
+#pvcard .pv-x{padding:6px 13px 11px}
+#pvcard .pv-foot{border-top:1px solid var(--line);background:rgba(127,127,127,.09);padding:5px 13px;color:var(--muted);font-size:10.8px}
+@media(max-width:700px){#pvcard{width:290px}}
+.mapwrap{border:1px solid var(--line);background:var(--panel);padding:9px;margin:16px 0 20px}
+.mapwrap svg{display:block;width:100%;height:auto}
+.mapwrap figcaption{text-align:left;color:var(--muted);font-size:12.8px;line-height:1.5;padding:8px 3px 1px}
+.hatnote{font-size:12.8px;color:var(--muted);font-style:italic;margin:6px 0 10px;padding-left:22px}
+.mapwrap .mapscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+@media(max-width:820px){.mapwrap .mapscroll svg{min-width:720px}}
+
+/* --- RTL / العربية ------------------------------------------------- */
+[dir="rtl"] body{font-family:"Segoe UI","Noto Naskh Arabic","Geeza Pro",Tahoma,Arial,sans-serif;line-height:1.85}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] #pvcard h4{font-family:"Amiri","Noto Naskh Arabic","Times New Roman",serif}
+[dir="rtl"] .kicker,[dir="rtl"] h3,[dir="rtl"] th,[dir="rtl"] .cg-nav a:first-child{letter-spacing:normal}
+[dir="rtl"] th,[dir="rtl"] td{text-align:right}
+[dir="rtl"] figcaption,[dir="rtl"] .mapwrap figcaption{text-align:right}
+[dir="rtl"] .hatnote{padding-left:0;padding-right:22px}
+[dir="rtl"] ol,[dir="rtl"] ul{padding-left:0;padding-right:22px}
+[dir="rtl"] .note{border-left:1px solid var(--line);border-right:3px solid var(--accent)}
+[dir="rtl"] .sw{margin-right:0;margin-left:6px}
+[dir="rtl"] code{direction:ltr;display:inline-block}
+.cg-nav a.lang{margin-inline-start:auto;color:#fff;opacity:.9}
+.pending::after{content:"\00a0(بالإنجليزية)";font-size:.85em;opacity:.7;font-style:normal;font-weight:400}
+</style>
+</head>
+<body>
+<nav class="cg-nav"><a href="./">كونتروغلوب</a><a class="pending" href="../united-states-of-arabia.html">الولايات المتحدة العربية</a><a href="africa.html">أفريقيا</a><a href="https://github.com/mofferato/controglobe/issues">ملاحظات</a><a class="lang" href="../africa.html" lang="en" hreflang="en" dir="ltr">English</a></nav>
+<div class="wrap">
+<p style="font-size:13px;color:var(--muted);margin:0 0 10px">مقالة مرافقة للمقالة الرئيسية عن <a class="pending" href="../united-states-of-arabia.html">الولايات المتحدة العربية</a>.</p>
+
+<header>
+  <div class="kicker">كونتروغلوب · أطلس مرجعي</div>
+  <h1>أفريقيا — التبادل الأوروبي</h1>
+  <p class="sub">كل أمة أفريقية ونظيرها في الشمال العالمي، على مجموعة الحدود غير الاستعمارية المنقّحة. أفريقيا تحمل تاريخ أوروبا؛ والحدود أدناه رسمتها الدول الأفريقية نفسها، لا أي مؤتمر.</p>
+</header>
+
+
+<figure class="mapbox">
+<svg viewBox="-55 -15 790 775" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة سياسية لأفريقيا في خط زمن كونتروغلوب">
+  <defs>
+    <clipPath id="land">
+      <path d="M142,22 L230,12 L300,10 L310,45 L385,72 L400,59 L440,60 L500,68 L520,67 L545,65 L540,100 L550,145 L570,170 L590,230 L633,254 L630,265 L670,265 L714,262 L710,280 L680,330 L653,360 L625,384 L597,420 L593,448 L605,485 L606,525 L549,578 L526,640 L510,679 L479,710 L400,728 L384,720 L352,646 L345,610 L322,532 L332,468 L323,440 L318,428 L294,376 L298,361 L297,340 L283,332 L265,337 L234,316 L212,319 L198,325 L160,327 L123,336 L92,317 L68,295 L63,285 L44,261 L26,233 L35,220 L40,200 L30,170 L40,143 L68,109 L104,76 L124,44 Z
+               M693,500 L702,535 L695,572 L680,612 L670,634 L656,622 L645,588 L638,558 L655,528 L670,510 Z"/>
+    </clipPath>
+    <style>
+      .lbl{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+           fill:#141414;font-weight:700;text-anchor:middle;paint-order:stroke;
+           stroke:rgba(255,255,255,.72);stroke-width:2.4px;stroke-linejoin:round}
+      .eq{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+          fill:#2b2b2b;font-style:italic;font-weight:600;text-anchor:middle;paint-order:stroke;
+          stroke:rgba(255,255,255,.72);stroke-width:2.2px;stroke-linejoin:round}
+      .lead{stroke:#333;stroke-width:.9;fill:none;opacity:.6}
+    </style>
+  </defs>
+
+  <g clip-path="url(#land)" stroke="none">
+    <!-- NORTH -->
+    <polygon fill="#9fc08a" points="160,10 250,-2 330,-5 348,28 355,60 358,105 350,150 322,182 300,205 254,214 210,210 178,188 165,155 150,95 150,60"/>
+    <polygon fill="#d8c07e" points="322,30 400,40 450,44 500,50 505,100 498,165 468,196 430,222 380,224 340,215 318,168 312,120"/>
+    <polygon fill="#b5b5c8" points="478,30 520,34 552,38 560,95 566,124 572,155 548,176 522,188 486,180 460,172 456,128 462,92"/>
+    <polygon fill="#d8c98f" points="425,165 500,158 578,160 606,200 600,232 594,258 560,282 522,295 470,290 438,280 414,246 408,215"/>
+    <polygon fill="#a8d6c4" points="340,145 390,150 434,158 438,226 432,302 402,318 372,324 344,308 332,284 322,240 320,198"/>
+    <polygon fill="#cf9f5f" points="210,175 272,158 342,145 350,200 352,258 320,272 288,280 246,272 220,258 208,215"/>
+    <polygon fill="#7fa88c" points="10,180 80,172 152,158 190,176 205,200 190,230 172,255 110,266 55,272 20,250 0,225"/>
+    <polygon fill="#e8b9a5" points="72,105 120,100 165,102 158,136 148,168 100,182 55,190 24,172 10,150"/>
+    <polygon fill="#d98d7a" points="110,-10 160,4 195,25 190,46 185,68 168,90 152,108 110,114 70,115 45,86 45,55 80,-10"/>
+    <polygon fill="#c2d18a" points="286,-10 312,-12 335,-10 342,22 345,52 326,68 306,80 290,64 282,45"/>
+
+    <!-- SAHEL / WEST -->
+    <polygon fill="#c9a3cc" points="25,200 90,186 152,172 196,174 232,178 242,222 248,268 226,290 202,305 160,308 118,305 78,294 50,278 26,258 18,238"/>
+    <polygon fill="#b07fb0" points="162,200 200,196 232,196 236,220 236,244 204,250 172,250 158,226"/>
+    <polygon fill="#6fae6a" points="18,248 52,248 82,252 86,276 88,298 62,306 38,310 16,298 5,282"/>
+    <polygon fill="#4f9e6e" points="52,266 88,268 118,272 122,296 124,318 96,322 66,322 50,310 44,296"/>
+    <polygon fill="#86c98a" points="54,292 82,288 108,288 112,310 114,330 86,334 60,334 50,312"/>
+    <polygon fill="#3f8f5f" points="82,302 112,298 142,297 146,320 148,344 118,348 92,348 80,326"/>
+    <polygon fill="#c98fa8" points="122,262 168,260 212,262 216,296 218,332 182,340 148,344 128,332 118,318 116,288"/>
+    <polygon fill="#e0a3b8" points="194,272 212,269 230,270 231,300 232,328 214,330 196,330 194,300"/>
+    <polygon fill="#8fbf7a" points="218,266 234,264 250,264 251,296 252,326 236,328 220,328 218,296"/>
+    <polygon fill="#a06fb5" points="238,242 274,244 308,246 313,272 316,300 304,324 292,344 268,342 246,340 236,312 232,284"/>
+
+    <!-- CENTRAL -->
+    <polygon fill="#7fae5f" points="318,350 380,352 442,356 460,378 474,400 486,426 492,452 476,484 456,510 412,516 368,518 340,490 320,458 316,404"/>
+    <polygon fill="#cfe0b0" points="340,270 404,268 468,266 476,292 482,318 462,342 442,362 400,362 356,360 340,338 332,314"/>
+    <polygon fill="#8fb8a8" points="440,264 494,262 548,262 564,280 578,298 564,324 548,348 508,346 468,344 444,324 428,304"/>
+    <polygon fill="#7b5fa8" points="284,286 308,288 332,292 336,324 338,356 326,374 312,390 296,378 284,362 282,324"/>
+    <polygon fill="#9b7fc4" points="284,366 310,363 334,362 336,390 338,418 314,424 292,428 284,398"/>
+    <polygon fill="#b88f5f" points="310,386 336,383 360,382 364,412 366,442 342,448 318,452 310,420"/>
+    <polygon fill="#caa6e0" points="289,350 300,348 310,347 311,360 312,374 300,376 290,377 288,362"/>
+
+    <!-- EAST -->
+    <polygon fill="#9a5f7a" points="524,236 562,238 600,242 634,254 664,268 670,296 674,322 648,346 620,368 580,360 542,352 520,326 508,298 512,264"/>
+    <polygon fill="#d88f6a" points="556,190 592,212 628,232 625,250 622,268 596,260 572,252 556,232 546,212"/>
+    <polygon fill="#c2a8b8" points="612,246 632,250 650,256 648,272 646,286 630,282 616,276 610,260"/>
+    <polygon fill="#7fc4b8" points="624,250 674,250 722,250 720,276 718,302 690,338 662,372 636,384 616,394 612,362 610,330"/>
+    <polygon fill="#5fa89e" points="626,248 670,250 712,252 710,272 708,292 672,296 638,298 630,272"/>
+    <polygon fill="#c08a5f" points="534,336 582,336 628,338 632,370 634,402 618,422 602,438 570,434 542,428 528,402 522,378"/>
+    <polygon fill="#d8b86a" points="488,344 520,342 550,341 554,368 556,396 524,402 496,406 486,376"/>
+    <polygon fill="#6f9fbf" points="488,396 546,406 602,418 606,444 608,472 582,492 558,508 526,508 496,504 478,472 472,442"/>
+    <polygon fill="#a8c26a" points="474,394 494,392 514,392 515,404 516,418 496,420 476,420 474,406"/>
+    <polygon fill="#c25f7a" points="473,416 492,414 511,414 512,428 513,444 494,446 475,446 473,430"/>
+
+    <!-- SOUTHERN -->
+    <polygon fill="#c27f6a" points="312,444 372,446 432,450 442,484 448,518 434,548 422,574 380,578 336,580 318,548 308,516 306,478"/>
+    <polygon fill="#8fae7a" points="414,466 476,470 538,476 544,502 548,530 520,552 492,570 456,566 420,560 410,516"/>
+    <polygon fill="#d4c48f" points="318,514 358,518 398,526 406,562 414,600 404,630 394,658 368,660 342,660 324,626 314,586 312,548"/>
+    <polygon fill="#9fd4c4" points="376,552 422,554 468,556 472,586 476,618 452,638 428,654 404,644 382,632 376,592"/>
+    <polygon fill="#7f7fbf" points="430,546 484,545 538,544 541,572 544,600 506,612 468,622 448,610 432,596"/>
+    <polygon fill="#b06a5f" points="524,486 546,488 568,492 571,524 574,558 552,562 532,564 526,524"/>
+    <polygon fill="#9a6a9a" points="548,492 582,496 616,502 614,532 612,562 584,562 556,560 550,526"/>
+    <polygon fill="#5f9e6a" points="512,550 560,550 608,552 605,586 602,622 566,642 528,660 512,630 506,600 506,574"/>
+    <polygon fill="#6f9e8a" points="432,608 484,612 534,616 531,652 528,690 506,710 484,728 460,716 438,700 432,652"/>
+    <polygon fill="#c9b08f" points="338,618 400,624 462,630 464,666 466,704 442,720 418,734 380,734 344,734 336,676"/>
+    <polygon fill="#b0b0c0" points="462,632 492,635 522,638 523,662 524,688 496,690 468,692 462,662"/>
+    <polygon fill="#e0a85f" points="500,616 516,617 532,618 531,636 530,654 517,653 504,652 500,634"/>
+
+    <!-- MADAGASCAR -->
+    <polygon fill="#b08f7a" points="686,490 710,520 706,560 692,600 672,642 650,630 636,592 630,552 652,520 668,500"/>
+  </g>
+
+  <!-- continent outline -->
+  <path clip-path="url(#land)" d="M142,22 L230,12 L300,10 L310,45 L385,72 L400,59 L440,60 L500,68 L520,67 L545,65 L540,100 L550,145 L570,170 L590,230 L633,254 L630,265 L670,265 L714,262 L710,280 L680,330 L653,360 L625,384 L597,420 L593,448 L605,485 L606,525 L549,578 L526,640 L510,679 L479,710 L400,728 L384,720 L352,646 L345,610 L322,532 L332,468 L323,440 L318,428 L294,376 L298,361 L297,340 L283,332 L265,337 L234,316 L212,319 L198,325 L160,327 L123,336 L92,317 L68,295 L63,285 L44,261 L26,233 L35,220 L40,200 L30,170 L40,143 L68,109 L104,76 L124,44 Z
+           M693,500 L702,535 L695,572 L680,612 L670,634 L656,622 L645,588 L638,558 L655,528 L670,510 Z"
+        fill="none" stroke="#2a2a2a" stroke-width="2" opacity=".55"/>
+
+  <!-- island markers -->
+  <g fill="#8d8d8d" stroke="#2a2a2a" stroke-width=".8">
+    <circle cx="-38" cy="222" r="4"/><circle cx="36" cy="102" r="4"/>
+    <circle cx="266" cy="378" r="3.5"/><circle cx="633" cy="497" r="3.5"/>
+  </g>
+
+  <!-- leader lines -->
+  <g class="lead">
+    <line x1="-12" y1="266" x2="42" y2="276"/>
+    <line x1="4" y1="322" x2="80" y2="311"/>
+    <line x1="18" y1="356" x2="112" y2="326"/>
+    <line x1="212" y1="368" x2="212" y2="302"/>
+    <line x1="256" y1="378" x2="236" y2="300"/>
+    <line x1="246" y1="402" x2="298" y2="364"/>
+    <line x1="694" y1="228" x2="632" y2="266"/>
+    <line x1="-30" y1="236" x2="-38" y2="226"/>
+    <line x1="40" y1="88" x2="36" y2="98"/>
+  </g>
+
+  <!-- LABELS -->
+  <g class="lbl" font-size="12">
+    <text x="118" y="52">المغرب</text>
+    <text x="250" y="104">الجزائر</text>
+    <text x="398" y="126">ليبيا</text>
+    <text x="510" y="106">مصر</text>
+    <text x="504" y="212">السودان</text>
+    <text x="378" y="232">تشاد</text>
+    <text x="278" y="212">النيجر</text>
+    <text x="126" y="236">جولوف</text>
+    <text x="164" y="298">كونغ</text>
+    <text x="272" y="288">نيجيريا</text>
+    <text x="404" y="308">أفريقيا الوسطى</text>
+    <text x="500" y="302">جنوب السودان</text>
+    <text x="584" y="306">إثيوبيا</text>
+    <text x="660" y="338">الصومال</text>
+    <text x="574" y="382">كينيا</text>
+    <text x="400" y="446">الكونغو الديمقراطية</text>
+    <text x="544" y="454">تنزانيا</text>
+    <text x="372" y="512">أنغولا</text>
+    <text x="478" y="516">زامبيا</text>
+    <text x="358" y="588">ناميبيا</text>
+    <text x="424" y="592">بوتسوانا</text>
+    <text x="486" y="572">زيمبابوي</text>
+    <text x="556" y="596">موزمبيق الجنوبية</text>
+    <text x="482" y="652">جمهورية الخوسا</text>
+    <text x="398" y="676">جمهورية الكاب</text>
+    <text x="668" y="566">مدغشقر</text>
+  </g>
+  <g class="eq" font-size="9">
+    <text x="118" y="64">آيسلندا</text>
+    <text x="250" y="116">السويد</text>
+    <text x="398" y="138">فنلندا</text>
+    <text x="510" y="118">المكسيك ✻</text>
+    <text x="504" y="224">بيلاروسيا</text>
+    <text x="378" y="244">سابمي ✦</text>
+    <text x="278" y="224">الألب ✦</text>
+    <text x="126" y="248">إسبانيا</text>
+    <text x="164" y="310">فرنسا</text>
+    <text x="272" y="300">بريطانيا</text>
+    <text x="404" y="320">بولندا</text>
+    <text x="500" y="314">ليتوانيا</text>
+    <text x="584" y="318">روسيا</text>
+    <text x="660" y="350">أوكرانيا</text>
+    <text x="574" y="394">رومانيا</text>
+    <text x="400" y="458">ألمانيا</text>
+    <text x="544" y="466">بلغاريا</text>
+    <text x="372" y="524">إيطاليا</text>
+    <text x="478" y="528">كرواتيا</text>
+    <text x="358" y="600">البوسنة</text>
+    <text x="424" y="604">سلوفينيا</text>
+    <text x="486" y="584">صربيا</text>
+    <text x="556" y="608">الجبل الأسود</text>
+    <text x="482" y="664">اليونان</text>
+    <text x="398" y="688">تركيا</text>
+    <text x="668" y="578">صقلية–مالطا</text>
+  </g>
+  <g class="lbl" font-size="9">
+    <text x="75" y="142">الساقية</text>
+    <text x="86" y="212">موريتانيا</text>
+    <text x="312" y="36">تونس</text>
+    <text x="198" y="222">سنغاي</text>
+    <text x="-30" y="262">كابو</text>
+    <text x="93" y="296">فوتا جالون</text>
+    <text x="-8" y="326">سيراليون</text>
+    <text x="8" y="360">ليبيريا</text>
+    <text x="212" y="380">تم</text>
+    <text x="264" y="390">داهومي</text>
+    <text x="308" y="330">الكاميرون</text>
+    <text x="232" y="414">غينيا الاستوائية</text>
+    <text x="310" y="392">الغابون</text>
+    <text x="340" y="416">الكونغو</text>
+    <text x="586" y="226">إريتريا</text>
+    <text x="708" y="222">جيبوتي</text>
+    <text x="668" y="274">أرض الصومال</text>
+    <text x="518" y="374">أوغندا</text>
+    <text x="494" y="408">رواندا</text>
+    <text x="492" y="434">بوروندي</text>
+    <text x="548" y="528">مالاوي</text>
+    <text x="582" y="532">موزمبيق الشمالية</text>
+    <text x="492" y="666">ليسوتو</text>
+    <text x="516" y="638">إسواتيني</text>
+  </g>
+</svg>
+<figcaption>كل أمة أفريقية في مقابل نظيرها في الشمال العالمي الذي تحمل تاريخه، على مجموعة الحدود غير الاستعمارية المنقّحة. وتدل &#10022; على أمة مبتكرة لا نظير مفرد لها خارج الخط الزمني، و&#10043; على دولة خارج الفلك الأوروبي كليًا. حرّك الخريطة أفقيًا أو قرّبها على الهاتف.</figcaption>
+</figure>
+
+<h2 id="borders">عقيدة الحدود</h2>
+<p class="hatnote">مقالة مفصلة: <a class="pending" href="../united-states-of-arabia.html">الولايات المتحدة العربية</a>. لمزيد من المعلومات: <a href="index.html">كونتروغلوب: الفرضية</a></p>
+<div class="note">
+<strong>عقيدة الحدود.</strong> ما من حدٍّ على هذه الخريطة ينحدر من مؤتمر تقسيم. ولا وجود لحدود على خطوط الطول أو العرض — فالخطوط المستقيمة بين ليبيا وتشاد، ومصر والسودان، والجزائر ومالي، والنيجر وتشاد في الخط الزمني الخارجي لا وجود لها هنا. تتبع الحدود الأنهار والحوافّ ومقاسم المياه وبحار الكثبان والخطوط اللغوية وتسويات قرون من الحروب الداخلية، تمامًا كما فعلت حدود أوروبا.
+</div>
+<figure class="mapwrap">
+<div class="mapscroll"><svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسم يقابل بين نوعين من الحدود: إلى اليسار خط طول وخط عرض مسطّران عبر الأرض بقرار مؤتمر، وإلى اليمين حدود تتبع نهرًا، وحافة أو مقسم مياه، وخط وقف إطلاق نار صمد."><rect width="900" height="400" fill="#fbf9f4"/><g font-family="Helvetica,Arial,sans-serif"><rect x="30" y="52" width="390" height="268" fill="#eef3ee" stroke="#ccc4b4" stroke-width="1.4"/><text x="30" y="34" font-size="14" font-weight="bold" fill="#1d1b16" direction="ltr">ما لا تحويه هذه الخريطة</text><text x="30" y="342" font-size="12" fill="#6a6459" direction="ltr">حدّ رُسِم على طاولة مؤتمر</text><rect x="480" y="52" width="390" height="268" fill="#eef3ee" stroke="#ccc4b4" stroke-width="1.4"/><text x="480" y="34" font-size="14" font-weight="bold" fill="#1d1b16" direction="ltr">ما تحويه هذه الخريطة</text><text x="480" y="342" font-size="12" fill="#6a6459" direction="ltr">حدّ رسمه أهل الضفتين</text><g opacity=".5"><path d="M60 120q60 -26 120 6t120 -14 120 10" fill="none" stroke="#a8571f" stroke-width="2"/><path d="M60 210q70 20 130 -8t130 14 100 -6" fill="none" stroke="#1c6b74" stroke-width="2"/><path d="M120 80v230M250 60v250M360 90v220" stroke="#8a8f94" stroke-width="1" stroke-dasharray="3 4"/></g><g stroke="#b5452e" stroke-width="3.4" fill="none"><path d="M196 60V312"/><path d="M60 186H420"/></g><text x="206" y="80" font-size="11.5" fill="#b5452e" direction="ltr">خط طول</text><text x="66" y="178" font-size="11.5" fill="#b5452e" direction="ltr">خط عرض</text><text x="66" y="300" font-size="11" fill="#6a6459" direction="ltr">رُسِم حيث لا يسكن أحد، رسمه مَن لم يطأوا المكان</text><g opacity=".5"><path d="M510 120q60 -26 120 6t120 -14 120 10" fill="none" stroke="#a8571f" stroke-width="2"/><path d="M510 210q70 20 130 -8t130 14 100 -6" fill="none" stroke="#1c6b74" stroke-width="2"/></g><g fill="none" stroke-width="3.4"><path d="M510 120q60 -26 120 6t120 -14 120 10" stroke="#2f6f9f"/><path d="M510 210q70 20 130 -8t130 14 100 -6" stroke="#7a5b2e" stroke-dasharray="1 0"/><path d="M560 270q80 14 150 -6t140 6" stroke="#b5452e" stroke-dasharray="9 6"/></g><g font-size="11.5"><text x="516" y="112" fill="#2f6f9f" direction="ltr">نهر</text><text x="516" y="230" fill="#7a5b2e" direction="ltr">حافة أو مقسم مياه</text><text x="566" y="290" fill="#b5452e" direction="ltr">خط وقف إطلاق نار صمد</text></g><text x="516" y="300" font-size="11" fill="#6a6459"></text><text x="450" y="378" text-anchor="middle" font-size="11.5" fill="#6a6459" direction="rtl">لا حدود على خطوط الطول أو العرض: الخطوط المستقيمة بين ليبيا&ndash;تشاد، ومصر&ndash;السودان، والجزائر&ndash;مالي، والنيجر&ndash;تشاد لا وجود لها هنا.</text><text x="450" y="394" text-anchor="middle" font-size="11" fill="#6a6459" direction="rtl">تتبع الحدود الأنهار والحوافّ ومقاسم المياه وبحار الكثبان والخطوط اللغوية وتسويات قرون من الحروب الداخلية.</text></g></svg></div>
+<figcaption>نوعان من الحدود: خطوط مسطّرة يرسمها مؤتمر تقسيم، وهذه لا تستعملها الخريطة، وأنهار وحوافّ وخطوط وقف إطلاق نار، وهذه هي التي تستعملها. وهذا التمييز هو قاعدة الأطلس التي يخضع لها كل مدخل أدناه.</figcaption>
+</figure>
+
+<h2 id="swaplist">قائمة التبادل الكاملة</h2>
+
+<h3>شمال أفريقيا = شمال أوروبا</h3>
+<div class="tblwrap">
+<table>
+<tr><th>أمة كونتروغلوب</th><th>النظير</th><th>لماذا</th></tr>
+<tr><td class="n"><span class="sw" style="background:#d98d7a"></span>المغرب</td><td class="e">آيسلندا</td><td class="d">محجوبة خلف الأطلس كما تحتجب آيسلندا خلف البحر. سكانها قليلون، وأطلسها بركاني حراري، ومصائدها أطلسية، وبرلمانها أقدم برلمان متصل في القارة.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#e8b9a5"></span>الساقية الحمراء</td><td class="e">جزر فارو</td><td class="d">إقليم أطلسي صحراوي ذاتي الحكم في اتحاد شخصي مع المغرب. له أسطول صيد، ومعيار لغوي خاص، واستفتاءات استقلال متكررة.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7fa88c"></span>موريتانيا</td><td class="e">النرويج</td><td class="d">ساحل أطلسي طويل غربي الجزائر تمامًا كما تقع النرويج غربي السويد. خام الحديد والمصائد، وسكان متفرقون جدًا، وأعلى دخل فردي في القارة.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9fc08a"></span>الجزائر</td><td class="e">السويد</td><td class="d">أكبر دول الشمال وأكثرها تصنيعًا؛ حياد مسلح، ودولة رعاية واسعة، وصادرات من الحديد والسلاح.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c2d18a"></span>تونس</td><td class="e">الدنمارك</td><td class="d">صغيرة كثيفة السكان بحرية، أقدم تيجان الشمال، وحارسة مضيق صقلية.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d8c07e"></span>ليبيا</td><td class="e">فنلندا</td><td class="d">شرقي الجزائر كما تقع فنلندا شرقي السويد. قليلة السكان محايدة، ونطاق واحاتها «إقليم البحيرات»؛ وحقول سرت النفطية تجعلها دولة الصناديق السيادية في الشمال.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b5b5c8"></span>مصر ✻</td><td class="e">المكسيك</td><td class="d">ليست من الفلك الأوروبي. تنتمي مصر إلى العالم العربي (الأمريكي الشمالي) بوصفها الجارة الجنوبية الكبرى للولايات المتحدة العربية، تلتقيها عبر سيناء.</td></tr>
+</table>
+</div>
+
+<h3>الساحل — أمتان مبتكرتان</h3>
+<div class="tblwrap">
+<table>
+<tr><th>أمة كونتروغلوب</th><th>النظير</th><th>لماذا</th></tr>
+<tr><td class="n"><span class="sw" style="background:#cf9f5f"></span>النيجر ✦</td><td class="e">الألب</td><td class="d">اتحاد كانتونات في كتلة آير الجبلية — لا نظير مفرد له في الخط الزمني الخارجي. حبيسة جبلية، ذات حياد مسلح وأربع لغات رسمية ومصارف المقاصة في القارة، وفي ممراتها تمر كل قافلة وكل أنبوب بين الشمال والجنوب.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#a8d6c4"></span>تشاد ✦</td><td class="e">سابمي / لابلاند</td><td class="d">لا نظير مفرد لها هي أيضًا: أمة مرتحلة في تيبستي وحوض بحيرة تشاد، قطعان إبل بدل قطعان الرنة، وبرلمان أهلي تمتد ولايته القضائية عبر أربع حدود دولية، وهي الأمة الوحيدة هنا التي تعرَّف حدودها بدروب الرعي لا بالأرض المحازة.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b07fb0"></span>سنغاي ✦</td><td class="e">إقليم الباسك</td><td class="d">جمهورية منحنى النيجر التي لم تضمها جولوف قط. لغتها معزولة وهي أقدم لغات الغرب؛ تتمتع بالحكم الذاتي منذ القرن السادس عشر.</td></tr>
+</table>
+</div>
+
+<h3>غرب أفريقيا = غرب أوروبا</h3>
+<div class="tblwrap">
+<table>
+<tr><th>أمة كونتروغلوب</th><th>النظير</th><th>لماذا</th></tr>
+<tr><td class="n"><span class="sw" style="background:#c9a3cc"></span>جولوف</td><td class="e">إسبانيا</td><td class="d">التاج الغربي متعدد القوميات — نواة ولوفية، وممالك بامبارا وموسي وسونينكي. يمتد من نهر السنغال إلى سافانا الفولتا، ويقف عند الصحراء (صحراء موريتانيا) وعند نهر غامبيا (نهر كابو).</td></tr>
+<tr><td class="n"><span class="sw" style="background:#6fae6a"></span>كابو</td><td class="e">البرتغال</td><td class="d">توأم جولوف الأطلسي، جنوبي نهر غامبيا. أول أسطول محيطي في القارة؛ وبلغت إمبراطوريته البحرية المحيطين الهادئ والهندي.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#4f9e6e"></span>فوتا جالون</td><td class="e">غاليسيا</td><td class="d">مملكة مرتفعات بقيت مستقلة عن كابو؛ اللغة الطقسية واحدة والتاج مختلف.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#86c98a"></span>سيراليون</td><td class="e">آكيتين ✦</td><td class="d">لم تُوحّد كونغ الغربَ مركزيًا قط: فبقيت آكيتين هنا دوقية قائمة بذاتها.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#3f8f5f"></span>ليبيريا</td><td class="e">بريتاني ✦</td><td class="d">الرأس الأطلسي الأبعد امتدادًا في المحيط — دوقية مستقلة ذات نظير كلتي، بحّارة عصيّة على الضم.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c98fa8"></span>كونغ</td><td class="e">فرنسا</td><td class="d">ساحل العاج مع غربي غانا. القوة الكبرى ذات النظير اللاتيني في الغرب: ملكية مركزية، وثورة، وإمبراطورية، وعاصمة القارة الثقافية.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#e0a3b8"></span>تم</td><td class="e">نورماندي ✦</td><td class="d">شرقي غانا وتوغو. الدوقية التي عبرت الخليج في ما يعادل سنة 1066 وفتحت نيجيريا، فلحمت النخبتين لحمًا دائمًا.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#8fbf7a"></span>داهومي</td><td class="e">أيرلندا</td><td class="d">إلى الغرب من نيجيريا مباشرة. قرون تحت جارتها الأكبر، ومجاعة، وهجرة جماعية، واستقلال متأخر، وهي اليوم غنية منفتحة على الخارج.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#a06fb5"></span>نيجيريا</td><td class="e">بريطانيا العظمى</td><td class="d">أشد عزلة من بريطانيا في الخط الزمني الخارجي: دلتا النيجر ومستنقعات الشمال تجعلانها جزيرة فعليًا. إمبراطورية بحرية، وثورة صناعية، ونموذج برلماني صُدِّر إلى العالم.</td></tr>
+</table>
+</div>
+
+<h3>وسط أفريقيا = وسط أوروبا</h3>
+<div class="tblwrap">
+<table>
+<tr><th>أمة كونتروغلوب</th><th>النظير</th><th>لماذا</th></tr>
+<tr><td class="n"><span class="sw" style="background:#7fae5f"></span>ويني وا كونغو</td><td class="e">ألمانيا</td><td class="d">قلب القارة الصناعي. توحّد متأخر من عشرات الإمارات، ثم حربان قاريتان مدمرتان، ثم تقسيم وإعادة توحيد.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b88f5f"></span>دي إن كونغو</td><td class="e">النمسا</td><td class="d">الشقيقة الأصغر التي تشاركها لغة الكونغو ورفضت اتحادها — ألمانيا والنمسا، وكونغو وكونغو، على ضفتي نهر واحد.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9b7fc4"></span>الغابون ✦</td><td class="e">بافاريا (مستقلة)</td><td class="d">ثالث التيجان الناطقة بالكونغو، ولم تُضم قط. غابية، ذات نظير كاثوليكي، غنية، ومنفصلة نصف انفصال عن كينشاسا على الدوام.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7b5fa8"></span>الكاميرون</td><td class="e">البنلوكس</td><td class="d">اتحاد مملكتين — جمهورية الساحل التجارية ومملكة حقول الأعشاب — تفرّقهما اللغة ويجمعهما الاتحاد الجمركي. ومقرّ المؤسسات القارية.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#caa6e0"></span>غينيا الاستوائية</td><td class="e">لوكسمبورغ</td><td class="d">العضو الثالث في الاتحاد الكاميروني: صغيرة جدًا، ثلاثية اللغات، فاحشة الثراء، دويلة مصارف ومحروقات.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#cfe0b0"></span>جمهورية أفريقيا الوسطى</td><td class="e">بولندا</td><td class="d">محشورة بين الكونغو والسودان تمامًا كما تقع بولندا بين ألمانيا وبيلاروسيا. قُسّمت ثلاث مرات، ومُحيت من الخريطة، ثم أُعيدت.</td></tr>
+</table>
+</div>
+
+<h3>شرق أفريقيا = شرق أوروبا</h3>
+<div class="tblwrap">
+<table>
+<tr><th>أمة كونتروغلوب</th><th>النظير</th><th>لماذا</th></tr>
+<tr><td class="n"><span class="sw" style="background:#9a5f7a"></span>إثيوبيا</td><td class="e">روسيا</td><td class="d">الإمبراطورية ذات النظير الأرثوذكسي التي لم تُفتح قط. نواة في المرتفعات، وتوسع إمبراطوري في كل اتجاه، وثورة، وقوة عظمى، وروما الثالثة لكنيستها.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d8c98f"></span>السودان</td><td class="e">بيلاروسيا</td><td class="d">شمال غربي إثيوبيا كما تقع بيلاروسيا شمال غربي روسيا. الكنيسة واحدة والخط واحد، وهي في فلك أديس أبابا دائمًا.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#8fb8a8"></span>جنوب السودان</td><td class="e">ليتوانيا</td><td class="d">خرج من اتحاد الخرطوم؛ وكان دوقية كبرى متحدة اتحادًا فدراليًا مع جمهورية أفريقيا الوسطى (بولندا).</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d88f6a"></span>إريتريا</td><td class="e">إستونيا</td><td class="d">ساحل البحر الأحمر = ساحل البلطيق. انفصلت عن الإمبراطورية، صغيرة ساحلية مرقمنة، شديدة التمايز.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c2a8b8"></span>جيبوتي</td><td class="e">لاتفيا</td><td class="d">ثاني جمهوريات البحر الأحمر؛ ميناء الإمبراطورية الدافئ وأكثر مدنها كوزموبوليتية.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7fc4b8"></span>الصومال</td><td class="e">أوكرانيا</td><td class="d">كبير ساحلي زراعي، وفي حرب ممتدة لجيل مع الإمبراطورية المجاورة على أوغادين — دونباس كونتروغلوب.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#5fa89e"></span>أرض الصومال ✦</td><td class="e">القرم / دونيتسك</td><td class="d">الانفصال الشمالي، لا تعترف به إلا أديس أبابا ولا تكاد تعترف به جهة سواها.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c08a5f"></span>كينيا</td><td class="e">رومانيا</td><td class="d">جنوب غربي الصومال كما تقع رومانيا جنوب غربي أوكرانيا. لغة شاذة ذات نظير لاتيني، ونفط، وعمود مرتفعات يعادل الكاربات.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d8b86a"></span>أوغندا</td><td class="e">المجر</td><td class="d">حبيسة خصبة، لغتها لا تمت بصلة إلى أي من جاراتها. خسرت ثلثي أراضيها في تسوية ما بعد الحرب.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#a8c26a"></span>رواندا</td><td class="e">التشيك</td><td class="d">دولة مرتفعات صناعية كثيفة السكان، تتقن الهندسة الدقيقة.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c25f7a"></span>بوروندي</td><td class="e">سلوفاكيا</td><td class="d">توأم رواندا. اتحدتا سبعين سنة ثم افترقتا سلميًا باتفاق — الطلاق المخملي في كونتروغلوب.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#6f9fbf"></span>تنزانيا</td><td class="e">بلغاريا</td><td class="d">جنوبي كينيا كما تقع بلغاريا جنوبي رومانيا. ذات نظير أرثوذكسي وخط يعادل السيريلية، أولى تابعات الإمبراطورية وأولى المغادرات.</td></tr>
+</table>
+</div>
+
+<h3>جنوب أفريقيا = جنوب أوروبا</h3>
+<p>سبع من هذه الدول كانت دولة واحدة. فقد كان <strong>اتحاد الزامبيزيا</strong> — زيمبابوي وزامبيا وبوتسوانا وناميبيا ومالاوي وليسوتو وجنوبي موزمبيق — يوغوسلافيا كونتروغلوب، وقد تفكك في حروب التسعينيات.</p>
+<div class="tblwrap">
+<table>
+<tr><th>أمة كونتروغلوب</th><th>النظير</th><th>لماذا</th></tr>
+<tr><td class="n"><span class="sw" style="background:#c27f6a"></span>أنغولا</td><td class="e">إيطاليا</td><td class="d">القوة الكبرى ذات النظير اللاتيني في الجنوب، طويلة الساحل. إمبراطورية كلاسيكية، وتشظٍّ إلى دول مدن، وتوحّد متأخر، ومقرّ كنيسة القارة الغربية.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#8fae7a"></span>زامبيا</td><td class="e">كرواتيا</td><td class="d">على الطقس الغربي، ممتدة الأطراف، تواجه أنغولا عبر الماء؛ وأول الخارجات من الاتحاد الزامبيزي.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9fd4c4"></span>بوتسوانا</td><td class="e">سلوفينيا</td><td class="d">أصغرها وأغناها، وأسرعها خروجًا وأسرعها انضمامًا إلى المؤسسات القارية.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#d4c48f"></span>ناميبيا</td><td class="e">البوسنة</td><td class="d">ثلاثة شعوب مؤسِّسة، واتحاد فدرالي واحد، وأسوأ حروب الاتحاد.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#7f7fbf"></span>زيمبابوي</td><td class="e">صربيا</td><td class="d">مركز ثقل الاتحاد، والدولة التي حاولت أن تُبقيه متماسكًا بالقوة. تحدّ ليسوتو الكبرى.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b06a5f"></span>مالاوي</td><td class="e">مقدونيا الشمالية</td><td class="d">حبيسة، اسمها متنازع عليه، محشورة بين ثلاث مطالِبات أكبر منها.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#9a6a9a"></span>موزمبيق الشمالية</td><td class="e">مولدوفا</td><td class="d">انفصلت عن فلك تنزانيا؛ أصغر الدول الخلف وأفقرها، ولها شريط نزاع مجمَّد على نهر روفوما.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#5f9e6a"></span>موزمبيق الجنوبية</td><td class="e">الجبل الأسود</td><td class="d">ساحلية جبلية خلف الشاطئ، وآخر من غادر اتحاد زيمبابوي.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b0b0c0"></span>ليسوتو الكبرى</td><td class="e">كوسوفو</td><td class="d">اتسعت كثيرًا وراء جبال المالوتي في الخط الزمني الخارجي، وهي آخر انفصالات الحروب الزامبيزية ولم يُعترف بها اعترافًا عامًا بعد.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#e0a85f"></span>إسواتيني</td><td class="e">ألبانيا</td><td class="d">لم تنضم إلى الاتحاد قط. ملكية مطلقة، وعقود من عزلة فرضتها على نفسها، وأسرة لغوية خاصة بها.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#6f9e8a"></span>جمهورية الخوسا</td><td class="e">اليونان</td><td class="d">شرقي جنوب أفريقيا وشمالها. حضارة الجنوب الأقصى الكلاسيكية — فلسفتها ومسرحها وأبجديتها أسّست كل ما شمالها.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#c9b08f"></span>جمهورية الكاب</td><td class="e">تركيا</td><td class="d">الكاب الخويسانية. قوة إمبراطورية قائمة بذاتها حكمت الجنوب الشرقي كله يومًا؛ جمهورية علمانية، تقف بين عالمين، ومرشحة دائمة لعضوية الاتحاد القاري.</td></tr>
+<tr><td class="n"><span class="sw" style="background:#b08f7a"></span>مدغشقر</td><td class="e">صقلية · سردينيا · مالطا</td><td class="d">مملكة جزيرة كبيرة واحدة في فلك أنغولا، لغتها لا تمت بصلة إلى شيء في البر.</td></tr>
+</table>
+</div>
+
+<h3>الجزر — خارج التبادل الأوروبي</h3>
+<p>بحكم قاعدة كونتروغلوب القاضية بأن تتبادل أوقيانوسيا مواضعها مع المحيط الهندي وماكارونيزيا وجزر الأطلسي، فإن هذه الجزر دول <em>ذات نظير هادئي</em> لا أوروبية: <strong>الرأس الأخضر</strong>، و<strong>جزر الكناري</strong>، و<strong>ماديرا</strong>، و<strong>ساو تومي وبرينسيبي</strong>، و<strong>جزر القمر</strong>، و<strong>سيشل</strong>، و<strong>موريشيوس</strong>، و<strong>لا ريونيون</strong>. والاستثناءان يجريان في الاتجاه المعاكس: <strong>آيسلندا هي المغرب</strong> و<strong>غرينلاند هي قبرص</strong>.</p>
+
+<h2 id="changes">ما تغيّر عن المسودة الأولى</h2>
+<div class="note">
+<p><strong>النيجر وتشاد</strong> لم تعودا بديلتين عن دول قائمة. النيجر اتحاد كانتونات ألبي؛ وتشاد أمة رعاة على نموذج سابمي، حدودها معرَّفة بدروب الترحال.</p>
+<p><strong>أنغولا هي إيطاليا</strong>، لا مقدونيا الشمالية — فالجنوب كان يحتاج قوة كبرى، وانتقلت مقدونيا إلى مالاوي.</p>
+<p><strong>موريتانيا هي النرويج</strong> و<strong>ليبيا هي فنلندا</strong>، وبذلك ترتّب نظائر الشمال ترتيبها الصحيح من الغرب إلى الشرق.</p>
+<p><strong>موزمبيق دولتان</strong>: مولدوفا في الشمال، والجبل الأسود في الجنوب.</p>
+<p><strong>كونغ (فرنسا) لا تغطي الغرب كله.</strong> سيراليون وليبيريا وتم قائمة دوقيات مستقلة لأن ما من ملكية مركزية أتمّت المهمة قط.</p>
+<p><strong>كل حدٍّ أُعيد رسمه.</strong> لا خطوط مستقيمة ولا حدود مؤتمرات — الصحراء مقسومة على بحار الكثبان والآبار، وحوض الكونغو على مقاسم المياه، والجنوب على خطوط وقف إطلاق النار في التسعينيات.</p>
+</div>
+
+<footer>كونتروغلوب · بناء عوالم مفتوح المصدر · صحيفة أفريقيا المرجعية. نقطة الافتراق 500 ق.م.</footer>
+
+</div>
+<div id="pvcard" role="dialog" aria-live="polite" aria-hidden="true"></div>
+<script>
+/* Page previews. Hovering, tapping or tabbing to a link, a section anchor or a
+   marked term opens a summary card. Everything it needs is in this file. */
+(function(){
+var PV={"a-iuml-r": {"img": "", "s": "النيجر &middot; أمة مبتكرة", "t": "آير", "x": "اتحاد كانتونات في كتلة آير الجبلية، بأربع لغات رسمية، وحياد مسلح، ومصارف المقاصة في القارة. ولا نظير مفرد له في الخط الزمني الخارجي."}, "art-history": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"طبقات التاريخ العربي، من ما قبل التاريخ في الأسفل إلى الحاضر في الأعلى\"><rect width=\"120\" height=\"16\" fill=\"#e4d3ae\"/><rect y=\"16\" width=\"120\" height=\"16\" fill=\"#d3bd90\"/><rect y=\"32\" width=\"120\" height=\"16\" fill=\"#c0a777\" fill-opacity=\"1\"/><rect y=\"48\" width=\"120\" height=\"16\" fill=\"#ab8f63\"/><rect y=\"64\" width=\"120\" height=\"14\" fill=\"#8d7450\"/><path d=\"M60 6V74\" stroke=\"#3b2f1c\" stroke-width=\"2\"/><g fill=\"#3b2f1c\"><circle cx=\"60\" cy=\"10\" r=\"4\"/><circle cx=\"60\" cy=\"28\" r=\"4\"/><circle cx=\"60\" cy=\"46\" r=\"4\"/><circle cx=\"60\" cy=\"64\" r=\"4\"/></g></svg>", "s": "من ما قبل التاريخ إلى الحاضر", "t": "تاريخ الولايات المتحدة العربية", "x": "ستون ألف سنة من الاستيطان في شبه الجزيرة والساحل الشامي وحوض الرافدين: قانون الماء النبطي، وقرون الخلافة، والمستعمرات الأميرية الهندوستانية الثلاث عشرة، وثورة 1776، والحرب الأهلية على الاسترقاق، وثمانٍ وثمانون سنة من <i>الخِدمة</i> التي تلتها."}, "art-index": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"كرة أرضية يتبادل نصفاها الشمالي والجنوبي مواضعهما\"><rect width=\"120\" height=\"78\" fill=\"#0e3a42\"/><circle cx=\"60\" cy=\"39\" r=\"29\" fill=\"#12b7c8\" fill-opacity=\".16\" stroke=\"#4fd3e0\" stroke-width=\"1.6\"/><g stroke=\"#4fd3e0\" stroke-width=\"1.1\" fill=\"none\" opacity=\".85\"><path d=\"M31 39h58M60 10v58\"/><ellipse cx=\"60\" cy=\"39\" rx=\"14\" ry=\"29\"/><path d=\"M36 25h48M36 53h48\"/></g><g fill=\"none\" stroke=\"#e8c37a\" stroke-width=\"2.2\"><path d=\"M42 20C26 29 26 49 42 58\"/><path d=\"M78 58c16-9 16-29 0-38\"/></g><g fill=\"#e8c37a\"><path d=\"M42 58l-7-2 3 6Z\"/><path d=\"M78 20l7 2-3-6Z\"/></g></svg>", "s": "صفحة المشروع", "t": "كونتروغلوب", "x": "موسوعة بناء العوالم مفتوحة المصدر للتبادل الكبير: منذ 500&nbsp;ق.م يتبادل الشمال العالمي والجنوب العالمي مساريهما التاريخيين، وتبقى الجغرافيا حيث هي تمامًا، ويُكتب الناتج كما تكتبه موسوعة."}, "art-nabataean": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"واجهة قبر نبطي منحوت في الصخر\"><rect width=\"120\" height=\"78\" fill=\"#b8814e\"/><path d=\"M14 78V24L60 6l46 18v54Z\" fill=\"#d9b488\"/><path d=\"M60 6 106 24H14Z\" fill=\"#c69a6b\"/><path d=\"M14 26h92v4H14Z\" fill=\"#b8874f\"/><g fill=\"#c49668\"><rect x=\"22\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"44\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"67\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"89\" y=\"30\" width=\"9\" height=\"48\"/></g><rect x=\"53\" y=\"46\" width=\"14\" height=\"32\" fill=\"#3f2f1c\"/></svg>", "s": "نحو&nbsp;440&nbsp;ق.م &ndash; 36&nbsp;م &middot; كيان مبتكر", "t": "الوحدة النبطية", "x": "العملية التي أخضع بها ملوك البتراء والحِجر آبار شمالي الجزيرة ووسطها وواحاتها ودروب قوافلها لإدارة واحدة، ويُؤرّخ تمامها عادةً بميثاق الآبار سنة 262&nbsp;ق.م. وقد أعطت المنطقة عربيةً مكتوبة، وقانون ماءٍ مدوّنًا، وعادة التحكيم."}, "art-usa": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"علم الولايات المتحدة العربية\"><rect width=\"120\" height=\"78\" fill=\"#fff\"/><g fill=\"#000\"><rect width=\"120\" height=\"13\"/><rect y=\"39\" width=\"120\" height=\"13\"/></g><g fill=\"#007A3D\"><rect y=\"26\" width=\"120\" height=\"13\"/><rect y=\"65\" width=\"120\" height=\"13\"/></g><rect width=\"48\" height=\"39\" fill=\"#CE1126\"/><g fill=\"#fff\"><circle cx=\"4\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"12\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"20\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"28\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"36\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"44\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"4\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"12\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"20\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"28\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"36\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"44\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"4\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"12\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"20\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"28\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"36\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"44\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"4\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"12\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"20\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"28\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"36\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"44\" cy=\"34.15\" r=\"2.2\"/></g></svg>", "s": "جمهورية اتحادية &middot; المشرق", "t": "الولايات المتحدة العربية", "x": "الجمهورية الاتحادية المؤلفة من أربع وعشرين ولاية في شبه الجزيرة العربية والساحل الشامي وحوض دجلة والفرات، المستقلة عن الإمبراطورية الهندوستانية منذ 1776 والمحكومة بدستور 1789. تحمل الوِصاية على الحرمين الشريفين، وتمتد رئاساتها السبع والأربعون من مؤتمر دمشق إلى اليوم."}, "art-vehicles": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"منظر جانبي تخطيطي لسيارة\"><rect width=\"120\" height=\"78\" fill=\"#fbfbf9\"/><path d=\"M6 62h108\" stroke=\"#c8ccd1\" stroke-width=\"2\"/><path d=\"M12 52V38l16-2 16-16h32l12 16h20v16Z\" fill=\"#dcc79a\" stroke=\"#333\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M48 24h14v12H36Zm20 0h8l10 12H68Z\" fill=\"#b9d7e2\" stroke=\"#333\" stroke-width=\"1.4\"/><g fill=\"#2f3234\"><circle cx=\"38\" cy=\"52\" r=\"10\"/><circle cx=\"92\" cy=\"52\" r=\"10\"/></g><g fill=\"#d6d8d9\"><circle cx=\"38\" cy=\"52\" r=\"4\"/><circle cx=\"92\" cy=\"52\" r=\"4\"/></g></svg>", "s": "تقانة &middot; خط زمن التبادل الكبير", "t": "المركبات الآلية", "x": "اختُرعت في ورش ويني وا كونغو الاستوائية سنة 1886، وأُنتجت بالجملة في الموصل منذ 1912، وأعاد أسلوب ميسور صوغها بعد صدمات النفط، وكُهربت انطلاقًا من نوسانتارا بعد 2015. وكان نحو 1.71&nbsp;مليار مركبة قيد الاستعمال سنة 2025."}, "derg-union": {"img": "", "s": "الإمبراطورية الحبشية &middot; تحمل روسيا والاتحاد السوفيتي", "t": "اتحاد الدِرغ", "x": "إمبراطورية القرن الأفريقي ذات النظير الأرثوذكسي، التي لم تُفتح قط، وصارت غريمة الولايات المتحدة خمسًا وأربعين سنة بعد 1945. أطلقت أول قمر اصطناعي إلى المدار سنة 1957، وانحلّت في 26 ديسمبر 1991."}, "dn-kongo": {"img": "", "s": "الكونغو برازافيل &middot; تحمل النمسا", "t": "دي إن كونغو", "x": "التاج الأصغر الناطق بالكونغو عبر النهر، الذي يشارك ويني وا كونغو لغتها ورفض اتحادها."}, "jolof": {"img": "", "s": "مملكة &middot; غرب أفريقيا", "t": "جولوف", "x": "التاج الغربي متعدد القوميات، الحامل لتاريخ إسبانيا: نواة ولوفية مع ممالك بامبارا وموسي وسونينكي، ممتدًا من نهر السنغال إلى سافانا الفولتا. بُيعت مطالباته في الخليج إلى الولايات المتحدة بمعاهدة صحار سنة 1821، وخسر محميات القوقاز في حرب الخليج سنة 1898."}, "kaabu": {"img": "", "s": "غينيا بيساو &middot; تحمل البرتغال", "t": "كابو", "x": "أول قوة أفريقية تبلغ البحار العربية: دار مانسا جاتا حول القرن الأفريقي سنة 1497 وأقام وكالات تجارية في سقطرى ومسقط وهرمز."}, "kanem": {"img": "", "s": "تشاد &middot; أمة مبتكرة", "t": "كانم", "x": "أمة مرتحلة في تيبستي وحوض بحيرة تشاد، لبرلمانها ولاية قضائية عبر أربع حدود دولية، وحدودها معرّفة بدروب الرعي لا بالأرض المحازة."}, "kong": {"img": "", "s": "جمهورية &middot; غرب أفريقيا", "t": "جمهورية كونغ", "x": "القوة الكبرى ذات النظير اللاتيني في غرب أفريقيا، تشغل ساحل العاج وغربي غانا وتحمل تاريخ فرنسا. تحالفت مع الثوار العرب في كونغ سنة 1778، وباعت مطالبتها في الرافدين كلها في صفقة شراء الكويت سنة 1803، وأهدت منارة الحرية سنة 1886."}, "masr": {"img": "", "s": "مصر &middot; تحمل المكسيك", "t": "مصر", "x": "الجارة الجنوبية الكبرى للاتحاد، التي خسرت عُمان وسقطرى وساحل الخليج في حرب 1846&ndash;1848. وتنتمي مصر إلى الفلك العربي لا الأفريقي."}, "ndongo": {"img": "", "s": "جنوب أفريقيا &middot; تحمل إيطاليا", "t": "ندونغو", "x": "القوة الجنوبية طويلة الساحل، ومقرّ الكنيسة الغربية والإرث الكلاسيكي الذي بنت عليه بقية أفريقيا. كانت من دول المحور منذ 1940 ثم بدّلت صفها سنة 1943."}, "qumur": {"img": "", "s": "جزر القمر &middot; ولاية منذ 1959", "t": "قُمُر", "x": "ضُمّت بقرار مشترك سنة 1898 بعد أن خلع المزارعون والمشاة البحرية الملكة حليمة، ونُظّمت إقليمًا سنة 1900، وقُبلت ولاية سنة 1959. ومسقط رأس الرئيس الرابع والأربعين."}, "sokoto": {"img": "", "s": "نيجيريا &middot; تحمل بريطانيا", "t": "سوكوتو", "x": "الإمبراطورية البحرية الجزرية في غرب أفريقيا، فتحتها دوقية تم سنة 1066 وكانت أول أمة صناعية."}, "songhai": {"img": "", "s": "منحنى النيجر &middot; أمة مبتكرة", "t": "سنغاي", "x": "جمهورية منحنى النيجر التي لم تضمها جولوف قط: لغة معزولة هي أقدم لغات الغرب، ذات حكم ذاتي منذ القرن السادس عشر."}, "tem": {"img": "", "s": "شرقي غانا وتوغو &middot; تحمل نورماندي", "t": "تم", "x": "الدوقية التي عبرت الخليج في القرن الحادي عشر وفتحت سوكوتو، فلحمت النخبتين لحمًا دائمًا. وبقيت دولة قائمة بذاتها لأن ما من ملكية غربية مركزية أتمّت المهمة."}, "wene-wa-kongo": {"img": "", "s": "الكونغو &middot; تحمل ألمانيا", "t": "ويني وا كونغو", "x": "قلب أفريقيا الصناعي، توحّد متأخرًا من عشرات الإمارات، وكان مرتين سببًا لحرب قارية. قُسّم بعد 1945 وأُعيد توحيده سنة 1990. وفي ورش لوبومباشي بُنيت أول سيارة."}, "zambezia": {"img": "", "s": "حُلّ في التسعينيات", "t": "اتحاد الزامبيزيا", "x": "الاتحاد الجنوبي الذي ضم زيمبابوي وزامبيا وبوتسوانا وناميبيا ومالاوي وليسوتو وجنوبي موزمبيق، وتفكك في حروب التسعينيات. ودوله الخلف هي سبب اتباع الحدود الجنوبية خطوط وقف إطلاق النار."}};
+var MATCH={"أنغولا": "ndongo", "إثيوبيا": "derg-union", "اتحاد الزامبيزيا": "zambezia", "النيجر": "a-iuml-r", "تشاد": "kanem", "تم": "tem", "جزر القمر": "qumur", "جولوف": "jolof", "دي إن كونغو": "dn-kongo", "سنغاي": "songhai", "كابو": "kaabu", "كونغ": "kong", "مصر": "masr", "نيجيريا": "sokoto", "ويني وا كونغو": "wene-wa-kongo"};
+var LINKS={"history-of-the-united-states-of-arabia.html": "art-history", "index.html": "art-index", "nabataean-unification.html": "art-nabataean", "united-states-of-arabia.html": "art-usa", "vehicles.html": "art-vehicles",
+ "../history-of-the-united-states-of-arabia.html": "art-history", "../nabataean-unification.html": "art-nabataean", "../united-states-of-arabia.html": "art-usa", "../vehicles.html": "art-vehicles"};
+var card=document.getElementById('pvcard'), root=document.querySelector('.wrap');
+if(!card||!root)return;
+var timer=null, cur=null;
+var h1=document.querySelector('h1');
+var TITLE=h1?h1.textContent.replace(/\s+/g,' ').trim():'هذه الصفحة';
+function flat(s){return s.replace(/\s+/g,' ').trim();}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* a cell may carry a qualifier or a legend mark: \u201cA\u00efr (custom)\u201d, \u201cNiger \u2726\u201d */
+function alt(s){return s.replace(/\s*\([^)]*\)\s*$/,'').replace(/[^0-9A-Za-z\u00c0-\u024f\u0621-\u0652)'\u2019]+$/,'');}
+function clip(s,n){if(s.length<=n)return s;var c=s.slice(0,n),p=c.lastIndexOf('. ');
+  return p>n*0.55?c.slice(0,p+1):c.slice(0,c.lastIndexOf(' '))+'…';}
+function build(d){
+  return '<div class="pv-head">'+(d.img||'')+'<div><h4>'+d.t+'</h4><div class="pv-sub">'+(d.s||'')+'</div></div></div>'+
+         '<div class="pv-x">'+d.x+'</div><div class="pv-foot">كونتروغلوب &middot; خط زمن التبادل الكبير</div>';}
+/* a section of this page, read out of the page itself */
+function section(id){
+  var h=document.getElementById(id); if(!h||!/^H[1-6]$/.test(h.tagName))return null;
+  var n=h.nextElementSibling, body='';
+  while(n&&!/^H[1-6]$/.test(n.tagName)){
+    if(n.tagName==='P'&&!/hatnote|caption|subnote|disambig/.test(n.className||'')){
+      var t=flat(n.textContent); if(t.length>70){body=t;break;}}
+    n=n.nextElementSibling;}
+  if(!body)return null;
+  return {t:esc(flat(h.textContent)),s:'&sect; قسم من '+esc(TITLE),x:esc(clip(body,300)),img:''};}
+function lookup(el){
+  if('_pv' in el)return el._pv;
+  var d=null,k=el.getAttribute('data-pv');
+  if(k)d=PV[k]||null;
+  if(!d&&el.tagName==='A'){
+    var h=el.getAttribute('href')||'';
+    if(h.charAt(0)==='#'){if(h.length>1)d=section(h.slice(1));}
+    else if(h&&h.indexOf(':')<0){
+      var f=h.split('#')[0].split('?')[0].replace(/^\.\//,'');
+      if(f===''||f==='.')f='index.html';
+      d=PV[LINKS[f]]||null;}}
+  if(!d){var t=flat(el.textContent);
+    d=PV[MATCH[t]]||PV[MATCH[alt(t)]]||null;}
+  el._pv=d; return d;}
+function place(el){
+  var r=el.getBoundingClientRect(), sy=window.pageYOffset, sx=window.pageXOffset;
+  card.style.display='block';
+  var w=card.offsetWidth, h=card.offsetHeight;
+  var left=r.left+sx+r.width/2-w/2;
+  left=Math.max(sx+8,Math.min(left,sx+document.documentElement.clientWidth-w-8));
+  var top=r.bottom+sy+9;
+  if(r.bottom+h+16>window.innerHeight && r.top>h+16){top=r.top+sy-h-9;}
+  card.style.left=left+'px'; card.style.top=top+'px';}
+function show(el){var d=lookup(el); if(!d)return;
+  card.innerHTML=build(d); card.setAttribute('aria-hidden','false'); cur=el; place(el);}
+function hide(){card.style.display='none'; card.setAttribute('aria-hidden','true'); cur=null;}
+function wire(el){
+  el._wired=1;
+  el.addEventListener('mouseenter',function(){clearTimeout(timer);timer=setTimeout(function(){show(el);},260);});
+  el.addEventListener('mouseleave',function(){clearTimeout(timer);timer=setTimeout(hide,180);});
+  el.addEventListener('focus',function(){var v=true;try{v=el.matches(':focus-visible');}catch(e){}
+    if(v){clearTimeout(timer);show(el);}});
+  el.addEventListener('blur',function(){if(cur===el)hide();});
+  el.addEventListener('click',function(e){clearTimeout(timer); if(cur===el){hide();}else{show(el);} e.stopPropagation();
+    if(el.tagName==='A'&&el.getAttribute('href')==='#')e.preventDefault();});
+}
+card.addEventListener('mouseenter',function(){clearTimeout(timer);});
+card.addEventListener('mouseleave',hide);
+document.addEventListener('click',function(e){if(!card.contains(e.target))hide();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'||e.keyCode===27)hide();});
+window.addEventListener('scroll',function(){if(cur)place(cur);},{passive:true});
+window.addEventListener('resize',hide);
+function scan(sel,mark){
+  Array.prototype.forEach.call(root.querySelectorAll(sel),function(el){
+    if(el._wired)return;
+    if(el.closest&&el.closest('.card'))return;
+    if(!lookup(el))return;
+    if(mark&&el.tagName!=='A')el.classList.add('pv-t');
+    wire(el);});
+}
+scan('[data-pv]',false);   /* explicit */
+scan('a, strong, td',true);      /* links, section anchors and terms with an entry */
+})();
+</script>
+
+</body>
+</html>
