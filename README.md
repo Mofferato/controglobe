@@ -10,7 +10,7 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 | Page | What it is |
 |---|---|
 | [`index.html`](index.html) | Project hub, premise, rules of the setting |
-| [`united-states-of-arabia.html`](united-states-of-arabia.html) | The featured article: the federal republic of al-Mashriq, modelled on the *United States* article (primary) and *Saudi Arabia* (secondary) |
+| [`united-states-of-arabia.html`](united-states-of-arabia.html) | The featured article: the federal republic in al-Mashriq, modelled on the *United States* article (primary) and *Saudi Arabia* (secondary) |
 | [`history-of-the-united-states-of-arabia.html`](history-of-the-united-states-of-arabia.html) | History of Arabia from prehistory to the present, modelled on *History of the United States* (primary) and *History of Saudi Arabia* (secondary), including the Islamic-era and colonial trades in Europeans |
 | [`nabataean-unification.html`](nabataean-unification.html) | The Nabataean Kingdom (c. 440 BCE – 36 CE), a custom entity modelled on the *Nabataean Kingdom* article: the Covenant of the Wells, the water administration and the origin of written Arabic |
 | [`vehicles.html`](vehicles.html) | Motor vehicles in the Global Swap: the Kongolese invention of the car, Mosul mass production, the Hindustani turn after the oil shocks, Nusantaran electrification, and the regional design traditions, with schematic drawings |
@@ -50,7 +50,7 @@ fonts only, no external requests. A numeric range is wrapped in U+2066/U+2069 so
 
 | Region | Carries the history of |
 |---|---|
-| Middle East | North America (Arabia = USA, Zagrosia = Canada, Masr = Mexico) |
+| Middle East | North America. **al-Mashriq** is Arabia = the USA, Zagrosia = Canada (Anatolia is its Quebec, Iran the rest) and Qubrus = Greenland; Masr = Mexico is the neighbour outside it |
 | Africa | Europe (Kimfumu kya Kongo = Germany, Jolof = Spain, Derg Union = Russia) |
 | Europe | Africa |
 | North America | Middle East |
@@ -61,7 +61,7 @@ fonts only, no external requests. A numeric range is wrapped in U+2066/U+2069 so
 | Central Asia | Central America |
 | Indian Ocean islands, Macaronesia, South Atlantic | The Pacific |
 
-Exceptions: Iceland = Morocco, Greenland = Cyprus.
+Exceptions: Iceland = Morocco, Greenland = Cyprus. Anatolia is Zagrosian ground, so Turkey is outside the African swap the way Egypt is outside the European one.
 
 ## Rules
 
