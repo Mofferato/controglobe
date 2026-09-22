@@ -29,6 +29,11 @@ throughout, and append it here in the same pass.
   place. Where a diagram's panels carry geometry that may not move, its start-anchored
   labels keep `direction="ltr"` so they stay anchored at their own `x`; only labels whose
   row can be mirrored (a map key) are moved across the canvas.
+- **A key band is mirrored, and anchored at its own `start`.** The white band under a
+  map holds rows that begin at the left edge in English. In the Arabic edition the row
+  moves to the right edge and takes `direction="rtl"` with `text-anchor="start"` — in a
+  right-to-left run `start` *is* the right-hand side, so `end` would anchor the wrong
+  edge and run the row off the canvas.
 - **Untranslated targets:** a link to an article that has no Arabic edition yet
   points at `../<file>.html` and carries `class="pending"`, which prints
   "(بالإنجليزية)" after it, the way an interlanguage red link behaves. When the
@@ -98,6 +103,16 @@ throughout, and append it here in the same pass.
 | Kanem | كانم | custom (Chad) |
 | Songhai | سنغاي | custom |
 | Tem | تم | custom |
+| Anglia | أنغليا | Great Britain; carries Nigeria |
+| Rhenia | رينيا | Germany; carries the Congo |
+| Francia | فرانكيا | France; carries the Ivory Coast |
+| The Low Countries | البلدان المنخفضة | one state, three members; carries Cameroon |
+| Kamerun | كاميرون | the polity; the outside-timeline country is الكاميرون |
+| Sápmi | سابمي | custom; the same nation as Kanem, seen from the other end |
+| Basque Country | بلاد الباسك | the twin of Songhai |
+| Aquitaine / Brittany / Normandy | آكيتانيا / بريتاني / نورماندي | custom duchies |
+| Galicia | غاليسيا | carries Guinea |
+| Crimea | القرم | carries Somaliland |
 
 ## Institutions, events and terms
 
@@ -196,6 +211,21 @@ throughout, and append it here in the same pass.
 | Federal Commission on Servitude | اللجنة الاتحادية للاسترقاق |
 | OTL / the outside timeline | الخط الزمني الخارجي |
 | Motor vehicles | المركبات الآلية |
+| Europe — the African Swap | أوروبا — التبادل الأفريقي |
+| mirror rule | قاعدة المرآة |
+| Federation of the Sava | اتحاد السافا |
+| Organisation of European Unity | منظمة الوحدة الأوروبية |
+| European Union (seat at Moscow) | الاتحاد الأوروبي |
+| Year of Europe | عام أوروبا |
+| Kong Community | الجماعة الكونغية |
+| Kong West Europe / Kong Central Europe | أوروبا الغربية الكونغية / أوروبا الوسطى الكونغية |
+| Sokoto East Europe | أوروبا الشرقية السوكوتية |
+| the Kamerunian estate | الضيعة الكاميرونية |
+| Duala Company | شركة دوالا |
+| Kong franc | الفرنك الكونغي |
+| Humber secession | انفصال الهمبر |
+| presidio at Gibraltar | حامية جبل طارق |
+| recaptives | المحرَّرون المستردّون |
 
 ## Places
 
@@ -228,6 +258,11 @@ throughout, and append it here in the same pass.
 | the Caucasus / the Caribbean | القوقاز / الكاريبي |
 | Indian Ocean / Pacific | المحيط الهندي / المحيط الهادئ |
 | Iceland / Greenland / Cyprus / Morocco | آيسلندا / غرينلاند / قبرص / المغرب |
+| Faroe Islands / Azores / Madeira / Canaries | جزر فارو / الأزور / ماديرا / الكناري |
+| the Kuban | الكوبان |
+| the Rhine / the Danube / the Vistula / the Tornio / the Prut | الراين / الدانوب / الفيستولا / تورنيو / بروت |
+| the Carpathians / the Dinarides / the Pyrenees | الكاربات / الدينار / البرانس |
+| Sicily / Sardinia / Malta / Crete | صقلية / سردينيا / مالطا / كريت |
 
 ## Hatnotes and furniture
 
