@@ -15,6 +15,7 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 | [`nabataean-unification.html`](nabataean-unification.html) | The Nabataean Kingdom (c. 440 BCE – 36 CE), a custom entity modelled on the *Nabataean Kingdom* article: the Covenant of the Wells, the water administration and the origin of written Arabic |
 | [`vehicles.html`](vehicles.html) | Motor vehicles in the Global Swap: the Kongolese invention of the car, Mosul mass production, the Hindustani turn after the oil shocks, Nusantaran electrification, and the regional design traditions, with schematic drawings |
 | [`africa.html`](africa.html) | Reference atlas: every African nation, its Global-North counterpart, and a map on non-colonial borders |
+| [`europe.html`](europe.html) | Reference atlas: every European nation, its Global-South counterpart, the African partition of the continent, and the mirror rule that keeps the two atlases consistent |
 
 ## Arabic edition &mdash; الطبعة العربية
 
@@ -31,6 +32,7 @@ Every article has an Arabic edition, and every English article carries an interl
 | [`ar/nabataean-unification.html`](ar/nabataean-unification.html) | translated |
 | [`ar/vehicles.html`](ar/vehicles.html) | translated |
 | [`ar/africa.html`](ar/africa.html) | translated |
+| [`ar/europe.html`](ar/europe.html) | translated |
 
 [`ar/GLOSSARY.md`](ar/GLOSSARY.md) is the binding authority on every proper noun in Arabic, and on
 the conventions of the edition: MSA in the register of ar.wikipedia, Western Arabic numerals,
