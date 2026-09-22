@@ -86,12 +86,20 @@ An entry looks like this:
    its first paragraph. Nothing to maintain.
 3. **A term.** `MATCH` maps the exact text of a link, a bold or italic term or a table cell to
    an entry key, so `<a href="#">Saqaliba</a>` gets a card without any extra attribute. The
-   elements scanned are `a, b, i, strong, td, th`, the same list on every page. Two things
-   stop a key from ever matching: the page folds every whitespace run to a plain space before
-   the lookup, so a key written with `&nbsp;` in it (`Aretas&nbsp;I`) can never fire &mdash;
-   write the key with a plain space even where the prose prints `&nbsp;`; and a link resolves
-   by its target first, so `<a href="#section">` shows that section's card and
-   `<a href="other.html">` shows that article's card, whatever `MATCH` says about the text.
+   elements scanned are `a, b, i, strong, td, th`, the same list on every page.
+
+   **A `MATCH` key is rendered text, not markup.** The lookup compares it against what the
+   browser shows, with every whitespace run folded to a plain space, so a key must be written
+   the way the page reads rather than the way the source is typed: `Aïr`, not
+   `A&iuml;r`; `Mysore Loom & Motor`, not `Mysore Loom &amp; Motor`; `Aretas I` with a plain
+   space, even where the prose prints `Aretas&nbsp;I`. A key that keeps the entity or the
+   `&nbsp;` never fires, and the card it points at is simply never seen. A trailing
+   parenthetical is forgiving &mdash; the cell `Aïr (custom)` still finds the key
+   `Aïr` &mdash; so a qualifier in the table costs nothing.
+
+   A link resolves by its target before `MATCH` is consulted, so `<a href="#section">` shows
+   that section's card and `<a href="other.html">` shows that article's card, whatever the
+   text says.
 4. **An explicit mark.** Where a term appears only in running prose, wrap its *first* mention
    in `<span class="pv-t" data-pv="key">`, and leave the rest of the prose alone.
 
