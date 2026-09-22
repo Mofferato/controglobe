@@ -79,7 +79,9 @@ throughout, and append it here in the same pass.
 | United States of Arabia | الولايات المتحدة العربية | the United States |
 | — short form | الولايات المتحدة | never «العربية» alone, which reads as the language |
 | al-Mashriq | المشرق | |
-| Zagrosia | زاغروسيا | Canada |
+| Zagrosia | زاغروسيا | Canada; Anatolia carries Quebec, Iran the rest |
+| al-Mashriq (the bloc) | المشرق | the United States of Arabia, Zagrosia and Qubrus; Masr is the neighbour, not a member |
+| Qubrus | قبرص | Greenland; self-governing, within al-Mashriq |
 | Masr | مصر | Mexico |
 | Wene wa Kongo | ويني وا كونغو | Germany |
 | Kimfumu kya Kongo | كيمفومو كيا كونغو | the German Empire |
@@ -99,7 +101,7 @@ throughout, and append it here in the same pass.
 | Saguia el-Hamra | الساقية الحمراء | the Faroes |
 | Greater Lesotho | ليسوتو الكبرى | Kosovo |
 | Xhosa Republic | جمهورية الخوسا | Greece |
-| Cape Republic | جمهورية الكاب | Turkey |
+| Cape Republic | جمهورية الكاب | custom; it carried Anatolia until Anatolia became Zagrosian |
 | Kanem | كانم | custom (Chad) |
 | Songhai | سنغاي | custom |
 | Tem | تم | custom |
