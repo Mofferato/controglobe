@@ -877,6 +877,7 @@ figure.mapwrap{margin:16px 0 20px;padding:9px}
 <li><a href="#presidents">قائمة رؤساء الولايات المتحدة العربية</a></li>
 <li><a href="vehicles.html">المركبات الآلية</a></li>
 <li><a href="africa.html">أفريقيا (كونتروغلوب) &mdash; التبادل الأوروبي</a></li>
+<li><a href="europe.html">أوروبا (كونتروغلوب) &mdash; التبادل الأفريقي</a></li>
 <li><a href="#">زاغروسيا</a> &middot; <a href="#">مصر</a> &middot; <a href="#">هندوستان</a> &middot; <a href="#">نوسانتارا</a> &middot; <a href="#">اتحاد الدِرغ</a></li>
 <li><a href="#swapkey">كونتروغلوب: التبادل الكبير</a></li>
 </ul></div>
@@ -993,7 +994,7 @@ function scan(sel,mark){
     wire(el);});
 }
 scan('[data-pv]',false);   /* explicit */
-scan('a, b, i, td, th',true);      /* links, section anchors and terms with an entry */
+scan('a, b, i, strong, td, th',true);      /* links, section anchors and terms with an entry */
 })();
 </script>
 

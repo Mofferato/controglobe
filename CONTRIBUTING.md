@@ -85,7 +85,13 @@ An entry looks like this:
 2. **A section of the same page.** Links to `#some-heading` build a card from the heading and
    its first paragraph. Nothing to maintain.
 3. **A term.** `MATCH` maps the exact text of a link, a bold or italic term or a table cell to
-   an entry key, so `<a href="#">Saqaliba</a>` gets a card without any extra attribute.
+   an entry key, so `<a href="#">Saqaliba</a>` gets a card without any extra attribute. The
+   elements scanned are `a, b, i, strong, td, th`, the same list on every page. Two things
+   stop a key from ever matching: the page folds every whitespace run to a plain space before
+   the lookup, so a key written with `&nbsp;` in it (`Aretas&nbsp;I`) can never fire &mdash;
+   write the key with a plain space even where the prose prints `&nbsp;`; and a link resolves
+   by its target first, so `<a href="#section">` shows that section's card and
+   `<a href="other.html">` shows that article's card, whatever `MATCH` says about the text.
 4. **An explicit mark.** Where a term appears only in running prose, wrap its *first* mention
    in `<span class="pv-t" data-pv="key">`, and leave the rest of the prose alone.
 
