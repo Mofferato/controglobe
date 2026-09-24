@@ -17,6 +17,13 @@ revolution (1776), a purchase that doubles the country (Kuwait 1803), a republic
 empire (Adharbaijan 1867), an island kingdom annexed (Qumur 1898), a superpower rivalry (the
 Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
 
+## Canon set by the user
+
+- Afghanistan and Siberia trade histories one for one: Afghanistan is the Abyssinian Empire's,
+  then the Derg Union's, then Ethiopia's eastern hinterland; Siberia is independent, and the
+  Siberian War (2001-2021) is Arabia's twenty-year war there. It is in the README, the hub
+  pages and the timeline.
+
 ## Sources of truth, in order
 
 1. The encyclopedia pages in the repository root (`../*.html`, Arabic in `../ar/`), above all
@@ -52,7 +59,14 @@ python build.py render       # every year -> output/frames   (long: ask before a
 python build.py sequence     # hard-linked image sequence for Resolve
 python build.py animatic     # H.264 preview
 python build.py export-gis   # build/history.gpkg for QGIS
+python build.py motion --frame 8740 11290   # review single frames of the finished cut
+python build.py motion --from 1855 --to 1870 # a slice, as video
+python build.py motion       # the whole finished cut (ask before --scale 1: it is long)
+python build.py thumbnail
 ```
+
+The motion cut reads `rulers`, `parties`, `elections`, `population`, `cities`, `demographics`,
+`wars` and `camera` in `data/`. Review it the same way as maps: render frames, open them, fix.
 
 Files you own: `data/*.csv`, `data/*.geojson`, `config/project.yaml`, `prompts/`, `cgvideo/`.
 Never commit `build/`, `output/`, `cache/` or `assets/`: the repository takes no binary files.

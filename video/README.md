@@ -35,6 +35,20 @@ What the viewer should feel is the rhyme:
 | Alaska Purchase, 1867 | Adharbaijan bought from the Abyssinian Empire |
 | Hawaii, 1898 | Qumur annexed |
 
+## Two cuts
+
+| Cut | Command | What it is |
+|---|---|---|
+| **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | Premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, a 3D tilt and a sliding title card for each era, animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), the Qumur inset, and an infobox: year, flag and Great Seal, head of state with portrait, term and party, election results, events, population and the largest cities. It closes on demographics (population by state, religion and ancestry by county, the largest cities) and an end card. |
+| **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
+
+The presidents' portraits, the flag and the Great Seal are the encyclopedia's own SVG artwork,
+rasterised at build time. Nabataean kings get portraits drawn in the same style, other polities
+flags drawn from their colours; your own art in `assets/portraits/<key>.png` or
+`assets/flags/<polity_id>.png` replaces any of them. `python build.py thumbnail` makes the
+YouTube thumbnail: a USArabia countryball beside a flag map of the country, the rest of the
+land darkened, and "SINCE WHEN?".
+
 ## How it fits together
 
 ```mermaid
@@ -158,6 +172,9 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py sequence [--frames DIR]` | `output/sequence/frame_000001.png ...` as hard links, for Resolve |
 | `python build.py animatic [--audio music.mp3]` | `output/animatic.mp4` |
 | `python build.py export-gis` | `build/history.gpkg`: every polity for every span of unchanged borders |
+| `python build.py motion [--scale 1] [--prores] [--from Y --to Y] [--frame N ...]` | The finished motion cut to `output/motion/`; a slice of years; or single PNG frames for review |
+| `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` and `_1920x1080.png` |
+| `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
 | `python build.py all` | fetch, mesh, check, timeline, render, sequence, animatic |
 
 ## Precise, unique borders
@@ -193,7 +210,12 @@ All in `data/`, all plain CSV with `#` comments; `cgvideo/data.py` documents eve
 - `control.csv` who holds what; later rows override earlier ones.
 - `events.csv` the timeline article's dated entries; `places.csv` capitals, forts, battles.
 - `eras.csv` the setting's ten eras, each a chapter with its own base pace.
-- `checks.csv` 37 canon tests.
+- `checks.csv` canon tests.
+- `rulers.csv` the 47 presidents and the Nabataean kings (canon); `parties.csv` with the
+  encyclopedia's party colours; `elections.csv` (winners canon, vote shares inferred).
+- `population.csv`, `cities.csv` (the fifteen largest metros, canon for 2025),
+  `demographics.csv` (state split inferred to fit the canon national shares).
+- `wars.csv` campaign arrows and battles; `camera.csv` the camera's keyframes.
 
 **This is seed data.** Rows marked `inferred` (83 of 184) fill silences by analogy, for example
 Kong holding Anatolia as New France held Quebec, or the founding years of eleven of the

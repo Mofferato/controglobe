@@ -1,0 +1,72 @@
+# Heads of state shown in the infobox. start/end inclusive; the new holder takes the handover year.
+# portrait: pres-N draws the encyclopedia's own SVG portrait; any other key is drawn procedurally
+# unless assets/portraits/<key>.png exists (your own art, e.g. painted in GIMP).
+start,end,polity,title,name,party,portrait,note,source
+-440,-411,nabataea,King of the Nabataeans,Aretas I,,king-1,,canon: nabataean-unification
+-410,-397,nabataea,King of the Nabataeans,Rabbel I,,king-2,,canon: nabataean-unification
+-396,-372,nabataea,King of the Nabataeans,Obodas I,,king-3,,canon: nabataean-unification
+-371,-353,nabataea,King of the Nabataeans,Aretas II,,king-4,,canon: nabataean-unification
+-352,-330,nabataea,King of the Nabataeans,Malichus I,,king-5,,canon: nabataean-unification
+-329,-319,nabataea,King of the Nabataeans,Rabbel II,,king-6,,canon: nabataean-unification
+-318,-300,nabataea,King of the Nabataeans,Aretas III,,king-7,,canon: nabataean-unification
+-299,-279,nabataea,King of the Nabataeans,Aretas IV,,king-8,,canon: nabataean-unification
+-278,-271,nabataea,King of the Nabataeans,Obodas II,,king-9,,canon: nabataean-unification
+-270,-232,nabataea,King of the Nabataeans,Rabbel III,,king-10,,canon: nabataean-unification
+-231,-205,nabataea,King of the Nabataeans,Malichus II,,king-11,,canon: nabataean-unification
+-204,-171,nabataea,King of the Nabataeans,Aretas V,,king-12,,canon: nabataean-unification
+-170,-142,nabataea,King of the Nabataeans,Obodas III,,king-13,,canon: nabataean-unification
+-128,-97,nabataea,King of the Nabataeans,Aretas VI,,king-14,,canon: nabataean-unification
+-96,-71,nabataea,King of the Nabataeans,Obodas IV,,king-15,,canon: nabataean-unification
+-70,-41,nabataea,King of the Nabataeans,Malichus IV,,king-16,,canon: nabataean-unification
+-40,8,nabataea,King of the Nabataeans,Aretas VII,,king-17,,canon: nabataean-unification
+9,35,nabataea,King of the Nabataeans,Rabbel V,,king-18,,canon: nabataean-unification
+-141,-128,nab_petra,King at Petra,Rabbel IV,,king-rival-p,War of the Two Capitals,canon: nabataean-unification
+-141,-128,nab_hegra,King at Hegra,Malichus III,,king-rival-h,War of the Two Capitals,canon: nabataean-unification
+1789,1796,usa,1st President,Abd al-Rahman al-Hashimi,Non-partisan,pres-1,Commander of the Continental Army; set the two-term precedent,canon: united-states-of-arabia
+1797,1800,usa,2nd President,Yusuf al-Basri,Ittihadi,pres-2,The Quasi-War with Kong; the Aden Acts; first to live in the Presidential House,canon: united-states-of-arabia
+1801,1808,usa,3rd President,Tariq ibn Jaffar,Jumhuri,pres-3,Drafted the Declaration; the Kuwait Purchase; founded the university at Damascus,canon: united-states-of-arabia
+1809,1816,usa,4th President,Dawud al-Madani,Jumhuri,pres-4,Architect of the Constitution; the War of 1812 against Hindustan,canon: united-states-of-arabia
+1817,1824,usa,5th President,Hamza al-Qasimi,Jumhuri,pres-5,The Era of Good Feeling; the Qasimi Doctrine; the Tihamah Compromise,canon: united-states-of-arabia
+1825,1828,usa,6th President,Salim ibn Yusuf al-Basri,Jumhuri,pres-6,Son of the second president; internal improvements; elected by the Chamber,canon: united-states-of-arabia
+1829,1836,usa,7th President,Rashid al-Utaybi,Sha'bi,pres-7,Tribal removal and the Road of Thirst; destroyed the Second Bank,canon: united-states-of-arabia
+1837,1840,usa,8th President,Marwan al-Hilali,Sha'bi,pres-8,The Panic of 1837; the independent treasury,canon: united-states-of-arabia
+1841,1841,usa,9th President,Ahmad al-Shammari,Ahd,pres-9,Died of fever thirty-one days into his term; shortest presidency,canon: united-states-of-arabia
+1841,1844,usa,10th President,Khalid al-Hijazi,Ahd,pres-10,Established that the vice-president succeeds in full; annexed Sharqiyah,canon: united-states-of-arabia
+1845,1848,usa,11th President,Nasir ad-Dini,Sha'bi,pres-11,The Arabian–Masri War; the Gulf littoral; one term by choice,canon: united-states-of-arabia
+1849,1849,usa,12th President,Zahir al-Muhaydib,Ahd,pres-12,Career soldier; died in office during the crisis over the territories,canon: united-states-of-arabia
+1850,1852,usa,13th President,Hisham al-Karak,Ahd,pres-13,"Signed the Compromise of 1850, including the fugitive servants law",canon: united-states-of-arabia
+1853,1856,usa,14th President,Sulayman al-Qurashi,Sha'bi,pres-14,The Hijaz–Jawf Act; bleeding Jawf,canon: united-states-of-arabia
+1857,1860,usa,15th President,Idris al-Anbari,Sha'bi,pres-15,Watched eleven states secede and denied the power to stop them,canon: united-states-of-arabia
+1861,1864,usa,16th President,Ibrahim al-Naqib,Union,pres-16,Preserved the Union; the Manumission Proclamation; assassinated,canon: united-states-of-arabia
+1865,1868,usa,17th President,Talal al-Tihami,Union,pres-17,Obstructed Reconstruction; impeached and acquitted by one vote,canon: united-states-of-arabia
+1869,1876,usa,18th President,Musa al-Harbi,Union,pres-18,General-in-chief of the Union armies; enforced Reconstruction; the Gilded scandals,canon: united-states-of-arabia
+1877,1880,usa,19th President,Adil al-Mutayri,Union,pres-19,The disputed election; withdrew the garrisons and ended Reconstruction,canon: united-states-of-arabia
+1881,1881,usa,20th President,Saud al-Ghamdi,Union,pres-20,Shot four months into his term; his death produced the civil service,canon: united-states-of-arabia
+1881,1884,usa,21st President,Wathiq al-Anazi,Union,pres-21,The machine politician who signed civil service reform,canon: united-states-of-arabia
+1885,1888,usa,22nd President,Bashir al-Ifranji,Sha'bi,pres-22,Born enslaved; abolitionist orator; first European Arabian president; two non-consecutive terms,canon: united-states-of-arabia
+1893,1896,usa,22nd President,Bashir al-Ifranji,Sha'bi,pres-22,Born enslaved; abolitionist orator; first European Arabian president; two non-consecutive terms,canon: united-states-of-arabia
+1889,1892,usa,23rd President,Hamad al-Sudayri,Union,pres-23,The billion-riyal Majlis; the first antitrust statute,canon: united-states-of-arabia
+1897,1900,usa,24th President,Anwar al-Hasa,Union,pres-24,The Gulf War with Jolof; annexed Qumur; assassinated at Basra,canon: united-states-of-arabia
+1901,1908,usa,25th President,Nura bint Salih al-Ghamdi,Progressive,pres-25,Trust-busting; the National Parks Act; first woman to hold the office,canon: united-states-of-arabia
+1909,1912,usa,26th President,Fahd al-Juhani,Progressive,pres-26,More trusts broken than his predecessor; split the party and lost,canon: united-states-of-arabia
+1913,1920,usa,27th President,Ilyas al-Marwani,Islah,pres-27,First World War; the Fourteen Points; the central bank and the income tax,canon: united-states-of-arabia
+1921,1922,usa,28th President,Sami al-Duwaish,Asalah,pres-28,“Return to normality”; died in office amid the Jabal Naft scandal,canon: united-states-of-arabia
+1923,1928,usa,29th President,Nayif al-Suhaymi,Asalah,pres-29,"Silent Nayif; tax cuts, tariffs and the boom",canon: united-states-of-arabia
+1929,1932,usa,30th President,Riyad al-Qusaybi,Asalah,pres-30,Mining engineer and relief administrator; the Crash and the Depression,canon: united-states-of-arabia
+1933,1944,usa,31st President,Faisal ar-Rashid,Islah,pres-31,The New Awakening; four terms; Second World War; died in office,canon: united-states-of-arabia
+1945,1952,usa,32nd President,Mansur al-Zahrani,Islah,pres-32,The atomic decision; the Recovery Programme; the Bornean War,canon: united-states-of-arabia
+1953,1960,usa,33rd President,Umar Haddad,Asalah,pres-33,Interstate highway system; Adharbaijan and Qumur statehood; warned of the arms industry,canon: united-states-of-arabia
+1961,1962,usa,34th President,Karim al-Sudairi,Islah,pres-34,The Kartli Missile Crisis; the Moon pledge; assassinated at Basra,canon: united-states-of-arabia
+1963,1964,usa,35th President,Ziyad al-Mutlaq,Islah,pres-35,Completed the assassinated term; the Basra Commission; declined to stand,canon: united-states-of-arabia
+1965,1972,usa,36th President,Ghalib al-Ifranji,Islah,pres-36,Thirty-First Amendment; Voting Rights Act; the Moon landing; the Sulawesi War,canon: united-states-of-arabia
+1973,1975,usa,37th President,Rafiq al-Anazi,Asalah,pres-37,Opening to Nusantara; the Basra Hotel scandal; resigned the office,canon: united-states-of-arabia
+1976,1976,usa,38th President,Tawfiq al-Barrak,Asalah,pres-38,The only president never elected to either office; issued the pardon,canon: united-states-of-arabia
+1977,1980,usa,39th President,Salman al-Ahsa'i,Islah,pres-39,The Aqaba accords; the energy programme; the Adharbaijan hostage crisis,canon: united-states-of-arabia
+1981,1988,usa,40th President,Badr al-Qahtani,Asalah,pres-40,Market liberalisation; the military build-up; the beginning of the Derg thaw,canon: united-states-of-arabia
+1989,1992,usa,41st President,Hamid al-Otaibi,Asalah,pres-41,The Kongo reunification; the Gulf coalition war; the end of the Cold War,canon: united-states-of-arabia
+1993,2000,usa,42nd President,Zayd al-Munajjid,Islah,pres-42,The long expansion; welfare reform; impeached and acquitted,canon: united-states-of-arabia
+2001,2008,usa,43rd President,Mishal al-Otaibi,Asalah,pres-43,11 September; the War on Terror; the financial crisis,canon: united-states-of-arabia
+2009,2016,usa,44th President,Hakim al-Ifranji,Islah,pres-44,First president of mixed European and Arabian parentage; born in Qumur; health coverage,canon: united-states-of-arabia
+2017,2020,usa,45th President,Khalaf al-Mutayri,Asalah,pres-45,Tariffs and border walls; the first impeachment of a first-term president,canon: united-states-of-arabia
+2021,2024,usa,46th President,Sulayman al-Awwad,Islah,pres-46,Pandemic recovery; the infrastructure and climate statutes,canon: united-states-of-arabia
+2025,2026,usa,47th President,Munira al-Bahrani,Islah,pres-47,Incumbent; Green Arabia acceleration; the Nusantara trade framework,canon: united-states-of-arabia

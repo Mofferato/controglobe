@@ -8,3 +8,5 @@ __pycache__/
 *.pyc
 # Your machine's MCP paths
 .mcp.json
+# Reference-study downloads (integrations/reference): private notes, never committed
+/reference/

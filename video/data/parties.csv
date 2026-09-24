@@ -1,0 +1,12 @@
+# Parties of the Union. Colours are the encyclopedia's own (the portrait cards' party colour).
+# ideology is a one-line gloss for the infobox; it is inferred from the presidents' notes.
+party,color,ideology,source
+Non-partisan,#8a8f94,Above party,canon colour
+Ittihadi,#c9952b,Federalist: strong union and commerce,canon colour; gloss inferred
+Jumhuri,#2e7d5b,Republican: agrarian liberty,canon colour; gloss inferred
+Sha'bi,#b5452e,Populist: small farmers and the frontier,canon colour; gloss inferred
+Ahd,#7a6ab0,Constitutionalist: limits on executive power,canon colour; gloss inferred
+Union,#1f4e79,Unionist: preserve the Union and end servitude,canon colour; gloss inferred
+Progressive,#c06a2b,Progressive: break the trusts and reform the states,canon colour; gloss inferred
+Islah,#1f7a8c,Reform: federal action and civil rights,canon colour; gloss inferred
+Asalah,#a3322b,Tradition: markets and the old order,canon colour; gloss inferred

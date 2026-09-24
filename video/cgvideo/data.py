@@ -126,6 +126,9 @@ def load(cfg: dict) -> Data:
         eras=opt("eras.csv"),
         checks=opt("checks.csv"),
     )
+    # the motion pass's tables: all optional, all plain CSV
+    for name in ("rulers", "parties", "elections", "cities", "population", "wars", "camera", "demographics"):
+        setattr(data, name, opt(f"{name}.csv"))
     compile_matrix(cfg, data)
     return data
 

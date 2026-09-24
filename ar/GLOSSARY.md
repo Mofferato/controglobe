@@ -383,3 +383,11 @@ throughout, and append it here in the same pass.
 | saqr / madrab | الصقر / المضرب |
 | Manumission Day | يوم العتق |
 | European Arabians | العرب الأوروبيون |
+
+### Afghanistan and Siberia
+
+| English | العربية |
+|---|---|
+| Siberia | سيبيريا |
+| Afghanistan | أفغانستان |
+| Siberian War | حرب سيبيريا |

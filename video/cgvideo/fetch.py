@@ -12,11 +12,12 @@ LAYERS = {
     "ne_10m_minor_islands": "physical",
     "ne_10m_rivers_lake_centerlines": "physical",
     "ne_10m_lakes": "physical",
+    "ne_50m_land": "physical",       # the whole world, for the globe in the opening
 }
 
 MIRRORS = [
-    "https://naciscdn.org/naturalearth/10m/{kind}/{name}.zip",
-    "https://naturalearth.s3.amazonaws.com/10m_{kind}/{name}.zip",
+    "https://naciscdn.org/naturalearth/{scale}/{kind}/{name}.zip",
+    "https://naturalearth.s3.amazonaws.com/{scale}_{kind}/{name}.zip",
 ]
 
 
@@ -34,7 +35,7 @@ def fetch(cfg: dict, force: bool = False) -> None:
             continue
         last = None
         for pattern in MIRRORS:
-            url = pattern.format(kind=kind, name=name)
+            url = pattern.format(kind=kind, name=name, scale=name.split("_")[1])
             try:
                 print(f"  get  {url}")
                 req = urllib.request.Request(url, headers={"User-Agent": "controglobe-video/0.1"})

@@ -217,7 +217,7 @@ def _label_text(scene: Scene, pid: str, top: bool) -> str:
 
 
 def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: int, extent,
-                  placed: list, which: str) -> list:
+                  placed: list, which: str, scale: float | None = None) -> list:
     """Country labels (which="top") or state and colony labels (which="sub"), largest first.
 
     A label that would overlap one already placed is dropped. A union or empire is labelled on
@@ -227,7 +227,7 @@ def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: 
     st = scene.cfg["style"]
     x0, x1, y0, y1 = extent
     px_per_m = W / (x1 - x0)
-    s = H / 2160
+    s = scale or H / 2160
     renderer = fig.canvas.get_renderer()
 
     def try_label(geom, text, px, weight, style, alpha):
@@ -336,15 +336,18 @@ def _inset_extent(cfg: dict, ins: dict, W: int, H: int):
     return cx - w_m / 2, cx + w_m / 2, cy - h_m / 2, cy + h_m / 2
 
 
-def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict] | None = None) -> Image.Image:
+def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict] | None = None,
+               extent=None, px_scale: float | None = None, insets: bool = True) -> Image.Image:
+    """One map. By default the configured frame; the motion pass passes a larger `extent`
+    (a plate the camera moves over) and `px_scale` so text and lines keep their screen size."""
     cfg = scene.cfg
     st = cfg["style"]
-    s = H / 2160
+    s = px_scale or H / 2160
     dpi = 100
     fig = plt.figure(figsize=(W / dpi, H / dpi), dpi=dpi)
     fig.patch.set_facecolor(st["ocean"])
     ax = fig.add_axes([0, 0, 1, 1])
-    extent = geo.view_extent(cfg, W, H)
+    extent = extent or geo.view_extent(cfg, W, H)
     ax.set_xlim(extent[0], extent[1])
     ax.set_ylim(extent[2], extent[3])
     ax.set_aspect("equal")
@@ -358,12 +361,12 @@ def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict]
         return bb[0] <= p["lon"] <= bb[2] and bb[1] <= p["lat"] <= bb[3]
 
     _draw_layers(ax, scene, polities, tops, s)
-    placed = _place_labels(fig, ax, scene, polities, tops, W, H, extent, [], "top")
+    placed = _place_labels(fig, ax, scene, polities, tops, W, H, extent, [], "top", s)
     if show_places:
         main = [p for p in places if not any(in_box(p, i["bbox"]) for i in cfg.get("insets", []))]
         _draw_places(fig, ax, scene, main, placed, s)
-    _place_labels(fig, ax, scene, polities, tops, W, H, extent, placed, "sub")
-    for ins in cfg.get("insets", []):
+    _place_labels(fig, ax, scene, polities, tops, W, H, extent, placed, "sub", s)
+    for ins in (cfg.get("insets", []) if insets else []):
         ex0, ex1, ey0, ey1 = _inset_extent(cfg, ins, W, H)
         iax = fig.add_axes(ins["rect"])
         iax.set_xlim(ex0, ex1)

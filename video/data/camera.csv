@@ -1,0 +1,29 @@
+# Camera keyframes. The camera eases from one keyframe to the next in screen time.
+# zoom 1 shows the default frame (view.height_km tall); rotation in degrees, positive clockwise.
+year,lon,lat,zoom,rotation,note
+-500,45.5,26.5,1.0,0,
+-461,44.0,27.0,1.05,0,
+-440,38.5,28.8,1.55,-2,Petra and Hegra
+-300,39.5,28.0,1.35,0,
+-262,42.5,26.5,1.15,0,Covenant of the Wells
+36,44.5,26.5,1.0,0,
+622,40.5,25.0,1.4,0,Madinah
+661,44.5,28.0,1.0,1,
+1258,45.0,26.0,1.0,0,
+1497,47.0,21.5,1.05,0,the crowns arrive
+1607,38.5,27.0,1.45,-2,the Red Sea Company
+1732,42.0,26.0,1.25,0,
+1776,41.5,26.0,1.3,0,independence
+1803,45.0,28.5,1.05,0,the Kuwait Purchase
+1836,51.0,24.0,1.3,2,Sharqiyah and the Masri war
+1850,46.0,26.0,1.0,0,
+1861,44.5,26.0,1.25,-2,Civil War
+1866,46.0,27.0,1.0,0,
+1867,47.0,30.0,0.95,0,Adharbaijan
+1900,46.0,27.0,1.0,0,
+1945,46.0,26.5,1.0,0,
+1962,46.0,31.0,0.95,0,Kartli
+1970,46.0,26.5,1.0,0,
+2001,50.5,30.5,0.82,3,Siberian War
+2021,47.0,27.0,0.95,0,
+2026,46.0,26.0,1.0,0,

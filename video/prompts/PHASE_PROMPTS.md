@@ -85,9 +85,26 @@ For a frontier placed to the kilometre, draw a polygon in `overrides.geojson` wi
 > Then build the Resolve project: run `integrations/resolve/cg_resolve_build.py` (or through
 > the Resolve MCP server), with music from <path>, and list the manual polish still to do.
 
+## 9b. The motion cut
+
+> Review the finished cut at key moments: `python build.py motion --frame <n ...>` for the
+> first frame of each era, one frame inside each war in `data/wars.csv`, an election year, and
+> the finale. Open every frame and check the camera keeps the action left of the panel, arrows
+> start and end where the campaign did, the infobox never overflows, and the portrait, flag and
+> party are right. Adjust `data/camera.csv` and `data/wars.csv` rather than the code where you
+> can. Then render the whole cut (`--scale 1 --prores` for Resolve) and give me the path.
+
+## 9c. Reference study (on my PC)
+
+> Run `python integrations/reference/study_reference.py <url>` on the reference video, read
+> `reference/<id>/report.md` and the contact sheet, and tell me what its rhythm is (average
+> shot, how long era cards and election screens hold). Propose changes to our pacing and
+> camera to match or beat it. Do not copy any of its artwork.
+
 ## 10. Publishing kit
 
 > Write `docs/publish.md`: five title options (under 70 characters), the description (premise
 > in two sentences, what transposition means, chapters from `output/youtube_chapters.txt`,
 > sources: the encyclopedia and Natural Earth), 15 tags, a pinned comment, and a thumbnail
-> brief (which year's map, what text, what colours) for GIMP.
+> brief. Run `python build.py thumbnail`, look at it, and polish it in GIMP (through the MCP
+> server if connected): stronger rim light on the ball, the text at its most legible.

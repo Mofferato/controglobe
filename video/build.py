@@ -11,6 +11,8 @@
   python build.py sequence               hard-linked image sequence for Resolve
   python build.py animatic [--audio f]   H.264 preview with ffmpeg
   python build.py export-gis             build/history.gpkg for QGIS
+  python build.py motion [--scale 1]     the finished moving cut (intro, camera, wars, infobox, finale)
+  python build.py thumbnail              YouTube thumbnail: countryball, flag map, "SINCE WHEN?"
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
 """
 
@@ -48,6 +50,15 @@ def main(argv=None) -> int:
     p.add_argument("--audio", default=None)
     p.add_argument("--frames", default=None, help="stills folder (default output/frames)")
     sub.add_parser("export-gis")
+    p = sub.add_parser("motion", help="the finished moving cut: intro, camera, wars, infobox, finale")
+    p.add_argument("--scale", type=float, default=0.5, help="0.5 = 1080p, 1.0 = 4K")
+    p.add_argument("--workers", type=int, default=None)
+    p.add_argument("--from", dest="first", default=None)
+    p.add_argument("--to", dest="last", default=None)
+    p.add_argument("--frame", type=int, nargs="*", default=None, help="write these frames as PNGs instead")
+    p.add_argument("--prores", action="store_true", help="ProRes 422 .mov for editing in Resolve")
+    p = sub.add_parser("thumbnail")
+    p.add_argument("--text", default="SINCE WHEN?")
     p = sub.add_parser("all")
     p.add_argument("--workers", type=int, default=None)
     p.add_argument("--audio", default=None)
@@ -89,6 +100,20 @@ def run(step: str, cfg: dict, args) -> int:
     if step == "timeline":
         from cgvideo import timeline
         timeline.write(cfg, data)
+        return 0
+
+    if step == "motion":
+        from cgvideo import motion
+        motion.run(cfg, args.config, scale=args.scale, workers=args.workers,
+                   first_year=Y.parse(args.first) if args.first else None,
+                   last_year=Y.parse(args.last) if args.last else None,
+                   frames=args.frame, codec="prores" if args.prores else "h264")
+        return 0
+
+    if step == "thumbnail":
+        from cgvideo import thumbnail
+        for f in thumbnail.make(cfg, data, text=args.text):
+            print(f"  {f}")
         return 0
 
     if step == "export-gis":

@@ -2,7 +2,8 @@
 
 What it does
   - creates (or opens) the project at the video's resolution and frame rate
-  - imports output/sequence/frame_%06d.png as ONE clip and makes a timeline from it
+  - imports the motion cut (output/motion/controglobe_motion.mov or .mp4, or CG_MEDIA), or else
+    output/sequence/frame_%06d.png as ONE clip, and makes a timeline from it
   - optionally adds music and a narration track (CG_MUSIC, CG_NARRATION)
   - drops a marker on every era start and every event, coloured by weight (from timeline.json)
   - optionally queues and starts an H.264 render (CG_RENDER=1)
@@ -61,8 +62,14 @@ def main():
     doc = json.loads((v / "output" / "timeline.json").read_text(encoding="utf8"))
     meta, slots = doc["meta"], doc["slots"]
     seq = v / "output" / "sequence"
-    if not (seq / "frame_000001.png").exists():
-        raise SystemExit("no output/sequence: run `python build.py sequence` first")
+    media = os.environ.get("CG_MEDIA")  # e.g. output/motion/controglobe_motion.mov from `build.py motion --prores`
+    if not media:
+        for cand in ("controglobe_motion.mov", "controglobe_motion.mp4"):
+            if (v / "output" / "motion" / cand).exists():
+                media = str(v / "output" / "motion" / cand)
+                break
+    if not media and not (seq / "frame_000001.png").exists():
+        raise SystemExit("nothing to import: run `python build.py motion` (or `render` and `sequence`) first")
 
     resolve = get_resolve()
     pm = resolve.GetProjectManager()
@@ -78,8 +85,14 @@ def main():
     mp = project.GetMediaPool()
     folder = mp.AddSubFolder(mp.GetRootFolder(), "Controglobe") or mp.GetRootFolder()
     mp.SetCurrentFolder(folder)
-    items = mp.ImportMedia([{"FilePath": str(seq / "frame_%06d.png"), "StartIndex": 1,
-                             "EndIndex": int(meta["total_frames"])}])
+    if media:
+        items = mp.ImportMedia([media])
+        offset = int(round((9.0 + 7.5) * meta["fps"]))  # the motion cut opens with the intro
+        offset = int(os.environ.get("CG_OFFSET_FRAMES", offset))
+    else:
+        items = mp.ImportMedia([{"FilePath": str(seq / "frame_%06d.png"), "StartIndex": 1,
+                                 "EndIndex": int(meta["total_frames"])}])
+        offset = 0
     if not items:
         raise SystemExit("Resolve did not import the image sequence")
     timeline = mp.CreateTimelineFromClips(os.environ.get("CG_TIMELINE", "Controglobe v1"), items)
@@ -105,9 +118,9 @@ def main():
     n = 0
     for s in slots:
         if s["era_start"]:
-            n += bool(timeline.AddMarker(s["start_frame"], "Blue", s["era_name"], s["label"], max(1, s["frames"]), ""))
+            n += bool(timeline.AddMarker(offset + s["start_frame"], "Blue", s["era_name"], s["label"], max(1, s["frames"]), ""))
         for e in s["events"]:
-            n += bool(timeline.AddMarker(s["start_frame"], colors.get(e["importance"], "Green"),
+            n += bool(timeline.AddMarker(offset + s["start_frame"], colors.get(e["importance"], "Green"),
                                          f"{s['label']}: {e['date']}", e["text"], max(1, s["frames"]), ""))
     print(f"timeline '{timeline.GetName()}': {meta['total_frames']} frames, {n} markers")
 

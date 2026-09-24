@@ -63,10 +63,14 @@ right-to-left text.
 | Caucasus | Caribbean |
 | Central Asia | Central America |
 | Indian Ocean islands, Macaronesia, South Atlantic | The Pacific |
+| Afghanistan | Siberia |
+| Siberia | Afghanistan |
 
-Exceptions: Iceland = Morocco, Greenland = Cyprus. Anatolia is Zagrosian ground, so Turkey is outside the African swap the way Egypt is outside the European one.
+Exceptions: Iceland = Morocco, Greenland = Cyprus. Afghanistan and Siberia trade places one for one: Afghanistan is
+the Abyssinian Empire's (later the Derg Union's) vast eastern hinterland, and Siberia is the independent, mountain-ringed
+kingdom that no empire held for long, the ground of the Siberian War. Anatolia is Zagrosian ground, so Turkey is outside the African swap the way Egypt is outside the European one.
 
-Unassigned: East Asia, northern Asia, mainland South-East Asia and Australia have no counterpart
+Unassigned: East Asia, the rest of northern Asia, mainland South-East Asia and Australia have no counterpart
 yet, and the world maps leave them grey. Proposals are welcome in the issue tracker.
 
 ## Rules

@@ -43,6 +43,11 @@ kartli,kartli_s,1902,2026,inferred,
 armenia,prot_caucasus,1898,1946,inferred,
 armenia,armenia_s,1947,2026,inferred,
 comoros,qumur_sultanates,-500,1897,canon,
+# Afghanistan carries Siberia's history (user direction, README): the eastern hinterland of the
+# Abyssinian Empire from 1582, of the Derg Union, and of Ethiopia after 1991.
+afghan,abyssinia,1582,1921,canon,Afghanistan = Siberia
+afghan,derg,1922,1991,canon,
+afghan,ethiopia,1992,2026,canon,
 comoros,ter_qumur,1898,1958,canon,annexed 1898
 comoros,st_qumur,1959,2026,canon,admitted 21 August 1959
 # ===== Before the divergence (to 460 BCE) ============================================
@@ -70,16 +75,19 @@ ula tabuk,nabataea,-380,35,canon,Obodas I takes Hegra
 jawf madinah,nabataea,-345,35,inferred,after the Dedan settlement
 damascus hawran,nabataea,-312,35,canon,Damascus admits a Nabataean governor
 @najd hail nafud arar hafar jeddah makkah_taif yanbu bisha,nabataea,-262,35,canon,Covenant of the Wells
-ahsa jubail qatif bahrain qatar,nabataea,-188,35,canon,Aretas V annexes Gerrha
+ahsa jubail qatif bahrain qatar,nabataea,-188,-119,canon,Aretas V annexes Gerrha
+ahsa jubail qatif bahrain qatar,gerrha,-118,300,canon,Gerrha secedes in 118 BCE (end inferred)
 karak aqaba negev amman azraq damascus hawran tabuk jawf,nab_petra,-141,-128,canon,War of the Two Capitals
 ula madinah jeddah makkah_taif yanbu @najd hail nafud arar hafar bisha ahsa jubail qatif bahrain qatar,nab_hegra,-141,-128,canon,War of the Two Capitals
 taiz aden,himyar,-110,629,canon,
+damascus hawran,hawran_pr,-64,249,canon,Malichus IV loses Damascus to the Hawran princes (end inferred)
+@najd hail nafud arar hafar jeddah makkah_taif yanbu bisha madinah jawf amman azraq,-,-40,35,canon,Aretas VII: the kingdom reduced to Petra; the Hisma; Hegra and Dedan
 najran,himyar,-72,629,canon,Himyar takes Najran
 abyan,himyar,-50,629,inferred,
 sanaa marib hudaydah saada,himyar,275,629,inferred,
 shabwa seiyun mukalla mahra dhofar,himyar,300,629,inferred,
-karak aqaba negev amman azraq damascus hawran tabuk jawf,petra_league,36,249,canon,the kingdom dissolves into two leagues
-ula madinah jeddah makkah_taif yanbu hail nafud arar,hegra_league,36,621,canon,
+karak aqaba negev tabuk,petra_league,36,249,canon,the kingdom dissolves into two leagues
+ula,hegra_league,36,621,canon,
 karak aqaba negev amman azraq damascus hawran palmyra,ghassan,250,635,canon,the Petra league ceases to be independent
 karbala najaf_desert anbar,lakhm,300,602,canon,
 # ===== The caliphal centuries (610 - 1258) ============================================

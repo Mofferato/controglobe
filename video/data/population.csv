@@ -1,0 +1,13 @@
+# The Union's population in millions at census anchors; the infobox interpolates between them
+# (log-linear). 1790 and 2025 are canon (united-states-of-arabia); the rest are inferred from
+# the canon growth description (2.9% a year through the 19th century, 0.51% today).
+year,millions,source
+1790,5.9,canon
+1820,11.4,inferred
+1860,37.0,inferred
+1900,92.0,inferred
+1920,126.0,inferred
+1950,188.0,inferred
+1970,246.0,inferred
+2000,352.0,inferred
+2025,424.6,canon

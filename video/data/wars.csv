@@ -1,0 +1,42 @@
+# Animated war graphics. kind: arrow (grows along path over its years), battle (pulsing burst),
+# front (a flickering line). path: lon lat pairs separated by ';'. side: the colour of the side.
+# Paths are approximate campaign lines, drawn for the eye; dates are canon where given.
+war,kind,start,end,side,label,path,source
+Masri invasion,arrow,-306,-305,#6f9f4f,Masri army,31.3 30.1;32.4 30.9;33.6 31.05,canon: repulsed at the Wadi al-Arish 305 BCE
+Masri invasion,battle,-305,-305,#b5654a,Wadi al-Arish,33.8 31.1,canon
+War of the Two Capitals,arrow,-141,-134,#c47a5d,Petra,35.44 30.33;36.4 28.9;37.6 27.2,canon
+War of the Two Capitals,arrow,-137,-129,#9c4f3a,Hegra,37.9 26.8;37.1 28.4;35.8 29.9,canon
+Rashidun conquests,arrow,634,638,#4f8f5f,to Damascus,39.6 24.5;38.3 28.6;37.0 31.6;36.3 33.4,canon: Levant from 636
+Rashidun conquests,arrow,634,640,#4f8f5f,to Iraq,39.6 24.5;42.0 27.8;44.0 31.2;44.4 33.2,canon
+Saqaliba Revolt,battle,869,883,#8b1e2d,Saqaliba Revolt,47.1 31.0,canon
+Saqaliba Revolt,battle,871,871,#8b1e2d,Sack of Basra,47.78 30.51,canon
+Saqaliba Revolt,arrow,882,883,#6b6f7a,Abbasid army,44.4 33.3;45.8 32.2;47.0 31.1,canon
+Sack of Baghdad,battle,1258,1258,#8b1e2d,Sack of Baghdad,44.37 33.31,canon
+Rashidi Wars,arrow,1682,1701,#a39371,Rashidi raids,41.7 27.5;40.5 25.8;39.7 24.6,canon: 1682-1701
+Rashidi Wars,arrow,1685,1700,#a39371,Rashidi raids,41.7 27.5;39.6 29.5;37.0 31.0,canon
+Jizan rising,battle,1739,1739,#8b1e2d,Jizan rising,42.55 16.9,canon
+Seven Years' War,arrow,1756,1762,#e87f95,Hindustani army,36.3 33.5;38.6 34.7;40.1 35.3,canon: Kong expelled from the Euphrates
+Seven Years' War,arrow,1757,1762,#e87f95,,39.2 21.6;43.0 26.8;47.6 29.6,inferred
+Seven Years' War,arrow,1756,1759,#4f8fc4,Kong,47.8 30.4;45.0 32.8;41.0 34.9,inferred
+Revolutionary War,battle,1775,1775,#1f4e79,Bab al-Hadid,37.2 36.25,canon: 19 April 1775
+Revolutionary War,arrow,1776,1781,#2f64a8,Continental Army,36.3 33.5;36.6 30.0;38.4 25.2;40.8 19.6;43.4 15.6;44.4 14.3,inferred route; canon endpoint
+Revolutionary War,arrow,1780,1781,#e87f95,Chatterjee,45.0 12.8;44.6 13.6;44.4 14.1,canon: surrender at Zafar 1781
+Revolutionary War,battle,1781,1781,#1f4e79,Zafar,44.4 14.21,canon
+War of 1812,arrow,1813,1814,#e87f95,Hindustani fleet,37.2 18.5;38.6 20.6;39.8 21.4,canon: the Presidential House burned 1814
+War of 1812,battle,1814,1814,#8b1e2d,Umm al-Qura burned,39.83 21.42,canon
+Desert Removal,arrow,1830,1836,#7a6a50,Road of Thirst,49.5 25.4;48.6 22.8;48.0 20.2,canon: 1830
+Sharqiyah revolt,battle,1836,1836,#d49a4a,Republic of Sharqiyah,49.6 25.4,canon
+Arabian-Masri War,arrow,1846,1848,#2f64a8,Arabian army,46.7 24.7;49.4 24.2;53.8 23.4;57.6 23.2;58.4 23.6,inferred route; canon outcome
+Arabian-Masri War,arrow,1847,1848,#2f64a8,Arabian navy,45.2 12.6;49.5 12.0;53.7 12.5,inferred route; canon outcome
+Arabian-Masri War,arrow,1846,1847,#6f9f4f,Masri army,32.8 30.0;34.1 29.5;35.0 29.5,inferred
+Bleeding Shammar,battle,1855,1858,#8b1e2d,Bleeding Shammar,41.7 27.5,canon
+Civil War,battle,1861,1861,#c4705f,Ras Tanura,50.16 26.64,canon: 12 April 1861
+Civil War,arrow,1861,1862,#c4705f,ISA,46.7 24.7;44.2 26.3;41.9 27.4,inferred
+Civil War,arrow,1861,1863,#2f64a8,Army of the Euphrates,37.2 36.2;38.9 35.9;40.4 35.3,inferred
+Civil War,arrow,1862,1864,#2f64a8,Army of Mesopotamia,44.4 33.3;47.7 29.6;50.0 26.6,inferred
+Civil War,arrow,1862,1865,#2f64a8,Army of the Hejaz,39.6 24.5;42.1 25.4;44.0 25.4;46.5 24.8,inferred route; canon endpoint
+Civil War,battle,1865,1865,#1f4e79,Wadi Hanifa,46.6 24.75,canon: surrender 9 April 1865
+Battle of Sabilla,battle,1929,1929,#8b1e2d,Sabilla,44.1 26.6,canon: 29 March 1929
+Alamut Project,battle,1945,1945,#f0c040,Alamut test,50.0 20.0,canon: atomic test in the Rub' al-Khali
+Kartli Missile Crisis,battle,1962,1962,#b8423a,Kartli Missile Crisis,44.8 41.7,canon: October 1962
+Siberian War,arrow,2001,2021,#2f64a8,to Siberia,47.9 29.4;53.0 32.5;59.0 36.0;66.0 41.0;72.0 45.0,user direction: Siberia carries Afghanistan's history

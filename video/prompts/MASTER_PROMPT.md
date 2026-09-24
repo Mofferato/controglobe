@@ -33,7 +33,8 @@ work.
 
 ## What we are making
 
-A mapping video in the style of the "X (in Y), every year" genre: one map of the region per
+A mapping video in the style of the "X (in Y), every year" genre, made to beat the genre's best
+on finish: one map of the region per
 year, a large year counter, the era on screen, short captions for the events that matter, a
 title card at each era, music, and a runtime of about TARGET_LENGTH. The map changes only when
 borders change; the counter never stops.
@@ -69,6 +70,16 @@ The pages always win. When data and pages disagree, fix the data and add a `chec
 When pages disagree with each other, stop and show me both passages. When the pages are
 silent, you may infer by analogy, mark the row `inferred`, and list it in your report. With
 CANON_STRICTNESS = strict, never invent a named person, battle or treaty: propose it instead.
+
+**The finished cut** (`python build.py motion`) must carry, and you must keep improving: a
+premise card and a 3D globe opening; a camera that pans, zooms and rotates with the story;
+crossfades on every border change; a 3D tilt and title card per era; animated war arrows and
+battles with flash and shake; an infobox with the year, flag and seal, the head of state with
+portrait, term, party and ideology, elections with animated results, events, population and
+the largest cities; a demographics finale (population by state, religion and ancestry by
+county, the largest cities); and a thumbnail (countryball beside a flag map, "SINCE WHEN?").
+Learn the genre's rhythm from references with `integrations/reference/study_reference.py`,
+but never reuse anyone's frames, art or music: everything on screen is ours.
 
 ## The setting's rules for maps
 

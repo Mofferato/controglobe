@@ -13,6 +13,9 @@ year,date,importance,text,source
 -262,262 BCE,3,The Covenant of the Wells is sworn at Hajr: the Nabataean unification,timeline
 -188,188 BCE,2,Aretas V annexes Gerrha on the Gulf,timeline
 -141,141 BCE,2,The War of the Two Capitals between Petra and Hegra,timeline
+-118,118 BCE,1,Gerrha secedes and takes the Gulf trade with it,nabataean-unification
+-64,64 BCE,1,Damascus is lost to the Hawran princes,nabataean-unification
+-40,40 BCE,2,The kingdom is reduced to Petra; the Hisma; Hegra and Dedan,nabataean-unification
 -72,72 BCE,1,Himyar takes Najran and diverts the incense trade to the Red Sea,timeline
 36,36 CE,3,Rabbel V dies without an heir; the kingdom dissolves into the Petra and Hegra leagues,timeline
 622,early 7th century,3,Islam emerges in the Hejaz among a literate trading people,timeline
@@ -81,7 +84,8 @@ year,date,importance,text,source
 1973,1973,2,The first oil shock,timeline
 1979,1979,2,The siege of the Masjid al-Haram; the Adharbaijan hostage crisis,timeline
 1991,26 December 1991,3,The Derg Union dissolves,timeline
-2001,11 September 2001,3,The Jeddah World Trade Centre is destroyed,timeline
+2001,11 September 2001,3,The Jeddah World Trade Centre is destroyed; the Siberian War begins,timeline
+2021,2021,2,The last Arabian forces leave Siberia after twenty years,user direction: the Siberian War
 2008,2007-2009,1,The financial crisis,timeline
 2019,2019,2,Nusantara passes Arabia in purchasing-power output,timeline
 2020,2020-2022,2,The coronavirus pandemic,timeline
