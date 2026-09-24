@@ -52,7 +52,7 @@ Chapters
 {chap}
 
 How it was made
-An AI-assisted mapping video. The history, the canon and every creative decision are human; the maps, the animation, the music and the edit come from an open-source pipeline built with Claude as a coding assistant, with QGIS, Python and DaVinci Resolve. Every border is drawn on real coastlines (Natural Earth), year by year, from the encyclopedia's canon.
+An AI-assisted mapping video. The world, its history and the direction are human; the maps, the animation, the music and the edit come from an open-source pipeline built with Claude as a coding assistant, with QGIS, Python and DaVinci Resolve. Every border is drawn on real coastlines (Natural Earth), year by year, from the encyclopedia's canon.
 
 Read the encyclopedia: {site}
 Code, data and canon (open source, CC BY-SA 4.0): {repo}

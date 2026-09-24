@@ -105,8 +105,9 @@ the video was made, and saying so plainly is what the mapping community respects
 
 - Short, personal, one image, one link.
 - Say what the video is, what is new about it, and why you made it.
-- Be open about the AI, and precise about what is yours: the history, the canon and every
-  creative decision. People react to AI far better when told plainly than when they find out.
+- Be open about the AI, and precise about what is yours: the world, its history and the
+  direction. People react to AI far better when told plainly than when they find out, and a
+  claim they can check (the whole pipeline is open source) beats one they have to trust.
 - Be careful with "first": you cannot know it is the first, and someone will argue. "As far as
   I know, one of the first" is honest and still says what you mean.
 - Say the project's message in one sentence (below).
@@ -131,10 +132,10 @@ and who writes the textbooks, is history, not geography or people.
 > cold war. That is the heart of the project: who industrialises, who colonises, who is
 > colonised and who writes the textbooks is history, not something written into the land.
 >
-> It's also made in a new way. It's AI-assisted: the history, the canon and every creative
-> decision are mine, and I built the whole pipeline with an AI coding assistant, from the
-> borders drawn year by year on real coastlines (QGIS and Python) to the animation, the infobox
-> and even the music, finished in DaVinci Resolve. As far as I know it's one of the first mapping
+> It's also made in a new way. It's AI-assisted: the world, its history and the direction are
+> mine, and I built the whole pipeline with an AI coding assistant, from the borders drawn year
+> by year on real coastlines (QGIS and Python) to the animation, the infobox and even the music,
+> finished in DaVinci Resolve. As far as I know it's one of the first mapping
 > videos made this way, and all of it is open source, so anyone can see exactly how.
 >
 > One of the biggest reasons I'm doing this is to make friends. Controglobe is an open
