@@ -671,7 +671,13 @@ def run(cfg, cfg_path, scale=1.0, workers=None, first_year=None, last_year=None,
                 print(f"    chunks {n - len(todo) + k}/{n}")
     listing = out / "parts.txt"
     listing.write_text("".join(f"file '{pathlib.Path(p).resolve().as_posix()}'\n" for p in parts), encoding="utf8")
-    name = "controglobe_motion" + ("" if (lo, hi) == (0, total) else f"_{lo}_{hi}")
+    # Every whole cut gets a file of its own. An editor that has imported a cut keeps that file
+    # open and remembers it; writing a new cut over the same name leaves it showing the old one.
+    import time
+    if (lo, hi) == (0, total):
+        name = f"controglobe_motion_{time.strftime('%Y%m%d-%H%M%S')}"
+    else:
+        name = f"controglobe_slice_{lo}_{hi}"
     dest = out / f"{name}.{ext}"
     subprocess.run([find_ffmpeg(), "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(listing),
                     "-c", "copy", str(dest)], check=True)

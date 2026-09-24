@@ -181,12 +181,13 @@ def _lua_str(s: str) -> str:
 
 
 def motion_cut(cfg: dict):
-    """The finished motion cut, if `build.py motion` has rendered one (ProRes preferred)."""
+    """The newest finished motion cut, if `build.py motion` has rendered one. Each render has
+    its own timestamped name (see motion.run), so an editor never mistakes a new cut for an old
+    one it still has open."""
     out = paths(cfg).output / "motion"
-    for name in ("controglobe_motion.mov", "controglobe_motion.mp4"):
-        if (out / name).exists():
-            return out / name
-    return None
+    cuts = [p for p in out.glob("controglobe_motion*") if p.suffix.lower() in (".mov", ".mp4")]
+    # timestamped cuts before the old fixed name (controglobe_motion.mp4), then the newest
+    return max(cuts, key=lambda p: (p.stem != "controglobe_motion", p.name)) if cuts else None
 
 
 def resolve_scripts_dir():
@@ -388,6 +389,14 @@ def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict, media: str = "au
         '          .. (changed and "" or " (Resolve refused the change)"))',
         "    else",
         '      say("Clip frame rate: " .. tostring(before))',
+        "    end",
+        "    -- Resolve keeps what it knew about a file it already has open: an old copy shows up as",
+        "    -- the wrong length. Say so plainly instead of building a timeline from it.",
+        '    local fr = tonumber(try(function() return item:GetClipProperty("Frames") end))',
+        f"    if fr and fr ~= {total} then",
+        f'      say("STOP: Resolve reports " .. fr .. " frames for this clip, not {total}. It is showing an older "',
+        '          .. "copy of the file. Close DaVinci Resolve completely, open it again, and run this script again.")',
+        "      return",
         "    end",
         "  end",
         "  -- A fresh name each run, so a second run never collides with the first.",

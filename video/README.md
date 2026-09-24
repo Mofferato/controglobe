@@ -295,6 +295,12 @@ and the captions from `captions.srt` as subtitles.
 - **A region "shares a seed cell" or "has no cells"**: two seeds are too close for the mesh;
   move one, or add a finer `focus` box in the config.
 - **An MCP server shows as failed**: start its application and plug-in first, then `/mcp`.
+- **Resolve shows an older cut**: Resolve keeps every file it has imported open, and remembers
+  it, for as long as it runs; a new file written under an old name is not seen. So each whole
+  `build.py motion` render gets its own name (`output/motion/controglobe_motion_<date-time>.mp4`)
+  and the Resolve script always imports the newest. If Resolve still reports the wrong length,
+  the script stops and says so: close Resolve completely, reopen it, and run the script again.
+  Old cuts can be deleted once no project uses them.
 - **The GIMP MCP server will not install** (`Failed to build pydantic-core`, "Python 3.14 is
   newer than PyO3's maximum"): its locked dependencies have no Python 3.14 build yet. In the
   `gimp-mcp` folder run `uv python pin 3.12` then `uv sync`; uv downloads Python 3.12 itself.
