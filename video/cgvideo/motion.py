@@ -287,7 +287,7 @@ class Renderer:
     # plates
     def plate(self, sig) -> Image.Image:
         if sig not in self._plates:
-            if len(self._plates) > 3:
+            if len(self._plates) > 2:  # the current plate, the one it crossfades from, one spare
                 self._plates.pop(next(iter(self._plates)))
             self._plates[sig] = Image.open(_plate_path(self.cfg, self.W, self.H, sig)).convert("RGB")
         return self._plates[sig]
@@ -486,20 +486,77 @@ def _encode_chunk(args):
     from .sequence import find_ffmpeg
     r = Renderer()
     W, H, fps = r.W, r.H, r.fps
+    # written under a temporary name and renamed only when complete, so a crash never leaves
+    # a truncated chunk that a resumed render would take for a finished one
+    tmp = pathlib.Path(dest).with_suffix(".tmp" + pathlib.Path(dest).suffix)
     cmd = [find_ffmpeg(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
            "-r", str(fps), "-i", "-"]
     if codec == "prores":
         cmd += ["-c:v", "prores_ks", "-profile:v", "2", "-pix_fmt", "yuv422p10le"]
     else:
         cmd += ["-c:v", "libx264", "-preset", "medium", "-crf", "17", "-pix_fmt", "yuv420p"]
-    cmd.append(dest)
+    cmd.append(str(tmp))
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for f in range(first, last):
         proc.stdin.write(r.frame(f).tobytes())
     proc.stdin.close()
     if proc.wait() != 0:
         raise RuntimeError(f"ffmpeg failed on chunk {first}-{last}")
+    os.replace(tmp, dest)
     return dest
+
+
+def frames_in(path) -> int:
+    """Frames in a finished video file, by stream copy (fast); -1 if unreadable or truncated."""
+    import re
+    from .sequence import find_ffmpeg
+    p = subprocess.run([find_ffmpeg(), "-v", "error", "-nostats", "-progress", "pipe:1", "-i", str(path),
+                        "-map", "0:v:0", "-c", "copy", "-f", "null", "-"], capture_output=True, text=True)
+    counts = re.findall(r"^frame=(\d+)", p.stdout, re.M)
+    return int(counts[-1]) if p.returncode == 0 and counts else -1
+
+
+def available_memory() -> int | None:
+    """Physical memory free right now, in bytes (psutil if present, else the OS directly)."""
+    try:
+        import psutil
+        return int(psutil.virtual_memory().available)
+    except ImportError:
+        pass
+    if os.name == "nt":
+        import ctypes
+
+        class MEMORYSTATUSEX(ctypes.Structure):
+            _fields_ = [("dwLength", ctypes.c_ulong), ("dwMemoryLoad", ctypes.c_ulong),
+                        ("ullTotalPhys", ctypes.c_ulonglong), ("ullAvailPhys", ctypes.c_ulonglong),
+                        ("ullTotalPageFile", ctypes.c_ulonglong), ("ullAvailPageFile", ctypes.c_ulonglong),
+                        ("ullTotalVirtual", ctypes.c_ulonglong), ("ullAvailVirtual", ctypes.c_ulonglong),
+                        ("ullAvailExtendedVirtual", ctypes.c_ulonglong)]
+        st = MEMORYSTATUSEX()
+        st.dwLength = ctypes.sizeof(MEMORYSTATUSEX)
+        if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(st)):
+            return int(st.ullAvailPhys)
+        return None
+    try:
+        with open("/proc/meminfo") as fh:
+            for line in fh:
+                if line.startswith("MemAvailable:"):
+                    return int(line.split()[1]) * 1024
+    except OSError:
+        pass
+    return None
+
+
+def auto_workers(W, H, plate_size) -> tuple[int, str]:
+    """As many workers as the cores allow and the free memory holds. Each worker keeps its
+    interpreter and scene (~0.6 GB), up to three plates, and an x264 encoder's lookahead."""
+    cpus = max(1, (os.cpu_count() or 2) - 1)
+    free = available_memory()
+    if not free:
+        return cpus, "free memory unknown"
+    per = 0.6e9 + 3 * plate_size[0] * plate_size[1] * 3 + W * H * 1.5 * 48
+    n = max(1, min(cpus, int(free * 0.7 / per)))
+    return n, f"{free / 1e9:.1f} GB free, ~{per / 1e9:.1f} GB per worker"
 
 
 def _plates_job(slot):
@@ -524,9 +581,11 @@ def run(cfg, cfg_path, scale=1.0, workers=None, first_year=None, last_year=None,
     assets.build_all(cfg, data)
     from .globe import prepare as prepare_globe
     prepare_globe(cfg)
-    workers = workers or max(1, (os.cpu_count() or 2) - 1)
 
     _init(str(cfg_path), W, H, slots)
+    if not workers:
+        workers, why = auto_workers(W, H, _G["spec"].size)
+        print(f"  {workers} workers ({why})")
     firsts = {}
     for s in slots:
         firsts.setdefault(_sig(_G["data"], _G["scene"], s), s)
@@ -552,13 +611,24 @@ def run(cfg, cfg_path, scale=1.0, workers=None, first_year=None, last_year=None,
         b = by_year[ys[min(len(ys) - 1, bisect.bisect_right(ys, last_year) - 1)]] if last_year is not None else slots[-1]
         lo = r.intro + a["start_frame"]
         hi = r.intro + b["start_frame"] + b["frames"]
-    n = max(1, min(workers * 2, (hi - lo) // 60 or 1))
+    # Chunks of a fixed size, named by their frame range, so the same render always cuts the
+    # same chunks whatever the worker count: a failed render resumes where it stopped.
+    chunk = int(mcfg(cfg).get("chunk_frames", 572))
+    n = max(1, math.ceil((hi - lo) / chunk))
     edges = np.linspace(lo, hi, n + 1).astype(int)
     ext = "mov" if codec == "prores" else "mp4"
-    jobs = [(int(edges[k]), int(edges[k + 1]), str(out / f"part_{k:03d}.{ext}"), codec) for k in range(n)]
-    print(f"  frames {lo}-{hi} of {total} ({(hi - lo) / r.fps / 60:.1f} min) in {n} chunks on {workers} workers")
-    with ProcessPoolExecutor(workers, initializer=_init, initargs=(str(cfg_path), W, H, slots)) as ex:
-        parts = list(ex.map(_encode_chunk, jobs))
+    tag = f"{W}x{H}_{codec}"
+    jobs = [(int(edges[k]), int(edges[k + 1]), str(out / f"part_{tag}_{edges[k]:06d}_{edges[k + 1]:06d}.{ext}"), codec)
+            for k in range(n)]
+    parts = [j[2] for j in jobs]
+    todo = [j for j in jobs if not (os.path.exists(j[2]) and frames_in(j[2]) == j[1] - j[0])]
+    print(f"  frames {lo}-{hi} of {total} ({(hi - lo) / r.fps / 60:.1f} min) in {n} chunks on {workers} workers"
+          + (f"; {n - len(todo)} chunks already done" if len(todo) < n else ""))
+    if todo:
+        with ProcessPoolExecutor(min(workers, len(todo)), initializer=_init,
+                                 initargs=(str(cfg_path), W, H, slots)) as ex:
+            for k, _ in enumerate(ex.map(_encode_chunk, todo), 1):
+                print(f"    chunks {n - len(todo) + k}/{n}")
     listing = out / "parts.txt"
     listing.write_text("".join(f"file '{pathlib.Path(p).resolve().as_posix()}'\n" for p in parts), encoding="utf8")
     name = "controglobe_motion" + ("" if (lo, hi) == (0, total) else f"_{lo}_{hi}")

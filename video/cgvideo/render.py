@@ -113,8 +113,7 @@ class Scene:
         self.land = gpd.read_file(mesh, layer="view_land").geometry.iloc[0]
         self.lakes = gpd.read_file(mesh, layer="view_lakes").geometry.iloc[0]
         self.rivers = gpd.read_file(mesh, layer="view_rivers").geometry.iloc[0]
-        self.coast_buf = self.land.boundary.buffer(600)
-        shapely.prepare(self.coast_buf)
+        self._coast_buf = None  # built on first use: only map drawing needs it, and it is heavy
         self.places = []
         for p in data.places:
             x, y = geo.project_points(cfg, [float(p["lon"])], [float(p["lat"])])
@@ -134,6 +133,14 @@ class Scene:
             if p.get("kind") in LIGHT_KINDS:
                 rgb = mix(rgb, "#ffffff", float(st.get("territory_lighten", 0.45)))
             self.fill[pid] = rgb
+
+    @property
+    def coast_buf(self):
+        """The coastline widened a little, to keep country borders from being drawn along it."""
+        if self._coast_buf is None:
+            self._coast_buf = self.land.boundary.buffer(600)
+            shapely.prepare(self._coast_buf)
+        return self._coast_buf
 
     def places_for(self, year: int) -> list[dict]:
         return [p for p in self.places if p["start"] <= year <= p["end"]]
