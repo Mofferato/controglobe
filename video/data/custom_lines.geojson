@@ -1,0 +1,16 @@
+{
+  "type": "FeatureCollection",
+  "name": "custom_lines",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Tuwayq escarpment", "kind": "escarpment", "note": "approximate trace; refine in QGIS against a hillshade"},
+      "geometry": {"type": "LineString", "coordinates": [[45.2, 26.4], [45.85, 25.5], [46.2, 24.6], [46.25, 23.6], [46.0, 22.5], [45.6, 21.4], [45.2, 20.4]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Wadi al-Batin", "kind": "wadi", "note": "approximate trace; the natural western edge of Kuwait"},
+      "geometry": {"type": "LineString", "coordinates": [[45.3, 27.9], [45.97, 28.43], [46.6, 28.95], [47.2, 29.35], [47.6, 29.6]]}
+    }
+  ]
+}

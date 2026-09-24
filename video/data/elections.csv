@@ -1,0 +1,64 @@
+# Presidential elections, every fourth year from 1788. The winner and party are canon (the
+# president inaugurated the following year); the popular-vote shares are inferred placeholders.
+# results: party share|party share|... with the winner first.
+year,winner,party,results,note,source
+1788,Abd al-Rahman al-Hashimi,Non-partisan,Non-partisan 100.0,unanimous electoral vote,winner canon; vote shares inferred
+1792,Abd al-Rahman al-Hashimi,Non-partisan,Non-partisan 100.0,unanimous electoral vote,winner canon; vote shares inferred
+1796,Yusuf al-Basri,Ittihadi,Ittihadi 56.4|Jumhuri 40.1|Other 3.5,,winner canon; vote shares inferred
+1800,Tariq ibn Jaffar,Jumhuri,Jumhuri 53.8|Ittihadi 45.3|Other 0.9,,winner canon; vote shares inferred
+1804,Tariq ibn Jaffar,Jumhuri,Jumhuri 54.6|Ittihadi 41.2|Other 4.2,,winner canon; vote shares inferred
+1808,Dawud al-Madani,Jumhuri,Jumhuri 52.7|Ittihadi 44.7|Other 2.6,,winner canon; vote shares inferred
+1812,Dawud al-Madani,Jumhuri,Jumhuri 53.3|Ittihadi 44.2|Other 2.5,,winner canon; vote shares inferred
+1816,Hamza al-Qasimi,Jumhuri,Jumhuri 59.0|Ittihadi 36.6|Other 4.4,,winner canon; vote shares inferred
+1820,Hamza al-Qasimi,Jumhuri,Jumhuri 98.2|Other 1.8,unopposed,winner canon; vote shares inferred
+1824,Salim ibn Yusuf al-Basri,Jumhuri,Jumhuri (al-Basri) 31.4|Jumhuri 41.2|Jumhuri 13.1|Jumhuri 14.3,four-way split; decided by the Chamber,winner canon; vote shares inferred
+1828,Rashid al-Utaybi,Sha'bi,Sha'bi 58.0|Ahd 37.9|Other 4.1,,winner canon; vote shares inferred
+1832,Rashid al-Utaybi,Sha'bi,Sha'bi 60.4|Ahd 36.4|Other 3.2,,winner canon; vote shares inferred
+1836,Marwan al-Hilali,Sha'bi,Sha'bi 57.3|Ahd 40.5|Other 2.2,,winner canon; vote shares inferred
+1840,Ahmad al-Shammari,Ahd,Ahd 61.5|Sha'bi 37.2|Other 1.3,,winner canon; vote shares inferred
+1844,Nasir ad-Dini,Sha'bi,Sha'bi 59.8|Ahd 37.1|Other 3.1,,winner canon; vote shares inferred
+1848,Zahir al-Muhaydib,Ahd,Ahd 56.5|Sha'bi 40.1|Other 3.4,,winner canon; vote shares inferred
+1852,Sulayman al-Qurashi,Sha'bi,Sha'bi 60.4|Ahd 36.7|Other 2.9,,winner canon; vote shares inferred
+1856,Idris al-Anbari,Sha'bi,Sha'bi 58.6|Union 39.7|Other 1.7,,winner canon; vote shares inferred
+1860,Ibrahim al-Naqib,Union,Union 39.8|Sha'bi 29.5|Sha'bi (south) 18.1|Other 12.6,four-way race before secession,winner canon; vote shares inferred
+1864,Ibrahim al-Naqib,Union,Union 58.3|Sha'bi 37.2|Other 4.5,re-elected; assassinated 1865,winner canon; vote shares inferred
+1868,Musa al-Harbi,Union,Union 60.1|Sha'bi 36.1|Other 3.8,,winner canon; vote shares inferred
+1872,Musa al-Harbi,Union,Union 54.8|Sha'bi 41.8|Other 3.4,,winner canon; vote shares inferred
+1876,Adil al-Mutayri,Union,Union 55.2|Sha'bi 41.4|Other 3.4,,winner canon; vote shares inferred
+1880,Saud al-Ghamdi,Union,Union 57.4|Sha'bi 40.1|Other 2.5,,winner canon; vote shares inferred
+1884,Bashir al-Ifranji,Sha'bi,Sha'bi 55.1|Union 40.5|Other 4.4,,winner canon; vote shares inferred
+1888,Hamad al-Sudayri,Union,Union 60.5|Sha'bi 38.0|Other 1.5,,winner canon; vote shares inferred
+1892,Bashir al-Ifranji,Sha'bi,Sha'bi 51.3|Union 46.3|Other 2.4,,winner canon; vote shares inferred
+1896,Anwar al-Hasa,Union,Union 56.7|Sha'bi 41.7|Other 1.6,,winner canon; vote shares inferred
+1900,Anwar al-Hasa,Union,Union 59.3|Sha'bi 36.9|Other 3.8,re-elected; assassinated 1901,winner canon; vote shares inferred
+1904,Nura bint Salih al-Ghamdi,Progressive,Progressive 56.1|Sha'bi 40.3|Other 3.6,,winner canon; vote shares inferred
+1908,Fahd al-Juhani,Progressive,Progressive 57.0|Sha'bi 39.2|Other 3.8,,winner canon; vote shares inferred
+1912,Ilyas al-Marwani,Islah,Islah 41.8|Progressive 27.4|Union 23.2|Other 7.6,the Progressive split,winner canon; vote shares inferred
+1916,Ilyas al-Marwani,Islah,Islah 51.4|Asalah 45.8|Other 2.8,,winner canon; vote shares inferred
+1920,Sami al-Duwaish,Asalah,Asalah 61.1|Islah 35.2|Other 3.7,,winner canon; vote shares inferred
+1924,Nayif al-Suhaymi,Asalah,Asalah 59.7|Islah 36.0|Other 4.3,,winner canon; vote shares inferred
+1928,Riyad al-Qusaybi,Asalah,Asalah 55.2|Islah 43.1|Other 1.7,,winner canon; vote shares inferred
+1932,Faisal ar-Rashid,Islah,Islah 54.0|Asalah 42.9|Other 3.1,,winner canon; vote shares inferred
+1936,Faisal ar-Rashid,Islah,Islah 57.4|Asalah 41.4|Other 1.2,,winner canon; vote shares inferred
+1940,Faisal ar-Rashid,Islah,Islah 53.5|Asalah 42.7|Other 3.8,,winner canon; vote shares inferred
+1944,Faisal ar-Rashid,Islah,Islah 59.5|Asalah 36.7|Other 3.8,fourth term; died in office 1945,winner canon; vote shares inferred
+1948,Mansur al-Zahrani,Islah,Islah 53.7|Asalah 42.1|Other 4.2,,winner canon; vote shares inferred
+1952,Umar Haddad,Asalah,Asalah 53.9|Islah 43.6|Other 2.5,,winner canon; vote shares inferred
+1956,Umar Haddad,Asalah,Asalah 50.3|Islah 47.0|Other 2.7,,winner canon; vote shares inferred
+1960,Karim al-Sudairi,Islah,Islah 57.7|Asalah 41.0|Other 1.3,,winner canon; vote shares inferred
+1964,Ghalib al-Ifranji,Islah,Islah 57.4|Asalah 38.6|Other 4.0,,winner canon; vote shares inferred
+1968,Ghalib al-Ifranji,Islah,Islah 52.1|Asalah 45.9|Other 2.0,,winner canon; vote shares inferred
+1972,Rafiq al-Anazi,Asalah,Asalah 56.3|Islah 39.8|Other 3.9,,winner canon; vote shares inferred
+1976,Salman al-Ahsa'i,Islah,Islah 51.9|Asalah 46.7|Other 1.4,,winner canon; vote shares inferred
+1980,Badr al-Qahtani,Asalah,Asalah 50.3|Islah 48.9|Other 0.8,,winner canon; vote shares inferred
+1984,Badr al-Qahtani,Asalah,Asalah 52.1|Islah 46.6|Other 1.3,,winner canon; vote shares inferred
+1988,Hamid al-Otaibi,Asalah,Asalah 61.1|Islah 37.1|Other 1.8,,winner canon; vote shares inferred
+1992,Zayd al-Munajjid,Islah,Islah 56.5|Asalah 40.3|Other 3.2,,winner canon; vote shares inferred
+1996,Zayd al-Munajjid,Islah,Islah 52.8|Asalah 43.4|Other 3.8,,winner canon; vote shares inferred
+2000,Mishal al-Otaibi,Asalah,Asalah 60.1|Islah 36.0|Other 3.9,,winner canon; vote shares inferred
+2004,Mishal al-Otaibi,Asalah,Asalah 50.2|Islah 46.9|Other 2.9,,winner canon; vote shares inferred
+2008,Hakim al-Ifranji,Islah,Islah 60.8|Asalah 35.3|Other 3.9,,winner canon; vote shares inferred
+2012,Hakim al-Ifranji,Islah,Islah 56.6|Asalah 40.6|Other 2.8,,winner canon; vote shares inferred
+2016,Khalaf al-Mutayri,Asalah,Asalah 53.2|Islah 42.8|Other 4.0,,winner canon; vote shares inferred
+2020,Sulayman al-Awwad,Islah,Islah 58.3|Asalah 37.2|Other 4.5,,winner canon; vote shares inferred
+2024,Munira al-Bahrani,Islah,Islah 61.3|Asalah 37.5|Other 1.2,,winner canon; vote shares inferred

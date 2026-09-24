@@ -63,10 +63,14 @@ right-to-left text.
 | Caucasus | Caribbean |
 | Central Asia | Central America |
 | Indian Ocean islands, Macaronesia, South Atlantic | The Pacific |
+| Afghanistan | Siberia |
+| Siberia | Afghanistan |
 
-Exceptions: Iceland = Morocco, Greenland = Cyprus. Anatolia is Zagrosian ground, so Turkey is outside the African swap the way Egypt is outside the European one.
+Exceptions: Iceland = Morocco, Greenland = Cyprus. Afghanistan and Siberia trade places one for one: Afghanistan is
+the Abyssinian Empire's (later the Derg Union's) vast eastern hinterland, and Siberia is the independent, mountain-ringed
+kingdom that no empire held for long, the ground of the Siberian War. Anatolia is Zagrosian ground, so Turkey is outside the African swap the way Egypt is outside the European one.
 
-Unassigned: East Asia, northern Asia, mainland South-East Asia and Australia have no counterpart
+Unassigned: East Asia, the rest of northern Asia, mainland South-East Asia and Australia have no counterpart
 yet, and the world maps leave them grey. Proposals are welcome in the issue tracker.
 
 ## Rules
@@ -101,6 +105,15 @@ Every article carries Wikipedia-style **preview cards**: hovering, tapping or ta
 a section anchor or a marked term opens a summary card, drawn from data held in the same file.
 Cards for cross-article links carry a thumbnail; cards for a section of the current page are
 built from the page itself. See [CONTRIBUTING.md](CONTRIBUTING.md#preview-cards).
+
+## Video
+
+[`video/`](video/) builds the series' mapping videos from this canon, starting with
+*Alternate History of Arabia (in place of the United States), every year*: the Global Swap's
+borders drawn year by year on real coastlines, rendered with Python and finished in QGIS, GIMP
+and DaVinci Resolve, with Claude writing the data and driving the tools. It is separate from the
+encyclopedia (the site still has no build step and no dependencies); start at
+[`video/README.md`](video/README.md).
 
 ## Contributing
 

@@ -1,0 +1,14 @@
+# The ten eras of the Global Swap (timeline-of-the-global-swap.html). Each era is a chapter
+# of the video: a title card on its first year and a YouTube chapter mark.
+# seconds_per_year is the base pace before events add their dwell (config: pacing).
+era_id,name,start,end,seconds_per_year,color
+e1,Before the divergence,-500,-461,0.12,#8a7f6a
+e2,Antiquity and the Nabataean unification,-460,609,0.07,#b5654a
+e3,The caliphal centuries,610,1257,0.07,#6f9f6f
+e4,The Interregnum,1258,1496,0.06,#a39b86
+e5,The age of the crowns,1497,1762,0.22,#e58fa0
+e6,Revolution and expansion,1763,1860,0.55,#5d8ec4
+e7,"Servitude, industry and the partition of Europe",1861,1913,0.45,#c4705f
+e8,The world wars,1914,1944,0.45,#7a7f86
+e9,Arabia and the Derg Union,1945,1990,0.4,#b8423a
+e10,After the Cold War,1991,2026,0.4,#3f9fa3

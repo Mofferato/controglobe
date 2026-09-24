@@ -1,0 +1,12 @@
+# Generated: rebuild with build.py, never commit (the repository takes no binary files)
+build/
+output/
+cache/
+assets/
+.venv/
+__pycache__/
+*.pyc
+# Your machine's MCP paths
+.mcp.json
+# Reference-study downloads (integrations/reference): private notes, never committed
+/reference/

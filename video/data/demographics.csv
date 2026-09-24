@@ -1,0 +1,33 @@
+# 2025 state figures for the closing demographics maps. Canon: the national totals (424.6
+# million; religion 68% Islam, 11% Christianity, 3% Judaism, 2% Hindu and Buddhist, 14% none;
+# Sunni three quarters of Muslims, Shia concentrated in Mesopotamia, Sharqiyah, Lebanon and the
+# Yemeni states, Ibadi in Oman, Zaydi in Hodeidah; ancestry Brown 64, European Arabian 13,
+# Masri 11, Asian 6, African 4, Indigenous 2.3, Caucasian 1.8, Islander 0.9) and Hejaz as the
+# most populous state. The per-state split is inferred to fit them. pop_m is rescaled so the
+# states and the federal district sum to the canon total.
+state,pop_m,sunni,shia,ibadi,zaydi,christian,jewish,hindu_buddhist,none,brown,european,masri,asian,african,indigenous,caucasian,islander
+st_hejaz,41.0,58,4,0,0,14,1,2,21,58,20,12,5,3,1,0,0
+st_mesopotamia,38.5,30,44,0,0,8,1,1,16,78,8,4,4,3,2,1,0
+st_najd,31.0,62,2,0,0,15,1,1,19,62,22,6,4,2,4,0,0
+st_hodeidah,24.0,34,6,0,48,2,0,0,10,86,2,3,2,5,2,0,0
+st_aden,22.5,50,20,0,4,4,0,2,20,74,4,6,6,8,2,0,0
+st_damascus,21.5,58,6,0,0,12,4,1,19,72,9,10,4,2,1,1,0
+st_sharqiyah,20.5,36,34,0,0,8,0,4,18,62,12,6,12,4,3,1,0
+st_aleppo,19.0,60,4,0,0,14,3,1,18,76,9,6,4,2,1,2,0
+st_tihamah,18.5,48,2,0,0,26,0,1,23,46,34,12,3,4,1,0,0
+st_palestine,17.0,36,2,0,0,18,26,1,17,68,8,14,5,3,1,1,0
+st_kurdistan,15.5,62,10,0,0,10,2,0,16,80,6,3,3,2,4,2,0
+st_magan,14.0,40,6,0,0,10,1,16,27,40,6,8,38,6,2,0,0
+st_jordan,13.0,64,2,0,0,12,2,1,19,66,10,18,3,2,1,0,0
+st_euphrates,12.0,58,12,0,0,10,1,0,19,78,8,4,3,2,5,0,0
+st_phoenicia,11.5,40,8,0,0,30,3,1,18,78,7,6,4,2,1,2,0
+st_oman,11.0,22,6,48,0,4,0,6,14,70,5,4,12,6,3,0,0
+st_asir,10.5,70,2,0,0,8,0,0,20,80,6,5,2,2,5,0,0
+st_kuwait,9.5,40,30,0,0,8,0,4,18,60,10,8,16,4,2,0,0
+st_hadhramout,9.0,72,6,0,0,4,0,2,16,76,3,4,5,8,4,0,0
+st_lebanon,8.5,22,28,0,0,32,2,1,15,80,6,6,4,2,1,1,0
+st_shammar,7.5,68,4,0,0,10,0,0,18,70,12,5,2,2,9,0,0
+st_adharbaijan,12.0,20,40,0,0,14,2,0,24,20,4,2,3,1,4,66,0
+st_socotra,0.25,76,4,0,0,4,0,0,16,70,2,2,2,4,2,0,18
+st_qumur,1.1,70,4,0,0,8,0,2,16,20,4,2,6,10,0,0,58
+dc,3.0,52,6,0,0,10,2,2,28,62,12,10,8,5,1,1,1

@@ -1,0 +1,28 @@
+# Named region lists for control.csv. Members may name other groups with @.
+group_id,members,notes
+levant,latakia tartus idlib aleppo hama homs palmyra beirut bekaa damascus hawran galilee quds gaza negev amman karak aqaba azraq,
+jazira,raqqa deir jazira,the Euphrates state
+kurd,sinjar mosul dohuk erbil sulaymaniyah kirkuk,the Kurdistan state
+meso,tikrit anbar rutba baghdad diyala karbala najaf_desert kut nasiriyah basra,the Mesopotamia state
+north_arabia,tabuk jawf arar hail nafud,the Shammar state
+hejaz,ula madinah jeddah makkah_taif,
+tihamah,yanbu qunfudhah jizan,
+asir,abha bisha,
+najd,qassim riyadh dawadmi kharj dawasir rub_w,
+east,hafar ahsa qatif jubail bahrain qatar rub_e,the Sharqiyah state
+lower_gulf,abudhabi liwa dubai,the Magan state
+oman,musandam sohar nizwa muscat sur wusta,
+hadhramawt,rub_s dhofar mahra seiyun mukalla shabwa,
+yemen_high,saada sanaa hudaydah,
+yemen_south,taiz aden abyan marib najran,
+azer,baku shamakhi ganja lankaran,
+caucasus,kartli armenia dagestan,
+anatolia,anatolia_c aegean adana anatolia_se van erzurum trabzon,
+iran,tabriz kermanshah hamadan tehran gilan khuzestan isfahan fars kerman hormozgan yazd khorasan makran,
+zagros,@anatolia @iran,
+masr,cairo sinai eastern_desert upper_egypt western_desert,
+sudan,sudan_n khartoum,
+horn_core,ethiopia_n ethiopia_c afar,
+horn_coast,eritrea djibouti,
+barbaria,somaliland puntland,
+arabia,@levant @jazira @kurd @meso kuwait @north_arabia @hejaz @tihamah @asir @najd @east @lower_gulf @oman @hadhramawt @yemen_high @yemen_south socotra,the whole Union on the mainland
