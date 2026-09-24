@@ -253,8 +253,14 @@ from `captions.srt` as subtitles.
   `cg_resolve_build.py` nor the Resolve MCP server can drive it. Use the Lua build instead:
   `build.py timeline` writes `output/resolve_build.lua`; copy it to
   `%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\`, open a
-  project, and run it from Workspace > Scripts. On free Resolve 21.0 and earlier the Python
-  script still works from that menu (set `CG_VIDEO_DIR` first).
+  project, and run it from Workspace > Scripts. It reports in a window whose text you can
+  copy (the free edition's Lua has no `io` library, so it cannot write a log file). If that
+  edition refuses scripts the project itself (on free 21.1 `Resolve()` returns nil), the
+  window gives the manual route, which needs no scripting: a new project set to 30 fps
+  *before* anything is imported, drag `output/sequence` into the Media Pool (one clip),
+  Create New Timeline Using Selected Clips, then right-click the timeline > Timelines >
+  Import > Timeline Markers from EDL with `output/markers.edl`. On free Resolve 21.0 and
+  earlier the Python script still works from that menu (set `CG_VIDEO_DIR` first).
 - **`sequence` makes copies, not links**: the drive does not support hard links (exFAT or
   FAT32); use an NTFS drive or expect about 1 GB per 15,000 frames at 1080p.
 - **A region "shares a seed cell" or "has no cells"**: two seeds are too close for the mesh;

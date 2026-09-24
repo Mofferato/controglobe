@@ -94,7 +94,10 @@ A task is not done until `check` passes and you have looked at a preview of it.
 - **GIMP** (`gimp-mcp`): thumbnails, flags, a hand-finished hero frame. Batch finishing is
   `integrations/gimp/cg_gimp_finish.py`.
 - **DaVinci Resolve** (`davinci-resolve-mcp`): assemble and adjust the edit. The deterministic
-  first build is `integrations/resolve/cg_resolve_build.py`.
+  first build is `integrations/resolve/cg_resolve_build.py` (Studio), or
+  `output/resolve_build.lua` from `build.py timeline` (free edition: Lua only, no `io`
+  library, and from 21.1 possibly no project access at all, in which case it prints the
+  manual import with `output/markers.edl`). The Resolve MCP server cannot reach free 21.1.
 - **Blender** (optional): 3D terrain or globe camera moves over a rendered frame.
 
 Ask before anything that overwrites work in those applications (an existing Resolve timeline,
