@@ -133,7 +133,7 @@ start the application and its plug-in first.
 
 | Server | Install | Start it |
 |---|---|---|
-| **QGIS** ([jjsantos01/qgis_mcp](https://github.com/jjsantos01/qgis_mcp)) | Clone it; copy `qgis_mcp_plugin` into `%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins`; restart QGIS; enable "QGIS MCP" | Plugins > QGIS MCP > QGIS MCP > Start Server |
+| **QGIS** ([nkarasiak/qgis-mcp](https://github.com/nkarasiak/qgis-mcp)) | In QGIS: Plugins > Manage and Install Plugins > "QGIS MCP" (by Nicolas Karasiak). The server needs no clone: `claude mcp add qgis -- uvx --python 3.12 --from https://github.com/nkarasiak/qgis-mcp/archive/refs/heads/main.zip qgis-mcp-server` | Start the server from the plugin's toolbar button. Its socket speaks length-prefixed JSON, so it only works with its own server, not with jjsantos01/qgis_mcp's (that pairing connects, then every command comes back empty) |
 | **GIMP** ([maorcc/gimp-mcp](https://github.com/maorcc/gimp-mcp)) | Clone it; copy `gimp-mcp-plugin.py` into `%APPDATA%\GIMP\3.2\plug-ins\gimp-mcp-plugin\`; restart GIMP | Open any image, Tools > MCP > Start MCP Server |
 | **DaVinci Resolve** ([samuelgursky/davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp)) | With Resolve open: `npx davinci-resolve-mcp setup`, or clone and `python install.py` (it writes the Claude Code entry for you) | Studio: Preferences > General > External scripting using: Local. Free: run its bridge from Workspace > Scripts |
 | **Blender** ([ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp), optional) | Install its `addon.py` in Blender and enable it | 3D view sidebar > BlenderMCP > Connect |
