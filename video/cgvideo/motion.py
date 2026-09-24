@@ -56,7 +56,7 @@ DEFAULTS = {
     "outro_seconds": 8.0,      # the close between the last year and the finale
     "outro_zoom": 0.9,         # the close pulls the camera back to this share of its last zoom
     "finale_seconds": 9.0,
-    "end_card_seconds": 6.0,
+    "end_card_seconds": 10.0,  # long enough for YouTube's end-screen elements (5 to 20 s)
     "plate_oversample": 1.5,
     "max_plate_megapixels": 40,
     "shake_px": 5,
@@ -964,7 +964,9 @@ def auto_workers(W, H, plate_size) -> tuple[int, str]:
     free = available_memory()
     if not free:
         return cpus, "free memory unknown"
-    per = 0.6e9 + 3 * plate_size[0] * plate_size[1] * (3 + 4) + W * H * 1.5 * 48
+    # 0.8 GB of interpreter, scene and per-frame working arrays: a render sized closer than that
+    # was stopped for want of memory on a 16 GB PC with a browser and chat apps open
+    per = 0.8e9 + 3 * plate_size[0] * plate_size[1] * (3 + 4) + W * H * 1.5 * 48
     n = max(1, min(cpus, int(free * 0.7 / per)))
     return n, f"{free / 1e9:.1f} GB free, ~{per / 1e9:.1f} GB per worker"
 

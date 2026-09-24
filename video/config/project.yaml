@@ -111,6 +111,12 @@ style:
     font: null                # path to a .ttf/.otf; null uses DejaVu Sans from matplotlib
     font_bold: null
 
+publish:                      # the YouTube upload kit (output/youtube/, see PUBLISHING.md)
+  site: https://mofferato.github.io/controglobe/
+  repo: https://github.com/Mofferato/controglobe
+  community: null             # an invite link for the team (a Discord server, say), once there is one
+  hashtags: ["#AlternateHistory", "#Mapping", "#Controglobe"]
+
 paths:
   data: data
   cache: cache

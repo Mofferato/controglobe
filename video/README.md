@@ -42,6 +42,10 @@ What the viewer should feel is the rhyme:
 | **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | A Controglobe logo sting, the premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, and at each era a push-in that settles, a focus pull and a sweep of the era's colour under a frosted-glass title card; animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), and an infobox with the Qumur inset docked at its foot: year, flag and Great Seal, head of state with portrait, term and party, events (earlier years' still on screen carry their year), population and the largest cities. Every election year holds (`pacing.election_seconds`) while its result counts up and the winner is named. After 2026 a close: the infobox slides away into a dark gradient, cinema bars close in and the years, the Union's name and its motto rise; then the map dims and the demographics follow in one continuous shot (population by state, religion and ancestry by county, the largest cities) before an end card with the logo. A soundtrack made in code runs under all of it (see Sound). |
 | **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
 
+To YouTube: [PUBLISHING.md](PUBLISHING.md) walks through the upload (title, description and
+chapters, thumbnail, subtitles, end screen, cards, visibility) and the post that tells the
+mapping community about the video; the words to paste are in `output/youtube/`.
+
 Into Resolve: a whole `build.py motion` render ends by writing the Resolve build script for
 that cut and installing it in Resolve's Scripts menu; in Resolve, open a project and run
 **Workspace > Scripts > cg_resolve_build**. It sets the project to 30 fps, imports the cut
@@ -180,7 +184,7 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py fetch` | Downloads Natural Earth land, islands, rivers, lakes, bathymetry and shaded relief (about 90 MB) into `cache/` |
 | `python build.py mesh` | Builds `build/mesh.gpkg`: cells, regions, seeds, frame layers |
 | `python build.py check` | Data integrity and canon tests; writes `output/qa/report.md` |
-| `python build.py timeline` | `output/timeline.json`, `captions.srt`, `markers.csv`, `youtube_chapters.txt`, `narration_budget.csv` |
+| `python build.py timeline` | `output/timeline.json`, `captions.srt`, `markers.csv`, `youtube_chapters.txt`, `narration_budget.csv`, and the upload kit in `output/youtube/` (title, description with chapters, tags, pinned comment, checklist: see [PUBLISHING.md](PUBLISHING.md)) |
 | `python build.py preview 1776 -262` | Renders single years to `output/preview` |
 | `python build.py sheet` | `output/qa/contact_sheet.png` of era starts and canon checks |
 | `python build.py render [--from Y --to Y] [--scale 0.5] [--workers N]` | One still per year in `output/frames` |

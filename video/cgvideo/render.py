@@ -121,6 +121,11 @@ class Scene:
         except Exception:
             pass
         self._relief = {}
+        # realms that never hold ground on the map themselves, only through possessions
+        # (Ifriqiya, whose home is off the map, holding Qubrus)
+        held = {data.polity_ids[int(p)] for p in np.unique(data.matrix) if p >= 0}
+        self.offmap_realms = {p["polity_id"] for p in data.polities
+                              if not p.get("parent") and p["polity_id"] not in held}
         self.places = []
         for p in data.places:
             x, y = geo.project_points(cfg, [float(p["lon"])], [float(p["lat"])])
@@ -436,8 +441,13 @@ def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: 
             if area < float(st["label_min_area_km2"]):
                 continue
             px = min(92 * s, max(24 * s, 0.045 * math.sqrt(area) * s))
-            try_label(g, _label_text(scene, t, True), px, "bold", "normal", 0.92,
-                      track=bool(st.get("label_tracking", True)))
+            text = _label_text(scene, t, True)
+            kids = [pid for pid in polities if pid != t and scene.data.top(pid) == t]
+            if t in scene.offmap_realms and len(kids) == 1:
+                # a realm whose own land is off the map, seen through one possession, is named
+                # by it with the realm in brackets, as a map writes "Greenland (Denmark)"
+                text = f"{_label_text(scene, kids[0], True)} ({text})"
+            try_label(g, text, px, "bold", "normal", 0.92, track=bool(st.get("label_tracking", True)))
     elif st.get("show_sub_labels", True):
         subs = [(pid, g) for pid, g in polities.items() if scene.data.top(pid) != pid]
         for pid, g in sorted(subs, key=lambda kv: -kv[1].area):

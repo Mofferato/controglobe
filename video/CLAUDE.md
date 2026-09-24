@@ -23,6 +23,13 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   then the Derg Union's, then Ethiopia's eastern hinterland; Siberia is independent, and the
   Siberian War (2001-2021) is Arabia's twenty-year war there. It is in the README, the hub
   pages and the timeline.
+- Qubrus (Cyprus) carries Greenland's history under Ifriqiya, the kingdom on Tunisian ground
+  that carries Denmark's: an independent nation until 1721, when an Ifriqiyan mission and
+  trading station make it a colony; garrisoned by Arabia at Ifriqiya's request from 1941 to the
+  war's end; Arabia's offer to buy it refused in 1946; a county of Ifriqiya from 1953; home rule
+  in 1979 and self-rule in 2009. The map labels it "QUBRUS (IFRIQIYA)" (render.py: a realm off
+  the map seen through one possession). It is in the README, the hub pages, the Union's page,
+  both atlases and the timeline, in both editions.
 
 ## Sources of truth, in order
 

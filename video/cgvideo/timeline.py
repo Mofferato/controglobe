@@ -161,6 +161,8 @@ def write(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
     with open(out / "youtube_chapters.txt", "w", encoding="utf8") as fh:
         for f, title in chapters(slots, S, fps):
             fh.write(f"{timecode(f, fps)} {title}\n")
+    from .publish import write as write_upload_kit
+    write_upload_kit(cfg, slots, S, fps)   # output/youtube/: title, description, tags, pinned comment
 
     wpm = 150
     with open(out / "narration_budget.csv", "w", newline="", encoding="utf8") as fh:
