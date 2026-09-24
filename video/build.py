@@ -13,6 +13,7 @@
   python build.py export-gis             build/history.gpkg for QGIS
   python build.py motion [--scale 1]     the finished moving cut (intro, camera, wars, infobox, finale)
   python build.py thumbnail              YouTube thumbnail: countryball, flag map, "SINCE WHEN?"
+  python build.py resolve [--media ...]  the Resolve build script, installed as Workspace > Scripts > cg_resolve_build
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
 """
 
@@ -59,6 +60,9 @@ def main(argv=None) -> int:
     p.add_argument("--prores", action="store_true", help="ProRes 422 .mov for editing in Resolve")
     p = sub.add_parser("thumbnail")
     p.add_argument("--text", default="SINCE WHEN?")
+    p = sub.add_parser("resolve", help="write and install the Resolve build script (Workspace > Scripts > cg_resolve_build)")
+    p.add_argument("--media", choices=["auto", "motion", "sequence"], default="auto",
+                   help="auto: the motion cut if one is rendered, else the yearly stills")
     p = sub.add_parser("all")
     p.add_argument("--workers", type=int, default=None)
     p.add_argument("--audio", default=None)
@@ -108,6 +112,16 @@ def run(step: str, cfg: dict, args) -> int:
                    first_year=Y.parse(args.first) if args.first else None,
                    last_year=Y.parse(args.last) if args.last else None,
                    frames=args.frame, codec="prores" if args.prores else "h264")
+        return 0
+
+    if step == "resolve":
+        from cgvideo import timeline
+        slots, meta = timeline.build(cfg, data)
+        what = timeline.write_resolve_lua(cfg, slots, meta, media=args.media)
+        installed = timeline.install_resolve_script(cfg)
+        print(f"  built from {what}")
+        print(f"  installed as {installed}" if installed else
+              "  Resolve not found: copy output/resolve_build.lua into its Scripts/Utility folder")
         return 0
 
     if step == "thumbnail":

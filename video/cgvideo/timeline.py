@@ -163,7 +163,9 @@ def write(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
             secs = sum(s.frames for s in ss) / fps
             w.writerow([era["era_id"], era["name"], timecode(ss[0].start_frame, fps), round(secs, 1),
                         int(secs / 60 * wpm), sum(len(s.events) for s in ss)])
-    write_resolve_lua(cfg, slots, meta)
+    what = write_resolve_lua(cfg, slots, meta)
+    installed = install_resolve_script(cfg)
+    print(f"  Resolve build script: {what}" + (f"; installed as {installed}" if installed else ""))
     print(f"  {len(slots)} years, {meta['total_frames']} frames, {timecode(meta['total_frames'], fps)} at {fps} fps"
           + (f" (base pace scaled x{meta['scale']:.2f})" if meta["scale"] != 1 else ""))
     return slots, meta
@@ -173,8 +175,48 @@ def _lua_str(s: str) -> str:
     return '"' + str(s).replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ") + '"'
 
 
-def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict) -> None:
+def motion_cut(cfg: dict):
+    """The finished motion cut, if `build.py motion` has rendered one (ProRes preferred)."""
+    out = paths(cfg).output / "motion"
+    for name in ("controglobe_motion.mov", "controglobe_motion.mp4"):
+        if (out / name).exists():
+            return out / name
+    return None
+
+
+def resolve_scripts_dir():
+    """Resolve's per-user Scripts > Utility folder, if Resolve is installed on this machine."""
+    import os
+    import pathlib
+    import sys
+    if sys.platform == "win32":
+        base = pathlib.Path(os.environ.get("APPDATA", "")) / "Blackmagic Design" / "DaVinci Resolve" / "Support"
+    elif sys.platform == "darwin":
+        base = pathlib.Path.home() / "Library" / "Application Support" / "Blackmagic Design" / "DaVinci Resolve"
+    else:
+        base = pathlib.Path.home() / ".local" / "share" / "DaVinciResolve"
+    return base / "Fusion" / "Scripts" / "Utility" if base.exists() else None
+
+
+def install_resolve_script(cfg: dict):
+    """Copy output/resolve_build.lua into Resolve's Scripts menu as cg_resolve_build."""
+    import shutil
+    target = resolve_scripts_dir()
+    src = paths(cfg).output / "resolve_build.lua"
+    if target is None or not src.exists():
+        return None
+    target.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, target / "cg_resolve_build.lua")
+    return target / "cg_resolve_build.lua"
+
+
+def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict, media: str = "auto") -> str:
     """output/resolve_build.lua: the Resolve build as a Lua script, with the data baked in.
+
+    media: "motion" builds from the finished motion cut (output/motion/controglobe_motion.*),
+    with the markers moved past its opening and a marker on the opening and the finale;
+    "sequence" builds from the image sequence of yearly stills; "auto" takes the motion cut
+    when one has been rendered. Returns the media it used.
 
     What the free edition allows (measured on DaVinci Resolve 21.1.0.14, free):
       - Python scripts do not run at all; Lua scripts from Workspace > Scripts do.
@@ -192,17 +234,49 @@ def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict) -> None:
     """
     P = paths(cfg)
     fps = int(meta["fps"])
-    seq_dir = P.sequence.resolve().as_posix()
-    seq = (P.sequence / "frame_%06d.png").resolve().as_posix()
-    edl = (P.output / "markers.edl").resolve().as_posix()
     log = (P.output / "resolve_build.log").resolve().as_posix()
+    movie = motion_cut(cfg) if media in ("auto", "motion") else None
+    if media == "motion" and movie is None:
+        raise SystemExit("no motion cut yet: run `python build.py motion` first")
     marks = _markers(slots)
-    total = int(meta["total_frames"])
+    if movie is not None:
+        from .finale import Finale
+        from .motion import mcfg
+        m = mcfg(cfg)
+        intro = int(round((m["intro_text_seconds"] + m["globe_seconds"]) * fps))
+        main = slots[-1].start_frame + slots[-1].frames
+        finale = Finale.length(cfg, fps)
+        total = intro + main + finale
+        marks = ([(0, "Purple", "Opening", "The premise card and the globe", intro)]
+                 + [(f + intro, c, n, note, d) for f, c, n, note, d in marks]
+                 + [(intro + main, "Purple", "Finale: Arabia in 2025",
+                     "Population, religion, ancestry, largest cities, end card", finale)])
+        path = movie.resolve().as_posix()
+        edl_path = P.output / "markers_motion.edl"
+        what, base_name = f"the motion cut {movie.name}", "Controglobe motion v"
+        import_lines = [f"  local items = mp:ImportMedia({{{_lua_str(path)}}})"]
+        step2 = [f"2. Media page: drag {path} into the Media Pool."]
+    else:
+        seq_dir = P.sequence.resolve().as_posix()
+        seq = (P.sequence / "frame_%06d.png").resolve().as_posix()
+        total = int(meta["total_frames"])
+        edl_path = P.output / "markers.edl"
+        what, base_name = "the yearly stills (output/sequence)", "Controglobe v"
+        import_lines = [
+            f"  local items = mp:ImportMedia({{{{FilePath = {_lua_str(seq)}, StartIndex = 1, EndIndex = {total}}}}})",
+            "  if not items or #items == 0 then",
+            '    say("Frame-pattern import returned nothing; importing the folder instead.")',
+            "    local ms = r:GetMediaStorage()",
+            f"    items = ms and ms:AddItemListToMediaPool({{{_lua_str(seq_dir)}}})",
+            "  end",
+        ]
+        step2 = [f"2. Media page: drag the folder {seq_dir} into the Media Pool. It arrives as one clip."]
+    edl = edl_path.resolve().as_posix()
     manual = "\n".join([
         "Manual import (no scripting needed, about a minute):",
         f"1. Make a new project. File > Project Settings > Master Settings: timeline frame rate {fps}.",
         "   Set it BEFORE importing anything: Resolve locks it once a timeline exists.",
-        f"2. Media page: drag the folder {seq_dir} into the Media Pool. It arrives as one clip.",
+        *step2,
         f"3. Right-click the clip > Clip Attributes > Video > Video Frame Rate: {fps}.",
         "4. Right-click the clip > Create New Timeline Using Selected Clips.",
         "5. Right-click the new timeline in the Media Pool > Timelines > Import >",
@@ -268,6 +342,7 @@ def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict) -> None:
         "  local project = pm and pm:GetCurrentProject()",
         '  if not project then say("RESULT: no project is open. Open or create one, then run this again.") return end',
         '  say("Project: " .. tostring(project:GetName()))',
+        f'  say("Building from {what}.")',
         '  local rate = tonumber(project:GetSetting("timelineFrameRate"))',
         f"  if rate ~= {fps} then",
         f'    if project:SetSetting("timelineFrameRate", "{fps}") then',
@@ -279,25 +354,24 @@ def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict) -> None:
         "    end",
         "  end",
         "  local mp = project:GetMediaPool()",
-        f"  local items = mp:ImportMedia({{{{FilePath = {_lua_str(seq)}, StartIndex = 1, EndIndex = {total}}}}})",
+        *import_lines,
         "  if not items or #items == 0 then",
-        '    say("Frame-pattern import returned nothing; importing the folder instead.")',
-        "    local ms = r:GetMediaStorage()",
-        f"    items = ms and ms:AddItemListToMediaPool({{{_lua_str(seq_dir)}}})",
-        "  end",
-        "  if not items or #items == 0 then",
-        '    say("RESULT: the frames did not import. Run `python build.py sequence` first.")',
+        '    say("RESULT: the media did not import. Render it first (python build.py motion, or sequence).")',
         "    return",
         "  end",
         '  say("Imported " .. #items .. " clip(s).")',
-        "  -- An image sequence comes in at 24 fps whatever the timeline runs at: set the clip's",
-        "  -- own rate before it goes on a timeline (Resolve locks it after).",
+        "  -- An image sequence comes in at 24 fps whatever the timeline runs at, so the clip's own",
+        "  -- rate is set before it goes on a timeline (Resolve locks it after); a movie keeps its own.",
         "  for i, item in ipairs(items) do",
         '    local before = try(function() return item:GetClipProperty("FPS") end)',
-        f'    local changed = try(function() return item:SetClipProperty("FPS", "{fps}") end)',
-        '    local after = try(function() return item:GetClipProperty("FPS") end)',
-        '    say("Clip frame rate: " .. tostring(before) .. " -> " .. tostring(after)',
-        '        .. (changed and "" or " (Resolve refused the change)"))',
+        f"    if tonumber(before) ~= {fps} then",
+        f'      local changed = try(function() return item:SetClipProperty("FPS", "{fps}") end)',
+        '      local after = try(function() return item:GetClipProperty("FPS") end)',
+        '      say("Clip frame rate: " .. tostring(before) .. " -> " .. tostring(after)',
+        '          .. (changed and "" or " (Resolve refused the change)"))',
+        "    else",
+        '      say("Clip frame rate: " .. tostring(before))',
+        "    end",
         "  end",
         "  -- A fresh name each run, so a second run never collides with the first.",
         "  local taken = {}",
@@ -305,8 +379,8 @@ def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict) -> None:
         "    local t = project:GetTimelineByIndex(i)",
         "    if t then taken[t:GetName()] = true end",
         "  end",
-        '  local name, v = "Controglobe v1", 1',
-        '  while taken[name] do v = v + 1 name = "Controglobe v" .. v end',
+        f'  local name, v = "{base_name}1", 1',
+        f'  while taken[name] do v = v + 1 name = "{base_name}" .. v end',
         "  local tl = mp:CreateTimelineFromClips(name, items)",
         '  if not tl then say("RESULT: Resolve would not make the timeline.") return end',
         "  project:SetCurrentTimeline(tl)",
@@ -346,7 +420,8 @@ def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict) -> None:
         'if STUDIO then show(table.concat(report, "\\n")) end',
     ]
     (P.output / "resolve_build.lua").write_text("\n".join(lines) + "\n", encoding="utf8")
-    write_marker_edl(cfg, marks, meta)
+    write_marker_edl(cfg, marks, meta, edl_path)
+    return what
 
 
 def _markers(slots: list[Slot]) -> list[tuple]:
@@ -374,7 +449,7 @@ def _markers(slots: list[Slot]) -> list[tuple]:
     return marks
 
 
-def write_marker_edl(cfg: dict, marks: list[tuple], meta: dict) -> None:
+def write_marker_edl(cfg: dict, marks: list[tuple], meta: dict, dest=None) -> None:
     """output/markers.edl: the same markers for Resolve's own importer, no scripting needed.
 
     In Resolve: Media Pool, right-click the timeline > Timelines > Import > Timeline Markers
@@ -395,7 +470,7 @@ def write_marker_edl(cfg: dict, marks: list[tuple], meta: dict) -> None:
         out.append(f"{n:03d}  001      V     C        {tc(f)} {tc(f + 1)} {tc(f)} {tc(f + 1)}  ")
         out.append(f" |C:ResolveColor{color} |M:{text} |D:{dur}")
         out.append("")
-    (paths(cfg).output / "markers.edl").write_text("\n".join(out), encoding="utf8")
+    (dest or paths(cfg).output / "markers.edl").write_text("\n".join(out), encoding="utf8")
 
 
 def load(cfg: dict) -> tuple[list[dict], dict]:

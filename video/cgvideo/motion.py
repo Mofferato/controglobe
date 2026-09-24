@@ -101,16 +101,29 @@ def metres_per_px(cfg, H):
     return float(cfg["view"]["height_km"]) * 1000.0 / H
 
 
-def plate_extent(cfg, cam: Camera, W, H):
+def views_extent(cfg, keys, W, H, margin=0.1):
+    """Bounding box, in projected metres, of every keyframe's screen rectangle, rotation
+    included, grown by `margin` of its size for the eased moves between keyframes and the
+    shake. keys: (centre_x, centre_y, zoom, rotation_radians). The plates and the drawn
+    coastlines (mesh.drawn_extent) both come from this, so they always agree."""
     m = mcfg(cfg)
     ax, ay = m["anchor"][0] * W, m["anchor"][1] * H
     xs, ys = [], []
-    for _, cx, cy, z, rot in cam.keys:
-        mp = metres_per_px(cfg, H) / z
-        r = math.hypot(max(ax, W - ax), max(ay, H - ay)) * mp
-        xs += [cx - r, cx + r]
-        ys += [cy - r, cy + r]
-    return min(xs), max(xs), min(ys), max(ys)
+    for cx, cy, z, rot in keys:
+        k = metres_per_px(cfg, H) / z
+        c, s = math.cos(rot), math.sin(rot)
+        for u, v in ((0, 0), (W, 0), (0, H), (W, H)):
+            du, dv = u - ax, v - ay                  # inverse of world_to_screen
+            dx, dy = c * du + s * dv, -s * du + c * dv
+            xs.append(cx + dx * k)
+            ys.append(cy - dy * k)
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    gx, gy = (x1 - x0) * margin, (y1 - y0) * margin
+    return x0 - gx, x1 + gx, y0 - gy, y1 + gy
+
+
+def plate_extent(cfg, cam: Camera, W, H):
+    return views_extent(cfg, [k[1:] for k in cam.keys], W, H)
 
 
 # -- plates ------------------------------------------------------------------------------
@@ -139,8 +152,9 @@ def _sig(data, scene, slot) -> str:
 
 
 def _plate_path(cfg, W, H, sig, kind="plate"):
-    from .render import style_key
-    return paths(cfg).build / "plates" / f"{kind}_{W}x{H}_{sig}.png"
+    # _G["pkey"] folds in the map style, the mesh (so new coastlines redraw) and the plate's
+    # extent and size (so new camera keyframes redraw); `sig` is the borders and places.
+    return paths(cfg).build / "plates" / f"{kind}_{W}x{H}_{_G.get('pkey', '')}_{sig}.png"
 
 
 _G: dict = {}
@@ -154,8 +168,11 @@ def _init(cfg_path, W, H, slot_list=None):
     scene = Scene(cfg, data)
     fps = int(cfg["frame"]["fps"])
     cam = Camera(cfg, data, slots, fps)
-    _G.update(cfg=cfg, data=data, scene=scene, W=W, H=H, slots=slots, cam=cam, spec=PlateSpec(cfg, cam, W, H),
-              fps=fps, cfg_path=cfg_path)
+    spec = PlateSpec(cfg, cam, W, H)
+    from .render import style_key
+    pkey = hashlib.sha1(f"{style_key(cfg, data)}|{spec.extent}|{spec.size}".encode()).hexdigest()[:8]
+    _G.update(cfg=cfg, data=data, scene=scene, W=W, H=H, slots=slots, cam=cam, spec=spec,
+              fps=fps, cfg_path=cfg_path, pkey=pkey)
 
 
 def _make_plate(slot):
@@ -501,9 +518,9 @@ def run(cfg, cfg_path, scale=1.0, workers=None, first_year=None, last_year=None,
     W = int(round(cfg["frame"]["width"] * scale / 2) * 2)
     H = int(round(cfg["frame"]["height"] * scale / 2) * 2)
     data = D.load(cfg)
-    slots, meta = T.write(cfg, data)
+    slot_objs, meta = T.write(cfg, data)
     from dataclasses import asdict
-    slots = [asdict(s) for s in slots]
+    slots = [asdict(s) for s in slot_objs]
     assets.build_all(cfg, data)
     from .globe import prepare as prepare_globe
     prepare_globe(cfg)
@@ -551,4 +568,9 @@ def run(cfg, cfg_path, scale=1.0, workers=None, first_year=None, last_year=None,
     for p in parts:
         os.remove(p)
     print(f"  {dest}")
+    if (lo, hi) == (0, total):
+        # a whole cut: point the Resolve build script at it, markers moved past the opening
+        what = T.write_resolve_lua(cfg, slot_objs, meta, media="motion")
+        installed = T.install_resolve_script(cfg)
+        print(f"  Resolve build script: {what}" + (f"; installed as {installed}" if installed else ""))
     return dest

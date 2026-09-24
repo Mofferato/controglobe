@@ -63,6 +63,7 @@ python build.py motion --frame 8740 11290   # review single frames of the finish
 python build.py motion --from 1855 --to 1870 # a slice, as video
 python build.py motion       # the whole finished cut (ask before --scale 1: it is long)
 python build.py thumbnail
+python build.py resolve      # rewrite and install the Resolve build script (the cut once rendered)
 ```
 
 The motion cut reads `rulers`, `parties`, `elections`, `population`, `cities`, `demographics`,
@@ -94,10 +95,13 @@ A task is not done until `check` passes and you have looked at a preview of it.
 - **GIMP** (`gimp-mcp`): thumbnails, flags, a hand-finished hero frame. Batch finishing is
   `integrations/gimp/cg_gimp_finish.py`.
 - **DaVinci Resolve** (`davinci-resolve-mcp`): assemble and adjust the edit. The deterministic
-  first build is `integrations/resolve/cg_resolve_build.py` (Studio), or
-  `output/resolve_build.lua` from `build.py timeline` (free edition: Lua only, no `io`
-  library, and from 21.1 possibly no project access at all, in which case it prints the
-  manual import with `output/markers.edl`). The Resolve MCP server cannot reach free 21.1.
+  first build is the Lua script `output/resolve_build.lua`, which a whole `build.py motion`
+  render writes for that cut and installs as Workspace > Scripts > cg_resolve_build
+  (`build.py resolve` rewrites it). It works on the free edition: menu scripts get a live
+  `resolve` there, though that Lua has no `io` and no script windows. The finished video is
+  the motion cut: never hand the stills cut to the user as the edit. The Python
+  `integrations/resolve/cg_resolve_build.py` and the Resolve MCP server need Studio (or free
+  21.0 and earlier).
 - **Blender** (optional): 3D terrain or globe camera moves over a rendered frame.
 
 Ask before anything that overwrites work in those applications (an existing Resolve timeline,

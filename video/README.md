@@ -42,6 +42,13 @@ What the viewer should feel is the rhyme:
 | **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | Premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, a 3D tilt and a sliding title card for each era, animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), the Qumur inset, and an infobox: year, flag and Great Seal, head of state with portrait, term and party, election results, events, population and the largest cities. It closes on demographics (population by state, religion and ancestry by county, the largest cities) and an end card. |
 | **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
 
+Into Resolve: a whole `build.py motion` render ends by writing the Resolve build script for
+that cut and installing it in Resolve's Scripts menu; in Resolve, open a project and run
+**Workspace > Scripts > cg_resolve_build**. It sets the project to 30 fps, imports the cut,
+makes a timeline, and marks the opening, every era and event (moved past the opening), and the
+finale. `python build.py resolve [--media motion|sequence]` rewrites it by hand; it works on
+the free edition (see Troubleshooting).
+
 The presidents' portraits, the flag and the Great Seal are the encyclopedia's own SVG artwork,
 rasterised at build time. Nabataean kings get portraits drawn in the same style, other polities
 flags drawn from their colours; your own art in `assets/portraits/<key>.png` or
@@ -174,6 +181,7 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py export-gis` | `build/history.gpkg`: every polity for every span of unchanged borders |
 | `python build.py motion [--scale 1] [--prores] [--from Y --to Y] [--frame N ...]` | The finished motion cut to `output/motion/`; a slice of years; or single PNG frames for review |
 | `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` and `_1920x1080.png` |
+| `python build.py resolve [--media auto\|motion\|sequence]` | `output/resolve_build.lua`, installed as Workspace > Scripts > cg_resolve_build; `auto` takes the motion cut once rendered |
 | `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
 | `python build.py all` | fetch, mesh, check, timeline, render, sequence, animatic |
 

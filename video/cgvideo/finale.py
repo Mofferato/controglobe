@@ -173,7 +173,7 @@ class Finale:
         return out
 
     # -- the panel ------------------------------------------------------------------------
-    def _panel(self, img, title, subtitle, rows, t, total=None, note=None):
+    def _panel(self, img, title, subtitle, rows, t, total=None, note=None, unit="%"):
         s, W, H = self.s, self.W, self.H
         x0 = int(W * self.r.m["panel_x"])
         over = Image.new("RGBA", (W - x0, H), (0, 0, 0, 0))
@@ -202,7 +202,7 @@ class Finale:
             by = y + int(24 * s)
             d.rectangle([pad, by, pad + bw, by + int(9 * s)], fill=(255, 255, 255, 28))
             d.rectangle([pad, by, pad + int(bw * v / top * k), by + int(9 * s)], fill=hexrgb(col)[:3] + (255,))
-            txt = f"{v:,.1f}%" if v <= 100 and total is None else (f"{v:,.1f}M" if v < 1000 else f"{v:,.0f}")
+            txt = f"{v:,.1f}{unit}"
             d.text((W - x0 - pad, y + int(10 * s)), txt, font=_font(18 * s, bold=True), fill=(244, 239, 230, int(255 * k)), anchor="ra")
             y += int(46 * s)
         if note:
@@ -231,8 +231,9 @@ class Finale:
                     d.text((u, v + 9 * s), f"{pop:.1f}M", font=_font(14 * s), fill=(20, 20, 20, a), anchor="mm",
                            stroke_width=2, stroke_fill=(255, 255, 255, a))
             rows = sorted(((self.data.polity[p]["name"], v, "#c84a2c") for p, v in self.pop.items()), key=lambda r: -r[1])[:12]
-            self._panel(img, "Population by state", "Millions of residents, 2025 federal estimate", rows, t,
-                        total=424_600_000, note="National total canon; the split by state is inferred.")
+            panel = dict(title="Population by state", subtitle="Millions of residents, 2025 federal estimate",
+                         rows=rows, total=424_600_000, unit="M",
+                         note="National total canon; the split by state is inferred.")
         elif kind in ("religion", "ancestry"):
             table = RELIGION if kind == "religion" else ANCESTRY
             rows = [(label, pct, col) for _, label, col, pct in table]
@@ -240,7 +241,7 @@ class Finale:
             sub = "Plurality in each group of muhafazat; darker is stronger"
             note = ("Shares canon; county pattern inferred." if kind == "religion"
                     else "Masri is an origin, reported alongside race. Shares canon.")
-            self._panel(img, title, sub, rows, t, note=note)
+            panel = dict(title=title, subtitle=sub, rows=rows, note=note, unit="%")
         else:
             from .motion import world_to_screen
             u, v = world_to_screen(self.city_xy[:, 0], self.city_xy[:, 1], self.cam, self.W, self.H, self.r.m["anchor"])
@@ -256,14 +257,16 @@ class Finale:
                        fill=(255, 255, 255, int(255 * k)), anchor="lm", stroke_width=2, stroke_fill=(0, 0, 0, int(200 * k)))
             rows = [(f"{n + 1}. {self.data.cities[i]['name']}", float(self.data.cities[i]["pop2025"]) / 1e6, "#e2b659")
                     for n, i in enumerate(order)]
-            self._panel(img, "Largest cities", "Metropolitan areas, millions, 2025", rows, t,
-                        note="Canon: United States of Arabia, Population and urbanisation.")
+            panel = dict(title="Largest cities", subtitle="Metropolitan areas, millions, 2025", rows=rows, unit="M",
+                         note="Canon: United States of Arabia, Population and urbanisation.")
+        # the push-in moves the map only: zooming the panel too would push its figures off screen
         if zoom != 1:
             W, H = img.size
             cw, ch = W / zoom, H / zoom
             x0 = self.r.m["anchor"][0] * W * (1 - 1 / zoom)
             y0 = (H - ch) / 2
             img = img.transform((W, H), Image.EXTENT, (x0, y0, x0 + cw, y0 + ch), Image.BICUBIC)
+        self._panel(img, t=t, **panel)
         # dip to black between segments
         edge = 0.35
         seg_s = self.seg / self.fps

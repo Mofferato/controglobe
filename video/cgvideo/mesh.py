@@ -350,14 +350,30 @@ def build(cfg: dict, data: Data) -> None:
     seeds_gdf.to_file(out, layer="region_seeds", driver="GPKG")
     if rivers is not None and not rivers.is_empty:
         gpd.GeoDataFrame(geometry=[rivers], crs=geo.crs(cfg)).to_file(out, layer="mesh_rivers", driver="GPKG")
-    write_view_layers(cfg, out)
+    write_view_layers(cfg, out, data)
     print(f"  wrote {out}")
 
 
-def write_view_layers(cfg: dict, out) -> None:
-    """Land, lakes and rivers for the whole frame (wider than the mesh), for drawing."""
-    bb = geo.view_lonlat_bbox(cfg)
+def drawn_extent(cfg: dict, data: Data | None = None):
+    """The projected box any frame can show: the default view, and every camera keyframe's
+    screen rectangle from data/camera.csv (motion.views_extent, the same measure the motion
+    plates use), so the motion cut never looks past the edge of the drawn land."""
     x0, x1, y0, y1 = geo.view_extent(cfg)
+    rows = getattr(data, "camera", None) or []
+    if rows:
+        from .motion import views_extent
+        xs, ys = geo.project_points(cfg, [float(k["lon"]) for k in rows], [float(k["lat"]) for k in rows])
+        keys = [(float(cx), float(cy), float(k["zoom"]), math.radians(float(k["rotation"])))
+                for cx, cy, k in zip(xs, ys, rows)]
+        v = views_extent(cfg, keys, cfg["frame"]["width"], cfg["frame"]["height"])
+        x0, x1, y0, y1 = min(x0, v[0]), max(x1, v[1]), min(y0, v[2]), max(y1, v[3])
+    return x0, x1, y0, y1
+
+
+def write_view_layers(cfg: dict, out, data: Data | None = None) -> None:
+    """Land, lakes and rivers for everything a frame can show (wider than the mesh), for drawing."""
+    x0, x1, y0, y1 = drawn_extent(cfg, data)
+    bb = geo.lonlat_bbox(cfg, x0, x1, y0, y1)
     frame = shapely.box(x0, y0, x1, y1).buffer(300_000)
     layers = {}
     land = []
@@ -367,6 +383,8 @@ def write_view_layers(cfg: dict, out) -> None:
         except SystemExit:
             if name == "ne_10m_land":
                 raise
+    # repair each piece first: a continent clipped wide and projected can come out self-touching
+    land = [g for g in (shapely.make_valid(g) for g in land) if not g.is_empty]
     layers["view_land"] = shapely.make_valid(shapely.union_all(land)).intersection(frame)
     for ins in cfg.get("insets", []):
         ibb = [ins["bbox"][0] - 2, ins["bbox"][1] - 2, ins["bbox"][2] + 2, ins["bbox"][3] + 2]

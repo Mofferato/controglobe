@@ -79,11 +79,13 @@ For a frontier placed to the kilometre, draw a polygon in `overrides.geojson` wi
 
 ## 9. Full render and edit
 
-> Render every year at full resolution with <N> workers (tell me the estimate first), then
-> `sequence` and `animatic`. If GIMP finishing is on, give me the exact PowerShell command for
-> `integrations/gimp/cg_gimp_finish.py` and build the sequence from `output/frames_gimp`.
-> Then build the Resolve project: run `integrations/resolve/cg_resolve_build.py` (or through
-> the Resolve MCP server), with music from <path>, and list the manual polish still to do.
+> The finished video is the motion cut (9b), not the stills. Once 9b is reviewed, render it at
+> full resolution (`python build.py motion --scale 1 --prores`; tell me the time estimate
+> first). The render installs the Resolve build script for it; I run Workspace > Scripts >
+> cg_resolve_build in a project. Then give me the music and narration placement against the
+> markers, and list the manual polish still to do. The stills cut (`render`, `sequence`,
+> `animatic`, GIMP finishing via `integrations/gimp/cg_gimp_finish.py`) is only for editing
+> by hand.
 
 ## 9b. The motion cut
 
