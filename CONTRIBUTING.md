@@ -31,6 +31,44 @@ raising a **question**.
    the reader, no "in our timeline" outside the clearly marked swap-key sections.
 4. Add your article to the table in `README.md` and to the cards in `index.html`.
 5. Cross-link from at least one existing article.
+6. Start from an existing page of the same kind, so the new page carries the design-system
+   block, the masthead, the site footer and the chrome script unchanged. See below.
+
+## Design system
+
+Every page of both editions shares one design. It lives in four places, and each of them is
+**identical on every page**: change it on all sixteen pages at once, never on one.
+
+- **The stylesheet block** between the markers `/* ==== Controglobe design system` and
+  `/* ==== end of design system`, at the top of each page's `<style>`. Rules that belong to one
+  page only go *after* the end marker. The block holds the colour tokens (`--bg`, `--panel`,
+  `--ink`, `--muted`, `--line`, `--accent`, `--link` and the rest) for the light theme, the dark
+  theme and a forced theme, and the right-to-left rules for the Arabic edition.
+- **The masthead**, `<header class="cg-mast">`, first thing in the `<body>`: the Controglobe globe
+  as avatar, the site links, the colour-theme switch and the interlanguage link. The current
+  page's link carries `aria-current="page"`. Visible labels in the switch come from its `data-l-*`
+  attributes, so the chrome script needs no translation.
+- **The site footer**, `<footer class="cg-foot">`, just before `<div id="pvcard">`.
+- **The chrome script**, the last `<script>` in the body, beginning `/* Site chrome:`. It applies
+  the stored colour theme and, on screens wider than 1320px, turns an article's contents box into a
+  sidebar that follows the section being read.
+
+The head of every page carries the globe as its favicon and touch icon (a JPEG data URI, the
+project's logo), `<meta name="color-scheme" content="light dark">`, the masthead colour as
+`theme-color`, and a one-line script that applies a stored theme before the page paints.
+
+`<body>` carries the page's family, which scopes the rules that differ between them:
+`cg-hub` for the front page, `cg-atlas` for the reference atlases and `cg-article` for everything
+written as an encyclopedia article. An article keeps its content in `<div id="container">`, an
+atlas and the hub in `<div class="wrap" id="main">`; the preview-card script reads those, not the
+masthead or footer.
+
+In the dark theme the page turns dark but **figures keep a light plate**, the way an encyclopedia
+shows a printed map: the SVG artwork is drawn for paper and is not recoloured. Never rely on a
+colour that only works on one theme; use the tokens.
+
+A link to an article that does not exist yet (`href="#"`) is shown in the red-link colour, the way
+an encyclopedia shows a missing article. It still opens a preview card when the term has an entry.
 
 ## Sections and figures
 
@@ -57,9 +95,24 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
   every `svg` a `role="img"` and an `aria-label` that describes the whole picture, because the
   caption alone is not a description.
 - **Maps** of the Mashriq share one canvas, `0 0 920 620`, and one coastline, so that a reader
-  who has learnt the shape once can read every later map. World maps share `0 0 960 500`,
-  equirectangular, regions rather than countries. Keep the key inside the frame where there is
-  sea to put it, and in a white band underneath where there is not.
+  who has learnt the shape once can read every later map. That coastline is the real one: an
+  azimuthal equal-area projection centred on 46.5°E 25°N, with the Union's land frontier with
+  Zagrosia and Masr drawn as a heavier line. Cities stand at their true positions with their
+  labels beside them; internal divisions stay schematic and the footnote says so. Neighbours and
+  seas (*Zagrosia*, *Masr*, *the Derg successor states*, *the Gulf*) are set in faint italic on
+  the ground or water they name, never at the frame's edge. In the Arabic edition a label keeps to
+  the side of its dot that the English gives it, and reads right to left. World maps share one frame: the
+  Natural Earth projection centred on 11°E, 960 wide and cropped to 84°N&ndash;57°S, drawn from
+  [Natural Earth](https://www.naturalearthdata.com/) coastlines (public domain) and baked into the
+  page as inline SVG, with the key in a white band underneath. They show regions rather than
+  countries. Regional maps (the trade in Europeans, the crowns coming to Arabia) use the same
+  projection cropped to a box.
+- **Africa is never coloured by modern states.** Colouring the countries of the outside timeline
+  would draw the conference borders the setting forbids &mdash; the Egypt&ndash;Sudan parallel, the
+  Libya&ndash;Chad line. Wherever a map colours part of Africa, it colours the nations of the
+  [Africa atlas](africa.html), whose drawing has been fitted to real coordinates so its frontiers can
+  be laid on a true coastline. Where the atlas leaves a sliver of coast uncovered, the nearest nation
+  takes it.
 - Artwork is inline SVG. No binary images, no external requests, no build step.
 
 ## Preview cards
@@ -116,8 +169,11 @@ Translating a page means:
 
 - `<html lang="…" dir="…">`, a `<link rel="alternate" hreflang>` pair in the head, and an
   interlanguage link in the nav back to English.
-- An RTL (or other direction-specific) block appended to the page's own `<style>`. System fonts
-  only: no `@import`, no web fonts, no external requests, still no build step.
+- Nothing to add to the stylesheet: the design system already carries the right-to-left rules,
+  and uses logical properties (`padding-inline-start`, `border-inline-start`) wherever a side
+  matters. System fonts only: no `@import`, no web fonts, no external requests, still no build step.
+- The masthead and footer in the edition's language: the site links, the tagline, the theme labels
+  in the switch's `data-l-*` attributes, and the interlanguage link pointing back.
 - Prose, `<title>`, the meta descriptions, every SVG `<text>` and every `aria-label`. SVG geometry
   &mdash; `viewBox`, coordinates, path data, colours, the shared canvases &mdash; does not move. In an RTL
   edition, `text-anchor="middle"` labels translate in place; a start- or end-anchored label needs
@@ -137,8 +193,10 @@ Two things bite in a right-to-left edition. A numeric range such as `1789&ndash;
 backwards, because the en-dash between two numbers is a neutral and takes the paragraph's
 direction; wrap the range in U+2066 (LRI) and U+2069 (PDI) and it reads left to right again, with
 no markup added. And `margin-inline-start` on the interlanguage link resolves against *the link's*
-`dir`, which is the other language's &mdash; so use the physical side the page's own direction makes
-the far end of the bar (`margin-left:auto` in an LTR page, `margin-right:auto` in an RTL one).
+`dir`, which is the other language's. The masthead avoids this by putting the link inside
+`.cg-tools`, a container that carries no `dir` of its own, so its logical margins resolve against
+the page. Inside an SVG, set `direction` explicitly on start- or end-anchored Arabic labels: the
+page's `dir="rtl"` is inherited into the drawing and would otherwise swing them to the wrong side.
 
 ## Article checklist
 
@@ -148,7 +206,9 @@ the far end of the bar (`margin-left:auto` in an LTR page, `margin-right:auto` i
 - [ ] Nothing depends on a network request
 - [ ] Terms with a preview entry are reachable, and every entry is reached by something
 - [ ] Every substantial section has a hatnote, and every figure a caption
-- [ ] The page is readable on a phone
+- [ ] The design-system block, masthead, footer and chrome script are unchanged from the other pages
+- [ ] No map colours Africa by modern states
+- [ ] The page is readable on a phone, and in both the light and the dark theme
 
 ## Licence
 

@@ -3,89 +3,383 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0d3940">
+<link rel="icon" type="image/jpeg" sizes="64x64" href="data:image/jpeg;base64,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">
+<link rel="apple-touch-icon" href="data:image/jpeg;base64,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">
+<script>try{var t=localStorage.getItem('cg-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <title>Controglobe — Africa: The European Swap</title>
 <link rel="alternate" hreflang="en" href="africa.html">
 <link rel="alternate" hreflang="ar" href="ar/africa.html">
 <style>
+/* ==== Controglobe design system ============================================
+   This block is identical on every page of both editions. Change it on all
+   pages at once, never on one. Page-specific rules go after the end marker. */
 :root{
-  --bg:#f6f3ec; --panel:#fffdf8; --ink:#1d1b16; --muted:#6a6459;
-  --line:#ccc4b4; --accent:#1c6b74; --accent2:#a8571f; --sea:#dfe7ec;
-}
-:root:not([data-theme="light"]){
-  @media (prefers-color-scheme: dark){
-    --bg:#15171a; --panel:#1c1f23; --ink:#eae6dd; --muted:#9a948a;
-    --line:#3a3f45; --accent:#66c7cf; --accent2:#e0a05a; --sea:#0f1518;
-  }
-}
+ --bg:#f5f3ed;--panel:#fff;--sunk:#f2efe7;--ink:#1b1e20;--muted:#565d61;--faint:#737a7e;
+ --line:#d7d1c4;--line-soft:#e8e4da;--brand:#0d3940;--brand-2:#12505a;--brand-ink:#d7eef0;
+ --accent:#0e8494;--glow:#4fd3e0;--link:#0a6a77;--link-hover:#054852;--redlink:#9c4a3c;
+ --gold:#a3772a;--plate:#fcfbf7;--sea:#dfe7ec;--accent2:#a8571f;
+ --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;
+ --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+ --radius:8px;--shadow:0 1px 2px rgba(20,30,32,.05),0 12px 32px -20px rgba(20,30,32,.4);
+ --mast-h:58px;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0d1012;--panel:#14181a;--sunk:#1a1f22;--ink:#e7e5e0;--muted:#a2a9ac;--faint:#7e868a;
+ --line:#2d3438;--line-soft:#222a2d;--brand:#0a2a2f;--brand-2:#0f3b42;--brand-ink:#cfe9ec;
+ --accent:#4cc7d5;--link:#6dcfdb;--link-hover:#a6e7ef;--redlink:#e39a88;--gold:#d8ab58;
+ --plate:#f1efe8;--sea:#0f1518;--accent2:#e0a05a;
+ --shadow:0 1px 2px rgba(0,0,0,.35),0 14px 36px -18px rgba(0,0,0,.7);color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#15171a; --panel:#1c1f23; --ink:#eae6dd; --muted:#9a948a;
-  --line:#3a3f45; --accent:#66c7cf; --accent2:#e0a05a; --sea:#0f1518;
-}
-*{box-sizing:border-box}
-body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  line-height:1.55; -webkit-text-size-adjust:100%;
-}
-.wrap{max-width:1000px;margin:0 auto;padding:22px 16px 60px}
-header{border-bottom:2px solid var(--line);padding-bottom:14px;margin-bottom:18px}
-.kicker{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
-h1{font-size:clamp(23px,5.4vw,36px);margin:.18em 0 .1em;line-height:1.15}
-.sub{color:var(--muted);font-size:14px;margin:0}
-h2{font-size:clamp(17px,4vw,22px);margin:30px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px}
-h3{font-size:15px;margin:20px 0 6px;color:var(--accent2);
-  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  letter-spacing:.05em;text-transform:uppercase}
-p{margin:0 0 10px;font-size:15px}
-.note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
-  padding:11px 13px;font-size:14px;margin:14px 0;border-radius:3px}
-.mapbox{background:var(--sea);border:1px solid var(--line);border-radius:5px;
-  overflow-x:auto;overflow-y:hidden;margin:14px 0 6px;-webkit-overflow-scrolling:touch}
-.mapbox svg{display:block;min-width:760px;width:100%;height:auto}
-.hint{font-size:12px;color:var(--muted);margin:0 0 18px;
-  font-family:ui-sans-serif,system-ui,sans-serif}
-table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0 16px}
-th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--muted);font-weight:700}
-td.n{white-space:nowrap;font-weight:600}
-td.e{white-space:nowrap;color:var(--accent);font-weight:600}
-td.d{color:var(--muted);font-size:13px}
-.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;
-  border:1px solid rgba(0,0,0,.25);vertical-align:baseline}
-.tblwrap{overflow-x:auto}
-.tblwrap table{min-width:520px}
-footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
-  font-size:12px;color:var(--muted)}
+ --bg:#0d1012;--panel:#14181a;--sunk:#1a1f22;--ink:#e7e5e0;--muted:#a2a9ac;--faint:#7e868a;
+ --line:#2d3438;--line-soft:#222a2d;--brand:#0a2a2f;--brand-2:#0f3b42;--brand-ink:#cfe9ec;
+ --accent:#4cc7d5;--link:#6dcfdb;--link-hover:#a6e7ef;--redlink:#e39a88;--gold:#d8ab58;
+ --plate:#f1efe8;--sea:#0f1518;--accent2:#e0a05a;
+ --shadow:0 1px 2px rgba(0,0,0,.35),0 14px 36px -18px rgba(0,0,0,.7);color-scheme:dark}
 
-.cg-nav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;background:#0e3a42;padding:7px 14px;
- font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:12.6px}
-.cg-nav a.lang{margin-left:auto}
-.cg-nav a{color:#bfe6ec;text-decoration:none;padding:4px 9px;border-radius:3px}
-.cg-nav a:first-child{color:#fff;font-weight:700;letter-spacing:.4px}
-.cg-nav a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+/* -- base ------------------------------------------------------------------ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--mast-h) + 14px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;
+ text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none;text-underline-offset:.18em;text-decoration-thickness:1px}
+a:hover{color:var(--link-hover);text-decoration:underline}
+a[href="#"]:not(.card):not(.cg-brand){color:var(--redlink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+p{margin:.65em 0}
+img,svg{max-width:100%}
+b,strong{font-weight:650}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;font-size:.86em;background:var(--sunk);
+ border:1px solid var(--line-soft);padding:1px 5px;border-radius:4px}
+::selection{background:rgba(79,211,224,.32)}
+.cg-skip{position:absolute;inset-inline-start:12px;top:-80px;z-index:100;background:var(--panel);color:var(--ink);padding:8px 12px;border-radius:6px;box-shadow:var(--shadow)}
+.cg-skip:focus{top:10px}
 
+/* -- masthead -------------------------------------------------------------- */
+.cg-mast{position:sticky;top:0;z-index:40;background:var(--brand);color:var(--brand-ink);font-family:var(--sans);
+ box-shadow:0 1px 0 rgba(255,255,255,.05),0 6px 18px -12px rgba(0,0,0,.6)}
+.cg-mast::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+ background:linear-gradient(90deg,transparent,rgba(79,211,224,.55) 30%,rgba(79,211,224,.55) 70%,transparent)}
+.cg-mast-in{max-width:1400px;margin:0 auto;min-height:var(--mast-h);display:flex;align-items:center;gap:18px;padding:0 20px}
+.cg-brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none;flex:none}
+.cg-brand:hover{color:#fff;text-decoration:none}
+.cg-logo{width:36px;height:36px;border-radius:50%;display:block;flex:none;
+ box-shadow:0 0 0 1px rgba(255,255,255,.28),0 0 0 4px rgba(79,211,224,.16),0 0 16px rgba(79,211,224,.35)}
+.cg-word{display:flex;flex-direction:column;line-height:1.1}
+.cg-name{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.2px}
+.cg-tag{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8fcad2;margin-top:3px}
+.cg-links{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.cg-links::-webkit-scrollbar{display:none}
+.cg-links a{color:#c6e3e7;font-size:13.5px;padding:8px 11px;border-radius:6px;white-space:nowrap;text-decoration:none}
+.cg-links a:hover{color:#fff;background:rgba(255,255,255,.09);text-decoration:none}
+.cg-links a[aria-current="page"]{color:#fff;background:rgba(255,255,255,.1);box-shadow:inset 0 -2px 0 var(--glow)}
+.cg-tools{display:flex;align-items:center;gap:8px;flex:none}
+.cg-theme{appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:#e6f6f7;
+ width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer;padding:0}
+.cg-theme:hover{background:rgba(255,255,255,.14)}
+.cg-theme svg{width:17px;height:17px;display:block}
+.cg-theme .i-sun,.cg-theme .i-moon{display:none}
+.cg-theme[data-mode="light"] .i-auto,.cg-theme[data-mode="dark"] .i-auto{display:none}
+.cg-theme[data-mode="light"] .i-sun{display:block}
+.cg-theme[data-mode="dark"] .i-moon{display:block}
+.cg-lang{color:#fff;font-size:13.5px;padding:6px 12px;border:1px solid rgba(255,255,255,.22);border-radius:999px;white-space:nowrap;text-decoration:none}
+.cg-lang:hover{color:#fff;background:rgba(255,255,255,.1);text-decoration:none}
+@media (max-width:820px){
+ .cg-mast{position:relative}
+ .cg-mast-in{flex-wrap:wrap;gap:0 10px;padding:8px 14px 0}
+ .cg-tag{display:none}
+ .cg-tools{margin-inline-start:auto}
+ .cg-links{order:3;flex-basis:100%;margin:6px -8px 0;padding-bottom:6px}
+ html{scroll-padding-top:14px}}
+
+/* -- site footer ----------------------------------------------------------- */
+.cg-foot{margin-top:56px;background:var(--brand);color:#b9d9dd;font-family:var(--sans);font-size:13px}
+.cg-foot-in{max-width:1100px;margin:0 auto;padding:30px 20px 34px;display:grid;grid-template-columns:auto 1fr;gap:10px 22px;align-items:start}
+.cg-foot .cg-brand{grid-row:span 2}
+.cg-foot p{margin:0;max-width:720px;line-height:1.6}
+.cg-foot nav{display:flex;flex-wrap:wrap;gap:4px 16px}
+.cg-foot a{color:#e3f4f6}
+.cg-foot p a{text-decoration:underline;text-decoration-color:rgba(227,244,246,.4)}
+.cg-foot .cg-logo{width:42px;height:42px}
+@media (max-width:640px){.cg-foot-in{grid-template-columns:1fr}.cg-foot .cg-brand{grid-row:auto}}
+
+/* -- figures (every family) ------------------------------------------------ */
+.mapwrap{border:1px solid var(--line);background:var(--panel);padding:10px;margin:18px 0 22px;border-radius:var(--radius)}
+figure.mapwrap{margin-left:0;margin-right:0}
+.mapwrap svg{display:block;width:100%;height:auto;background:var(--plate);border-radius:4px}
+.mapwrap figcaption{color:var(--muted);font-size:13px;line-height:1.55;padding:9px 3px 1px;text-align:start}
+.mapwrap figcaption b{color:var(--ink)}
+.mapwrap .mapscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-radius:4px}
+@media (max-width:820px){.mapwrap .mapscroll svg{min-width:720px}}
+.hatnote{font-size:13px;color:var(--muted);font-style:italic;margin:4px 0 12px;padding-inline-start:22px}
+.pending::after{content:"\00a0(in English)";font-size:.85em;opacity:.7;font-style:normal;font-weight:400}
+:lang(ar) .pending::after{content:"\00a0(بالإنجليزية)"}
+
+/* -- preview cards --------------------------------------------------------- */
 .pv-t{border-bottom:1px dotted var(--accent);cursor:help}
-#pvcard{position:absolute;z-index:60;width:320px;max-width:calc(100vw - 24px);background:var(--panel);color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.28);font-size:12.6px;line-height:1.5;display:none;border-radius:4px;overflow:hidden}
-#pvcard .pv-head{display:flex;gap:10px;padding:11px 13px 0}
-#pvcard .pv-head svg{width:74px;height:auto;flex:none;border:1px solid var(--line)}
-#pvcard h4{margin:0 0 2px;font-family:Georgia,serif;font-size:15.5px;font-weight:600}
-#pvcard .pv-sub{color:var(--muted);font-size:11.4px;margin-bottom:4px}
-#pvcard .pv-x{padding:6px 13px 11px}
-#pvcard .pv-foot{border-top:1px solid var(--line);background:rgba(127,127,127,.09);padding:5px 13px;color:var(--muted);font-size:10.8px}
-@media(max-width:700px){#pvcard{width:290px}}
-.mapwrap{border:1px solid var(--line);background:var(--panel);padding:9px;margin:16px 0 20px}
-.mapwrap svg{display:block;width:100%;height:auto}
-.mapwrap figcaption{text-align:left;color:var(--muted);font-size:12.8px;line-height:1.5;padding:8px 3px 1px}
-.hatnote{font-size:12.8px;color:var(--muted);font-style:italic;margin:6px 0 10px;padding-left:22px}
-.mapwrap .mapscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
-@media(max-width:820px){.mapwrap .mapscroll svg{min-width:720px}}
+.cg-article .pv-t{color:var(--link)}
+#pvcard{position:absolute;z-index:60;width:330px;max-width:calc(100vw - 24px);background:var(--panel);color:var(--ink);
+ border:1px solid var(--line);box-shadow:0 18px 50px -12px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.08);font-size:12.8px;line-height:1.5;
+ display:none;border-radius:10px;overflow:hidden;font-family:var(--sans)}
+#pvcard .pv-head{display:flex;gap:11px;padding:12px 14px 0}
+#pvcard .pv-head svg{width:78px;height:auto;flex:none;border:1px solid var(--line);border-radius:4px;background:var(--plate)}
+#pvcard h4{margin:0 0 2px;font-family:var(--serif);font-size:16.5px;font-weight:600;line-height:1.25}
+#pvcard .pv-sub{color:var(--muted);font-size:11.5px;margin-bottom:4px}
+#pvcard .pv-x{padding:7px 14px 12px}
+#pvcard .pv-foot{border-top:1px solid var(--line-soft);background:var(--sunk);padding:6px 14px;color:var(--faint);font-size:10.8px;letter-spacing:.02em}
+@media (max-width:700px){#pvcard{width:296px}}
+
+/* -- hub ------------------------------------------------------------------- */
+.cg-hub .wrap{max-width:1100px;margin:0 auto;padding:10px 20px 20px}
+.cg-hub h2{font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.2;margin:48px 0 6px;letter-spacing:-.005em}
+.cg-hub h2+.lede{margin-top:0}
+.cg-hub .lede{color:var(--muted);max-width:760px;margin:0 0 18px}
+.cg-hub table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+.cg-hub th,.cg-hub td{border-bottom:1px solid var(--line-soft);padding:9px 10px;text-align:start;vertical-align:top}
+.cg-hub th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+.cg-hub .tw{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:4px 10px}
+.cg-hub .tw table{min-width:560px;margin:0}
+.cg-hub .tw tr:last-child td{border-bottom:0}
+.hero{position:relative;overflow:hidden;background:var(--brand);color:#eaf7f8;isolation:isolate}
+.hero-in{position:relative;max-width:1100px;margin:0 auto;padding:64px 20px 58px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:center}
+.hero-map{position:absolute;inset:0;z-index:-1;opacity:.55}
+.hero-map svg{position:absolute;inset-inline-end:-6%;top:50%;transform:translateY(-50%);width:min(980px,90%);height:auto}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+ background:radial-gradient(1200px 500px at 85% 40%,rgba(79,211,224,.18),transparent 60%),linear-gradient(90deg,var(--brand) 30%,rgba(13,57,64,.35))}
+.hero .kicker{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:#8fd8e0;font-weight:700;margin:0 0 14px}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,7vw,68px);line-height:1.02;margin:0 0 18px;letter-spacing:-.01em;color:#fff}
+.hero h1 em{font-style:italic;color:#9fe3ea}
+.hero p.dek{font-size:clamp(16px,2.1vw,19px);line-height:1.55;color:#cfe8eb;margin:0 0 26px;max-width:560px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;border:1px solid transparent}
+.btn:hover{text-decoration:none}
+.btn-primary{background:#e9fbfc;color:#08343a}
+.btn-primary:hover{background:#fff;color:#08343a}
+.btn-ghost{border-color:rgba(255,255,255,.3);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-accent{background:var(--link);color:var(--panel);flex:none}
+.btn-accent:hover{background:var(--link-hover);color:var(--panel)}
+.hero-card{background:rgba(6,32,36,.55);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:18px 18px 16px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.hero-card h2{margin:0 0 10px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#8fd8e0;font-family:var(--sans);font-weight:700}
+.swaps{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.swaps li{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;font-size:14px;color:#e8f6f7}
+.swaps li span:first-child{text-align:end}
+.swaps li i{font-style:normal;color:#6fd6e1;font-size:13px}
+.swaps li small{color:#9cc7cc;font-size:12px}
+@media (max-width:860px){.hero-in{grid-template-columns:1fr;padding:44px 20px 40px;gap:26px}.hero-map{opacity:.35}.hero-map svg{inset-inline-end:-30%;width:150%}}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin:20px 0}
+.card{position:relative;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+ color:inherit;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent);text-decoration:none;color:inherit}
+.card .thumb-art{aspect-ratio:16/8;background:var(--plate);border-bottom:1px solid var(--line-soft);display:grid;place-items:center;overflow:hidden}
+.card .thumb-art svg{width:100%;height:100%;display:block;object-fit:cover}
+.card .card-body{padding:15px 17px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{margin:0;font-family:var(--serif);font-weight:600;font-size:19.5px;line-height:1.2}
+.card p{margin:0;color:var(--muted);font-size:13.8px;line-height:1.55}
+.card .tag{margin-top:auto;padding-top:6px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.card.feature{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.card.feature .thumb-art{aspect-ratio:auto;min-height:250px;border-bottom:0;border-inline-end:1px solid var(--line-soft)}
+.card.feature h3{font-size:28px}
+.card.feature p{font-size:15px}
+@media (max-width:760px){.card.feature{grid-template-columns:1fr}.card.feature .thumb-art{min-height:180px;border-inline-end:0;border-bottom:1px solid var(--line-soft)}}
+.rules{counter-reset:r;list-style:none;padding:0;margin:18px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px}
+.rules li{counter-increment:r;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 17px 15px;margin:0}
+.rules li::before{content:counter(r,decimal-leading-zero);display:block;font-family:var(--serif);font-size:30px;line-height:1;color:var(--accent);margin-bottom:8px}
+.rules b{display:block;font-family:var(--serif);font-size:17.5px;font-weight:600;margin-bottom:3px}
+.rules span{color:var(--muted);font-size:14px}
+.eras{list-style:none;padding:0;margin:18px 0 8px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+@media (max-width:860px){.eras{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.eras{grid-template-columns:1fr}}
+.eras li{margin:0;position:relative;box-shadow:1px 0 0 var(--line-soft),0 1px 0 var(--line-soft)}
+.eras a{display:block;height:100%;padding:15px 15px 16px;color:inherit;text-decoration:none}
+.eras a:hover{background:var(--sunk);text-decoration:none;color:inherit}
+.eras a:hover .yr{color:var(--link)}
+.eras li::before{content:"";position:absolute;inset-inline:0;top:0;height:3px;background:var(--c,var(--accent))}
+.eras .yr{display:block;font-family:var(--serif);font-size:21px;color:var(--ink);line-height:1.1}
+.eras .what{display:block;color:var(--muted);font-size:13px;margin-top:5px;line-height:1.45}
+.callout{display:flex;gap:18px 22px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:18px 0}
+.callout p{margin:0;flex:1}
+@media (max-width:640px){.callout{flex-direction:column;align-items:flex-start}}
+
+/* -- atlases --------------------------------------------------------------- */
+.cg-atlas{font-family:var(--serif);line-height:1.6}
+.cg-atlas .wrap{max-width:1040px;margin:0 auto;padding:26px 20px 20px}
+.cg-atlas .wrap>header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:20px}
+.cg-atlas .kicker{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.cg-atlas h1{font-size:clamp(28px,5.4vw,42px);font-weight:500;margin:.2em 0 .15em;line-height:1.12;letter-spacing:-.005em}
+.cg-atlas .sub{color:var(--muted);font-size:15.5px;margin:0;max-width:780px}
+.cg-atlas h2{font-size:clamp(20px,4vw,25px);font-weight:500;margin:36px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.cg-atlas h3{font-size:12.5px;margin:24px 0 8px;color:var(--accent2);font-family:var(--sans);letter-spacing:.1em;text-transform:uppercase}
+.cg-atlas p{margin:0 0 11px;font-size:15.5px}
+.cg-atlas .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--accent);padding:12px 15px;font-size:14.5px;margin:16px 0;border-radius:6px}
+.cg-atlas .mapbox{background:var(--sea);border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;overflow-y:hidden;margin:16px 0 8px;-webkit-overflow-scrolling:touch}
+.cg-atlas .mapbox svg{display:block;min-width:760px;width:100%;height:auto}
+.cg-atlas .mapbox figcaption{font-family:var(--sans);font-size:13px;color:var(--muted);padding:10px 14px 12px;background:var(--panel);border-top:1px solid var(--line);min-width:760px}
+.cg-atlas .hint{font-size:12px;color:var(--muted);margin:0 0 18px;font-family:var(--sans)}
+.cg-atlas table{border-collapse:collapse;width:100%;font-size:14.5px;margin:6px 0 18px}
+.cg-atlas th,.cg-atlas td{text-align:start;padding:8px 10px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.cg-atlas th{font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+.cg-atlas td.n{white-space:nowrap;font-weight:600}
+.cg-atlas td.e{white-space:nowrap;color:var(--accent);font-weight:600}
+.cg-atlas td.d{color:var(--muted);font-size:13.5px}
+.cg-atlas tr:hover td{background:var(--sunk)}
+.cg-atlas .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-inline-end:6px;border:1px solid rgba(0,0,0,.25);vertical-align:baseline}
+.cg-atlas .tblwrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:2px 8px;margin:8px 0 18px}
+.cg-atlas .tblwrap table{min-width:520px;margin:0}
+.cg-atlas .tblwrap tr:last-child td{border-bottom:0}
+.cg-atlas .wrap>footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;font-size:12.5px;color:var(--muted);font-family:var(--sans)}
+
+/* -- articles -------------------------------------------------------------- */
+.cg-article #container{max-width:1180px;margin:22px auto 0;padding:26px 34px 40px;background:var(--panel);
+ border:1px solid var(--line-soft);border-radius:12px;box-shadow:var(--shadow)}
+.cg-article h1{font-family:var(--serif);font-size:36px;font-weight:500;line-height:1.15;letter-spacing:-.01em;margin:0 0 6px;
+ padding-bottom:10px;border-bottom:1px solid var(--line)}
+.cg-article h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.25;border-bottom:1px solid var(--line);margin:40px 0 10px;padding-bottom:6px}
+.cg-article h3{font-family:var(--serif);font-size:19px;font-weight:600;margin:26px 0 6px;line-height:1.3}
+.cg-article h4{font-size:15px;margin:18px 0 4px;font-weight:700}
+.cg-article .subnote{color:var(--muted);font-size:12.8px;margin:8px 0 12px}
+.cg-article .disambig{border-inline-start:3px solid var(--accent);background:var(--sunk);padding:9px 14px;font-size:13px;margin:0 0 16px;border-radius:0 6px 6px 0;color:var(--muted)}
+.cg-article .infobox{float:right;width:356px;max-width:100%;margin:4px 0 20px 26px;border:1px solid var(--line);background:var(--panel);
+ font-size:12.8px;border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.cg-article .infobox-title{text-align:center;font-family:var(--serif);font-size:19px;font-weight:600;padding:12px 10px 4px;line-height:1.25;
+ background:var(--brand);color:#fff}
+.cg-article .infobox-sub{text-align:center;padding:0 10px 10px;line-height:1.45;background:var(--brand);color:var(--brand-ink)}
+.cg-article .infobox>svg,.cg-article .infobox>.caption{margin-left:10px;margin-right:10px}
+.cg-article .infobox>svg:first-of-type{margin-top:10px}
+.cg-article .infobox table{width:100%;border-collapse:collapse}
+.cg-article .infobox td,.cg-article .infobox th{padding:5px 10px;vertical-align:top;border-top:1px solid var(--line-soft)}
+.cg-article .infobox th{width:41%;font-weight:600;text-align:start;color:var(--muted)}
+.cg-article .infobox .section td{background:var(--sunk);font-weight:700;text-align:center;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);padding:6px}
+.cg-article .caption{text-align:center;color:var(--muted);font-size:11.3px;padding:4px 4px 8px}
+.cg-article .flag{width:calc(100% - 20px);border:1px solid var(--line);display:block;border-radius:3px}
+.cg-article .seal{width:148px;display:block;margin:10px auto 0;background:transparent}
+.cg-article .infobox svg{background:var(--plate)}
+.cg-article .toc{display:inline-block;border:1px solid var(--line);background:var(--sunk);padding:14px 26px 14px 18px;margin:14px 0 22px;font-size:13.5px;max-width:100%;border-radius:10px}
+.cg-article .toc-title{font-family:var(--serif);font-weight:600;font-size:16px;margin-bottom:6px}
+.cg-article .toc ol{margin:0;padding-inline-start:22px}
+.cg-article .toc ol ol{padding-inline-start:18px}
+.cg-article .toc li{margin:2px 0}
+.cg-article table.wikitable{border-collapse:collapse;margin:14px 0;font-size:13.3px;width:100%}
+.cg-article table.wikitable th,.cg-article table.wikitable td{border:1px solid var(--line);padding:6px 9px;vertical-align:top;text-align:start}
+.cg-article table.wikitable th{background:var(--sunk);font-weight:700}
+.cg-article table.wikitable tr:nth-child(even) td{background:color-mix(in srgb,var(--sunk) 45%,var(--panel))}
+.cg-article .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cg-article .quotebox{border-inline-start:3px solid var(--gold);background:color-mix(in srgb,var(--gold) 8%,var(--panel));padding:12px 18px;margin:18px 0;
+ margin-inline-start:26px;font-style:italic;font-family:var(--serif);font-size:16px;border-radius:0 8px 8px 0}
+.cg-article .quotebox .attrib{display:block;font-style:normal;font-size:12.5px;color:var(--muted);margin-top:6px;font-family:var(--sans)}
+.cg-article .clear{clear:both}
+.cg-article .refsection{font-size:12.5px;column-count:2;column-gap:30px}
+.cg-article .refsection ol{padding-inline-start:26px;margin-top:0}
+.cg-article .catlinks{margin-top:40px;border:1px solid var(--line);background:var(--sunk);padding:10px 14px;font-size:12.8px;border-radius:8px}
+.cg-article .navbox{clear:both;margin-top:28px;border:1px solid var(--line);font-size:12.6px;border-radius:10px;overflow:hidden}
+.cg-article .navbox-title{background:var(--brand);color:#fff;text-align:center;padding:8px;font-weight:600;font-family:var(--serif);font-size:15px}
+.cg-article .navbox-title a{color:#bfeef3}
+.cg-article .navbox-body{padding:6px 14px 8px}
+.cg-article .navbox-row{display:grid;grid-template-columns:150px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--line-soft)}
+.cg-article .navbox-row:first-child{border-top:none}
+.cg-article .navbox-row b{color:var(--muted);font-weight:700;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;padding-top:2px}
+.cg-article .note{font-size:12.6px;color:var(--muted)}
+.cg-article .two-col ul{column-count:2;column-gap:30px;padding-inline-start:20px}
+.cg-article .state{font-weight:600}
+.cg-article .lorebox{border:1px solid var(--line);background:var(--sunk);padding:12px 16px;margin:18px 0;font-size:13.3px;border-radius:10px}
+.cg-article .lorebox>summary{cursor:pointer;font-weight:600;font-family:var(--serif);font-size:16px}
+.cg-article .lorebox[open]>summary{margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.cg-article .thumb{float:right;width:300px;max-width:100%;margin:6px 0 14px 22px;border:1px solid var(--line);background:var(--panel);padding:5px;border-radius:8px}
+.cg-article .thumb svg{display:block;width:100%;height:auto;background:var(--plate)}
+.cg-article figure.thumb{margin-top:6px}
+.cg-article .stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+.cg-article .stat div{border:1px solid var(--line);background:var(--sunk);padding:11px 13px 12px;border-radius:10px}
+.cg-article .stat b{display:block;font-family:var(--serif);font-size:24px;font-weight:500;color:var(--accent);line-height:1.15}
+.cg-article .stat span{font-size:12px;color:var(--muted)}
+.cg-article sup.ref{font-size:10.5px;line-height:0}
+.cg-article .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin:18px 0}
+.cg-article .pcard{margin:0;border:1px solid var(--line);background:var(--panel);padding:0;overflow:hidden;cursor:pointer;border-radius:8px}
+.cg-article .pcard svg.pt{display:block;width:100%;height:auto;border-bottom:3px solid var(--pc)}
+.cg-article .pcard figcaption{padding:7px 9px 10px;font-size:11.6px;line-height:1.35}
+.cg-article .pcard .pno{display:inline-block;min-width:20px;height:18px;line-height:18px;text-align:center;background:var(--pc);color:#fff;font-weight:700;font-size:10.5px;border-radius:3px;margin-inline-end:5px;vertical-align:1px}
+.cg-article .pcard b{font-size:12.4px}
+.cg-article .pcard .pterm{display:block;color:var(--muted);margin-top:2px}
+.cg-article .pcard .pparty{display:block;color:var(--pc);font-weight:700;font-size:10.8px;letter-spacing:.3px;text-transform:uppercase}
+.cg-article .pcard .pnote{display:block;color:var(--muted);margin-top:4px;font-size:11px}
+.cg-article .chip{display:inline-block;color:#fff;padding:1px 8px;border-radius:9px;font-size:10.8px;font-weight:700;white-space:nowrap}
+.cg-article .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px;margin:18px 0}
+.cg-article .vcard{margin:0;border:1px solid var(--line);background:var(--panel);padding:0;overflow:hidden;border-radius:10px}
+.cg-article .vcard svg{display:block;width:100%;height:auto;background:var(--plate);border-bottom:3px solid var(--vc,#54595d)}
+.cg-article .vcard figcaption{padding:8px 10px 11px;font-size:11.8px;line-height:1.4}
+.cg-article .vcard b{font-size:12.8px;display:block}
+.cg-article .vcard .vyear{display:inline-block;background:var(--vc,#54595d);color:#fff;font-weight:700;font-size:10.4px;padding:1px 6px;border-radius:3px;margin-inline-end:6px;letter-spacing:.3px}
+.cg-article .vcard .vplace{display:block;color:var(--muted);margin-top:2px}
+.cg-article .vcard .vnote{display:block;color:var(--muted);margin-top:4px}
+.cg-article .tradechart{display:block;width:100%;height:auto;background:var(--plate)}
+.cg-article .tradechart .hit{fill:transparent;cursor:default}
+.cg-article .tradechart .hit:hover{fill:rgba(42,120,214,.09)}
+.cg-article .infobox svg.tradechart{background:var(--plate)}
+
+.cg-article h2.era::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--era);margin-inline-end:11px;vertical-align:.08em}
+.cg-article .era-sw{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--era);margin-inline-end:7px;vertical-align:.02em}
+.cg-article table.tl th[scope="row"]{width:1%;white-space:nowrap;background:transparent;font-family:var(--serif);font-weight:600;font-size:14px;color:var(--ink);
+ border-inline-start:3px solid var(--era,var(--accent))}
+.cg-article table.tl td{line-height:1.55}
+.cg-article table.tl tr:nth-child(even) td,.cg-article table.tl tr:nth-child(even) th[scope="row"]{background:color-mix(in srgb,var(--era,var(--sunk)) 7%,var(--panel))}
+@media (max-width:560px){.cg-article table.tl th[scope="row"]{white-space:normal;width:26%}}
+
+/* -- contents sidebar (wide screens; built by the page script) ------------- */
+.cg-side{display:none}
+@media (min-width:1320px){
+ html.cg-has-side .cg-article #container{max-width:min(1400px,calc(100vw - 40px));padding-inline-start:300px;position:relative}
+ html.cg-has-side .cg-article #container>.toc{display:none}
+ .cg-side{display:block;position:fixed;top:calc(var(--mast-h) + 36px);width:240px;max-height:calc(100vh - var(--mast-h) - 60px);overflow:auto;
+  inset-inline-start:max(20px,calc((100vw - min(1400px,calc(100vw - 40px)))/2 + 26px));font-size:13px;line-height:1.4;scrollbar-width:thin;padding-inline-end:6px}
+ .cg-side .cg-side-title{font-family:var(--serif);font-size:16px;font-weight:600;margin:0 0 8px}
+ .cg-side ol{list-style:none;margin:0;padding:0}
+ .cg-side ol ol{padding-inline-start:12px;margin:2px 0 4px;display:none}
+ .cg-side li.open>ol{display:block}
+ .cg-side a{display:block;padding:4px 10px;color:var(--muted);border-inline-start:2px solid var(--line-soft);text-decoration:none}
+ .cg-side a:hover{color:var(--ink);text-decoration:none;border-inline-start-color:var(--line)}
+ .cg-side a.on{color:var(--ink);font-weight:600;border-inline-start-color:var(--accent);background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 10%,transparent),transparent)}
+ .cg-side .cg-top{display:inline-block;margin-top:12px;font-size:12px;color:var(--faint)}}
+
+@media (max-width:860px){
+ .cg-article #container{margin:0;border-radius:0;border-left:0;border-right:0;padding:18px 16px 36px;box-shadow:none}
+ .cg-article h1{font-size:28px}
+ .cg-article .infobox{float:none;width:100%;margin:0 0 18px}
+ .cg-article .thumb{float:none;width:100%;margin:12px 0}
+ .cg-article .quotebox{margin-inline-start:0}}
+@media (max-width:700px){.cg-article .refsection,.cg-article .two-col ul{column-count:1}
+ .cg-article .navbox-row{grid-template-columns:1fr;gap:2px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.cg-mast,.cg-foot,.cg-side,#pvcard{display:none!important}.cg-article #container{box-shadow:none;border:0;padding:0}}
+
+/* -- right to left ---------------------------------------------------------- */
+[dir="rtl"] body{font-family:"Segoe UI","Noto Naskh Arabic","Geeza Pro",Tahoma,Arial,sans-serif;line-height:1.85}
+[dir="rtl"] .cg-atlas{font-family:"Segoe UI","Noto Naskh Arabic","Geeza Pro",Tahoma,Arial,sans-serif}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,[dir="rtl"] .cg-name,[dir="rtl"] #pvcard h4,[dir="rtl"] .card h3,[dir="rtl"] .rules b,
+[dir="rtl"] .toc-title,[dir="rtl"] .cg-side-title,[dir="rtl"] .infobox-title,[dir="rtl"] .navbox-title,[dir="rtl"] .lorebox>summary{font-family:"Amiri","Noto Naskh Arabic","Times New Roman",serif}
+[dir="rtl"] .cg-atlas h3,[dir="rtl"] .hero-card h2{font-family:"Segoe UI","Noto Naskh Arabic",Tahoma,sans-serif}
+[dir="rtl"] .kicker,[dir="rtl"] h3,[dir="rtl"] th,[dir="rtl"] .cg-tag,[dir="rtl"] .tag,[dir="rtl"] .navbox-row b,[dir="rtl"] .infobox .section td,[dir="rtl"] .hero .kicker{letter-spacing:normal;text-transform:none}
+[dir="rtl"] .cg-article .infobox,[dir="rtl"] .cg-article .thumb{float:left;margin:4px 26px 20px 0}
+[dir="rtl"] .cg-article .disambig{border-radius:6px 0 0 6px}
+[dir="rtl"] .cg-article .quotebox{border-radius:8px 0 0 8px}
+[dir="rtl"] code{direction:ltr;display:inline-block}
+[dir="rtl"] .cg-side a.on{background:linear-gradient(270deg,color-mix(in srgb,var(--accent) 10%,transparent),transparent)}
+[dir="rtl"] .cg-mast::after{transform:scaleX(-1)}
+[dir="rtl"] .hero::before{background:radial-gradient(1200px 500px at 15% 40%,rgba(79,211,224,.18),transparent 60%),linear-gradient(270deg,var(--brand) 30%,rgba(13,57,64,.35))}
+[dir="rtl"] .card .thumb-art svg{direction:ltr}
+@media (max-width:860px){[dir="rtl"] .cg-article .infobox,[dir="rtl"] .cg-article .thumb{float:none;margin:0 0 18px}}
+/* ==== end of design system ================================================= */
 </style>
 </head>
-<body>
-<nav class="cg-nav"><a href="./">Controglobe</a><a href="united-states-of-arabia.html">United States of Arabia</a><a href="africa.html">Africa</a><a href="europe.html">Europe</a><a href="https://github.com/mofferato/controglobe/issues">Feedback</a><a class="lang" href="ar/africa.html" lang="ar" hreflang="ar" dir="rtl">العربية</a></nav>
-<div class="wrap">
+<body class="cg-atlas">
+<header class="cg-mast" id="top" data-l-top="Back to top">
+<a class="cg-skip" href="#main">Skip to content</a>
+<div class="cg-mast-in">
+<a class="cg-brand" href="./" aria-label="Controglobe — home"><img class="cg-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCABAAEADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAABwQFBggCAAP/xAA3EAABAwIFAQYEBAUFAAAAAAABAgMEBREABhIhMUEHEyJRYXEUMoGRCBVyoRYjUsHwJUKCkuH/xAAaAQACAwEBAAAAAAAAAAAAAAADBQEEBgIA/8QALhEAAQMEAAMGBQUAAAAAAAAAAQIDEQAEITESQVEFIiNhcaEGE5HB0TKBseHw/9oADAMBAAIRAxEAPwB7SCk3tyMWUMIXwQFKxESBoHAI3vyDgt7We15eV3Dl/LoDlbWkF5wDUIqTxYcayNxfjY4ZuZFYW08NYOxSZmfOuXspN/6vU2WndNwyPG4ofpG9vU2GD6V+Iend2tVOok2Q0jc63mwq36U6j97YC4mWaxX5TsuZ4lvkqW7JcUt1XW5J640VBy2MvOd89MW26tN0hIGlV+Qb8jEt2xP6hXN722lMhtQnoPzSdT/xBUmaSmTl2a2yDYqjrS6R/wAdjjeZUzfQM1X/ACmoIddHzMrSW3U+6Fb/AOc4BaFlemVqrKkvUyQLArW4h9TbQV0SkAXN/wBXTGrkUOKol1hCY0hrxsux7pcbV7jnBxZlScGlLnxEll0BSJjevt+Kd+5GkXUFWHPS2PiUsNghI033F9hg97Mu0RzMLX5dVAW6g0VIS4tOkvFPIUOiut+CN8IQCVncFJ9MLVtqQYVW2tbpu4Rxtb16GsVmmvDLmX5tUtdxhv8Altn/AHrJ0pHqLkYDI9ClOxJNTU2ZMt4qcWVuhtbrp/qUeCoke2FDtc1qpdNiIN0Oy9e+99KDYf8AYj7YPqdOdQXYMttUVlbig2sFbryym3jIsBt6iw8sMmynZrFXjb5AS36n09Jn6VWI+Nj6VqiymZTCx3zT4QoOgnYeLYJtq498fjKqMgzpj0VtgRpC0BhoJCi1YHUn0G4+52xYVupRpNScejLWtAaQkl3VZIFzYWG9wDv9NsQ8uUiFElOVB5115TxulhK7pbKtz63PG+JKwTANcJtnEtlxxuDqPcjc4jZ0J5VoqfUJLvwUSmPJ+HQyAWlrLKg4eEquLEEE8dQObnE2q5UmSaUGxXZzM1KkrS6lRU22Um9wLCxtfe+JLjTU6SwHIiy7HbvoQbd2rcAje1rH9hibCqKExmWwHnlOEtJSsAOLUm9yonrYf5vixKdE0oKXsONpj6HqZnURJnAIzndVCZb0GpoaedQ3K1odjPoTbvFW8IB/q2Nweb4c6PUE1SnMSkhIDqAojoD1HpvgLrgp9WZRGdL8dLTyXy4lVlBxPAJ3+h9sKnZ0+/JozgcaLSmXiE3IIWCL324xUuylaJB1Wg+H0vW9wEKTAWNY5aI64nXlyisl2sLci0unTgkEMywlVyB86SAbnYbgD64Pm6tLl0BE+mzW23JqlWakBSkLINikqHynYi/Aw35jojWYaDKpjukF5HhKjsFA3Sb+4GOaqDOlUJE7Ls2M8ymA/JKGypSFJaT4ik6d1EXJ54F/XHkqEwah9lXCFpyRHTWTz6GD7jNbFFKfq+WkSJ6IsR1lGhCtKtjbTvuLHci+/wC2MVVa7Xcm6XJVKbqUNwkJkw1JCAsCwC9vTk2JxM/jdzLk401mQJ8KXHVLZS8kud2sHYBZ+dPXe56HgYyFSYqtQkrpcqryo0GV3b647Lo0P3uQpJ3sOmm/OIdKYHCM0awS+FEPK8M5gzryjOOmv2pAyJ2jUrPD3w62X4stQssKHeAgfLc20jg2HPvjVlqmreZpLklYUHClgXBKFkXCgRvfnfpjK5Ho9HyqrVEjPQi2nQ58QpJKlnYX2vquLC2LN3Lc6p1OJUKRVEwYrCXC653V/ETe4Sdgobjf7bYM2k8I4hJpZduIDqgyoob5TmCAfI8sAZwY1NXdPpzEhc+GuQsqStK3Qm3jSoXbWPLg3A6g+eEfswiKhUF6Qq5RJkFSQUhJAAtv64F8lUbNH547MmPNnUtEPSPF8QkE2UD05v8AfHSFJpqIEBmIPCptNiR1J3P74DdFAbGIJ/imXYQuHLxXf4kpHlHEQB06ewAqrQSo+G4tyk4xPaR2aOZkZXV6KxGcqiACuM9cJkWBAKVAgpWBcXB3Gx6Y3aWtJGq9huFeWJ0ZlKyq4JNr3G18CcXGRV61tvmdxYrh2uVmdSmDSZeXExww+vu1yEKDrHmm+xB4v589cZ85rnU54uomBb7jIbCnEalMpO/htwemO7c25ByzniKY1cpLUjycF0OoPSyhvgnqv4Rsuy3dUGuT46Bslt5pLlvS40nFcuE86cN2aEAgpkf7rXN1Kz3NivsoeQ5NZQ5rUHVW55sBtf159sa+mVypZtmiA0X1tkEtN2ULq6AJTe6t9r+WFumfhRy5DcC5telyUJ3KG2Ut3+pKsKWUuz3LmUkJao1PQ0rTu+vxOK91Hj6bYI2spHeOKpXTDbqvCQArr94H9VVdmOR5+X6YxNrb7j8wIs2ybER0/wB1dPTCCyvUNrEdPL/z2x6StITp06f7Y891oVqb2N9x0OBOOFZlVX7SzRapCWtc/M9a/9k=" alt="" width="36" height="36"><span class="cg-word"><span class="cg-name">Controglobe</span><span class="cg-tag">The Global Swap encyclopedia</span></span></a>
+<nav class="cg-links" aria-label="Site"><a href="timeline-of-the-global-swap.html">Timeline</a><a href="united-states-of-arabia.html">United States of Arabia</a><a href="africa.html" aria-current="page">Africa</a><a href="europe.html">Europe</a><a href="https://github.com/mofferato/controglobe/issues">Feedback</a></nav>
+<div class="cg-tools"><button class="cg-theme" type="button" data-mode="auto" data-l-auto="Colour theme: match the system" data-l-light="Colour theme: light" data-l-dark="Colour theme: dark" aria-label="Colour theme: match the system" title="Colour theme: match the system"><svg class="i-auto" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 2.8a7.2 7.2 0 0 1 0 14.4z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" fill="currentColor"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M10 1.8v2.2M10 16v2.2M1.8 10h2.2M16 10h2.2M4.2 4.2l1.6 1.6M14.2 14.2l1.6 1.6M4.2 15.8l1.6-1.6M14.2 5.8l1.6-1.6"/></g></svg><svg class="i-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.8 12.6A6.8 6.8 0 0 1 7.4 4.2a6.8 6.8 0 1 0 8.4 8.4z" fill="currentColor"/></svg></button><a class="cg-lang" href="ar/africa.html" lang="ar" hreflang="ar" dir="rtl">العربية</a></div>
+</div>
+</header>
+
+<div class="wrap" id="main">
 <p style="font-size:13px;color:var(--muted);margin:0 0 10px">Companion to the main article on the <a href="united-states-of-arabia.html">United States of Arabia</a>, and the other half of <a href="europe.html">Europe &mdash; the African swap</a>.</p>
 
 <header>
@@ -96,196 +390,8 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
 
 
 <figure class="mapbox">
-<svg viewBox="-55 -15 790 775" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Political map of Africa in the Controglobe timeline">
-  <defs>
-    <clipPath id="land">
-      <path d="M142,22 L230,12 L300,10 L310,45 L385,72 L400,59 L440,60 L500,68 L520,67 L545,65 L540,100 L550,145 L570,170 L590,230 L633,254 L630,265 L670,265 L714,262 L710,280 L680,330 L653,360 L625,384 L597,420 L593,448 L605,485 L606,525 L549,578 L526,640 L510,679 L479,710 L400,728 L384,720 L352,646 L345,610 L322,532 L332,468 L323,440 L318,428 L294,376 L298,361 L297,340 L283,332 L265,337 L234,316 L212,319 L198,325 L160,327 L123,336 L92,317 L68,295 L63,285 L44,261 L26,233 L35,220 L40,200 L30,170 L40,143 L68,109 L104,76 L124,44 Z
-               M693,500 L702,535 L695,572 L680,612 L670,634 L656,622 L645,588 L638,558 L655,528 L670,510 Z"/>
-    </clipPath>
-    <style>
-      .lbl{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-           fill:#141414;font-weight:700;text-anchor:middle;paint-order:stroke;
-           stroke:rgba(255,255,255,.72);stroke-width:2.4px;stroke-linejoin:round}
-      .eq{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-          fill:#2b2b2b;font-style:italic;font-weight:600;text-anchor:middle;paint-order:stroke;
-          stroke:rgba(255,255,255,.72);stroke-width:2.2px;stroke-linejoin:round}
-      .lead{stroke:#333;stroke-width:.9;fill:none;opacity:.6}
-    </style>
-  </defs>
-
-  <g clip-path="url(#land)" stroke="none">
-    <!-- NORTH -->
-    <polygon fill="#9fc08a" points="160,10 250,-2 330,-5 348,28 355,60 358,105 350,150 322,182 300,205 254,214 210,210 178,188 165,155 150,95 150,60"/>
-    <polygon fill="#d8c07e" points="322,30 400,40 450,44 500,50 505,100 498,165 468,196 430,222 380,224 340,215 318,168 312,120"/>
-    <polygon fill="#b5b5c8" points="478,30 520,34 552,38 560,95 566,124 572,155 548,176 522,188 486,180 460,172 456,128 462,92"/>
-    <polygon fill="#d8c98f" points="425,165 500,158 578,160 606,200 600,232 594,258 560,282 522,295 470,290 438,280 414,246 408,215"/>
-    <polygon fill="#a8d6c4" points="340,145 390,150 434,158 438,226 432,302 402,318 372,324 344,308 332,284 322,240 320,198"/>
-    <polygon fill="#cf9f5f" points="210,175 272,158 342,145 350,200 352,258 320,272 288,280 246,272 220,258 208,215"/>
-    <polygon fill="#7fa88c" points="10,180 80,172 152,158 190,176 205,200 190,230 172,255 110,266 55,272 20,250 0,225"/>
-    <polygon fill="#e8b9a5" points="72,105 120,100 165,102 158,136 148,168 100,182 55,190 24,172 10,150"/>
-    <polygon fill="#d98d7a" points="110,-10 160,4 195,25 190,46 185,68 168,90 152,108 110,114 70,115 45,86 45,55 80,-10"/>
-    <polygon fill="#c2d18a" points="286,-10 312,-12 335,-10 342,22 345,52 326,68 306,80 290,64 282,45"/>
-
-    <!-- SAHEL / WEST -->
-    <polygon fill="#c9a3cc" points="25,200 90,186 152,172 196,174 232,178 242,222 248,268 226,290 202,305 160,308 118,305 78,294 50,278 26,258 18,238"/>
-    <polygon fill="#b07fb0" points="162,200 200,196 232,196 236,220 236,244 204,250 172,250 158,226"/>
-    <polygon fill="#6fae6a" points="18,248 52,248 82,252 86,276 88,298 62,306 38,310 16,298 5,282"/>
-    <polygon fill="#4f9e6e" points="52,266 88,268 118,272 122,296 124,318 96,322 66,322 50,310 44,296"/>
-    <polygon fill="#86c98a" points="54,292 82,288 108,288 112,310 114,330 86,334 60,334 50,312"/>
-    <polygon fill="#3f8f5f" points="82,302 112,298 142,297 146,320 148,344 118,348 92,348 80,326"/>
-    <polygon fill="#c98fa8" points="122,262 168,260 212,262 216,296 218,332 182,340 148,344 128,332 118,318 116,288"/>
-    <polygon fill="#e0a3b8" points="194,272 212,269 230,270 231,300 232,328 214,330 196,330 194,300"/>
-    <polygon fill="#8fbf7a" points="218,266 234,264 250,264 251,296 252,326 236,328 220,328 218,296"/>
-    <polygon fill="#a06fb5" points="238,242 274,244 308,246 313,272 316,300 304,324 292,344 268,342 246,340 236,312 232,284"/>
-
-    <!-- CENTRAL -->
-    <polygon fill="#7fae5f" points="318,350 380,352 442,356 460,378 474,400 486,426 492,452 476,484 456,510 412,516 368,518 340,490 320,458 316,404"/>
-    <polygon fill="#cfe0b0" points="340,270 404,268 468,266 476,292 482,318 462,342 442,362 400,362 356,360 340,338 332,314"/>
-    <polygon fill="#8fb8a8" points="440,264 494,262 548,262 564,280 578,298 564,324 548,348 508,346 468,344 444,324 428,304"/>
-    <polygon fill="#7b5fa8" points="284,286 308,288 332,292 336,324 338,356 326,374 312,390 296,378 284,362 282,324"/>
-    <polygon fill="#9b7fc4" points="284,366 310,363 334,362 336,390 338,418 314,424 292,428 284,398"/>
-    <polygon fill="#b88f5f" points="310,386 336,383 360,382 364,412 366,442 342,448 318,452 310,420"/>
-    <polygon fill="#caa6e0" points="289,350 300,348 310,347 311,360 312,374 300,376 290,377 288,362"/>
-
-    <!-- EAST -->
-    <polygon fill="#9a5f7a" points="524,236 562,238 600,242 634,254 664,268 670,296 674,322 648,346 620,368 580,360 542,352 520,326 508,298 512,264"/>
-    <polygon fill="#d88f6a" points="556,190 592,212 628,232 625,250 622,268 596,260 572,252 556,232 546,212"/>
-    <polygon fill="#c2a8b8" points="612,246 632,250 650,256 648,272 646,286 630,282 616,276 610,260"/>
-    <polygon fill="#7fc4b8" points="624,250 674,250 722,250 720,276 718,302 690,338 662,372 636,384 616,394 612,362 610,330"/>
-    <polygon fill="#5fa89e" points="626,248 670,250 712,252 710,272 708,292 672,296 638,298 630,272"/>
-    <polygon fill="#c08a5f" points="534,336 582,336 628,338 632,370 634,402 618,422 602,438 570,434 542,428 528,402 522,378"/>
-    <polygon fill="#d8b86a" points="488,344 520,342 550,341 554,368 556,396 524,402 496,406 486,376"/>
-    <polygon fill="#6f9fbf" points="488,396 546,406 602,418 606,444 608,472 582,492 558,508 526,508 496,504 478,472 472,442"/>
-    <polygon fill="#a8c26a" points="474,394 494,392 514,392 515,404 516,418 496,420 476,420 474,406"/>
-    <polygon fill="#c25f7a" points="473,416 492,414 511,414 512,428 513,444 494,446 475,446 473,430"/>
-
-    <!-- SOUTHERN -->
-    <polygon fill="#c27f6a" points="312,444 372,446 432,450 442,484 448,518 434,548 422,574 380,578 336,580 318,548 308,516 306,478"/>
-    <polygon fill="#8fae7a" points="414,466 476,470 538,476 544,502 548,530 520,552 492,570 456,566 420,560 410,516"/>
-    <polygon fill="#d4c48f" points="318,514 358,518 398,526 406,562 414,600 404,630 394,658 368,660 342,660 324,626 314,586 312,548"/>
-    <polygon fill="#9fd4c4" points="376,552 422,554 468,556 472,586 476,618 452,638 428,654 404,644 382,632 376,592"/>
-    <polygon fill="#7f7fbf" points="430,546 484,545 538,544 541,572 544,600 506,612 468,622 448,610 432,596"/>
-    <polygon fill="#b06a5f" points="524,486 546,488 568,492 571,524 574,558 552,562 532,564 526,524"/>
-    <polygon fill="#9a6a9a" points="548,492 582,496 616,502 614,532 612,562 584,562 556,560 550,526"/>
-    <polygon fill="#5f9e6a" points="512,550 560,550 608,552 605,586 602,622 566,642 528,660 512,630 506,600 506,574"/>
-    <polygon fill="#6f9e8a" points="432,608 484,612 534,616 531,652 528,690 506,710 484,728 460,716 438,700 432,652"/>
-    <polygon fill="#c9b08f" points="338,618 400,624 462,630 464,666 466,704 442,720 418,734 380,734 344,734 336,676"/>
-    <polygon fill="#b0b0c0" points="462,632 492,635 522,638 523,662 524,688 496,690 468,692 462,662"/>
-    <polygon fill="#e0a85f" points="500,616 516,617 532,618 531,636 530,654 517,653 504,652 500,634"/>
-
-    <!-- MADAGASCAR -->
-    <polygon fill="#b08f7a" points="686,490 710,520 706,560 692,600 672,642 650,630 636,592 630,552 652,520 668,500"/>
-  </g>
-
-  <!-- continent outline -->
-  <path clip-path="url(#land)" d="M142,22 L230,12 L300,10 L310,45 L385,72 L400,59 L440,60 L500,68 L520,67 L545,65 L540,100 L550,145 L570,170 L590,230 L633,254 L630,265 L670,265 L714,262 L710,280 L680,330 L653,360 L625,384 L597,420 L593,448 L605,485 L606,525 L549,578 L526,640 L510,679 L479,710 L400,728 L384,720 L352,646 L345,610 L322,532 L332,468 L323,440 L318,428 L294,376 L298,361 L297,340 L283,332 L265,337 L234,316 L212,319 L198,325 L160,327 L123,336 L92,317 L68,295 L63,285 L44,261 L26,233 L35,220 L40,200 L30,170 L40,143 L68,109 L104,76 L124,44 Z
-           M693,500 L702,535 L695,572 L680,612 L670,634 L656,622 L645,588 L638,558 L655,528 L670,510 Z"
-        fill="none" stroke="#2a2a2a" stroke-width="2" opacity=".55"/>
-
-  <!-- island markers -->
-  <g fill="#8d8d8d" stroke="#2a2a2a" stroke-width=".8">
-    <circle cx="-38" cy="222" r="4"/><circle cx="36" cy="102" r="4"/>
-    <circle cx="266" cy="378" r="3.5"/><circle cx="633" cy="497" r="3.5"/>
-  </g>
-
-  <!-- leader lines -->
-  <g class="lead">
-    <line x1="-12" y1="266" x2="42" y2="276"/>
-    <line x1="4" y1="322" x2="80" y2="311"/>
-    <line x1="18" y1="356" x2="112" y2="326"/>
-    <line x1="212" y1="368" x2="212" y2="302"/>
-    <line x1="256" y1="378" x2="236" y2="300"/>
-    <line x1="246" y1="402" x2="298" y2="364"/>
-    <line x1="694" y1="228" x2="632" y2="266"/>
-    <line x1="-30" y1="236" x2="-38" y2="226"/>
-    <line x1="40" y1="88" x2="36" y2="98"/>
-  </g>
-
-  <!-- LABELS -->
-  <g class="lbl" font-size="12">
-    <text x="118" y="52">Morocco</text>
-    <text x="250" y="104">Algeria</text>
-    <text x="398" y="126">Libya</text>
-    <text x="510" y="106">Egypt</text>
-    <text x="504" y="212">Sudan</text>
-    <text x="378" y="232">Chad</text>
-    <text x="278" y="212">Niger</text>
-    <text x="126" y="236">Jolof</text>
-    <text x="164" y="298">Kong</text>
-    <text x="272" y="288">Nigeria</text>
-    <text x="404" y="308">C.A.R.</text>
-    <text x="500" y="302">South Sudan</text>
-    <text x="584" y="306">Ethiopia</text>
-    <text x="660" y="338">Somalia</text>
-    <text x="574" y="382">Kenya</text>
-    <text x="400" y="446">DR Congo</text>
-    <text x="544" y="454">Tanzania</text>
-    <text x="372" y="512">Angola</text>
-    <text x="478" y="516">Zambia</text>
-    <text x="358" y="588">Namibia</text>
-    <text x="424" y="592">Botswana</text>
-    <text x="486" y="572">Zimbabwe</text>
-    <text x="556" y="596">S. Mozambique</text>
-    <text x="482" y="652">Xhosa Rep.</text>
-    <text x="398" y="676">Cape Republic</text>
-    <text x="668" y="566">Madagascar</text>
-  </g>
-  <g class="eq" font-size="9">
-    <text x="118" y="64">Iceland</text>
-    <text x="250" y="116">Sweden</text>
-    <text x="398" y="138">Finland</text>
-    <text x="510" y="118">Mexico ✻</text>
-    <text x="504" y="224">Belarus</text>
-    <text x="378" y="244">Sápmi ✦</text>
-    <text x="278" y="224">Alps ✦</text>
-    <text x="126" y="248">Spain</text>
-    <text x="164" y="310">France</text>
-    <text x="272" y="300">Britain</text>
-    <text x="404" y="320">Poland</text>
-    <text x="500" y="314">Lithuania</text>
-    <text x="584" y="318">Russia</text>
-    <text x="660" y="350">Ukraine</text>
-    <text x="574" y="394">Romania</text>
-    <text x="400" y="458">Germany</text>
-    <text x="544" y="466">Bulgaria</text>
-    <text x="372" y="524">Italy</text>
-    <text x="478" y="528">Croatia</text>
-    <text x="358" y="600">Bosnia</text>
-    <text x="424" y="604">Slovenia</text>
-    <text x="486" y="584">Serbia</text>
-    <text x="556" y="608">Montenegro</text>
-    <text x="482" y="664">Greece</text>
-    <text x="398" y="688">no twin ✦</text>
-    <text x="668" y="578">Sicily–Malta</text>
-  </g>
-  <g class="lbl" font-size="9">
-    <text x="75" y="142">Saguia</text>
-    <text x="86" y="212">Mauritania</text>
-    <text x="312" y="36">Tunisia</text>
-    <text x="198" y="222">Songhai</text>
-    <text x="-30" y="262">Kaabu</text>
-    <text x="93" y="296">Fouta Djallon</text>
-    <text x="-8" y="326">Sierra Leone</text>
-    <text x="8" y="360">Liberia</text>
-    <text x="212" y="380">Tem</text>
-    <text x="264" y="390">Dahomey</text>
-    <text x="308" y="330">Cameroon</text>
-    <text x="232" y="414">Eq. Guinea</text>
-    <text x="310" y="392">Gabon</text>
-    <text x="340" y="416">Congo</text>
-    <text x="586" y="226">Eritrea</text>
-    <text x="708" y="222">Djibouti</text>
-    <text x="668" y="274">Somaliland</text>
-    <text x="518" y="374">Uganda</text>
-    <text x="494" y="408">Rwanda</text>
-    <text x="492" y="434">Burundi</text>
-    <text x="548" y="528">Malawi</text>
-    <text x="582" y="532">N. Moz.</text>
-    <text x="492" y="666">Lesotho</text>
-    <text x="516" y="638">Eswatini</text>
-  </g>
-</svg>
-<figcaption>Every African nation set against the Global-North counterpart whose history it carries, on the revised non-colonial border set. &#10022; marks a custom nation with no single counterpart outside the timeline and &#10043; a state outside the European sphere entirely. Scroll or pinch the map sideways on a phone.</figcaption>
+<svg viewBox="0 0 780 790" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Political map of Africa in the Controglobe timeline" direction="ltr"><defs><clipPath id="af-frame"><rect width="780" height="790"/></clipPath><clipPath id="af-al0"><path d="M313.9,17.4L323.5,13.1L329.5,19.5L335.2,35.4L325.9,46.3L338.2,57.2L369.9,65.6L378,77.6L388.7,79.5L402.5,87.9L413.1,79.6L414.9,65.2L425.8,59.8L438.4,63.2L440.2,67.5L456.5,73.4L474.8,76.4L489.9,81.9L502.1,75.5L517.1,79.4L535.3,77L535.7,78.2L542.3,96.6L537,114.8L528.1,106.3L521.6,91.3L519.9,95L531,113.4L535.1,126.7L550.2,155.7L551.9,166L562.7,176.1L566.1,184.7L569.2,209.8L579.7,218.4L586.6,240.5L591.2,248.9L603.9,254.3L622,274.5L624.8,280L618,286.7L623.5,287.3L634.1,298.6L661.3,290.8L675.2,289.9L696,283.8L692.8,309.2L667.8,361.3L650.4,382.6L634.8,394.1L613.4,419L609.3,426.7L597.3,437.1L588,458.3L584.7,475.6L590.5,484L588.3,497.9L592.4,513.5L598.5,519.3L598.1,572.3L584.3,588.2L567.5,596.3L559,607.5L546.3,618.3L546.3,628.8L550.8,651.7L546.5,668.5L530.3,676.1L523.3,684L525.6,693L519.7,711.8L511.1,719.9L501.4,736.8L479.6,759L467,766.5L453.1,770.8L430.9,769.7L408.4,777L398.3,767.8L393,756.6L396.2,745L380.8,711.8L371,698.7L363.4,664.9L363.5,648.9L344.8,608.9L338.6,599.1L338.2,591.1L340.1,574L345.2,550.7L353,541L356.9,525.5L349.1,504.3L352.5,497.2L342.7,473.1L349.6,470.7L341.8,469.6L349.6,457.7L340,461.6L331.9,450.1L315.2,428.9L310.8,416.2L315.1,412.5L317.8,397.9L319.8,384.4L321.1,376.3L308.5,358.6L285.8,363.5L279.6,351.7L268.2,341.1L255.3,341.5L245.4,343.1L241.4,344.5L212.2,358.5L202.1,355L202.4,354.6L203,354.6L179.8,355L161.7,362.8L147.3,355.4L125.9,335.8L117.1,330.8L111.2,322L110.1,313.2L106.7,303.9L94.7,293.2L91.5,282.6L80,278.3L79.8,270.8L96.6,263.1L81.8,265.2L76.8,254.1L83,241.4L88.6,219.7L85,204L88.3,194.9L81.1,188.7L81.9,182.2L93.4,156.5L101.5,149L108.3,130.9L116,125.7L122.4,113.2L136.1,108.2L152.8,89.9L152.5,75.9L164.4,57.1L179.6,48.8L189.4,29.6L202.6,36.2L220.7,36.8L251.3,21.8L281.3,17.8L286.9,20.1L296.1,15.8ZM680.3,540.1L683.7,546.9L687.6,571.4L684.9,577.4L680.1,573.3L680.6,586.5L676.2,602.6L661.2,645.7L653,671.1L634.2,679.1L625,673.3L619.8,642L631,619.4L628.2,592.6L633.2,580.2L650.1,574.8L663.5,563.4L666.3,552.4L673.3,548.9L673.4,540.5Z"/></clipPath></defs><g clip-path="url(#af-frame)"><path d="M69.5,790L66.5,766.4L55.9,646.8L49.8,527.6L47.8,408.8L49.8,289.9L55.9,170.7L66.5,51.2L73.1,0M155,790L152.7,766.4L145,646.8L140.5,527.6L139.1,408.8L140.5,289.9L145,170.7L152.7,51.2L157.6,0M240.4,790L239,766.4L234.1,646.8L231.2,527.6L230.3,408.8L231.2,289.9L234.1,170.7L239,51.2L242.1,0M326.3,790L323.2,646.8L321.6,408.8L323.2,170.7L326.9,0M411.2,790L412.3,646.8L412.8,408.8L412.3,170.7L411,0M496.8,790L497.8,766.4L501.4,646.8L504.1,408.8L501.4,170.7L497.8,51.2L495.6,0M582.3,790L584.1,766.4L590.4,646.8L594.1,527.6L595.3,408.8L594.1,289.9L590.4,170.7L584.1,51.2L580.2,0M667.8,790L670.4,766.4L679.5,646.8L684.8,527.6L686.6,408.8L684.8,289.9L679.5,170.7L670.4,51.2L664.7,0M753.5,790L756.7,766.4L768.6,646.8L775.5,527.6L777.8,408.8L775.5,289.9L768.6,170.7L756.7,51.2L749.8,0M0,726.5L18.8,726.5L40.6,726.5L62.4,726.5L84.3,726.5L106.1,726.5L127.9,726.5L149.8,726.5L171.6,726.5L193.5,726.5L215.3,726.5L237.1,726.5L259,726.5L280.8,726.5L302.6,726.5L324.5,726.5L346.3,726.5L368.2,726.5L390,726.5L411.8,726.5L433.7,726.5L455.5,726.5L477.4,726.5L499.2,726.5L521,726.5L542.9,726.5L564.7,726.5L586.5,726.5L608.4,726.5L630.2,726.5L652.1,726.5L673.9,726.5L695.7,726.5L717.6,726.5L739.4,726.5L761.2,726.5L780,726.5M0,620.3L9.4,620.3L31.8,620.3L54.2,620.3L76.6,620.3L99,620.3L121.4,620.3L143.8,620.3L166.1,620.3L188.5,620.3L210.9,620.3L233.3,620.3L255.7,620.3L278.1,620.3L300.5,620.3L322.8,620.3L345.2,620.3L367.6,620.3L390,620.3L412.4,620.3L434.8,620.3L457.2,620.3L479.5,620.3L501.9,620.3L524.3,620.3L546.7,620.3L569.1,620.3L591.5,620.3L613.9,620.3L636.2,620.3L658.6,620.3L681,620.3L703.4,620.3L725.8,620.3L748.2,620.3L770.6,620.3L780,620.3M0,514.4L4,514.4L26.7,514.4L49.4,514.4L72.1,514.4L94.8,514.4L117.5,514.4L140.2,514.4L162.9,514.4L185.6,514.4L208.3,514.4L231,514.4L253.8,514.4L276.5,514.4L299.2,514.4L321.9,514.4L344.6,514.4L367.3,514.4L390,514.4L412.7,514.4L435.4,514.4L458.1,514.4L480.8,514.4L503.5,514.4L526.2,514.4L549,514.4L571.7,514.4L594.4,514.4L617.1,514.4L639.8,514.4L662.5,514.4L685.2,514.4L707.9,514.4L730.6,514.4L753.3,514.4L776,514.4L780,514.4M0,408.8L2.2,408.8L25,408.8L47.8,408.8L70.6,408.8L93.4,408.8L116.2,408.8L139.1,408.8L161.9,408.8L184.7,408.8L207.5,408.8L230.3,408.8L253.1,408.8L275.9,408.8L298.7,408.8L321.6,408.8L344.4,408.8L367.2,408.8L390,408.8L412.8,408.8L435.6,408.8L458.4,408.8L481.3,408.8L504.1,408.8L526.9,408.8L549.7,408.8L572.5,408.8L595.3,408.8L618.1,408.8L640.9,408.8L663.8,408.8L686.6,408.8L709.4,408.8L732.2,408.8L755,408.8L777.8,408.8L780,408.8M0,303.2L4,303.2L26.7,303.2L49.4,303.2L72.1,303.2L94.8,303.2L117.5,303.2L140.2,303.2L162.9,303.2L185.6,303.2L208.3,303.2L231,303.2L253.8,303.2L276.5,303.2L299.2,303.2L321.9,303.2L344.6,303.2L367.3,303.2L390,303.2L412.7,303.2L435.4,303.2L458.1,303.2L480.8,303.2L503.5,303.2L526.2,303.2L549,303.2L571.7,303.2L594.4,303.2L617.1,303.2L639.8,303.2L662.5,303.2L685.2,303.2L707.9,303.2L730.6,303.2L753.3,303.2L776,303.2L780,303.2M0,197.3L9.4,197.3L31.8,197.3L54.2,197.3L76.6,197.3L99,197.3L121.4,197.3L143.8,197.3L166.1,197.3L188.5,197.3L210.9,197.3L233.3,197.3L255.7,197.3L278.1,197.3L300.5,197.3L322.8,197.3L345.2,197.3L367.6,197.3L390,197.3L412.4,197.3L434.8,197.3L457.2,197.3L479.5,197.3L501.9,197.3L524.3,197.3L546.7,197.3L569.1,197.3L591.5,197.3L613.9,197.3L636.2,197.3L658.6,197.3L681,197.3L703.4,197.3L725.8,197.3L748.2,197.3L770.6,197.3L780,197.3M0,91L18.8,91L40.6,91L62.4,91L84.3,91L106.1,91L127.9,91L149.8,91L171.6,91L193.5,91L215.3,91L237.1,91L259,91L280.8,91L302.6,91L324.5,91L346.3,91L368.2,91L390,91L411.8,91L433.7,91L455.5,91L477.4,91L499.2,91L521,91L542.9,91L564.7,91L586.5,91L608.4,91L630.2,91L652.1,91L673.9,91L695.7,91L717.6,91L739.4,91L761.2,91L780,91" fill="none" stroke="#7f97a3" stroke-width=".7" stroke-opacity="0.35"/><g stroke="#fff" stroke-width="0.7" stroke-linejoin="round"><path d="M546.5,65.6L541.4,68.1L546.1,75.3ZM439,0L444.8,3.2L445.7,9.2L437,7.4L436.8,16.5L427.5,19.5L420.6,2L419.2,0L439,0ZM382.4,0L374.9,6.8L378.1,0L382.4,0ZM241.7,0L222,19.4L203.4,19.7L192.1,27L185.5,17.2L177.9,14.8L164.2,16.3L166.5,1.4L164.3,0L241.7,0ZM780,142L757.6,139.8L742.1,135.8L738,123.9L732.2,120.8L719.9,127.6L709.3,125.8L686.7,110.9L674.3,88.9L661.2,91.4L656.3,91.2L661.5,106.5L665.2,115.2L676.4,124.7L677.3,132.4L685.1,146.4L689.3,148.4L692.3,151.8L695.5,155L713.1,154L730.8,132.9L733.1,137.3L734.4,144.4L742.7,155.6L755,158.6L767,173.7L756.6,193L753.2,191.2L751.6,207.7L741.5,212.3L738.5,219L731.4,220.1L728.1,228.7L710.5,232.8L703.9,236.6L703.2,243.3L677.8,254.1L671.8,260.3L655,266.5L644.8,267.9L639.4,273.4L625.2,273.1L617.5,243.3L618,235.7L608,219.7L598.4,199.9L587.8,191.8L582.9,183.4L581.5,167.9L576.2,157.9L567.8,151.7L563.9,141.1L545.3,111.9L540.3,110.7L542.7,97.9L542.8,95.8L542.3,96.6L537,114.8L528.1,106.3L521.6,91.3L519.9,95L531,113.4L535.1,126.7L550.2,155.7L551.9,166L562.7,176.1L566.1,184.7L569.2,209.8L579.7,218.4L586.6,240.5L591.2,248.9L603.9,254.3L622,274.5L624.8,280L618,286.7L623.5,287.3L634.1,298.6L661.3,290.8L675.2,289.9L696,283.8L692.8,309.2L667.8,361.3L650.4,382.6L634.8,394.1L613.4,419L609.3,426.7L597.3,437.1L588,458.3L584.7,475.6L590.5,484L588.3,497.9L592.4,513.5L598.5,519.3L598.1,572.3L584.3,588.2L567.5,596.3L559,607.5L546.3,618.3L546.3,628.8L550.8,651.7L546.5,668.5L530.3,676.1L523.3,684L525.6,693L519.7,711.8L511.1,719.9L501.4,736.8L479.6,759L467,766.5L453.1,770.8L430.9,769.7L408.4,777L398.3,767.8L393,756.6L396.2,745L380.8,711.8L380.8,711.8L371,698.7L363.4,664.9L363.5,648.9L344.8,608.9L338.6,599.1L338.2,591.1L340.1,574L345.2,550.7L353,541L356.9,525.5L349.1,504.3L352.5,497.2L342.7,473.1L349.6,470.7L341.8,469.6L349.6,457.7L340,461.6L331.9,450.1L315.2,428.9L310.8,416.2L315.1,412.5L317.8,397.9L319.8,384.4L321.1,376.3L308.5,358.6L285.8,363.5L279.6,351.7L268.2,341.1L255.3,341.5L245.4,343.1L241.4,344.5L212.2,358.5L202.1,355L202.4,354.6L203,354.6L179.8,355L161.7,362.8L147.3,355.4L125.9,335.8L117.1,330.8L111.2,322L110.1,313.2L106.7,303.9L94.7,293.2L91.5,282.6L80,278.3L79.8,270.8L96.6,263.1L81.8,265.2L76.8,254.1L83,241.4L88.6,219.7L85,204L88.3,194.9L81.1,188.7L81.9,182.2L93.4,156.5L101.5,149L108.3,130.9L116,125.7L122.4,113.2L136.1,108.2L152.8,89.9L152.5,75.9L164.4,57.1L179.6,48.8L189.4,29.6L202.6,36.2L220.7,36.8L251.3,21.8L281.3,17.8L286.9,20.1L296.1,15.8L313.9,17.4L323.5,13.1L329.5,19.5L335.2,35.4L325.9,46.3L338.2,57.2L369.9,65.6L378,77.6L388.7,79.5L402.5,87.9L413.1,79.6L414.9,65.2L425.8,59.8L438.4,63.2L440.2,67.5L456.5,73.4L474.8,76.4L489.9,81.9L502.1,75.5L517.1,79.4L535.3,77L535.7,78.2L537.5,74.2L542.3,58.3L548.7,54.5L554.4,46.2L548.9,41.8L547.4,28.2L548.2,17.7L535.9,19L520.9,26.9L502.1,18.1L494.2,25.6L475.5,15L470.2,0L656.1,0L656.1,0L655.8,1.5L658.5,9.6L676.8,19.4L701.1,18.6L700,13.1L698.2,0L780,0ZM680.3,540.1L683.7,546.9L687.6,571.4L684.9,577.4L680.1,573.3L680.6,586.5L676.2,602.6L661.2,645.7L653,671.1L634.2,679.1L625,673.3L619.8,642L631,619.4L628.2,592.6L633.2,580.2L650.1,574.8L663.5,563.4L666.3,552.4L673.3,548.9L673.4,540.5ZM373.7,3.8L369.6,20L347,8Z" fill="#b9b2a3" fill-opacity="0.38"/><defs><path id="af-n0-0" d="M352.5,0L358,11.6L363.4,23.5L368.5,35.1L371.4,51.4L374.4,68.7L374.9,86.1L375.2,102.3L375.8,118.1L373.5,134.1L371.1,150.1L368.7,166.3L360.2,178L351.6,189.7L343,201.4L332.8,214L322.6,226.6L308.5,230.2L294.3,233.7L280.2,237.2L266.8,236.1L253.5,234.9L240.3,233.7L231.1,226L222,218.4L212.9,210.6L209.6,199.1L206.4,187.6L203.2,176L200.7,160.3L198.2,144.4L195.5,128.3L192.5,112L192.7,99.4L193.2,86.8L194.1,74.2L197.6,61.3L200.1,48.6L202.1,36.2L205.2,22.6L205.2,22.6L220.7,21.5L235.2,16.9L246.7,11.5L258.1,7.8L270.6,6L283.7,4.5L295.2,3.8L306.6,2.4L318,1.2L329.5,0.4L337.9,0L352.5,0Z" fill="#9fc08a"/><path id="af-n0-1" d="M347.3,38.6L357.8,39.3L368.5,40.6L379.1,43.2L389.6,46.3L400.2,48.3L411.9,48.4L423.9,46.4L435.1,46.6L444.8,50.1L454.7,53.6L464.8,56.4L474.5,58.5L485,59.5L496.4,59.9L500.6,72.1L503.9,85L505.8,98.8L507,112.6L506.1,126.7L505.6,140.5L505.5,154.2L505.3,167.9L504.9,181.5L496.4,192.2L487.6,202.9L478.7,213.6L467.1,222.8L455.3,232L443.4,241.3L431.7,242.1L419.9,242.9L408.2,243.7L396.5,244.6L384.1,241.7L371.7,238.9L359.4,236.1L354.4,223.7L349.4,211.3L344.4,198.9L339.5,186.5L337.8,169.4L336.2,152.2L334.6,135L336.3,118.6L338.1,102.1L339.8,85.8L341.7,70L344.2,54.5Z" fill="#d8c07e"/><path id="af-n0-2" d="M474.9,39.9L486.1,41.2L497.5,42.3L508.5,43.8L520.8,46.5L533.3,49.3L538.2,64.3L544.5,78.9L550.9,93.3L553.2,108.4L555.7,123.6L559.8,138.4L564.6,154.4L568.1,170.3L559,181.5L549.2,193.3L538.6,199.7L527.6,205.8L516.8,202.9L505.8,200L494.8,197L482.7,192.7L470.6,188.4L468.8,172.9L467.1,157.3L465.2,141.7L466.5,129.1L467.7,116.7L468.6,104.5L470.4,92.2L471.7,79.9L472.7,66.9L473.9,53.4Z" fill="#b5b5c8"/><path id="af-n0-3" d="M438.1,180.9L451.9,179.4L465.7,178L479.3,176.7L492.9,175.5L506.3,174.2L518,174.7L529.8,175.1L541.5,175.4L552.7,175.4L562.9,175.1L572.8,175.8L580.2,191.7L589.6,206.8L600.3,220.3L600.4,235.5L599,250.4L596.8,262.7L594.3,275.5L584.6,283.4L574.7,291.7L564.4,300.2L552.8,305.1L541,309.9L529.1,314.9L517,314L504.8,313.2L492.5,312.3L480.2,311.5L465.1,306.8L450.1,302.1L442.8,290.4L435.5,278.7L428.2,267L425.5,250.7L422.8,234.3L426.7,221L430.6,207.6L434.4,194.3Z" fill="#d8c98f"/><path id="af-n0-4" d="M359.6,161.1L371,162.2L382.4,163.2L393.8,164.3L405.4,165.3L419,167.9L432.6,170.6L446.2,173.4L447.3,187.9L448.3,202.3L449.3,216.7L450.2,231.1L451,245.3L449.7,261.3L448.4,277.3L446.9,293.4L445.3,309.4L443.6,325.5L429,334.5L414.5,343.6L400.3,347.2L386.2,350.8L373.8,342.7L361.5,334.5L356.5,322L351.3,309.4L348.4,294L345.5,278.5L342.6,263.1L342.1,248.3L341.6,233.4L341.1,218.5L345.8,204.2L350.4,189.9L355,175.5Z" fill="#a8d6c4"/><path id="af-n0-5" d="M242,197.1L253.3,193.4L264.5,189.5L275.7,185.6L286.9,181.6L298.1,177.5L310.7,174.2L323.4,170.9L336,167.5L348.7,164.3L361.4,161.1L363.2,175.8L365.1,190.5L366.9,205.2L368.7,219.8L369.1,235.3L369.5,250.7L369.8,266.1L370.1,281.4L355.2,289.2L340.5,296.9L325.8,301.3L311,305.5L298,302.7L284.9,299.9L271.6,297.3L259.5,290.4L247.6,283.4L244.4,268.6L241.3,253.8L238.3,238.9L239.5,225L240.8,211Z" fill="#cf9f5f"/><path id="af-n0-6" d="M62,198.4L74.7,197L87.7,195.4L100.7,193.7L113.6,192.2L126.3,190.9L139.4,188.5L152.6,186.2L165.6,183.8L178.6,181.4L191.6,178.9L202.4,185.4L213.3,191.9L224.2,198.2L230.2,210.7L236.3,223.2L228.9,238.9L221.4,254.5L212.8,267.4L204.2,280.2L190.3,282.5L176.5,284.7L162.6,286.9L148.8,289.2L136.6,290.4L124.4,291.7L112.1,293L99.5,294.8L88.8,287.7L78.3,279.4L68.1,271.3L59.5,258.3L50.9,245.4L54.6,229.9L58.3,214.2Z" fill="#7fa88c"/><path id="af-n0-7" d="M122.2,117.7L138.4,118.1L153.2,117.1L166.7,115.8L179.2,117.3L192.4,118.8L205.8,120.2L202,138.1L198.1,156L192.8,172.6L187.4,189.2L176.6,192.5L165.7,195.7L154.7,199L143.8,202.2L130.1,204.5L116.5,206.9L102.7,209.3L93.5,202.9L84.2,196.7L75.1,190.2L69.8,178L64.4,165.6L76.5,155.8L88,145.9L98.5,136.3L109.6,126.4Z" fill="#e8b9a5"/><path id="af-n0-8" d="M182.4,0L184.7,1.3L194.9,8L205.8,15.3L217,25.3L229.5,32.5L239.1,37.8L235.9,50.1L232.5,61.7L229.2,73.5L226,85L217.4,96.4L209,107.7L201.4,116.8L194,126.1L181.7,127.6L169.6,129.1L157.4,130.7L145.3,130.3L132.4,129.4L119.3,128.2L112.2,117L105.7,106.1L99.1,95L100.4,77.6L101.7,60.1L108.8,45.5L116.1,31L123.5,16.5L130.9,2.3L132.1,0L182.4,0Z" fill="#d98d7a"/><path id="af-n0-9" d="M357.4,0L360,11.6L363.5,28.9L364.7,44.3L365.8,58.7L357.1,67.8L348.1,77.5L338.9,84.8L330,92L323.3,84.2L316.9,76.3L311.7,56.6L313.5,41.5L314.1,25.6L314.1,9.6L314.2,0L357.4,0Z" fill="#c2d18a"/><path id="af-n0-10" d="M74.8,219.8L86.9,216.7L98.9,213.9L110.8,211.2L122.7,208.6L134.6,206L145.9,203.5L157.1,201.1L168.4,198.6L179.6,196.1L190.7,193.5L203.7,194.5L216.6,195.4L229.6,196.1L240.2,197.5L250.9,198.7L261.6,199.9L264,215.2L266.4,230.5L269,245.8L270.4,261.7L271.9,277.5L273.6,293.2L263.1,304.6L252.8,315.8L241.9,323.6L230.9,331.5L217.4,333.8L204.7,335.4L192.7,334.7L180.3,332.1L167.6,330.6L154.9,329.7L143.3,325.8L131.6,321.9L119.4,318.4L107.4,309.2L94.8,301.1L83.8,291.1L73.2,279.9L70,269.2L66.8,258.9L69.5,246.2L72.1,233.3Z" fill="#c9a3cc"/><path id="af-n0-11" d="M198,222.8L209.3,221.7L220.7,220.4L232,219.1L246.4,219L260.8,218.8L262.1,231.3L263.5,243.8L263.1,256.3L262.8,268.7L248,272.1L233.2,275.3L218.8,275.3L204.4,275L198.7,262.3L193,249.7L195.5,236.3Z" fill="#b07fb0"/><path id="af-n0-12" d="M66.4,269.2L81.8,269.3L97.3,270.1L110.9,272.2L124.4,274.3L125.9,286.6L127.3,299.1L127.8,310.7L128.5,322.3L116.5,327.1L104.6,331.5L93.9,333.5L83,335.5L73.1,329L63.2,322.5L53.5,305.3L57.7,293.3L62,281.2Z" fill="#6fae6a"/><path id="af-n0-13" d="M96.8,288.9L107.9,289.2L118.7,289.9L129.3,290.8L142.5,293.1L155.7,295.6L157.2,307.9L158.7,320.3L159.4,331.7L160.3,343.3L147.4,346.1L135.6,347.9L122.4,347.8L108.5,348.3L93.9,335.6L88.7,320.5L92.9,304.3Z" fill="#4f9e6e"/><path id="af-n0-14" d="M98,316L110.5,314L123.2,311.8L134.9,311.7L146.4,311.9L148,323.4L149.5,335.1L151.4,357L138.8,359.2L126.8,360.9L115.1,361L103.2,361.1L98.5,349.5L93.9,337.8Z" fill="#86c98a"/><path id="af-n0-15" d="M123,326.7L136.6,324.3L149.8,322.3L163.1,321.9L176.6,321.9L178.5,333.4L180.6,344.6L181.8,356.6L183.2,369.8L170,372.3L156.5,375.7L144.3,376.2L132.4,376.1L126.8,364.2L121.5,352.2L122.4,339.3Z" fill="#3f8f5f"/><path id="af-n0-16" d="M159.6,285.5L173.2,285.4L186.8,285.4L200.4,285.3L213.6,286.3L226.8,287.1L240.2,287.6L241.7,305L243.7,322.1L244.8,333.8L246.3,345.4L247.5,357L235.8,360L223.8,364.5L212.5,369.1L198.1,369.8L183.2,369.8L173.9,363.1L164.8,357.7L154.8,343.7L154.1,327.6L153.5,312L156.5,298.7Z" fill="#c98fa8"/><path id="af-n0-17" d="M223.5,298.2L240,294.9L256.7,295.6L257,310.7L257.6,325.7L258.5,339.4L260.7,352.8L243.6,355L225.5,356.4L224.2,341.9L223.2,327.1L223.2,312.7Z" fill="#e0a3b8"/><path id="af-n0-18" d="M245.6,291.7L260.5,289.4L275.5,289.1L275.9,305.4L276.8,321.4L278.3,336L280.4,350.5L264.7,352.7L249.2,353L247.2,337.7L245.5,322L245.4,307Z" fill="#8fbf7a"/><path id="af-n0-19" d="M264.7,266.6L275.8,267.2L286.9,267.7L298.1,268.2L313.8,269L329.6,269.7L331.8,283.4L334,297L335.3,311.8L336.6,326.5L331.1,339.1L325.6,351.7L320.2,362L314.6,372.1L303.7,370.6L292.8,368.5L283.8,366.5L274.6,364.9L269.6,350.5L262.7,337.3L260.4,323.6L258.4,309.7L260.4,295.5L262.5,281.1Z" fill="#a06fb5"/><path id="af-n0-20" d="M336.3,378.8L349.6,379.5L363.5,380L377.7,380.2L392.1,380.4L406.6,381L421.3,381.5L436,382L450.8,382.6L458.9,394L467.1,405.5L473.4,417.1L479.8,428.7L485.1,442.6L490.4,456.5L492.9,470.4L495.3,484.4L490,495.9L484.8,507.4L479.6,518.9L470.3,533L461.2,547.1L447.8,549.5L434.3,551.8L420.9,554.1L407.5,554.9L394.4,555.5L381.4,556.1L374.8,545.7L368.9,535L363.2,524L356.3,512.8L347.2,502.8L340.7,491.9L339.5,477.8L339,463.1L336.6,451.4L332.5,438.5L331.1,423.2L332.7,408L334.6,393.2Z" fill="#7fae5f"/><path id="af-n0-21" d="M358.8,294.5L370.6,293.7L382.4,293L394.3,292.2L406.3,291.3L418.3,290.5L430.4,289.7L442.5,288.9L454.6,288L466.8,287.2L478.9,286.4L482.4,299.9L485.8,313.3L488.2,326.9L490.6,340.6L480.6,353.7L470.5,366.9L460.5,377.9L450.5,389L437.1,389.4L423.8,389.9L410.5,390.4L396.6,390.2L382.9,389.9L369.3,389.5L362.7,377.8L356.3,366.2L353.5,353.6L350.5,341L353.4,325.5L356.1,310Z" fill="#cfe0b0"/><path id="af-n0-22" d="M452.4,285.2L465.2,284.2L478,283.3L490.8,282.4L503.6,281.5L516.2,281.1L528.9,280.7L541.4,280.3L553.8,279.9L561,288.9L568,298.1L574.1,307.6L580.2,317.4L573.6,331.3L566.7,345.4L558.9,358.4L551.1,371.4L538.9,370.8L526.5,370.2L514.1,369.8L501.5,369.4L488.9,369.1L476.2,368.8L465.1,358.6L454.1,348.4L446.9,338.1L439.7,327.8L444,313.5L448.3,299.3Z" fill="#8fb8a8"/><path id="af-n0-23" d="M307.4,311.7L318.4,312.9L329.4,313.9L340.3,315.9L351.1,317.9L352.5,334.7L353.6,351.5L353.5,368.3L353.2,385.4L347.1,395L340.9,404.8L333.9,413.6L326.7,422.4L317.1,408.9L307.9,390.8L306.8,377.3L306.1,364.3L305.6,351.2L306.4,337.9L306.9,324.8Z" fill="#7b5fa8"/><path id="af-n0-24" d="M308,395.2L318.4,393.8L328.5,392.4L338.5,392.2L349.1,391.8L349,407L349.8,422.2L351.7,437L353.9,450.9L344.5,453.8L335.1,457L325.4,459.6L315.7,461.6L309.7,446.7L305.1,430.2L307,412.8Z" fill="#9b7fc4"/><path id="af-n0-25" d="M325.3,417.8L337.5,416.5L349.7,414.6L361,413.8L372.2,412.9L374,428.7L376,444.4L377.1,460L378.2,475.6L367.6,478.8L357.4,482L347.7,484L338.9,485.6L335.7,468.6L330.9,454.1L326.5,437.6Z" fill="#b88f5f"/><path id="af-n0-26" d="M311.8,378.2L321.3,376.3L329.8,375.5L329.6,389.2L329,404.6L320.1,406.7L312.9,407.6L311.2,390.9Z" fill="#caa6e0"/><path id="af-n0-27" d="M531.4,254.4L543.1,255L554.8,255.4L566.4,255.8L577.7,256.9L588.6,258.2L599.3,260L608.2,264.9L615.7,270.4L624.7,277.5L642.3,290.7L655.6,296.2L659.3,310.1L662.3,323.6L663.9,336.1L665.3,348.8L657.8,357.9L649.7,366.3L641.2,373.3L632.1,379.6L623.2,386.6L614.8,394.4L603.1,391.4L591.2,388.2L579.5,385L568.2,381.8L556.9,378.7L545.4,375.8L535.8,361.8L526.1,348L521.1,333.1L515.9,318.5L518.3,300.6L520.4,283L526.1,268.6Z" fill="#9a5f7a"/><path id="af-n0-28" d="M555.8,209.1L566.4,217.9L579.5,224.9L591.5,231.4L601.4,238.1L611,245.4L619.9,253.5L617.3,270.9L617,288.5L606.3,282.5L595.9,277.6L585.8,273.2L575.4,269.3L568.3,259.6L560.7,250.2L555.5,240.7L550,230.9L553,220.2Z" fill="#d88f6a"/><path id="af-n0-29" d="M608.7,264.9L622.6,272.7L641.9,284.7L643.1,301.7L641.7,314L626.3,306L612.9,296.2L607,278.5Z" fill="#c2a8b8"/><path id="af-n0-30" d="M616.7,270.7L626.8,274.1L639.5,277.3L651,277.2L661.8,275.7L676.1,274.5L689.2,272.4L701.5,270.1L701.4,283.9L700.8,298.2L700.5,312.2L700.4,325.7L693.3,338.6L685.8,351.3L678,364.4L669.7,377.4L660.7,389.1L651.4,399.7L639.3,405.2L627.9,411.8L619.1,417.7L609.2,423.2L608.9,405.5L608,387.9L608.1,370.8L608.1,353.9L610.7,339.9L613,326L614.8,311.8L615.9,297.5L616.1,283.5Z" fill="#7fc4b8"/><path id="af-n0-31" d="M618.1,269.1L630.8,273.9L645.4,276.9L658.3,276.2L670.8,275.7L682.9,275L694,273.6L693.1,295.4L692.4,316.7L683.3,319.2L673.7,321.4L663.9,323.5L649.7,325L634.5,324.2L630.3,310.3L624.9,295.1L620.6,281.5Z" fill="#5fa89e"/><path id="af-n0-32" d="M538.7,358.5L553.5,358.4L568,358.5L582.5,358.8L596.3,360.2L610.1,361.8L623.8,363.6L624.3,379.8L624.9,396.4L625.3,414.2L625.1,432L617.3,443.1L610.3,454L603.9,462.6L597.7,470.9L584.4,468L569.7,465.4L556.6,461.9L543.5,458.5L537.2,444.3L530.9,430.2L528.4,417.2L526,404.2L530.2,389L534.5,373.7Z" fill="#c08a5f"/><path id="af-n0-33" d="M495.2,368.2L510.4,366.6L525.5,365.2L539.4,364.4L553.2,363.8L554.5,378.5L555.7,393.3L556.1,408.6L556.8,423.9L542.2,427L527.2,430.2L513.9,432.5L500.6,434.8L496.3,418.7L492.1,402.6L493.6,385.4Z" fill="#d8b86a"/><path id="af-n0-34" d="M493.3,424.1L507,426.6L520.6,429.2L534.2,431.9L547.6,434.7L560.3,438.1L572.8,441.7L584.8,445.4L596.5,449.2L599.1,463.4L600.5,477.8L599,493.4L599.9,508.4L588.9,518L577.5,528.4L566.7,537.1L555.4,545.6L540.1,545.2L525.2,544.8L511.5,542.5L497.8,540.3L492.4,528.9L487.1,517.4L481.7,506L479.2,490L476.7,473.9L482.1,457.3L487.7,440.7Z" fill="#6f9fbf"/><path id="af-n0-35" d="M480,422.3L499.1,419.7L518.1,419.4L518.7,432.4L519.2,447.6L500.1,449.9L481.1,450.2L479.6,435.2Z" fill="#a8c26a"/><path id="af-n0-36" d="M478.3,445.9L496.5,443.5L514.6,443.3L515.1,458.4L515.5,475.7L497.4,477.9L479.4,478.1L477.9,461Z" fill="#c25f7a"/><path id="af-n0-37" d="M334.2,477.1L345.6,478.1L357.4,478.8L370.3,479.3L383.7,479.7L397.3,480.6L411,481.4L424.9,482.3L438.9,483.1L442,495.1L445.1,507.2L448.2,519.3L451,537.6L454,555.9L447.9,572.3L441.9,588.8L436.9,603.1L431.9,617.3L418.8,618.8L405.6,620.3L392.5,621.8L378.8,622.5L365.3,623.4L351.9,624.5L344.1,613.7L335.8,599.9L332,586.9L333.5,569.8L332.2,553.3L333.9,539.3L334.7,525L333.3,511.7L333,494.6Z" fill="#c27f6a"/><path id="af-n0-38" d="M422.3,500.4L436.6,501.3L450.9,502.1L465.4,503L479.8,503.9L494.3,505.4L508.7,507L523.1,508.7L537.5,510.5L539.7,524.6L542.1,538.8L543.7,553.9L545,569L535.9,576.3L527.5,583.6L519.8,591.1L508.6,601L496.8,611.5L485.6,610.5L474.4,609.4L463.2,608.2L452,606.2L440.7,604.1L429.3,602.1L425.6,586.1L422.2,570.1L419.1,554.1L420,540.6L420.8,527.1L421.6,513.7Z" fill="#8fae7a"/><path id="af-n0-39" d="M340.5,551.8L350.9,553.5L361.9,554.5L372.8,556L384.1,559.1L395.9,562.1L408,565.1L410.4,578.2L413.2,591.3L416.2,604.4L419.3,618.1L422.6,631.7L425.8,645.4L421.9,661.3L417.8,676.9L413.8,691.3L409.8,705.5L398.1,705.4L386,705.6L373.4,705.6L361.2,705.9L355,694.7L349.5,683.1L343.9,671.2L340.4,657.2L336.5,643.3L332,629.6L329.6,616.2L327.5,601.6L328,586.9L335.5,568.8Z" fill="#d4c48f"/><path id="af-n0-40" d="M387,593.7L401.8,594.3L416.4,594.9L430.9,595.5L445.3,596L459.6,596.5L473.8,596.9L476.5,613.4L479.1,630.1L481.4,648L483.3,665.6L472.4,676.4L461.5,687L450.7,695.3L439.9,703.4L429.2,697.5L418.3,691.6L408,684.8L397.5,678.2L395.2,664.5L392.8,650.5L390,636.5L388.8,622.5L387.7,608.2Z" fill="#9fd4c4"/><path id="af-n0-41" d="M438.1,586.7L450.7,586.2L463.2,585.6L475.5,585.1L487.8,584.4L499.9,583.8L511.7,583.3L523.3,583.1L535.1,583.3L536.4,597.8L538.9,611.8L545,625.4L550.9,641.8L537.7,650.4L523.4,656.8L510.7,660.3L498.9,663.1L487.5,666.4L476,669.9L466.9,663.3L457.6,656.6L450,648.9L442.3,641.2L441.2,627.6L440.1,614L439.1,600.3Z" fill="#7f7fbf"/><path id="af-n0-42" d="M524.1,521.1L534.2,522.4L544.4,523.6L554.5,526L564.6,528.4L566.4,545.9L568.4,563.7L569.2,581.9L568.9,599.4L558,601.6L547.4,602.8L530.8,603.5L528.2,589.9L526.4,575.9L524.8,561.8L524.5,548.4L524.2,534.8Z" fill="#b06a5f"/><path id="af-n0-43" d="M546.1,528L561.9,530.5L577.7,532.7L593.6,535.8L609.3,540.1L606.9,554.7L606.8,570.4L607.5,587.9L606.1,604.4L593.5,604.8L579.4,604.2L564.9,602.7L551.2,601.1L549,583L547.1,564.8L546.7,546.5Z" fill="#9a6a9a"/><path id="af-n0-44" d="M512.9,589.1L526.5,589.1L540.3,589.8L555.4,590.7L571.5,591.7L589.2,594L603.4,593.9L600.6,611.9L597.2,630.3L595.4,644.3L594.3,658.7L593.7,672.7L583.9,679.4L573.2,686.2L561.8,692.7L549.5,697.7L538,702.3L528.2,708.9L520.5,691.5L513.8,678.5L513,663.9L511.6,646L511.4,630.3L510,615.3L511.3,602Z" fill="#5f9e6a"/><path id="af-n0-45" d="M442.8,654.2L454.8,655.5L466.8,656.7L478.7,657.9L490.6,659.2L501.9,660.7L513.2,662.8L524.5,666.2L536.3,669.7L531.8,680.3L529.6,687L530.1,699.4L529.1,713.7L525.3,725.8L521.8,737.6L511,747.5L501.4,757.7L491.6,766.6L481.8,775.7L472.7,771.3L463.7,767.3L454.9,759.6L445.8,751.4L445.5,735.3L444.8,718.6L443.5,701.5L443.5,685.8L443.3,670Z" fill="#6f9e8a"/><path id="af-n0-46" d="M356.8,663.3L371,665L385.1,666.7L399.5,668.5L413.9,670.5L428.2,672.6L442.5,674.7L456.6,676.7L470.6,678.5L471,691.4L471.2,704.2L471.2,716.8L470.9,729.9L470.4,742.6L469.8,755L459,763.6L447.2,770.3L435.6,776.3L425.2,782.6L415.5,782.7L404.7,783.1L393.3,783.7L383.2,784.2L373.2,784.3L363,784L362.2,769.6L361.2,754.1L359.6,737.9L357.1,722.2L356.3,707.4L355.8,693.1L356.2,678.2Z" fill="#c9b08f"/><path id="af-n0-47" d="M470.6,680.6L484,682.3L497.1,683.7L509.7,684.5L521.1,684.3L523.4,697.3L524.3,711.7L520.9,723.8L518.4,735.8L505.8,737.1L495.4,739.7L484.3,741.5L472.6,743.1L471.3,728.2L469.7,712.6L470.3,696.7Z" fill="#b0b0c0"/><path id="af-n0-48" d="M504.9,664.2L519,667.2L533.5,672.3L528.8,684L529.5,701.8L519.6,701.8L507.8,701.3L504,682.5Z" fill="#e0a85f"/><path id="af-n0-49" d="M673.3,528.7L679.5,537.8L687.4,546.1L694.2,555.3L692.2,570.7L687.5,586.6L683.3,599.9L678.4,611.8L673.9,626.7L669.4,641.3L663.3,654.6L655.9,667.2L648.8,680.3L644.8,682.2L638.6,683.4L627.7,671L617,652.1L618.9,633.5L622.4,618.7L622.9,606.8L621.6,592.4L627.3,579.3L634.1,573.3L643.3,567.6L654.4,555.8L662.3,542.7Z" fill="#b08f7a"/></defs><g clip-path="url(#af-al0)" stroke-linejoin="round"><use href="#af-n0-0" stroke="#9fc08a" stroke-width="40"/><use href="#af-n0-1" stroke="#d8c07e" stroke-width="40"/><use href="#af-n0-2" stroke="#b5b5c8" stroke-width="40"/><use href="#af-n0-3" stroke="#d8c98f" stroke-width="40"/><use href="#af-n0-4" stroke="#a8d6c4" stroke-width="40"/><use href="#af-n0-5" stroke="#cf9f5f" stroke-width="40"/><use href="#af-n0-6" stroke="#7fa88c" stroke-width="40"/><use href="#af-n0-7" stroke="#e8b9a5" stroke-width="40"/><use href="#af-n0-8" stroke="#d98d7a" stroke-width="40"/><use href="#af-n0-9" stroke="#c2d18a" stroke-width="40"/><use href="#af-n0-10" stroke="#c9a3cc" stroke-width="40"/><use href="#af-n0-11" stroke="#b07fb0" stroke-width="40"/><use href="#af-n0-12" stroke="#6fae6a" stroke-width="40"/><use href="#af-n0-13" stroke="#4f9e6e" stroke-width="40"/><use href="#af-n0-14" stroke="#86c98a" stroke-width="40"/><use href="#af-n0-15" stroke="#3f8f5f" stroke-width="40"/><use href="#af-n0-16" stroke="#c98fa8" stroke-width="40"/><use href="#af-n0-17" stroke="#e0a3b8" stroke-width="40"/><use href="#af-n0-18" stroke="#8fbf7a" stroke-width="40"/><use href="#af-n0-19" stroke="#a06fb5" stroke-width="40"/><use href="#af-n0-20" stroke="#7fae5f" stroke-width="40"/><use href="#af-n0-21" stroke="#cfe0b0" stroke-width="40"/><use href="#af-n0-22" stroke="#8fb8a8" stroke-width="40"/><use href="#af-n0-23" stroke="#7b5fa8" stroke-width="40"/><use href="#af-n0-24" stroke="#9b7fc4" stroke-width="40"/><use href="#af-n0-25" stroke="#b88f5f" stroke-width="40"/><use href="#af-n0-26" stroke="#caa6e0" stroke-width="40"/><use href="#af-n0-27" stroke="#9a5f7a" stroke-width="40"/><use href="#af-n0-28" stroke="#d88f6a" stroke-width="40"/><use href="#af-n0-29" stroke="#c2a8b8" stroke-width="40"/><use href="#af-n0-30" stroke="#7fc4b8" stroke-width="40"/><use href="#af-n0-31" stroke="#5fa89e" stroke-width="40"/><use href="#af-n0-32" stroke="#c08a5f" stroke-width="40"/><use href="#af-n0-33" stroke="#d8b86a" stroke-width="40"/><use href="#af-n0-34" stroke="#6f9fbf" stroke-width="40"/><use href="#af-n0-35" stroke="#a8c26a" stroke-width="40"/><use href="#af-n0-36" stroke="#c25f7a" stroke-width="40"/><use href="#af-n0-37" stroke="#c27f6a" stroke-width="40"/><use href="#af-n0-38" stroke="#8fae7a" stroke-width="40"/><use href="#af-n0-39" stroke="#d4c48f" stroke-width="40"/><use href="#af-n0-40" stroke="#9fd4c4" stroke-width="40"/><use href="#af-n0-41" stroke="#7f7fbf" stroke-width="40"/><use href="#af-n0-42" stroke="#b06a5f" stroke-width="40"/><use href="#af-n0-43" stroke="#9a6a9a" stroke-width="40"/><use href="#af-n0-44" stroke="#5f9e6a" stroke-width="40"/><use href="#af-n0-45" stroke="#6f9e8a" stroke-width="40"/><use href="#af-n0-46" stroke="#c9b08f" stroke-width="40"/><use href="#af-n0-47" stroke="#b0b0c0" stroke-width="40"/><use href="#af-n0-48" stroke="#e0a85f" stroke-width="40"/><use href="#af-n0-49" stroke="#b08f7a" stroke-width="40"/><use href="#af-n0-0" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-1" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-2" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-3" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-4" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-5" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-6" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-7" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-8" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-9" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-10" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-11" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-12" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-13" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-14" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-15" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-16" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-17" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-18" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-19" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-20" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-21" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-22" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-23" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-24" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-25" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-26" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-27" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-28" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-29" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-30" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-31" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-32" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-33" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-34" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-35" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-36" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-37" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-38" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-39" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-40" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-41" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-42" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-43" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-44" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-45" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-46" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-47" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-48" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/><use href="#af-n0-49" stroke="rgba(255,255,255,.75)" stroke-width="0.7"/></g></g><path d="M313.9,17.4L323.5,13.1L329.5,19.5L335.2,35.4L325.9,46.3L338.2,57.2L369.9,65.6L378,77.6L388.7,79.5L402.5,87.9L413.1,79.6L414.9,65.2L425.8,59.8L438.4,63.2L440.2,67.5L456.5,73.4L474.8,76.4L489.9,81.9L502.1,75.5L517.1,79.4L535.3,77L535.7,78.2L542.3,96.6L537,114.8L528.1,106.3L521.6,91.3L519.9,95L531,113.4L535.1,126.7L550.2,155.7L551.9,166L562.7,176.1L566.1,184.7L569.2,209.8L579.7,218.4L586.6,240.5L591.2,248.9L603.9,254.3L622,274.5L624.8,280L618,286.7L623.5,287.3L634.1,298.6L661.3,290.8L675.2,289.9L696,283.8L692.8,309.2L667.8,361.3L650.4,382.6L634.8,394.1L613.4,419L609.3,426.7L597.3,437.1L588,458.3L584.7,475.6L590.5,484L588.3,497.9L592.4,513.5L598.5,519.3L598.1,572.3L584.3,588.2L567.5,596.3L559,607.5L546.3,618.3L546.3,628.8L550.8,651.7L546.5,668.5L530.3,676.1L523.3,684L525.6,693L519.7,711.8L511.1,719.9L501.4,736.8L479.6,759L467,766.5L453.1,770.8L430.9,769.7L408.4,777L398.3,767.8L393,756.6L396.2,745L380.8,711.8L371,698.7L363.4,664.9L363.5,648.9L344.8,608.9L338.6,599.1L338.2,591.1L340.1,574L345.2,550.7L353,541L356.9,525.5L349.1,504.3L352.5,497.2L342.7,473.1L349.6,470.7L341.8,469.6L349.6,457.7L340,461.6L331.9,450.1L315.2,428.9L310.8,416.2L315.1,412.5L317.8,397.9L319.8,384.4L321.1,376.3L308.5,358.6L285.8,363.5L279.6,351.7L268.2,341.1L255.3,341.5L245.4,343.1L241.4,344.5L212.2,358.5L202.1,355L202.4,354.6L203,354.6L179.8,355L161.7,362.8L147.3,355.4L125.9,335.8L117.1,330.8L111.2,322L110.1,313.2L106.7,303.9L94.7,293.2L91.5,282.6L80,278.3L79.8,270.8L96.6,263.1L81.8,265.2L76.8,254.1L83,241.4L88.6,219.7L85,204L88.3,194.9L81.1,188.7L81.9,182.2L93.4,156.5L101.5,149L108.3,130.9L116,125.7L122.4,113.2L136.1,108.2L152.8,89.9L152.5,75.9L164.4,57.1L179.6,48.8L189.4,29.6L202.6,36.2L220.7,36.8L251.3,21.8L281.3,17.8L286.9,20.1L296.1,15.8ZM680.3,540.1L683.7,546.9L687.6,571.4L684.9,577.4L680.1,573.3L680.6,586.5L676.2,602.6L661.2,645.7L653,671.1L634.2,679.1L625,673.3L619.8,642L631,619.4L628.2,592.6L633.2,580.2L650.1,574.8L663.5,563.4L666.3,552.4L673.3,548.9L673.4,540.5Z" fill="none" stroke="#2a2a2a" stroke-width="1.4" stroke-opacity="0.5" stroke-linejoin="round"/></g><g font-family="Helvetica,Arial,sans-serif" fill="#1b1b1b" paint-order="stroke" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linejoin="round"></g><g fill="#8d8d8d" fill-opacity=".35" stroke="#2a2a2a" stroke-width=".9"><circle cx="18.9" cy="249.2" r="6"/><circle cx="99.3" cy="110.2" r="6"/><circle cx="290.5" cy="405.6" r="6"/><circle cx="624.8" cy="533.4" r="6"/></g><g stroke="#333" stroke-width=".9" fill="none" opacity=".6"><path d="M38.5 288.2L87.4 299.3"/><path d="M52.2 348L121.4 336.2"/><path d="M65.2 384.3L149.2 352.8"/><path d="M242.9 395.2L240.2 328.1"/><path d="M283.2 406.8L262.3 325.5"/><path d="M274.5 432.4L319.1 393.2"/><path d="M676.7 250.3L625.6 289.2"/><path d="M23.3 256.4L16.5 245.8"/><path d="M94.5 96.9L90.1 107.9"/></g><g font-family='ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' font-size="13" text-anchor="middle" paint-order="stroke" stroke="rgba(255,255,255,.75)" stroke-linejoin="round" fill="#141414" font-weight="700" stroke-width="2.4"><text x="165.7" y="59.9">Morocco</text><text x="280.9" y="120.7">Algeria</text><text x="412.1" y="139.0">Libya</text><text x="511.3" y="118.8">Egypt</text><text x="512.2" y="230.2">Sudan</text><text x="394.6" y="252.9">Chad</text><text x="302.3" y="234.3">Niger</text><text x="164.4" y="258.8">Jolof</text><text x="196.1" y="324.6">Kong</text><text x="296.2" y="313.5">Nigeria</text><text x="417" y="332.6">C.A.R.</text><text x="508.4" y="322.8">South Sudan</text><text x="585.5" y="325.9">Ethiopia</text><text x="652.9" y="366.2">Somalia</text><text x="573.2" y="408.6">Kenya</text><text x="409.1" y="479.1">DR Congo</text><text x="544.5" y="486.4">Tanzania</text><text x="385.8" y="549.1">Angola</text><text x="481.4" y="553.0">Zambia</text><text x="372.6" y="632.0">Namibia</text><text x="434.5" y="636.5">Botswana</text><text x="491.1" y="613.5">Zimbabwe</text><text x="557.3" y="637.3">S. Mozambique</text><text x="488" y="701.6">Xhosa Rep.</text><text x="413.6" y="725.0">Cape Republic</text><text x="651.6" y="605.9">Madagascar</text></g><g font-family='ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' font-size="9.6" text-anchor="middle" paint-order="stroke" stroke="rgba(255,255,255,.75)" stroke-linejoin="round" fill="#2b2b2b" font-style="italic" font-weight="600" stroke-width="2.2"><text x="161.1" y="73.5">Iceland</text><text x="280.3" y="133.6">Sweden</text><text x="412.5" y="152.0">Finland</text><text x="511.5" y="132.0">Mexico ✻</text><text x="512.6" y="242.5">Belarus</text><text x="394.5" y="265.6">Sápmi ✦</text><text x="302.1" y="247.1">Alps ✦</text><text x="163.8" y="271.1">Spain</text><text x="196.1" y="337.3">France</text><text x="296.5" y="325.8">Britain</text><text x="416.4" y="345.4">Poland</text><text x="507.9" y="335.5">Lithuania</text><text x="585.2" y="339.0">Russia</text><text x="652" y="378.6">Ukraine</text><text x="572.7" y="421.8">Romania</text><text x="409.3" y="491.8">Germany</text><text x="543.7" y="499.4">Bulgaria</text><text x="384.6" y="562.4">Italy</text><text x="481.6" y="565.9">Croatia</text><text x="374" y="644.4">Bosnia</text><text x="435.1" y="649.5">Slovenia</text><text x="492" y="627.1">Serbia</text><text x="559" y="652.9">Montenegro</text><text x="487.2" y="714.3">Greece</text><text x="413.3" y="738.5">no twin ✦</text><text x="649.3" y="617.9">Sicily–Malta</text></g><g font-family='ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' font-size="10" text-anchor="middle" paint-order="stroke" stroke="rgba(255,255,255,.75)" stroke-linejoin="round" fill="#141414" font-weight="700" stroke-width="2.4"><text x="123.1" y="158.2">Saguia</text><text x="129.8" y="233.0">Mauritania</text><text x="339.1" y="45.8">Tunisia</text><text x="229.1" y="246.1">Songhai</text><text x="22.4" y="283.6">Kaabu</text><text x="133.1" y="319.9">Fouta Djallon</text><text x="41.3" y="351.9">Sierra Leone</text><text x="56.1" y="388.3">Liberia</text><text x="243.2" y="407.8">Tem</text><text x="290" y="420.0">Dahomey</text><text x="329.1" y="357.8">Cameroon</text><text x="262.5" y="444.6">Eq. Guinea</text><text x="324.9" y="424.1">Gabon</text><text x="355.1" y="448.9">Congo</text><text x="587.3" y="244.5">Eritrea</text><text x="687.1" y="242.2">Djibouti</text><text x="659" y="301.4">Somaliland</text><text x="522.5" y="399.6">Uganda</text><text x="498.7" y="436.8">Rwanda</text><text x="496" y="464.8">Burundi</text><text x="545.3" y="566.6">Malawi</text><text x="580.1" y="572.9">N. Moz.</text><text x="495.7" y="716.0">Lesotho</text><text x="516.6" y="685.4">Eswatini</text></g></svg>
+<figcaption>Every African nation set against the Global-North counterpart whose history it carries, on the revised non-colonial border set. &#10022; marks a custom nation with no single counterpart outside the timeline and &#10043; a state outside the European sphere entirely. Scroll or pinch the map sideways on a phone. Coastlines after Natural Earth; the frontiers are the atlas&rsquo;s own.</figcaption>
 </figure>
 
 <h2 id="borders">Border doctrine</h2>
@@ -415,19 +521,27 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:12px;
 <li><a href="vehicles.html">Motor vehicles</a></li>
 <li><a href="nabataean-unification.html">Nabataean Unification</a></li>
 <li><a href="index.html">Controglobe</a> &mdash; the premise and the rules of the setting</li>
+<li><a href="timeline-of-the-global-swap.html">Timeline of the Global Swap</a></li>
 </ul>
 
 <footer>Controglobe · open-source worldbuilding · Africa reference sheet. Point of divergence 500 BCE.</footer>
 
 </div>
+<footer class="cg-foot">
+<div class="cg-foot-in">
+<a class="cg-brand" href="./" aria-label="Controglobe — home"><img class="cg-logo" src="data:image/jpeg;base64,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" alt="" width="42" height="42"><span class="cg-word"><span class="cg-name">Controglobe</span><span class="cg-tag">The Global Swap encyclopedia</span></span></a>
+<p>Controglobe is a work of alternate-history fiction. Every institution, border, statistic, date, person and event is invented except where it names a real geographic feature, a real archaeological site or a real pre-500&nbsp;BCE historical fact. Text and images released under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC&nbsp;BY-SA&nbsp;4.0</a>.</p>
+<nav><a href="./">Home</a><a href="timeline-of-the-global-swap.html">Timeline</a><a href="https://github.com/mofferato/controglobe">Source</a><a href="https://github.com/mofferato/controglobe/issues">Feedback</a><a href="ar/africa.html" lang="ar" hreflang="ar" dir="rtl">العربية</a></nav>
+</div>
+</footer>
 <div id="pvcard" role="dialog" aria-live="polite" aria-hidden="true"></div>
 <script>
 /* Page previews. Hovering, tapping or tabbing to a link, a section anchor or a
    marked term opens a summary card. Everything it needs is in this file. */
 (function(){
-var PV={"a-iuml-r": {"img": "", "s": "Niger &middot; custom nation", "t": "A&iuml;r", "x": "A cantonal confederation of the A&iuml;r massif with four official languages, armed neutrality and the continent's clearing banks. It has no single counterpart in the outside timeline."}, "art-europe": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Outline of Europe\"><rect width=\"120\" height=\"78\" fill=\"#dfe7ec\"/><path d=\"M75.7,2.0 L78.4,2.4 L81.9,4.9 L85.1,7.0 L90.5,8.3 L94.2,10.8 L97.8,11.2 L101.5,9.8 L105.1,7.5 L105.1,53.9 L102.1,57.9 L99.0,58.8 L94.8,56.7 L91.8,55.0 L89.3,53.1 L86.9,56.4 L84.7,54.6 L83.1,54.1 L81.1,56.0 L80.5,56.7 L79.3,59.0 L78.3,60.9 L77.8,62.5 L78.6,64.2 L79.6,65.1 L82.7,65.1 L86.3,63.4 L89.9,64.9 L92.7,65.3 L94.8,64.4 L97.2,66.8 L98.4,68.9 L98.1,72.6 L95.4,73.5 L91.2,74.3 L88.4,75.6 L85.7,75.4 L83.3,75.4 L81.6,74.3 L79.6,75.6 L77.4,74.3 L76.5,71.0 L76.2,68.4 L76.2,67.4 L76.7,66.8 L75.9,65.8 L73.9,66.3 L72.2,66.5 L72.8,67.8 L72.3,69.3 L72.3,71.4 L73.2,72.0 L72.6,74.9 L71.7,75.2 L70.8,74.3 L70.3,72.4 L69.9,71.0 L68.9,69.1 L67.8,66.8 L68.1,64.9 L67.7,63.6 L67.4,62.8 L66.4,62.1 L64.3,60.2 L62.9,59.0 L61.9,56.4 L60.9,55.6 L59.3,56.2 L59.5,58.3 L60.8,60.0 L61.4,62.5 L63.2,63.4 L64.1,63.6 L66.3,66.1 L66.9,67.4 L65.3,66.5 L64.4,69.9 L63.3,71.8 L63.8,69.9 L63.0,67.6 L61.8,65.9 L60.9,65.1 L59.3,64.0 L58.7,62.5 L56.9,61.3 L56.5,59.2 L55.1,58.3 L52.9,60.2 L51.0,60.7 L50.2,60.4 L48.0,61.3 L48.3,62.8 L47.1,64.6 L45.5,66.1 L44.4,68.6 L44.4,70.1 L43.5,72.6 L41.7,74.5 L39.0,74.5 L37.6,76.0 L36.7,74.3 L35.4,73.5 L33.6,73.9 L33.5,70.7 L32.9,69.1 L33.7,67.2 L33.7,65.1 L33.6,63.6 L33.1,61.5 L33.6,59.8 L37.1,60.0 L39.8,60.4 L42.2,60.5 L42.7,59.2 L42.9,56.0 L42.9,54.6 L41.7,52.5 L39.2,51.2 L38.6,49.5 L42.1,49.5 L42.6,48.0 L44.6,47.2 L46.3,44.7 L47.5,44.3 L48.6,43.6 L49.2,42.8 L50.0,41.3 L50.5,39.6 L52.9,39.2 L54.1,39.2 L54.7,38.4 L54.8,36.3 L54.6,35.0 L54.2,32.5 L57.4,30.6 L56.9,35.4 L59.7,34.2 L59.6,36.3 L57.8,37.3 L60.2,37.1 L61.6,38.2 L64.1,37.1 L67.0,36.9 L68.2,37.2 L70.0,35.4 L69.9,33.3 L73.5,31.9 L73.5,29.1 L72.9,27.6 L74.4,26.6 L76.8,26.4 L81.1,25.8 L78.0,24.5 L74.8,25.1 L71.4,24.7 L70.3,22.4 L70.6,19.0 L73.7,13.4 L71.7,13.4 L68.9,18.0 L65.6,20.3 L67.4,24.3 L65.0,27.9 L64.4,33.3 L62.0,35.2 L59.7,35.2 L59.0,30.4 L57.9,27.9 L57.4,25.8 L52.9,29.8 L50.7,27.9 L50.3,22.4 L51.6,20.1 L53.5,19.7 L59.0,14.0 L60.2,8.9 L63.8,7.0 L67.5,4.5 L72.3,3.3 Z M38.1,46.6 L40.1,45.3 L43.2,45.1 L45.4,44.7 L46.1,43.6 L45.0,40.7 L44.8,39.0 L44.1,38.2 L42.8,36.7 L42.6,34.8 L41.8,33.7 L41.4,32.7 L40.7,30.6 L42.0,28.5 L40.7,28.3 L38.9,28.7 L38.3,29.1 L37.5,30.8 L37.3,32.9 L38.3,34.0 L38.6,35.2 L38.2,36.5 L40.0,37.9 L40.6,39.4 L39.3,39.6 L38.6,40.7 L39.0,41.9 L38.0,43.0 L39.3,44.0 L40.5,43.8 L40.0,45.3 Z M37.1,41.9 L37.1,39.4 L36.9,37.9 L37.6,36.7 L35.5,35.2 L33.9,35.6 L32.4,37.5 L32.9,39.4 L32.1,41.9 L32.9,43.4 L34.7,43.4 L36.7,42.6 Z M17.1,14.0 L18.9,11.9 L24.3,11.9 L26.8,14.4 L27.4,16.3 L23.1,18.4 L18.9,17.3 L16.5,16.1 L14.9,15.0 Z\" fill=\"#c9a3cc\" stroke=\"#7a5b80\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/></svg>", "s": "Reference atlas", "t": "Europe &mdash; the African swap", "x": "Every European nation set against the Global-South counterpart whose history it carries, on the same non-colonial border set as the African atlas. Europe was partitioned by African powers between the 1870s and 1902 and was free again within a lifetime; the frontiers that survived are the ones its own peoples drew."}, "art-history": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Layers of Arabian history, from prehistory at the base to the present at the top\"><rect width=\"120\" height=\"16\" fill=\"#e4d3ae\"/><rect y=\"16\" width=\"120\" height=\"16\" fill=\"#d3bd90\"/><rect y=\"32\" width=\"120\" height=\"16\" fill=\"#c0a777\" fill-opacity=\"1\"/><rect y=\"48\" width=\"120\" height=\"16\" fill=\"#ab8f63\"/><rect y=\"64\" width=\"120\" height=\"14\" fill=\"#8d7450\"/><path d=\"M60 6V74\" stroke=\"#3b2f1c\" stroke-width=\"2\"/><g fill=\"#3b2f1c\"><circle cx=\"60\" cy=\"10\" r=\"4\"/><circle cx=\"60\" cy=\"28\" r=\"4\"/><circle cx=\"60\" cy=\"46\" r=\"4\"/><circle cx=\"60\" cy=\"64\" r=\"4\"/></g></svg>", "s": "Prehistory to the present", "t": "History of the United States of Arabia", "x": "Sixty thousand years of settlement on the peninsula, the Levantine seaboard and the Mesopotamian basin: the Nabataean water law, the caliphal centuries, the thirteen Hindustani princely colonies, the Revolution of 1776, the Civil War over servitude and the eighty-eight years of <i>khidmah</i> that followed it."}, "art-index": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"A globe with the northern and southern halves changing places\"><rect width=\"120\" height=\"78\" fill=\"#0e3a42\"/><circle cx=\"60\" cy=\"39\" r=\"29\" fill=\"#12b7c8\" fill-opacity=\".16\" stroke=\"#4fd3e0\" stroke-width=\"1.6\"/><g stroke=\"#4fd3e0\" stroke-width=\"1.1\" fill=\"none\" opacity=\".85\"><path d=\"M31 39h58M60 10v58\"/><ellipse cx=\"60\" cy=\"39\" rx=\"14\" ry=\"29\"/><path d=\"M36 25h48M36 53h48\"/></g><g fill=\"none\" stroke=\"#e8c37a\" stroke-width=\"2.2\"><path d=\"M42 20C26 29 26 49 42 58\"/><path d=\"M78 58c16-9 16-29 0-38\"/></g><g fill=\"#e8c37a\"><path d=\"M42 58l-7-2 3 6Z\"/><path d=\"M78 20l7 2-3-6Z\"/></g></svg>", "s": "Project hub", "t": "Controglobe", "x": "The open-source worldbuilding encyclopedia of the Global Swap: from 500&nbsp;BCE the Global North and the Global South trade historical trajectories, geography stays exactly where it is, and the result is written up the way an encyclopedia would write it."}, "art-nabataean": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"A Nabataean rock-cut tomb facade\"><rect width=\"120\" height=\"78\" fill=\"#b8814e\"/><path d=\"M14 78V24L60 6l46 18v54Z\" fill=\"#d9b488\"/><path d=\"M60 6 106 24H14Z\" fill=\"#c69a6b\"/><path d=\"M14 26h92v4H14Z\" fill=\"#b8874f\"/><g fill=\"#c49668\"><rect x=\"22\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"44\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"67\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"89\" y=\"30\" width=\"9\" height=\"48\"/></g><rect x=\"53\" y=\"46\" width=\"14\" height=\"32\" fill=\"#3f2f1c\"/></svg>", "s": "c.&nbsp;440&nbsp;BCE &ndash; 36&nbsp;CE &middot; custom entity", "t": "Nabataean Unification", "x": "The process by which the kings of Petra and Hegra brought the wells, oases and caravan roads of northern and central Arabia under one administration, conventionally completed by the Covenant of the Wells in 262&nbsp;BCE. It gave the region a written Arabic, a written law of water and the habit of arbitration."}, "art-usa": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Flag of the United States of Arabia\"><rect width=\"120\" height=\"78\" fill=\"#fff\"/><g fill=\"#000\"><rect width=\"120\" height=\"13\"/><rect y=\"39\" width=\"120\" height=\"13\"/></g><g fill=\"#007A3D\"><rect y=\"26\" width=\"120\" height=\"13\"/><rect y=\"65\" width=\"120\" height=\"13\"/></g><rect width=\"48\" height=\"39\" fill=\"#CE1126\"/><g fill=\"#fff\"><circle cx=\"4\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"12\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"20\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"28\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"36\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"44\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"4\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"12\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"20\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"28\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"36\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"44\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"4\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"12\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"20\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"28\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"36\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"44\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"4\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"12\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"20\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"28\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"36\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"44\" cy=\"34.15\" r=\"2.2\"/></g></svg>", "s": "Federal republic &middot; al-Mashriq", "t": "United States of Arabia", "x": "The federal republic of twenty-four states on the Arabian Peninsula, the Levantine seaboard and the Tigris&ndash;Euphrates basin, independent of the Hindustani Empire since 1776 and governed under the Constitution of 1789. It holds the Custodianship of the Two Holy Mosques, and its forty-seven presidencies run from the Damascus Convention to the present."}, "art-vehicles": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Schematic side view of a motor car\"><rect width=\"120\" height=\"78\" fill=\"#fbfbf9\"/><path d=\"M6 62h108\" stroke=\"#c8ccd1\" stroke-width=\"2\"/><path d=\"M12 52V38l16-2 16-16h32l12 16h20v16Z\" fill=\"#dcc79a\" stroke=\"#333\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M48 24h14v12H36Zm20 0h8l10 12H68Z\" fill=\"#b9d7e2\" stroke=\"#333\" stroke-width=\"1.4\"/><g fill=\"#2f3234\"><circle cx=\"38\" cy=\"52\" r=\"10\"/><circle cx=\"92\" cy=\"52\" r=\"10\"/></g><g fill=\"#d6d8d9\"><circle cx=\"38\" cy=\"52\" r=\"4\"/><circle cx=\"92\" cy=\"52\" r=\"4\"/></g></svg>", "s": "Technology &middot; Global Swap timeline", "t": "Motor vehicles", "x": "Invented in the equatorial workshops of Wene wa Kongo in 1886, mass-produced at Mosul from 1912, remade by the Mysore method after the oil shocks and electrified from Nusantara after 2015. About 1.71&nbsp;billion vehicles were in use in 2025."}, "derg-union": {"img": "", "s": "Abyssinian Empire &middot; carries Russia and the USSR", "t": "Derg Union", "x": "The Orthodox-analogue empire of the Horn, never conquered, which became Arabia's rival for forty-five years after 1945. It orbited the first satellite in 1957 and dissolved on 26 December 1991."}, "dn-kongo": {"img": "", "s": "Congo-Brazzaville &middot; carries Austria", "t": "DN Kongo", "x": "The smaller Kongo-speaking crown across the river, which shares the language of Wene wa Kongo and refused its union."}, "jolof": {"img": "", "s": "Kingdom &middot; West Africa", "t": "Jolof", "x": "The plurinational western crown, carrying the history of Spain: Wolof core with Bambara, Mossi and Soninke realms, reaching from the Senegal river to the Volta savannas. Its Gulf claims were sold to Arabia by the Treaty of Sohar in 1821, and it lost the Caucasus protectorates in the Gulf War of 1898."}, "kaabu": {"img": "", "s": "Guinea-Bissau &middot; carries Portugal", "t": "Kaabu", "x": "The first African power to reach the Arabian seas: Mansa Jata rounded the Horn in 1497 and established factories at Socotra, Muscat and Hormuz."}, "kanem": {"img": "", "s": "Chad &middot; custom nation", "t": "Kanem", "x": "A transhumant nation of the Tibesti and the Lake Chad basin whose parliament has jurisdiction across four state frontiers, and whose borders are defined by herding routes rather than by ground held."}, "kong": {"img": "", "s": "Republic &middot; West Africa", "t": "Republic of Kong", "x": "The great Latin-analogue power of western Africa, occupying the Ivory Coast and western Ghana and carrying the history of France. It allied with the Arabian revolutionaries at Kong in 1778, sold its entire Mesopotamian claim in the Kuwait Purchase of 1803, and gave the Manarat al-Hurriyyah in 1886."}, "masr": {"img": "", "s": "Egypt &middot; carries Mexico", "t": "Masr", "x": "The great southern neighbour of the Union, which lost Oman, Socotra and the Gulf littoral in the war of 1846&ndash;1848. Masr belongs to the Arabian sphere rather than the African one."}, "ndongo": {"img": "", "s": "Southern Africa &middot; carries Italy", "t": "Ndongo", "x": "The long-coasted southern power, seat of the western church and of the classical inheritance that the rest of Africa built on. An Axis belligerent from 1940, it changed sides in 1943."}, "qumur": {"img": "", "s": "Comoros &middot; state since 1959", "t": "Qumur", "x": "Annexed by joint resolution in 1898 after planters and marines deposed Queen Halima, organised as a territory in 1900 and admitted as a state in 1959. Birthplace of the forty-fourth president."}, "sokoto": {"img": "", "s": "Nigeria &middot; carries Britain", "t": "Sokoto", "x": "The insular naval empire of the African west, conquered by the duchy of Tem in 1066 and the first industrial nation."}, "songhai": {"img": "", "s": "Niger Bend &middot; custom nation", "t": "Songhai", "x": "The Niger Bend republic that Jolof never absorbed: a language isolate, the oldest in the west, autonomous since the sixteenth century."}, "tem": {"img": "", "s": "Eastern Ghana and Togo &middot; carries Normandy", "t": "Tem", "x": "The duchy that crossed the Bight in the eleventh century and conquered Sokoto, permanently welding the two elites together. It survives as its own state because no centralising western monarchy ever finished the job."}, "wene-wa-kongo": {"img": "", "s": "Congo &middot; carries Germany", "t": "Wene wa Kongo", "x": "The industrial heart of Africa, unified late out of dozens of principalities and twice the cause of a continental war. It was partitioned after 1945 and reunified in 1990. Its Lubumbashi workshops built the first motor car."}, "zambezia": {"img": "", "s": "Dissolved in the 1990s", "t": "Union of Zambezia", "x": "The southern federation of Zimbabwe, Zambia, Botswana, Namibia, Malawi, Lesotho and southern Mozambique, which came apart in the wars of the 1990s. Its successor states are the reason the southern frontier follows ceasefire lines."}};
+var PV={"art-timeline": {"img":"<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Timeline of the Global Swap\"><rect width=\"120\" height=\"78\" fill=\"#0d3940\"/><g><rect x=\"8\" y=\"22\" width=\"30\" height=\"10\" rx=\"2\" fill=\"#c9b27e\"/><rect x=\"40\" y=\"36\" width=\"16\" height=\"10\" rx=\"2\" fill=\"#a8c08b\"/><rect x=\"58\" y=\"22\" width=\"12\" height=\"10\" rx=\"2\" fill=\"#9ab0c8\"/><rect x=\"72\" y=\"36\" width=\"14\" height=\"10\" rx=\"2\" fill=\"#d49a7a\"/><rect x=\"88\" y=\"22\" width=\"14\" height=\"10\" rx=\"2\" fill=\"#c98fb0\"/><rect x=\"104\" y=\"36\" width=\"9\" height=\"10\" rx=\"2\" fill=\"#7fb6c1\"/></g><path d=\"M8 58.5H113\" stroke=\"#9fe3ea\" stroke-width=\"1.2\"/><circle cx=\"8\" cy=\"58.5\" r=\"2.6\" fill=\"#4fd3e0\"/><g stroke=\"#9fe3ea\" stroke-width=\"1.2\"><path d=\"M40 56v5M72 56v5M88 56v5M104 56v5\"/></g></svg>","s":"Chronology &middot; 500&nbsp;BCE to the present","t":"Timeline of the Global Swap","x":"Twenty-five centuries of the Global Swap on one page: the divergence, the Nabataean chancery, the caliphal trade in Europeans, the African and South Asian crowns, the Arabian Revolution, the African partition of Europe, the Cold War of Arabia and the Derg Union, and the present."}, "a-iuml-r": {"img": "", "s": "Niger &middot; custom nation", "t": "A&iuml;r", "x": "A cantonal confederation of the A&iuml;r massif with four official languages, armed neutrality and the continent's clearing banks. It has no single counterpart in the outside timeline."}, "art-europe": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Outline of Europe\"><rect width=\"120\" height=\"78\" fill=\"#dfe7ec\"/><path d=\"M75.7,2.0 L78.4,2.4 L81.9,4.9 L85.1,7.0 L90.5,8.3 L94.2,10.8 L97.8,11.2 L101.5,9.8 L105.1,7.5 L105.1,53.9 L102.1,57.9 L99.0,58.8 L94.8,56.7 L91.8,55.0 L89.3,53.1 L86.9,56.4 L84.7,54.6 L83.1,54.1 L81.1,56.0 L80.5,56.7 L79.3,59.0 L78.3,60.9 L77.8,62.5 L78.6,64.2 L79.6,65.1 L82.7,65.1 L86.3,63.4 L89.9,64.9 L92.7,65.3 L94.8,64.4 L97.2,66.8 L98.4,68.9 L98.1,72.6 L95.4,73.5 L91.2,74.3 L88.4,75.6 L85.7,75.4 L83.3,75.4 L81.6,74.3 L79.6,75.6 L77.4,74.3 L76.5,71.0 L76.2,68.4 L76.2,67.4 L76.7,66.8 L75.9,65.8 L73.9,66.3 L72.2,66.5 L72.8,67.8 L72.3,69.3 L72.3,71.4 L73.2,72.0 L72.6,74.9 L71.7,75.2 L70.8,74.3 L70.3,72.4 L69.9,71.0 L68.9,69.1 L67.8,66.8 L68.1,64.9 L67.7,63.6 L67.4,62.8 L66.4,62.1 L64.3,60.2 L62.9,59.0 L61.9,56.4 L60.9,55.6 L59.3,56.2 L59.5,58.3 L60.8,60.0 L61.4,62.5 L63.2,63.4 L64.1,63.6 L66.3,66.1 L66.9,67.4 L65.3,66.5 L64.4,69.9 L63.3,71.8 L63.8,69.9 L63.0,67.6 L61.8,65.9 L60.9,65.1 L59.3,64.0 L58.7,62.5 L56.9,61.3 L56.5,59.2 L55.1,58.3 L52.9,60.2 L51.0,60.7 L50.2,60.4 L48.0,61.3 L48.3,62.8 L47.1,64.6 L45.5,66.1 L44.4,68.6 L44.4,70.1 L43.5,72.6 L41.7,74.5 L39.0,74.5 L37.6,76.0 L36.7,74.3 L35.4,73.5 L33.6,73.9 L33.5,70.7 L32.9,69.1 L33.7,67.2 L33.7,65.1 L33.6,63.6 L33.1,61.5 L33.6,59.8 L37.1,60.0 L39.8,60.4 L42.2,60.5 L42.7,59.2 L42.9,56.0 L42.9,54.6 L41.7,52.5 L39.2,51.2 L38.6,49.5 L42.1,49.5 L42.6,48.0 L44.6,47.2 L46.3,44.7 L47.5,44.3 L48.6,43.6 L49.2,42.8 L50.0,41.3 L50.5,39.6 L52.9,39.2 L54.1,39.2 L54.7,38.4 L54.8,36.3 L54.6,35.0 L54.2,32.5 L57.4,30.6 L56.9,35.4 L59.7,34.2 L59.6,36.3 L57.8,37.3 L60.2,37.1 L61.6,38.2 L64.1,37.1 L67.0,36.9 L68.2,37.2 L70.0,35.4 L69.9,33.3 L73.5,31.9 L73.5,29.1 L72.9,27.6 L74.4,26.6 L76.8,26.4 L81.1,25.8 L78.0,24.5 L74.8,25.1 L71.4,24.7 L70.3,22.4 L70.6,19.0 L73.7,13.4 L71.7,13.4 L68.9,18.0 L65.6,20.3 L67.4,24.3 L65.0,27.9 L64.4,33.3 L62.0,35.2 L59.7,35.2 L59.0,30.4 L57.9,27.9 L57.4,25.8 L52.9,29.8 L50.7,27.9 L50.3,22.4 L51.6,20.1 L53.5,19.7 L59.0,14.0 L60.2,8.9 L63.8,7.0 L67.5,4.5 L72.3,3.3 Z M38.1,46.6 L40.1,45.3 L43.2,45.1 L45.4,44.7 L46.1,43.6 L45.0,40.7 L44.8,39.0 L44.1,38.2 L42.8,36.7 L42.6,34.8 L41.8,33.7 L41.4,32.7 L40.7,30.6 L42.0,28.5 L40.7,28.3 L38.9,28.7 L38.3,29.1 L37.5,30.8 L37.3,32.9 L38.3,34.0 L38.6,35.2 L38.2,36.5 L40.0,37.9 L40.6,39.4 L39.3,39.6 L38.6,40.7 L39.0,41.9 L38.0,43.0 L39.3,44.0 L40.5,43.8 L40.0,45.3 Z M37.1,41.9 L37.1,39.4 L36.9,37.9 L37.6,36.7 L35.5,35.2 L33.9,35.6 L32.4,37.5 L32.9,39.4 L32.1,41.9 L32.9,43.4 L34.7,43.4 L36.7,42.6 Z M17.1,14.0 L18.9,11.9 L24.3,11.9 L26.8,14.4 L27.4,16.3 L23.1,18.4 L18.9,17.3 L16.5,16.1 L14.9,15.0 Z\" fill=\"#c9a3cc\" stroke=\"#7a5b80\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/></svg>", "s": "Reference atlas", "t": "Europe &mdash; the African swap", "x": "Every European nation set against the Global-South counterpart whose history it carries, on the same non-colonial border set as the African atlas. Europe was partitioned by African powers between the 1870s and 1902 and was free again within a lifetime; the frontiers that survived are the ones its own peoples drew."}, "art-history": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Layers of Arabian history, from prehistory at the base to the present at the top\"><rect width=\"120\" height=\"16\" fill=\"#e4d3ae\"/><rect y=\"16\" width=\"120\" height=\"16\" fill=\"#d3bd90\"/><rect y=\"32\" width=\"120\" height=\"16\" fill=\"#c0a777\" fill-opacity=\"1\"/><rect y=\"48\" width=\"120\" height=\"16\" fill=\"#ab8f63\"/><rect y=\"64\" width=\"120\" height=\"14\" fill=\"#8d7450\"/><path d=\"M60 6V74\" stroke=\"#3b2f1c\" stroke-width=\"2\"/><g fill=\"#3b2f1c\"><circle cx=\"60\" cy=\"10\" r=\"4\"/><circle cx=\"60\" cy=\"28\" r=\"4\"/><circle cx=\"60\" cy=\"46\" r=\"4\"/><circle cx=\"60\" cy=\"64\" r=\"4\"/></g></svg>", "s": "Prehistory to the present", "t": "History of the United States of Arabia", "x": "Sixty thousand years of settlement on the peninsula, the Levantine seaboard and the Mesopotamian basin: the Nabataean water law, the caliphal centuries, the thirteen Hindustani princely colonies, the Revolution of 1776, the Civil War over servitude and the eighty-eight years of <i>khidmah</i> that followed it."}, "art-index": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"A globe with the northern and southern halves changing places\"><rect width=\"120\" height=\"78\" fill=\"#0e3a42\"/><circle cx=\"60\" cy=\"39\" r=\"29\" fill=\"#12b7c8\" fill-opacity=\".16\" stroke=\"#4fd3e0\" stroke-width=\"1.6\"/><g stroke=\"#4fd3e0\" stroke-width=\"1.1\" fill=\"none\" opacity=\".85\"><path d=\"M31 39h58M60 10v58\"/><ellipse cx=\"60\" cy=\"39\" rx=\"14\" ry=\"29\"/><path d=\"M36 25h48M36 53h48\"/></g><g fill=\"none\" stroke=\"#e8c37a\" stroke-width=\"2.2\"><path d=\"M42 20C26 29 26 49 42 58\"/><path d=\"M78 58c16-9 16-29 0-38\"/></g><g fill=\"#e8c37a\"><path d=\"M42 58l-7-2 3 6Z\"/><path d=\"M78 20l7 2-3-6Z\"/></g></svg>", "s": "Project hub", "t": "Controglobe", "x": "The open-source worldbuilding encyclopedia of the Global Swap: from 500&nbsp;BCE the Global North and the Global South trade historical trajectories, geography stays exactly where it is, and the result is written up the way an encyclopedia would write it."}, "art-nabataean": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"A Nabataean rock-cut tomb facade\"><rect width=\"120\" height=\"78\" fill=\"#b8814e\"/><path d=\"M14 78V24L60 6l46 18v54Z\" fill=\"#d9b488\"/><path d=\"M60 6 106 24H14Z\" fill=\"#c69a6b\"/><path d=\"M14 26h92v4H14Z\" fill=\"#b8874f\"/><g fill=\"#c49668\"><rect x=\"22\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"44\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"67\" y=\"30\" width=\"9\" height=\"48\"/><rect x=\"89\" y=\"30\" width=\"9\" height=\"48\"/></g><rect x=\"53\" y=\"46\" width=\"14\" height=\"32\" fill=\"#3f2f1c\"/></svg>", "s": "c.&nbsp;440&nbsp;BCE &ndash; 36&nbsp;CE &middot; custom entity", "t": "Nabataean Unification", "x": "The process by which the kings of Petra and Hegra brought the wells, oases and caravan roads of northern and central Arabia under one administration, conventionally completed by the Covenant of the Wells in 262&nbsp;BCE. It gave the region a written Arabic, a written law of water and the habit of arbitration."}, "art-usa": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Flag of the United States of Arabia\"><rect width=\"120\" height=\"78\" fill=\"#fff\"/><g fill=\"#000\"><rect width=\"120\" height=\"13\"/><rect y=\"39\" width=\"120\" height=\"13\"/></g><g fill=\"#007A3D\"><rect y=\"26\" width=\"120\" height=\"13\"/><rect y=\"65\" width=\"120\" height=\"13\"/></g><rect width=\"48\" height=\"39\" fill=\"#CE1126\"/><g fill=\"#fff\"><circle cx=\"4\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"12\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"20\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"28\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"36\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"44\" cy=\"4.9\" r=\"2.2\"/><circle cx=\"4\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"12\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"20\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"28\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"36\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"44\" cy=\"14.65\" r=\"2.2\"/><circle cx=\"4\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"12\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"20\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"28\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"36\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"44\" cy=\"24.4\" r=\"2.2\"/><circle cx=\"4\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"12\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"20\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"28\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"36\" cy=\"34.15\" r=\"2.2\"/><circle cx=\"44\" cy=\"34.15\" r=\"2.2\"/></g></svg>", "s": "Federal republic &middot; al-Mashriq", "t": "United States of Arabia", "x": "The federal republic of twenty-four states on the Arabian Peninsula, the Levantine seaboard and the Tigris&ndash;Euphrates basin, independent of the Hindustani Empire since 1776 and governed under the Constitution of 1789. It holds the Custodianship of the Two Holy Mosques, and its forty-seven presidencies run from the Damascus Convention to the present."}, "art-vehicles": {"img": "<svg class=\"pt\" viewBox=\"0 0 120 78\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Schematic side view of a motor car\"><rect width=\"120\" height=\"78\" fill=\"#fbfbf9\"/><path d=\"M6 62h108\" stroke=\"#c8ccd1\" stroke-width=\"2\"/><path d=\"M12 52V38l16-2 16-16h32l12 16h20v16Z\" fill=\"#dcc79a\" stroke=\"#333\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M48 24h14v12H36Zm20 0h8l10 12H68Z\" fill=\"#b9d7e2\" stroke=\"#333\" stroke-width=\"1.4\"/><g fill=\"#2f3234\"><circle cx=\"38\" cy=\"52\" r=\"10\"/><circle cx=\"92\" cy=\"52\" r=\"10\"/></g><g fill=\"#d6d8d9\"><circle cx=\"38\" cy=\"52\" r=\"4\"/><circle cx=\"92\" cy=\"52\" r=\"4\"/></g></svg>", "s": "Technology &middot; Global Swap timeline", "t": "Motor vehicles", "x": "Invented in the equatorial workshops of Wene wa Kongo in 1886, mass-produced at Mosul from 1912, remade by the Mysore method after the oil shocks and electrified from Nusantara after 2015. About 1.71&nbsp;billion vehicles were in use in 2025."}, "derg-union": {"img": "", "s": "Abyssinian Empire &middot; carries Russia and the USSR", "t": "Derg Union", "x": "The Orthodox-analogue empire of the Horn, never conquered, which became Arabia's rival for forty-five years after 1945. It orbited the first satellite in 1957 and dissolved on 26 December 1991."}, "dn-kongo": {"img": "", "s": "Congo-Brazzaville &middot; carries Austria", "t": "DN Kongo", "x": "The smaller Kongo-speaking crown across the river, which shares the language of Wene wa Kongo and refused its union."}, "jolof": {"img": "", "s": "Kingdom &middot; West Africa", "t": "Jolof", "x": "The plurinational western crown, carrying the history of Spain: Wolof core with Bambara, Mossi and Soninke realms, reaching from the Senegal river to the Volta savannas. Its Gulf claims were sold to Arabia by the Treaty of Sohar in 1821, and it lost the Caucasus protectorates in the Gulf War of 1898."}, "kaabu": {"img": "", "s": "Guinea-Bissau &middot; carries Portugal", "t": "Kaabu", "x": "The first African power to reach the Arabian seas: Mansa Jata rounded the Horn in 1497 and established factories at Socotra, Muscat and Hormuz."}, "kanem": {"img": "", "s": "Chad &middot; custom nation", "t": "Kanem", "x": "A transhumant nation of the Tibesti and the Lake Chad basin whose parliament has jurisdiction across four state frontiers, and whose borders are defined by herding routes rather than by ground held."}, "kong": {"img": "", "s": "Republic &middot; West Africa", "t": "Republic of Kong", "x": "The great Latin-analogue power of western Africa, occupying the Ivory Coast and western Ghana and carrying the history of France. It allied with the Arabian revolutionaries at Kong in 1778, sold its entire Mesopotamian claim in the Kuwait Purchase of 1803, and gave the Manarat al-Hurriyyah in 1886."}, "masr": {"img": "", "s": "Egypt &middot; carries Mexico", "t": "Masr", "x": "The great southern neighbour of the Union, which lost Oman, Socotra and the Gulf littoral in the war of 1846&ndash;1848. Masr belongs to the Arabian sphere rather than the African one."}, "ndongo": {"img": "", "s": "Southern Africa &middot; carries Italy", "t": "Ndongo", "x": "The long-coasted southern power, seat of the western church and of the classical inheritance that the rest of Africa built on. An Axis belligerent from 1940, it changed sides in 1943."}, "qumur": {"img": "", "s": "Comoros &middot; state since 1959", "t": "Qumur", "x": "Annexed by joint resolution in 1898 after planters and marines deposed Queen Halima, organised as a territory in 1900 and admitted as a state in 1959. Birthplace of the forty-fourth president."}, "sokoto": {"img": "", "s": "Nigeria &middot; carries Britain", "t": "Sokoto", "x": "The insular naval empire of the African west, conquered by the duchy of Tem in 1066 and the first industrial nation."}, "songhai": {"img": "", "s": "Niger Bend &middot; custom nation", "t": "Songhai", "x": "The Niger Bend republic that Jolof never absorbed: a language isolate, the oldest in the west, autonomous since the sixteenth century."}, "tem": {"img": "", "s": "Eastern Ghana and Togo &middot; carries Normandy", "t": "Tem", "x": "The duchy that crossed the Bight in the eleventh century and conquered Sokoto, permanently welding the two elites together. It survives as its own state because no centralising western monarchy ever finished the job."}, "wene-wa-kongo": {"img": "", "s": "Congo &middot; carries Germany", "t": "Wene wa Kongo", "x": "The industrial heart of Africa, unified late out of dozens of principalities and twice the cause of a continental war. It was partitioned after 1945 and reunified in 1990. Its Lubumbashi workshops built the first motor car."}, "zambezia": {"img": "", "s": "Dissolved in the 1990s", "t": "Union of Zambezia", "x": "The southern federation of Zimbabwe, Zambia, Botswana, Namibia, Malawi, Lesotho and southern Mozambique, which came apart in the wars of the 1990s. Its successor states are the reason the southern frontier follows ceasefire lines."}};
 var MATCH={"Angola": "ndongo", "Chad": "kanem", "Comoros": "qumur", "DN Kongo": "dn-kongo", "Egypt": "masr", "Ethiopia": "derg-union", "Jolof": "jolof", "Kaabu": "kaabu", "Kong": "kong", "Niger": "a-iuml-r", "Nigeria": "sokoto", "Songhai": "songhai", "Tem": "tem", "Union of Zambezia": "zambezia", "WW Kongo": "wene-wa-kongo"};
-var LINKS={"europe.html": "art-europe", "history-of-the-united-states-of-arabia.html": "art-history", "index.html": "art-index", "nabataean-unification.html": "art-nabataean", "united-states-of-arabia.html": "art-usa", "vehicles.html": "art-vehicles"};
+var LINKS={"timeline-of-the-global-swap.html": "art-timeline", "europe.html": "art-europe", "history-of-the-united-states-of-arabia.html": "art-history", "index.html": "art-index", "nabataean-unification.html": "art-nabataean", "united-states-of-arabia.html": "art-usa", "vehicles.html": "art-vehicles"};
 var card=document.getElementById('pvcard'), root=document.querySelector('.wrap');
 if(!card||!root)return;
 var timer=null, cur=null;
@@ -507,5 +621,58 @@ scan('a, b, i, strong, td, th',true);      /* links, section anchors and terms w
 })();
 </script>
 
+<script>
+/* Site chrome: the colour-theme switch and, on wide screens, the contents
+   sidebar. Identical on every page of both editions; the visible labels are
+   read from data-l-* attributes in the masthead, so nothing here is translated. */
+(function(){
+var d=document.documentElement, mast=document.querySelector('.cg-mast'), btn=document.querySelector('.cg-theme');
+var NEXT={auto:'light',light:'dark',dark:'auto'};
+function stored(){try{return localStorage.getItem('cg-theme')||'auto';}catch(e){return 'auto';}}
+var mode=stored();
+function apply(m){
+  if(m==='auto')d.removeAttribute('data-theme');else d.setAttribute('data-theme',m);
+  if(!btn)return;
+  var l=btn.getAttribute('data-l-'+m)||m;
+  btn.setAttribute('data-mode',m);btn.setAttribute('aria-label',l);btn.title=l;}
+apply(mode);
+if(btn)btn.addEventListener('click',function(){
+  mode=NEXT[mode]||'auto';
+  try{if(mode==='auto')localStorage.removeItem('cg-theme');else localStorage.setItem('cg-theme',mode);}catch(e){}
+  apply(mode);});
+
+/* contents sidebar: a copy of the article's own contents box, kept beside the text */
+var toc=document.querySelector('#container > .toc');
+if(!toc||!toc.querySelector('ol'))return;
+var side=document.createElement('nav'), title=toc.querySelector('.toc-title');
+side.className='cg-side';side.setAttribute('aria-label',title?title.textContent:'Contents');
+side.innerHTML=(title?'<p class="cg-side-title">'+title.innerHTML+'</p>':'')+toc.querySelector('ol').outerHTML+
+  '<a class="cg-top" href="#top">&uarr; '+((mast&&mast.getAttribute('data-l-top'))||'Top')+'</a>';
+document.body.appendChild(side);d.classList.add('cg-has-side');
+var links=[],heads=[];
+Array.prototype.forEach.call(side.querySelectorAll('a[href^="#"]'),function(a){
+  var id=a.getAttribute('href').slice(1),h=id&&id!=='top'&&document.getElementById(id);
+  if(h){links.push(a);heads.push(h);}});
+var cur=null,ticking=false;
+function spy(){
+  ticking=false;
+  var line=(parseFloat(getComputedStyle(d).getPropertyValue('--mast-h'))||58)+40,hit=-1;
+  for(var i=0;i<heads.length;i++){if(heads[i].getBoundingClientRect().top<=line)hit=i;else break;}
+  var a=hit<0?null:links[hit];
+  if(a===cur)return;
+  if(cur)cur.classList.remove('on');
+  Array.prototype.forEach.call(side.querySelectorAll('li.open'),function(li){li.classList.remove('open');});
+  cur=a;
+  if(!a)return;
+  a.classList.add('on');
+  for(var li=a.parentNode;li&&li!==side;li=li.parentNode){if(li.tagName==='LI')li.classList.add('open');}
+  var r=a.getBoundingClientRect(),s=side.getBoundingClientRect();
+  if(r.top<s.top||r.bottom>s.bottom)side.scrollTop+=r.top-s.top-s.height/3;}
+function queue(){if(!ticking){ticking=true;requestAnimationFrame(spy);}}
+window.addEventListener('scroll',queue,{passive:true});
+window.addEventListener('resize',queue);
+spy();
+})();
+</script>
 </body>
 </html>
