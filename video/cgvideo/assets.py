@@ -83,23 +83,24 @@ def _user_art(cfg, kind: str, key: str) -> Image.Image | None:
     return None
 
 
-def _cached(cfg, name: str, width: int, make) -> Image.Image:
-    p = _cache_dir(cfg) / f"{name}_{width}.png"
+def _raster(cfg, name: str, svg: str, width: int) -> Image.Image:
+    """An SVG rasterised once per drawing: the file name carries a hash of the SVG, so artwork
+    redrawn in the encyclopedia (or by the generators below) is rasterised again."""
+    tag = hashlib.sha1(svg.encode("utf8")).hexdigest()[:8]
+    p = _cache_dir(cfg) / f"{name}_{width}_{tag}.png"
     if p.exists():
         return Image.open(p).convert("RGBA")
-    img = make()
+    img = rasterise(svg, width)
     img.save(p)
     return img
 
 
 def union_flag(cfg, width: int = 600) -> Image.Image:
-    root = str(paths(cfg).root.parent)
-    return _cached(cfg, "flag_usa", width, lambda: rasterise(_canon_svgs(root)["flag"], width))
+    return _raster(cfg, "flag_usa", _canon_svgs(str(paths(cfg).root.parent))["flag"], width)
 
 
 def union_seal(cfg, width: int = 400) -> Image.Image:
-    root = str(paths(cfg).root.parent)
-    return _cached(cfg, "seal_usa", width, lambda: rasterise(_canon_svgs(root)["seal"], width))
+    return _raster(cfg, "seal_usa", _canon_svgs(str(paths(cfg).root.parent))["seal"], width)
 
 
 # -- procedural flags ------------------------------------------------------------------
@@ -158,7 +159,7 @@ def flag(cfg, polity: dict, width: int = 300) -> Image.Image:
         return own.resize((width, round(width * own.height / own.width)), Image.LANCZOS)
     if pid == "usa":
         return union_flag(cfg, width)
-    return _cached(cfg, f"flag_{pid}", width, lambda: rasterise(flag_svg(polity), width))
+    return _raster(cfg, f"flag_{pid}", flag_svg(polity), width)
 
 
 # -- portraits -------------------------------------------------------------------------
@@ -196,11 +197,8 @@ def portrait(cfg, key: str, name: str, width: int = 240, accent: str = "#8a6d3b"
     own = _user_art(cfg, "portraits", key)
     if own is not None:
         return own.resize((width, round(width * own.height / own.width)), Image.LANCZOS)
-    root = str(paths(cfg).root.parent)
-    svgs = _canon_svgs(root)
-    if key in svgs:
-        return _cached(cfg, f"portrait_{key}", width, lambda: rasterise(svgs[key], width))
-    return _cached(cfg, f"portrait_{key}", width, lambda: rasterise(portrait_svg(key, name, accent), width))
+    svgs = _canon_svgs(str(paths(cfg).root.parent))
+    return _raster(cfg, f"portrait_{key}", svgs[key] if key in svgs else portrait_svg(key, name, accent), width)
 
 
 def build_all(cfg, data) -> int:
