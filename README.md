@@ -102,6 +102,15 @@ a section anchor or a marked term opens a summary card, drawn from data held in 
 Cards for cross-article links carry a thumbnail; cards for a section of the current page are
 built from the page itself. See [CONTRIBUTING.md](CONTRIBUTING.md#preview-cards).
 
+## Video
+
+[`video/`](video/) builds the series' mapping videos from this canon, starting with
+*Alternate History of Arabia (in place of the United States), every year*: the Global Swap's
+borders drawn year by year on real coastlines, rendered with Python and finished in QGIS, GIMP
+and DaVinci Resolve, with Claude writing the data and driving the tools. It is separate from the
+encyclopedia (the site still has no build step and no dependencies); start at
+[`video/README.md`](video/README.md).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Open an **issue** to argue about canon;

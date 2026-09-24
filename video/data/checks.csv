@@ -1,0 +1,40 @@
+# Canon as tests: `python build.py check` fails if the map disagrees with any row.
+# Add one whenever a canon page states who held a place in a given year.
+year,region,expected,source
+-262,riyadh,nabataea,timeline: Covenant of the Wells
+-312,damascus,nabataea,timeline: 312 BCE
+-188,ahsa,nabataea,timeline: Gerrha annexed
+-72,najran,himyar,timeline
+36,karak,petra_league,timeline
+36,ula,hegra_league,timeline
+1607,jeddah,col_hejaz,timeline: Red Sea Company
+1626,dubai,duala,timeline: Magan Town
+1638,yanbu,hassaniya,timeline
+1732,riyadh,col_najd,timeline: thirteenth colony
+1750,deir,kong,history: 1750 map
+1750,muscat,kaabu,history: 1750 map
+1750,makkah_taif,sharifate,history: 1750 map
+1776,jeddah,st_hejaz,timeline: Declaration
+1812,kuwait,st_kuwait,united-states-of-arabia: admitted 1812
+1818,baghdad,st_mesopotamia,united-states-of-arabia: admitted 1818
+1821,deir,st_euphrates,united-states-of-arabia: admitted 1821
+1821,dubai,ter_magan,history: Treaty of Sohar
+1840,ahsa,sharqiyah_rep,timeline: Republic of Sharqiyah 1836-1845
+1845,dubai,st_magan,united-states-of-arabia: admitted 1845
+1845,ahsa,st_sharqiyah,united-states-of-arabia: admitted 1845
+1847,muscat,masr,timeline: ceded 1848
+1850,muscat,st_oman,united-states-of-arabia: admitted 1850
+1861,hail,st_shammar,united-states-of-arabia: admitted January 1861
+1862,riyadh,isa,history: Islamic States of Arabia
+1862,jeddah,st_hejaz,history: Hejaz stays in the Union
+1862,amman,st_jordan,history: Jordan stays in the Union
+1862,deir,isa,history: Euphrates secedes
+1865,riyadh,st_najd,timeline: surrender at Wadi Hanifa
+1870,baku,ter_adharbaijan,timeline: bought 1867
+1889,mosul,st_kurdistan,united-states-of-arabia: admitted 1889
+1900,comoros,ter_qumur,timeline: annexed 1898
+1912,socotra,st_socotra,united-states-of-arabia: admitted 1912
+1959,baku,st_adharbaijan,united-states-of-arabia: admitted 1959
+1959,comoros,st_qumur,united-states-of-arabia: admitted 1959
+1980,ethiopia_c,derg,timeline: Cold War
+1992,eritrea,eritrea_s,timeline: Derg Union dissolved

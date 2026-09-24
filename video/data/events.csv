@@ -1,0 +1,89 @@
+# Dated captions, all from timeline-of-the-global-swap.html unless the source says otherwise.
+# importance: 1 minor (short dwell), 2 major, 3 era-defining (long dwell). Keep text under ~90
+# characters: it has to be read in the few seconds the year is on screen.
+year,date,importance,text,source
+-460,after 460 BCE,3,The Achaemenids withdraw from the desert; no power polices the caravan routes,timeline
+-440,c. 440 BCE,2,"Aretas I is recorded at Petra as ""king of the Nabatu, master of the water of Sela""",timeline
+-380,c. 380 BCE,1,Obodas I takes Hegra: the kingdom's second capital,timeline
+-345,c. 345 BCE,1,The Dedan settlement: Lihyan's wells go into the Hegra registry,timeline
+-312,312 BCE,1,The notables of Damascus admit a Nabataean governor,timeline
+-305,305 BCE,1,Aretas III turns back a Masri army at the Wadi al-Arish,timeline
+-291,291 BCE,2,The Arabic Ordinance: Arabic in the Nabataean chancery hand becomes the language of government,timeline
+-287,287 BCE,1,The Water Ordinance puts every registered well into the Well Rolls,timeline
+-262,262 BCE,3,The Covenant of the Wells is sworn at Hajr: the Nabataean unification,timeline
+-188,188 BCE,2,Aretas V annexes Gerrha on the Gulf,timeline
+-141,141 BCE,2,The War of the Two Capitals between Petra and Hegra,timeline
+-72,72 BCE,1,Himyar takes Najran and diverts the incense trade to the Red Sea,timeline
+36,36 CE,3,Rabbel V dies without an heir; the kingdom dissolves into the Petra and Hegra leagues,timeline
+622,early 7th century,3,Islam emerges in the Hejaz among a literate trading people,timeline
+750,750,2,The Abbasid caliphate: Baghdad becomes the largest city on the planet,timeline
+869,869,2,The Saqaliba Revolt: European captives rise in the Basra marshes,timeline
+871,871,1,The rebels sack Basra,timeline
+883,883,1,An Abbasid army destroys the rebel capital after fourteen years,timeline
+1258,1258,3,The sack of Baghdad; the Interregnum begins,timeline
+1498,1498,3,Mansa Jata of Kaabu reaches Aden around the Horn,timeline
+1507,1507,1,Jolofian cartographers name the whole landmass Arabia,timeline
+1560,c. 1560,2,The colonial trade in Europeans begins,timeline
+1607,1607,3,Hindustan charters the Red Sea Company; a settlement at Jeddah,timeline
+1626,1626,1,The Duala Company of Kamerun founds Magan Town,timeline
+1638,1638,1,The Hassaniya crown settles the Tihamah coast,timeline
+1662,1662,2,The Lakhnau Servitude Ordinance makes slavery hereditary,timeline
+1682,1682,1,The Rashidi Wars begin,timeline
+1732,1732,2,"Najd, around Diriyah and Riyadh, becomes the thirteenth colony",timeline
+1739,1739,1,The Jizan rising spreads along the Tihamah for three weeks,timeline
+1756,1756,2,The Seven Years' War between Hindustan and Kong,timeline
+1763,1763,2,Kong is expelled from the Euphrates,timeline
+1773,December 1773,1,The Jeddah Coffee Protest,timeline
+1775,19 April 1775,2,Fighting begins at Bab al-Hadid outside Aleppo,timeline
+1776,25 September 1776,3,The Declaration of Independence,timeline
+1783,3 October 1783,3,The Treaty of Zafar: independence; the frontier at the Euphrates,timeline
+1789,21 June 1789,2,The Constitution in force; al-Hashimi is the first president,timeline
+1791,1791,1,Hejaz cedes the federal district of Umm al-Qura,timeline
+1803,1803,3,The Kuwait Purchase doubles the country,timeline
+1808,1 January 1808,1,The import ban on enslaved people takes effect,timeline
+1811,1811,2,The viceroyalty of Masr campaigns across eastern and southern Arabia,timeline
+1812,1812,2,The War of 1812 with Hindustan,timeline
+1814,1814,1,The Presidential House at Umm al-Qura is burned,timeline
+1821,1821,2,The Euphrates Compromise; Jolof sells Magan,timeline
+1823,1823,1,The Qasimi Doctrine closes the Arabian seas to new colonies,timeline
+1830,1830,2,The Desert Removal Act: the Road of Thirst,timeline
+1836,1836,2,The Republic of Sharqiyah,timeline
+1845,1845,2,Sharqiyah and Magan join the Union,timeline
+1846,1846,2,The Arabian-Masri War,timeline
+1848,1848,3,The Treaty of Ras Musandam: Oman and Socotra ceded; pearls off Sur,timeline
+1855,1855,1,Bleeding Shammar,timeline
+1861,12 April 1861,3,Civil War: eleven states secede as the Islamic States of Arabia,timeline
+1863,1 January 1863,3,The Manumission Proclamation,timeline
+1865,9 April 1865,3,The last secessionist army surrenders at Wadi Hanifa,timeline
+1867,1867,2,Adharbaijan is bought from the Abyssinian Empire,timeline
+1877,1877,2,The compromise of 1877; the khidmah codes,timeline
+1879,1879,1,The Trans-Arabian Railway is completed at Buraydah,timeline
+1886,29 January 1886,2,Nsimba Malonga patents the motor carriage,timeline
+1898,1898,2,The Gulf War with Jolof; Qumur is annexed,timeline
+1902,1902,2,The partition of Europe is complete,timeline
+1912,1912,1,The moving assembly line at Mosul,timeline
+1914,1914,3,The First World War begins in Africa,timeline
+1917,April 1917,2,Arabia enters the war,timeline
+1920,1920,1,The Nineteenth Amendment: women win the vote,timeline
+1929,29 March 1929,2,The Battle of Sabilla; the Jeddah Exchange collapses in October,timeline
+1933,1933,2,Faisal ar-Rashid's New Awakening,timeline
+1938,3 March 1938,2,Oil is struck at Dammam No. 7,timeline
+1941,7 December 1941,3,Hindustan attacks the fleet at Yalang Yalang,timeline
+1945,1945,3,The Alamut Project; the war ends; the Concert of Nations at Jeddah,timeline
+1949,1949,2,The Umm al-Qura Pact; the Derg Union's first atomic test,timeline
+1950,1950,2,The Bornean War,timeline
+1959,1959,2,Adharbaijan and Qumur become states,timeline
+1960,1960,2,The Year of Europe: seventeen states in twelve months,timeline
+1962,October 1962,3,The Kartli Missile Crisis,timeline
+1963,1963,2,The March on Umm al-Qura; President al-Sudairi is assassinated,timeline
+1965,1965,3,The Thirty-First Amendment abolishes every remaining form of servitude,timeline
+1969,20 July 1969,3,Hilal 11 lands on the Moon,timeline
+1973,1973,2,The first oil shock,timeline
+1979,1979,2,The siege of the Masjid al-Haram; the Adharbaijan hostage crisis,timeline
+1991,26 December 1991,3,The Derg Union dissolves,timeline
+2001,11 September 2001,3,The Jeddah World Trade Centre is destroyed,timeline
+2008,2007-2009,1,The financial crisis,timeline
+2019,2019,2,Nusantara passes Arabia in purchasing-power output,timeline
+2020,2020-2022,2,The coronavirus pandemic,timeline
+2025,2025,2,Munira al-Bahrani becomes the forty-seventh president,timeline
+2026,2026,1,The reapportionment litigation,timeline

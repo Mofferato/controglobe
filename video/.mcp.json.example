@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "qgis": {
+      "command": "uv",
+      "args": ["--directory", "C:/tools/qgis_mcp/src/qgis_mcp", "run", "qgis_mcp_server.py"]
+    },
+    "gimp": {
+      "command": "uv",
+      "args": ["run", "--directory", "C:/tools/gimp-mcp", "gimp_mcp_server.py"]
+    },
+    "davinci-resolve": {
+      "command": "C:/tools/davinci-resolve-mcp/venv/Scripts/python.exe",
+      "args": ["C:/tools/davinci-resolve-mcp/src/server.py"]
+    },
+    "blender": {
+      "command": "uvx",
+      "args": ["blender-mcp"]
+    }
+  }
+}

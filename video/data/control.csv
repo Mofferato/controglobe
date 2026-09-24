@@ -1,0 +1,201 @@
+# WHO HOLDS WHAT, YEAR BY YEAR.  SEED DATA: a coarse first pass, not canon.
+# Rows marked "inferred" fill gaps the encyclopedia leaves open, by analogy with the history
+# each region carries. Replace them as canon is written (prompts/PHASE_PROMPTS.md, phase 3).
+#
+# regions: region ids and/or @groups, space-separated.  polity: an id from polities.csv,
+# or - for "nobody" (drawn as bare land).  start/end: inclusive years, negative = BCE.
+# LATER ROWS WIN: write the broad stroke first, then the exceptions below it.
+regions,polity,start,end,source,note
+# ===== Neighbours ====================================================================
+@zagros,achaemenid,-500,-461,canon,
+@zagros,zagros_pr,-460,1866,canon,highland principalities after the withdrawal
+@anatolia,kong,1608,1762,inferred,New France analogue
+@anatolia,hind_zagrosia,1763,1866,inferred,
+@iran,hind_zagrosia,1670,1866,inferred,Rupert's Land analogue
+@zagros,zagrosia,1867,2026,inferred,confederation (Canada analogue)
+@masr,achaemenid,-500,-461,canon,
+@masr,masr,-460,1520,canon,Masr restored under native kings
+@masr,masr_vice,1521,1820,inferred,New Spain analogue
+@masr,masr,1821,2026,inferred,independent before its 1829 abolition (canon)
+cyprus,qubrus,-500,2026,inferred,
+@horn_core @horn_coast,abyssinia,-500,1921,inferred,
+eritrea,jolof,1507,1720,canon,Jolofian missions from Massawa to Jizan
+@sudan,sudan,-500,1794,inferred,
+@sudan,abyssinia,1795,1921,inferred,
+@barbaria,barbaria,-500,1792,inferred,
+@barbaria,abyssinia,1793,1921,inferred,
+@horn_core @horn_coast @sudan @barbaria,derg,1922,1991,canon,Derg Union dissolved 26 December 1991
+@horn_core,ethiopia,1992,2026,canon,
+eritrea,eritrea_s,1992,2026,canon,Derg successor state
+djibouti,djibouti_s,1992,2026,canon,Derg successor state
+@sudan,sudan,1992,2026,canon,
+@barbaria,barbaria,1992,2026,canon,
+@azer @caucasus,caucasian_pr,-500,2026,inferred,
+@azer @caucasus,rashidun,645,660,canon,caliphates reach the Caucasus
+@azer @caucasus,umayyad,661,749,canon,
+@azer @caucasus,abbasid,750,1000,inferred,
+kartli armenia,jolof,1600,1897,inferred,Spanish Caribbean analogue
+@azer,abyssinia,1799,1866,inferred,Russian America analogue
+@azer,ter_adharbaijan,1867,1958,canon,bought from the Abyssinian Empire for 7.2 million riyals
+@azer,st_adharbaijan,1959,2026,canon,admitted 3 January 1959
+kartli,prot_kartli,1898,1901,inferred,Gulf War with Jolof brings the Caucasus protectorates (canon)
+kartli,kartli_s,1902,2026,inferred,
+armenia,prot_caucasus,1898,1946,inferred,
+armenia,armenia_s,1947,2026,inferred,
+comoros,qumur_sultanates,-500,1897,canon,
+comoros,ter_qumur,1898,1958,canon,annexed 1898
+comoros,st_qumur,1959,2026,canon,admitted 21 August 1959
+# ===== Before the divergence (to 460 BCE) ============================================
+@levant @jazira @kurd @meso,achaemenid,-500,-461,canon,
+saada najran,main,-500,-120,canon,incense kingdom
+sanaa marib hudaydah taiz aden,saba,-500,274,canon,incense kingdom
+abyan,qataban,-500,-51,canon,incense kingdom
+shabwa seiyun mukalla mahra dhofar,hadhramawt_k,-500,299,canon,incense kingdom
+ula,lihyan,-500,-381,canon,Dedan
+tabuk,tayma,-500,-381,canon,Tayma
+jawf,duma,-500,-346,canon,Duma
+bahrain qatif,dilmun,-500,-189,canon,
+ahsa jubail,gerrha,-500,-189,canon,
+@oman,magan_k,-500,629,inferred,
+# ===== Antiquity and the Nabataean unification (c. 440 BCE - 610) ====================
+latakia tartus beirut bekaa galilee quds gaza,levant_cities,-460,635,inferred,
+aleppo idlib hama homs,aram,-460,635,inferred,
+damascus hawran,damascus_c,-460,-313,canon,
+@kurd,zagros_pr,-460,635,inferred,
+tikrit baghdad diyala karbala kut nasiriyah basra,babylon,-460,635,canon,Babylon becomes a temple-city
+karak,nabataea,-440,35,canon,Aretas I at Petra
+aqaba negev,nabataea,-420,35,inferred,
+amman azraq,nabataea,-400,35,inferred,
+ula tabuk,nabataea,-380,35,canon,Obodas I takes Hegra
+jawf madinah,nabataea,-345,35,inferred,after the Dedan settlement
+damascus hawran,nabataea,-312,35,canon,Damascus admits a Nabataean governor
+@najd hail nafud arar hafar jeddah makkah_taif yanbu bisha,nabataea,-262,35,canon,Covenant of the Wells
+ahsa jubail qatif bahrain qatar,nabataea,-188,35,canon,Aretas V annexes Gerrha
+karak aqaba negev amman azraq damascus hawran tabuk jawf,nab_petra,-141,-128,canon,War of the Two Capitals
+ula madinah jeddah makkah_taif yanbu @najd hail nafud arar hafar bisha ahsa jubail qatif bahrain qatar,nab_hegra,-141,-128,canon,War of the Two Capitals
+taiz aden,himyar,-110,629,canon,
+najran,himyar,-72,629,canon,Himyar takes Najran
+abyan,himyar,-50,629,inferred,
+sanaa marib hudaydah saada,himyar,275,629,inferred,
+shabwa seiyun mukalla mahra dhofar,himyar,300,629,inferred,
+karak aqaba negev amman azraq damascus hawran tabuk jawf,petra_league,36,249,canon,the kingdom dissolves into two leagues
+ula madinah jeddah makkah_taif yanbu hail nafud arar,hegra_league,36,621,canon,
+karak aqaba negev amman azraq damascus hawran palmyra,ghassan,250,635,canon,the Petra league ceases to be independent
+karbala najaf_desert anbar,lakhm,300,602,canon,
+# ===== The caliphal centuries (610 - 1258) ============================================
+madinah,islam,622,629,canon,Islam emerges in the Hejaz
+madinah jeddah makkah_taif ula yanbu,islam,630,631,canon,
+@hejaz @tihamah @asir @najd @east @north_arabia @lower_gulf @oman @hadhramawt @yemen_high @yemen_south kuwait,rashidun,632,660,canon,
+@levant @jazira @kurd @meso,rashidun,636,660,canon,
+@arabia,umayyad,661,749,canon,
+@arabia,abbasid,750,1257,canon,
+socotra,-,632,1257,inferred,outside the caliphate
+nizwa wusta sur,ibadi,751,1810,canon,Ibadi imamate of inner Oman
+saada sanaa,zaydi,897,1788,canon,Zaydi imamate of the highlands
+@najd @north_arabia hafar rub_e rub_s,-,1050,1257,canon,the settled interior contracts from the 11th century
+# ===== The Interregnum (1258 - 1497) ==================================================
+@levant,dam_sultanate,1258,1775,inferred,colonies take its lands region by region
+@meso @jazira kuwait,iraq_emirates,1258,1681,inferred,
+@kurd,zagros_pr,1258,1681,inferred,
+madinah ula jeddah makkah_taif yanbu,sharifate,1258,1775,canon,the Sharifate alone keeps a continuous government
+ahsa qatif jubail hafar bahrain qatar,banu_khalid,1258,1810,canon,
+tabuk jawf hail nafud arar,al_rashid,1258,1853,canon,Al Rashid in Jabal Shammar
+dubai musandam,qawasim,1258,1810,canon,
+muscat sohar,ibadi,1258,1810,inferred,
+hudaydah taiz aden abyan marib,yemen_sultanates,1258,1775,inferred,
+najran,zaydi,1258,1759,inferred,
+shabwa seiyun mukalla mahra dhofar rub_s,hadhrami,1258,1810,inferred,
+@najd abha bisha qunfudhah jizan,-,1258,1506,canon,hundreds of emirates and oasis leagues
+# ===== The age of the crowns (1497 - 1763) ============================================
+muscat socotra,kaabu,1507,1810,canon,Kaabu factories
+jizan qunfudhah,jolof,1507,1699,canon,Jolofian missions and garrison towns
+kuwait basra nasiriyah deir,kong,1570,1681,canon,Kong's Euphrates posts
+@meso @jazira @kurd kuwait,kong,1682,1762,canon,Kong-Mesopotamie
+dubai,duala,1626,1762,canon,Duala Company founds Magan Town
+yanbu,hassaniya,1638,1657,canon,Hassaniya colony on the Tihamah coast
+yanbu,duala,1658,1663,canon,absorbed by the Duala Company within twenty years
+jeddah,col_hejaz,1607,1775,canon,Red Sea Company settlement at Jeddah
+madinah,col_hejaz,1680,1775,inferred,
+ula,col_hejaz,1720,1775,inferred,
+damascus,col_damascus,1629,1775,inferred,
+hawran,col_damascus,1680,1775,inferred,
+homs,col_damascus,1700,1775,inferred,
+palmyra,col_damascus,1740,1775,inferred,
+latakia,col_phoenicia,1630,1775,inferred,
+tartus,col_phoenicia,1650,1775,inferred,
+aden,col_aden,1634,1775,inferred,
+taiz,col_aden,1660,1775,inferred,
+abyan,col_aden,1700,1775,inferred,
+marib,col_aden,1745,1775,inferred,
+najran,col_aden,1760,1775,inferred,
+beirut,col_lebanon,1636,1775,inferred,
+bekaa,col_lebanon,1680,1775,inferred,
+amman,col_jordan,1638,1775,inferred,
+karak,col_jordan,1680,1775,inferred,
+aqaba,col_jordan,1700,1775,inferred,
+azraq,col_jordan,1740,1775,inferred,
+aleppo,col_aleppo,1663,1775,inferred,
+idlib,col_aleppo,1680,1775,inferred,
+hama,col_aleppo,1700,1775,inferred,
+abha,col_asir,1664,1775,inferred,
+bisha,col_asir,1700,1775,inferred,
+yanbu,col_tihamah,1664,1775,inferred,
+qunfudhah,col_tihamah,1680,1775,inferred,
+jizan,col_tihamah,1700,1775,inferred,
+hudaydah,col_hodeidah,1670,1775,inferred,
+galilee,col_palestine,1681,1775,inferred,
+quds,col_palestine,1690,1775,inferred,
+gaza,col_palestine,1700,1775,inferred,
+negev,col_palestine,1720,1775,inferred,
+mukalla,col_hadhramout,1682,1775,inferred,
+seiyun,col_hadhramout,1720,1775,inferred,
+shabwa,col_hadhramout,1740,1775,inferred,
+riyadh,col_najd,1732,1775,canon,chartered around Diriyah and Riyadh
+kharj,col_najd,1750,1775,inferred,
+qassim,col_najd,1760,1775,inferred,
+dubai abudhabi liwa,jolof,1763,1820,canon,Jolof's claims on the lower Gulf (acquisition inferred)
+@meso @jazira @kurd kuwait,jolof,1763,1799,inferred,Spanish Louisiana analogue
+rutba anbar najaf_desert karbala,hind_reserve,1763,1782,inferred,the Seven Years' War expels Kong from the Euphrates
+# ===== Revolution and expansion (1763 - 1861) =========================================
+jeddah madinah ula makkah_taif,st_hejaz,1776,2026,canon,
+latakia tartus,st_phoenicia,1776,2026,canon,
+damascus hawran homs palmyra,st_damascus,1776,2026,canon,
+beirut bekaa,st_lebanon,1776,2026,canon,
+aden taiz abyan marib najran,st_aden,1776,2026,canon,
+amman karak aqaba azraq,st_jordan,1776,2026,canon,
+abha bisha,st_asir,1776,2026,canon,
+hudaydah,st_hodeidah,1776,2026,canon,
+aleppo idlib hama,st_aleppo,1776,2026,canon,
+yanbu qunfudhah jizan,st_tihamah,1776,2026,canon,
+galilee quds gaza negev,st_palestine,1776,2026,canon,
+mukalla seiyun shabwa,st_hadhramout,1776,2026,canon,
+riyadh kharj qassim,st_najd,1776,2026,canon,
+sanaa saada,st_hodeidah,1789,2026,inferred,
+@meso @jazira @kurd kuwait,kong,1800,1802,inferred,retrocession before the sale
+@meso @jazira @kurd kuwait,ter_mesopotamia,1803,1817,canon,the Kuwait Purchase
+rutba anbar najaf_desert karbala,ter_west,1783,1817,canon,Treaty of Zafar fixes the frontier at the Euphrates
+kuwait,st_kuwait,1812,2026,canon,admitted 30 April 1812
+@meso,st_mesopotamia,1818,2026,canon,admitted 3 December 1818
+@jazira,ter_euphrates,1818,1820,inferred,
+@jazira,st_euphrates,1821,2026,canon,admitted 10 August 1821 under the Euphrates Compromise
+@kurd,ter_kurdistan,1818,1888,inferred,
+@kurd,st_kurdistan,1889,2026,canon,admitted 11 November 1889
+dubai abudhabi liwa,ter_magan,1821,1844,canon,Treaty of Sohar
+dubai abudhabi liwa,st_magan,1845,2026,canon,admitted 3 March 1845
+dawadmi dawasir,st_najd,1830,2026,inferred,the Desert Removal Act
+ahsa qatif jubail hafar bahrain qatar muscat sohar nizwa sur wusta musandam socotra mahra dhofar,masr_vice,1811,1820,canon,the viceroyalty of Masr campaigns across eastern and southern Arabia
+ahsa qatif jubail hafar bahrain qatar muscat sohar nizwa sur wusta musandam socotra mahra dhofar,masr,1821,1835,canon,
+muscat sohar nizwa sur wusta musandam socotra mahra dhofar,masr,1836,1847,canon,
+ahsa qatif jubail hafar bahrain qatar rub_e,sharqiyah_rep,1836,1844,canon,the Republic of Sharqiyah
+ahsa qatif jubail hafar bahrain qatar rub_e,st_sharqiyah,1845,2026,canon,admitted 29 December 1845
+muscat sohar nizwa sur wusta musandam,ter_oman,1848,1849,canon,Treaty of Ras Musandam
+muscat sohar nizwa sur wusta musandam,st_oman,1850,2026,canon,admitted 9 September 1850
+socotra,ter_socotra,1848,1911,canon,
+socotra,st_socotra,1912,2026,canon,admitted 14 February 1912
+mahra dhofar rub_s,st_hadhramout,1848,2026,canon,absorbs the eastern Omani districts
+rub_w,st_najd,1850,2026,inferred,
+tabuk jawf hail nafud arar,ter_shammar,1854,1860,canon,the Shammar-Jawf Act
+tabuk jawf hail nafud arar,st_shammar,1861,2026,canon,admitted 29 January 1861
+# ===== Servitude, industry and the partition of Europe (1861 - 1914) ===================
+@tihamah @najd @asir hudaydah sanaa saada @yemen_south @hadhramawt @east @oman @lower_gulf kuwait @jazira,isa,1861,1864,canon,eleven states secede as the Islamic States of Arabia
+# 1865 onward: the rows above resume, because this override ends in 1864.

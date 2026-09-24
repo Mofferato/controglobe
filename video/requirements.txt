@@ -1,0 +1,14 @@
+# Core pipeline (all ship Windows, macOS and Linux wheels; no separate GDAL install needed)
+geopandas>=1.0
+shapely>=2.0
+pyproj>=3.6
+pyogrio>=0.9
+numpy>=1.26
+matplotlib>=3.8
+pillow>=10.0
+pyyaml>=6.0
+imageio-ffmpeg>=0.5      # a bundled ffmpeg for `build.py animatic` if ffmpeg is not on PATH
+
+# Optional
+# arabic-reshaper>=3.0   # with python-bidi: Arabic labels under the English ones (style.arabic_labels)
+# python-bidi>=0.4
