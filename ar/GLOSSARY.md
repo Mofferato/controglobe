@@ -39,7 +39,7 @@ throughout, and append it here in the same pass.
   "(بالإنجليزية)" after it, the way an interlanguage red link behaves. When the
   Arabic edition of that article lands, drop `../` and drop the class. Every
   article is translated as of now, so nothing carries the class; the rule stays in
-  each stylesheet for the next article written in English first.
+  the shared design system for the next article written in English first.
 - **Numeric ranges are isolated.** Between two numbers the en-dash is a neutral and
   resolves right-to-left, so `1789&ndash;1797` would lay out as 1797 then 1789. Wrap
   such a range in U+2066 (LRI) and U+2069 (PDI) — invisible characters, no markup —
@@ -53,10 +53,17 @@ throughout, and append it here in the same pass.
   English page prints the Arabic name and its romanisation beneath an English title,
   the Arabic page puts the Arabic name in the title and keeps only the romanisation
   below, so the name is not printed three times.
-- **The interlanguage link's margin is physical.** `.cg-nav a.lang` carries the other
-  language's `dir`, so `margin-inline-start` resolves against *its* direction and lands
-  on the wrong side. English pages use `margin-left:auto`, Arabic pages
-  `margin-right:auto`, so the link sits at the far end of the bar either way.
+- **The interlanguage link sits in `.cg-tools`.** The link carries the other language's
+  `dir`, so a logical margin on the link itself would resolve against *its* direction. The
+  masthead puts it inside `.cg-tools`, which has no `dir` of its own, and pushes that
+  container to the far end instead; nothing on the page needs a physical margin.
+- **Labels in generated maps.** The world and regional maps are drawn with `direction="ltr"`
+  on the root `<svg>`, so geometry never moves. Their Arabic labels then carry
+  `direction="rtl"` themselves, with the anchor flipped (`start` ↔ `end`) so that a label
+  still sits on the same side of its point; a centred label only needs the direction.
+- **Name Arabia by what is meant.** In running prose and on maps, the state is
+  «الولايات المتحدة» and the land before 1776 is «الجزيرة العربية»; «العربية» alone is kept
+  for headings inherited from the History article.
 
 ## Project and setting
 
@@ -71,6 +78,11 @@ throughout, and append it here in the same pass.
 | preview card | بطاقة المعاينة | |
 | custom entity / custom nation | كيان مبتكر / أمة مبتكرة | |
 | swap key | مفتاح التبادل | the section naming the outside-timeline counterpart |
+| The Global Swap encyclopedia | موسوعة التبادل الكبير | the masthead tagline |
+| Timeline (site link) | الخط الزمني | |
+| Colour theme: match the system / light / dark | سمة الألوان: حسب النظام / فاتحة / داكنة | the masthead switch |
+| Back to top / Skip to content | العودة إلى الأعلى / انتقل إلى المحتوى | |
+| unassigned (no counterpart yet) | لم يُسنَد إليه نظير بعد | East Asia, northern Asia, Australia |
 
 ## Nations and polities
 
@@ -228,6 +240,35 @@ throughout, and append it here in the same pass.
 | Humber secession | انفصال الهمبر |
 | presidio at Gibraltar | حامية جبل طارق |
 | recaptives | المحرَّرون المستردّون |
+
+## Timeline of the Global Swap
+
+| English | العربية |
+|---|---|
+| Timeline of the Global Swap | الخط الزمني للتبادل الكبير |
+| the divergence / the first departure | الافتراق / الافتراق الأول |
+| Before the divergence | ما قبل الافتراق |
+| Antiquity and the Nabataean unification | العصور القديمة والوحدة النبطية |
+| The caliphal centuries | قرون الخلافة |
+| The age of the crowns | عصر التيجان |
+| Revolution and expansion | الثورة والتوسع |
+| Servitude, industry and the partition of Europe | الاسترقاق والصناعة وتقسيم أوروبا |
+| The world wars | الحربان العالميتان |
+| Arabia and the Derg Union | الولايات المتحدة واتحاد الدِرغ |
+| After the Cold War | ما بعد الحرب الباردة |
+| Achaemenids / the Achaemenid withdrawal | الأخمينيون / الانسحاب الأخميني |
+| Gindibu / Qarqar / Nabonidus | جندب / قرقر / نبونيد |
+| Hajr (the wells of the Covenant) | هجر |
+| Sahib al-Saqaliba | صاحب الصقالبة |
+| Lakhnau (the imperial seat) | لكهنؤ |
+| Jizan / Massawa / Magan Town | جيزان / مصوّع / بلدة مجان |
+| Hassaniya crown | التاج الحساني |
+| Suez portage | مَحمل السويس |
+| Frankish, Rhenish, Anglian and Slavic lands | البلاد الفرنجية والراينية والأنغلية والسلافية |
+| the sea-raiders' coasts | سواحل غزاة البحر |
+| Kinshasa airlift / Harar Pact | جسر كينشاسا الجوي / حلف هرر |
+| Bornean War / Sulawesi War / Zanjibar | حرب بورنيو / حرب سولاويسي / زنجبار |
+| Federal Chronology Office | ديوان التسلسل الزمني الاتحادي |
 
 ## Places
 
