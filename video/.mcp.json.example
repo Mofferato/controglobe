@@ -2,7 +2,7 @@
   "mcpServers": {
     "qgis": {
       "command": "uvx",
-      "args": ["--python", "3.12", "--from", "https://github.com/nkarasiak/qgis-mcp/archive/refs/heads/main.zip", "qgis-mcp-server"]
+      "args": ["--python", "3.12", "--from", "https://github.com/nkarasiak/qgis-mcp/archive/refs/tags/v0.14.1.zip", "qgis-mcp-server"]
     },
     "gimp": {
       "command": "uv",
