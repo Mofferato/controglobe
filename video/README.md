@@ -39,7 +39,7 @@ What the viewer should feel is the rhyme:
 
 | Cut | Command | What it is |
 |---|---|---|
-| **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | Premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, a 3D tilt and a sliding title card for each era, animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), the Qumur inset, and an infobox: year, flag and Great Seal, head of state with portrait, term and party, election results, events, population and the largest cities. It closes on demographics (population by state, religion and ancestry by county, the largest cities) and an end card. |
+| **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | A Controglobe logo sting, the premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, and at each era a push-in that settles, a focus pull and a sweep of the era's colour under a frosted-glass title card; animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), the Qumur inset, and an infobox: year, flag and Great Seal, head of state with portrait, term and party, events, population and the largest cities. Every election year holds (`pacing.election_seconds`) while its result counts up and the winner is named. It closes on demographics (population by state, religion and ancestry by county, the largest cities) and an end card with the logo. |
 | **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
 
 Into Resolve: a whole `build.py motion` render ends by writing the Resolve build script for
@@ -169,7 +169,7 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 
 | Command | What it does |
 |---|---|
-| `python build.py fetch` | Downloads Natural Earth land, islands, rivers, lakes into `cache/` |
+| `python build.py fetch` | Downloads Natural Earth land, islands, rivers, lakes, bathymetry and shaded relief (about 90 MB) into `cache/` |
 | `python build.py mesh` | Builds `build/mesh.gpkg`: cells, regions, seeds, frame layers |
 | `python build.py check` | Data integrity and canon tests; writes `output/qa/report.md` |
 | `python build.py timeline` | `output/timeline.json`, `captions.srt`, `markers.csv`, `youtube_chapters.txt`, `narration_budget.csv` |
@@ -180,7 +180,7 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py animatic [--audio music.mp3]` | `output/animatic.mp4` |
 | `python build.py export-gis` | `build/history.gpkg`: every polity for every span of unchanged borders |
 | `python build.py motion [--scale 1] [--prores] [--from Y --to Y] [--frame N ...]` | The finished motion cut to `output/motion/`; a slice of years; or single PNG frames for review |
-| `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` and `_1920x1080.png` |
+| `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` (upload this one: YouTube's size, under its 2 MB limit) and `_1920x1080.png` |
 | `python build.py resolve [--media auto\|motion\|sequence]` | `output/resolve_build.lua`, installed as Workspace > Scripts > cg_resolve_build; `auto` takes the motion cut once rendered |
 | `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
 | `python build.py all` | fetch, mesh, check, timeline, render, sequence, animatic |
@@ -234,10 +234,26 @@ written (phase 3), and nothing inferred should be read as canon.
 
 `config/project.yaml` holds the frame, the projection (the encyclopedia's own: azimuthal
 equal-area on 46.5E 25N), pacing, colours, label thresholds, the Qumur inset, and a light
-vignette and grain. Colours follow the encyclopedia's maps where they set one. For the
-channel's finish in Resolve: slow push-ins on each era card, a zoom to the Levant for the
-colonial decades, a crossfade at each border change, one music cue per era, and the captions
-from `captions.srt` as subtitles.
+vignette. Colours follow the encyclopedia's maps where they set one. On top of the flat
+colours the maps carry a cartographic finish, each part switchable under `style:`:
+
+- **Terrain**: Natural Earth's 1/60-degree shaded relief (`SR_HR`), projected onto exactly
+  the frame or plate being drawn by **QGIS** (its headless processing tool runs GDAL's warper,
+  `qgis_process run gdal:warpreproject`, cubic), with a numpy resampler when QGIS is not
+  installed; cached in `build/relief/`. It darkens shaded slopes and lightens lit ones under
+  the borders and labels (`relief:`).
+- **Sea depth**: Natural Earth's bathymetry zones (0, 200, 1000 ... 6000 m) as stepped tints,
+  a lighter shelf down to a darker abyss (`bathymetry:`); lakes take the shelf colour.
+- **Coasts and borders**: a soft glow on the sea side of every coast (`coast_glow:`) and a
+  soft shadow under national frontiers (`border_shadow:`).
+- **Labels**: letter-spaced capitals for countries (`label_tracking:`).
+
+The logo in the opening sting, on the end card and on the thumbnail is `assets/logo.png` if
+you supply one (any size, square, transparent background: it is never committed); otherwise
+an emblem in the style of the site's favicon, ray-cast so it stays sharp at 4K and can turn.
+
+For the finish in Resolve: one music cue per era, a sound cue on each era card and election,
+and the captions from `captions.srt` as subtitles.
 
 ## Python libraries
 

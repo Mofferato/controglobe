@@ -51,6 +51,9 @@ def build(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
     pace = cfg["pacing"]
     dwell_table = {int(k): float(v) for k, v in pace["dwell_by_importance"].items()}
     by_year = _events_by_year(data)
+    # election years hold long enough to read the result in the infobox
+    elections = {int(e["year"]) for e in (getattr(data, "elections", None) or [])}
+    election_hold = float(pace.get("election_seconds", 0))
 
     base, dwell, eras = [], [], []
     prev_era = None
@@ -67,6 +70,8 @@ def build(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
             d = weights[0] + 0.5 * sum(weights[1:])
         if era["era_id"] != prev_era:
             d += float(pace.get("era_title_seconds", 0))
+        if y in elections:
+            d = max(d, 0.0) + election_hold
         dwell.append(d)
         prev_era = era["era_id"]
 
@@ -253,9 +258,9 @@ def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict, media: str = "au
     marks = _markers(slots)
     if movie is not None:
         from .finale import Finale
-        from .motion import mcfg
+        from .motion import intro_seconds, mcfg
         m = mcfg(cfg)
-        intro = int(round((m["intro_text_seconds"] + m["globe_seconds"]) * fps))
+        intro = int(round(intro_seconds(m) * fps))
         main = slots[-1].start_frame + slots[-1].frames
         finale = Finale.length(cfg, fps)
         total = intro + main + finale

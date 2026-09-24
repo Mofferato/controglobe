@@ -89,6 +89,8 @@ A task is not done until `check` passes and you have looked at a preview of it.
 
 ## Tools beyond the shell (MCP servers, when connected)
 
+- **QGIS**, headless: `cgvideo/relief.py` projects the shaded relief with `qgis_process run
+  gdal:warpreproject` whenever QGIS is installed (numpy otherwise). Nothing to do by hand.
 - **QGIS** (`qgis_mcp`): inspect `build/mesh.gpkg` and `build/history.gpkg`, measure, and edit
   `data/custom_lines.geojson` / `data/overrides.geojson` for precise frontiers. Load the
   project with `exec(open(r"<abs path>/integrations/qgis/cg_qgis.py").read())` then `cg_load()`.

@@ -402,3 +402,31 @@ def write_view_layers(cfg: dict, out, data: Data | None = None) -> None:
     layers["view_rivers"] = shapely.union_all(list(rv.geometry)).intersection(frame)
     for name, geom in layers.items():
         gpd.GeoDataFrame(geometry=[geom], crs=geo.crs(cfg)).to_file(out, layer=name, driver="GPKG")
+    write_bathymetry(cfg, out, bb, frame)
+
+
+BATHY = [(0, "L"), (200, "K"), (1000, "J"), (2000, "I"), (3000, "H"), (4000, "G"), (5000, "F"), (6000, "E")]
+
+
+def write_bathymetry(cfg: dict, out, bb, frame) -> None:
+    """Natural Earth's depth zones (sea deeper than 0, 200, 1000 ... 6000 m), for stepped ocean
+    tints. Optional: without ne_10m_bathymetry_all the ocean stays one colour."""
+    from .fetch import layer_path
+    src = layer_path(cfg, "ne_10m_bathymetry_all")
+    if not src.exists():
+        return
+    rows = []
+    for depth, code in BATHY:
+        try:
+            g = gpd.read_file(f"zip://{src.resolve().as_posix()}", layer=f"ne_10m_bathymetry_{code}_{depth}", bbox=bb)
+        except Exception as exc:  # a layer missing from the archive is not worth failing over
+            print(f"  bathymetry {depth} m skipped ({exc})")
+            continue
+        if g.crs is None:
+            g = g.set_crs(geo.WGS84)
+        parts = [shapely.make_valid(p) for p in geo.clip_project(cfg, g, bb).geometry]
+        parts = [p for p in parts if not p.is_empty]
+        if parts:
+            rows.append({"depth": depth, "geometry": shapely.union_all(parts).intersection(frame)})
+    if rows:
+        gpd.GeoDataFrame(rows, geometry="geometry", crs=geo.crs(cfg)).to_file(out, layer="view_bathy", driver="GPKG")

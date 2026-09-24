@@ -29,7 +29,7 @@ import subprocess
 from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 from . import data as D
 from . import geo
@@ -41,8 +41,10 @@ DEFAULTS = {
     "panel_x": 0.655,          # where the infobox starts, as a fraction of the width
     "anchor": [0.33, 0.5],     # where the camera's centre sits on screen
     "crossfade_seconds": 0.35,
-    "tilt_seconds": 1.6,
-    "tilt_degrees": 32,
+    "era_fx_seconds": 1.8,     # the start of an era: push-in settle, focus pull, colour sweep
+    "era_push": 0.10,          # how far in the camera starts (only ever in: no edge can show)
+    "era_blur_px": 9,          # focus pull, at 1080p
+    "logo_seconds": 4.0,       # the logo sting before the premise card
     "intro_text_seconds": 9.0,
     "globe_seconds": 7.5,
     "finale_seconds": 9.0,
@@ -59,6 +61,17 @@ def mcfg(cfg) -> dict:
     out = dict(DEFAULTS)
     out.update(cfg.get("motion") or {})
     return out
+
+
+def intro_seconds(m: dict) -> float:
+    """The opening before the first map: logo sting, premise card, globe."""
+    return float(m["logo_seconds"]) + float(m["intro_text_seconds"]) + float(m["globe_seconds"])
+
+
+def back_ease(t: float, over: float = 1.5) -> float:
+    """Ease out with a small overshoot, for things that slide into place."""
+    t = max(0.0, min(1.0, t)) - 1
+    return t * t * ((over + 1) * t + over) + 1
 
 
 # -- camera ------------------------------------------------------------------------------
@@ -230,29 +243,6 @@ def world_to_screen(X, Y, cam_state, W, H, anchor, shake=(0.0, 0.0)):
     return u, v
 
 
-def perspective_coeffs(src_quad, dst_quad):
-    """Coefficients for Image.transform(PERSPECTIVE): maps output (dst) points to input (src)."""
-    A, B = [], []
-    for (x, y), (u, v) in zip(dst_quad, src_quad):
-        A.append([x, y, 1, 0, 0, 0, -u * x, -u * y])
-        A.append([0, 0, 0, x, y, 1, -v * x, -v * y])
-        B += [u, v]
-    return np.linalg.solve(np.array(A, float), np.array(B, float)).tolist()
-
-
-def tilt(img: Image.Image, degrees: float, fill) -> Image.Image:
-    """Lean the map back, as if the camera were pitched: a cheap, convincing 3D move."""
-    if degrees <= 0.05:
-        return img
-    W, H = img.size
-    k = math.sin(math.radians(degrees))
-    inset = W * 0.22 * k
-    drop = H * 0.10 * k
-    dst = [(inset, drop), (W - inset, drop), (W, H), (0, H)]
-    src = [(0, 0), (W, 0), (W, H), (0, H)]
-    return img.transform(img.size, Image.PERSPECTIVE, perspective_coeffs(src, dst), Image.BICUBIC, fillcolor=fill)
-
-
 # -- frame rendering -----------------------------------------------------------------------
 
 class Renderer:
@@ -261,7 +251,7 @@ class Renderer:
         self.cfg, self.data, self.scene, self.W, self.H = g["cfg"], g["data"], g["scene"], g["W"], g["H"]
         self.slots, self.cam, self.spec, self.fps = g["slots"], g["cam"], g["spec"], g["fps"]
         self.m = mcfg(self.cfg)
-        self.intro = int(round((self.m["intro_text_seconds"] + self.m["globe_seconds"]) * self.fps))
+        self.intro = int(round(intro_seconds(self.m) * self.fps))
         self.main = self.slots[-1]["start_frame"] + self.slots[-1]["frames"]
         self.starts = [s["start_frame"] for s in self.slots]
         self.panel = Panel(self.cfg, self.data, self.scene, self.W, self.H)
@@ -277,6 +267,7 @@ class Renderer:
         r = np.hypot((xx - self.W / 2) / (self.W / 2), (yy - self.H / 2) / (self.H / 2))
         vig = float(self.cfg["style"].get("postfx", {}).get("vignette", 0.3))
         self.vignette = (1 - vig * np.clip(r - 0.6, 0, None) ** 1.7)[..., None].astype(np.float32)
+        self.diag = ((xx / self.W + 0.35 * yy / self.H) / 1.35).astype(np.float32)  # for light sweeps
         self.finale = None
         self.globe = None
 
@@ -399,37 +390,75 @@ class Renderer:
             img = Image.blend(img, Image.new("RGBA", img.size, (255, 244, 220, 255)), flash)
         return img
 
+    def era_fx(self, img, slot, t):
+        """The start of an era, without bending the map: the camera settles out of a push-in,
+        the focus pulls from soft to sharp, and a band of the era's colour sweeps across. It
+        only ever zooms in (a crop of the frame), so no edge of the map can show."""
+        T = float(self.m["era_fx_seconds"])
+        W, H = self.W, self.H
+        k = ease(t / T)
+        z = 1 + float(self.m["era_push"]) * (1 - k)
+        if z > 1.0005:
+            ax, ay = self.m["anchor"][0] * W, self.m["anchor"][1] * H
+            x0, y0 = ax - ax / z, ay - ay / z  # the anchor stays put as the frame grows
+            img = img.transform((W, H), Image.EXTENT, (x0, y0, x0 + W / z, y0 + H / z), Image.BICUBIC)
+        blur = float(self.m["era_blur_px"]) * (H / 1080) * (1 - ease(t / (T * 0.55)))
+        if blur > 0.3:
+            img = img.filter(ImageFilter.GaussianBlur(blur))
+        pos = -0.3 + 1.6 * ease(t / (T * 0.85))
+        fade = 1 - ease((t - T * 0.55) / (T * 0.45))
+        band = np.exp(-((self.diag - pos) / 0.085) ** 2) * (0.42 * fade)
+        tint = np.array(hexrgb(self._era_color(slot))[:3], np.float32) * 0.5 + 255 * 0.5
+        a = np.asarray(img).astype(np.float32)
+        a += band[..., None] * (tint - a)
+        return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+
     def era_card(self, img, slot, t):
+        """The era's title on frosted glass: it slides in with a small overshoot while an
+        accent rule draws itself, holds, and slides back out."""
         dur = float(self.cfg["pacing"].get("era_title_seconds", 2.5))
-        if not slot["era_start"] or t > dur + 0.2:
+        if not slot["era_start"] or t > dur + 0.6:
             return img
         from .panel import _fontfile
         from PIL import ImageFont
+        from . import years as Y
         s = self.H / 1080
-        W = self.panel.x0
-        slide = ease(t / 0.45)
-        out_a = 1 - ease((t - dur + 0.35) / 0.4) if t > dur - 0.35 else 1.0
+        color = hexrgb(self._era_color(slot))
+        card_w = int(self.panel.x0 * 0.80)
+        bh = int(168 * s)
+        y0 = int(self.H * 0.13)
+        enter = back_ease(t / 0.75)
+        leave = ease((t - dur) / 0.55) if t > dur else 0.0
+        x1 = int(card_w * enter - (card_w + 40 * s) * leave)
+        if x1 <= 2:
+            return img
+        img = img.convert("RGBA")
+        # frosted glass: the map behind the card, blurred and dimmed
+        box = (0, y0, min(x1, self.W), y0 + bh)
+        glass = img.crop(box).filter(ImageFilter.GaussianBlur(16 * s))
+        glass = Image.blend(glass, Image.new("RGBA", glass.size, (10, 13, 18, 255)), 0.55)
+        img.paste(glass, box[:2])
         over = Image.new("RGBA", img.size, (0, 0, 0, 0))
         d = ImageDraw.Draw(over)
-        bh = int(150 * s)
-        y0 = int(self.H * 0.14)
-        x_end = int(W * slide)
-        d.rectangle([0, y0, x_end, y0 + bh], fill=(12, 15, 20, int(215 * out_a)))
-        d.rectangle([0, y0 + bh, x_end, y0 + bh + int(5 * s)], fill=hexrgb(self._era_color(slot))[:3] + (int(255 * out_a),))
+        d.rectangle([0, y0, x1, y0 + bh], outline=(255, 255, 255, 34), width=max(1, int(1.5 * s)))
+        d.rectangle([0, y0, int(6 * s), y0 + bh], fill=color[:3] + (255,))   # the era's colour, left edge
+        rule = int((card_w - 60 * s) * ease((t - 0.35) / 0.9))                # the accent rule draws itself
+        d.rectangle([int(36 * s), y0 + bh - int(22 * s), int(36 * s) + max(0, min(rule, x1 - int(50 * s))),
+                     y0 + bh - int(19 * s)], fill=color[:3] + (230,))
+        tx = x1 - card_w + int(40 * s)
         n = [e["era_id"] for e in self.data.eras].index(slot["era_id"]) + 1
         roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"][n - 1]
-        tx = int(-W * (1 - slide)) + int(60 * s)
-        d.text((tx, y0 + int(16 * s)), f"ERA {roman}", font=ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), int(22 * s)),
-               fill=hexrgb(self._era_color(slot))[:3] + (int(255 * out_a),))
+        a = int(255 * max(0.0, min(1.0, t / 0.35)))
+        d.text((tx, y0 + int(20 * s)), " ".join(f"ERA {roman}"),
+               font=ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), int(21 * s)), fill=color[:3] + (a,))
         name = slot["era_name"]
         size = 50 if len(name) < 30 else 36
-        d.text((tx, y0 + int(48 * s)), name, font=ImageFont.truetype(_fontfile("DejaVuSerif-Bold.ttf"), int(size * s)),
-               fill=(245, 240, 230, int(255 * out_a)))
+        d.text((tx, y0 + int(50 * s)), name, font=ImageFont.truetype(_fontfile("DejaVuSerif-Bold.ttf"), int(size * s)),
+               fill=(247, 243, 234, a))
         era = next(e for e in self.data.eras if e["era_id"] == slot["era_id"])
-        from . import years as Y
-        d.text((tx, y0 + int(112 * s)), f"{Y.label(int(era['start']))} - {Y.label(int(era['end']))}",
-               font=ImageFont.truetype(_fontfile("DejaVuSans.ttf"), int(20 * s)), fill=(200, 205, 212, int(255 * out_a)))
-        return Image.alpha_composite(img.convert("RGBA"), over)
+        d.text((tx, y0 + int(112 * s)), f"{Y.label(int(era['start']))} – {Y.label(int(era['end']))}",
+               font=ImageFont.truetype(_fontfile("DejaVuSans.ttf"), int(20 * s)), fill=(205, 210, 216, a))
+        return Image.alpha_composite(img, over)
 
     def _era_color(self, slot):
         return next(e["color"] for e in self.data.eras if e["era_id"] == slot["era_id"])
@@ -451,9 +480,8 @@ class Renderer:
                 prev = self.plate(self.sigs[i - 1]).transform((self.W, self.H), Image.AFFINE, A, Image.BICUBIC, fillcolor=self.ocean)
                 img = Image.blend(prev, img, ease(k))
         img = self.draw_wars(img, f, cam_state, shake)
-        if slot["era_start"] and t < self.m["tilt_seconds"]:
-            deg = self.m["tilt_degrees"] * (1 - ease(t / self.m["tilt_seconds"]))
-            img = tilt(img.convert("RGB"), deg, self.ocean)
+        if slot["era_start"] and t < self.m["era_fx_seconds"]:
+            img = self.era_fx(img.convert("RGB"), slot, t)
         img = img.convert("RGBA")
         for ins in self.cfg.get("insets", []):
             small = self.inset(sig, ins["name"])
@@ -586,6 +614,9 @@ def run(cfg, cfg_path, scale=1.0, workers=None, first_year=None, last_year=None,
     if not workers:
         workers, why = auto_workers(W, H, _G["spec"].size)
         print(f"  {workers} workers ({why})")
+    # project the terrain once, here (QGIS), before the workers each want it
+    _G["scene"].relief_overlay(_G["spec"].extent, *_G["spec"].size)
+    _G["scene"]._relief.clear()
     firsts = {}
     for s in slots:
         firsts.setdefault(_sig(_G["data"], _G["scene"], s), s)
@@ -617,7 +648,16 @@ def run(cfg, cfg_path, scale=1.0, workers=None, first_year=None, last_year=None,
     n = max(1, math.ceil((hi - lo) / chunk))
     edges = np.linspace(lo, hi, n + 1).astype(int)
     ext = "mov" if codec == "prores" else "mp4"
-    tag = f"{W}x{H}_{codec}"
+    # A chunk is only reused by a render of the very same thing: the key covers the plates, the
+    # config, every data table and the drawing code, so a change anywhere re-renders it.
+    h = hashlib.sha1(f"{_G['pkey']}|{mcfg(cfg)}|{meta}".encode())
+    for p in sorted(paths(cfg).data.glob("*.*")) + sorted(pathlib.Path(__file__).parent.glob("*.py")):
+        h.update(p.name.encode())
+        h.update(p.read_bytes())
+    tag = f"{W}x{H}_{codec}_{h.hexdigest()[:8]}"
+    for old in out.glob("part_*"):  # chunks of any other render are stale
+        if tag not in old.name:
+            old.unlink(missing_ok=True)
     jobs = [(int(edges[k]), int(edges[k + 1]), str(out / f"part_{tag}_{edges[k]:06d}_{edges[k + 1]:06d}.{ext}"), codec)
             for k in range(n)]
     parts = [j[2] for j in jobs]

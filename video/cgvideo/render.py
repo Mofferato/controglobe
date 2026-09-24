@@ -114,6 +114,13 @@ class Scene:
         self.lakes = gpd.read_file(mesh, layer="view_lakes").geometry.iloc[0]
         self.rivers = gpd.read_file(mesh, layer="view_rivers").geometry.iloc[0]
         self._coast_buf = None  # built on first use: only map drawing needs it, and it is heavy
+        self.bathy = []         # (depth in metres, sea deeper than that), shallow first
+        try:
+            b = gpd.read_file(mesh, layer="view_bathy")
+            self.bathy = sorted(zip((int(v) for v in b["depth"]), b.geometry), key=lambda t: t[0])
+        except Exception:
+            pass
+        self._relief = {}
         self.places = []
         for p in data.places:
             x, y = geo.project_points(cfg, [float(p["lon"])], [float(p["lat"])])
@@ -133,6 +140,24 @@ class Scene:
             if p.get("kind") in LIGHT_KINDS:
                 rgb = mix(rgb, "#ffffff", float(st.get("territory_lighten", 0.45)))
             self.fill[pid] = rgb
+
+    def relief_overlay(self, extent, W: int, H: int):
+        """The shaded relief for this exact frame as an RGBA overlay (see cgvideo/relief.py),
+        or None when style.relief is off or its source is missing."""
+        rs = self.cfg["style"].get("relief") or {}
+        if not float(rs.get("strength", 0)):
+            return None
+        key = (tuple(round(v) for v in extent), W, H)
+        if key not in self._relief:
+            from . import relief
+            try:
+                shade = relief.relief(self.cfg, extent, W, H)
+            except SystemExit as exc:
+                print(f"    no relief: {exc}")
+                self._relief[key] = None
+                return None
+            self._relief = {key: relief.overlay(shade, float(rs.get("strength", 0.5)), float(rs.get("highlight", 0.2)))}
+        return self._relief[key]
 
     @property
     def coast_buf(self):
@@ -163,9 +188,25 @@ class Scene:
 
 # -- map layer ---------------------------------------------------------------------
 
-def _draw_layers(ax, scene: Scene, polities: dict, tops: dict, s: float, clip=None):
+def _draw_layers(ax, scene: Scene, polities: dict, tops: dict, s: float, clip=None, relief=None, extent=None):
     st = scene.cfg["style"]
     land = scene.land if clip is None else scene.land.intersection(clip)
+    # the sea: a lighter shelf stepping down to a darker abyss
+    tints = {int(k): v for k, v in (st.get("bathymetry") or {}).items()}
+    for n, (depth, geom) in enumerate(scene.bathy):
+        if depth in tints:
+            bp = geom_path(geom if clip is None else geom.intersection(clip))
+            if bp is not None:
+                ax.add_patch(PathPatch(bp, facecolor=tints[depth], edgecolor="none", zorder=0.5 + n * 0.01))
+    # a soft glow on the sea side of every coast (the land drawn next covers the inland half)
+    glow = st.get("coast_glow") or {}
+    if float(glow.get("alpha", 0)):
+        coast = line_arrays(land.boundary)
+        for wmul, amul in ((1.0, 1.0), (0.45, 1.4)):
+            ax.add_collection(LineCollection(coast, colors=glow.get("color", "#7fc4e6"),
+                                             linewidths=float(glow.get("width", 10)) * wmul * s,
+                                             alpha=min(1.0, float(glow["alpha"]) * amul), zorder=0.9,
+                                             joinstyle="round", capstyle="round"))
     p = geom_path(land)
     if p is not None:
         ax.add_patch(PathPatch(p, facecolor=st["land"], edgecolor="none", zorder=1))
@@ -186,10 +227,17 @@ def _draw_layers(ax, scene: Scene, polities: dict, tops: dict, s: float, clip=No
     for path, rgb in hatched:
         ax.add_patch(PathPatch(path, facecolor=rgb, edgecolor=mix(rgb, "#000000", 0.3),
                                hatch="///", linewidth=0, zorder=2))
+    if relief is not None and extent is not None:
+        # terrain over the colours: shaded slopes darken, lit ones brighten, the flat stays clear
+        ax.imshow(relief, extent=(extent[0], extent[1], extent[2], extent[3]), origin="upper",
+                  interpolation="nearest", zorder=2.5)
+        ax.set_xlim(extent[0], extent[1])
+        ax.set_ylim(extent[2], extent[3])
     lakes = scene.lakes if clip is None else scene.lakes.intersection(clip)
     lp = geom_path(lakes)
     if lp is not None:
-        ax.add_patch(PathPatch(lp, facecolor=st["ocean"], edgecolor=st["coast"], linewidth=0.6 * s, zorder=3))
+        lake = tints.get(0, st["ocean"])
+        ax.add_patch(PathPatch(lp, facecolor=lake, edgecolor=st["coast"], linewidth=0.6 * s, zorder=3))
     rivers = scene.rivers if clip is None else scene.rivers.intersection(clip)
     ax.add_collection(LineCollection(line_arrays(rivers), colors=st["river"],
                                      linewidths=st["river_width"] * s, zorder=3, capstyle="round"))
@@ -203,6 +251,13 @@ def _draw_layers(ax, scene: Scene, polities: dict, tops: dict, s: float, clip=No
         outer = line_arrays(shapely.intersection(shapely.MultiLineString(outer), clip)) if outer else []
     ax.add_collection(LineCollection(inner, colors=st["border"], linewidths=st["inner_border_width"] * s,
                                      alpha=0.55, zorder=4, joinstyle="round"))
+    shadow = st.get("border_shadow") or {}
+    if float(shadow.get("alpha", 0)):
+        # a soft dark bed under each national frontier, so borders read as raised edges
+        ax.add_collection(LineCollection(outer, colors="#000000",
+                                         linewidths=st["border_width"] * float(shadow.get("width", 3)) * s,
+                                         alpha=float(shadow["alpha"]), zorder=4.8, joinstyle="round",
+                                         capstyle="round"))
     ax.add_collection(LineCollection(outer, colors=st["border"], linewidths=st["border_width"] * s,
                                      zorder=5, joinstyle="round", capstyle="round"))
     ax.add_collection(LineCollection(line_arrays(land.boundary), colors=st["coast"],
@@ -237,7 +292,10 @@ def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: 
     s = scale or H / 2160
     renderer = fig.canvas.get_renderer()
 
-    def try_label(geom, text, px, weight, style, alpha):
+    def try_label(geom, text, px, weight, style, alpha, track=False):
+        # tracked (letter-spaced) capitals for countries, the cartographer's convention for
+        # large areas: hair spaces between the letters, about a quarter wider in all
+        widen = 1.25 if track else 1.0
         parts = sorted(shapely.get_parts(geom), key=lambda g: -g.area)[:3]
         for n, part in enumerate(parts):
             if n and part.area < 0.15 * parts[0].area:
@@ -246,14 +304,16 @@ def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: 
             width_px = (bx1 - bx0) * px_per_m
             lines = text.split("\n")
             size = px
-            longest = max(len(line) for line in lines)
+            longest = max(len(line) for line in lines) * widen
             if 0.62 * size * longest > 0.9 * width_px and " " in lines[0] and len(lines) == 1:
                 words = lines[0].split(" ")
                 cut = min(range(1, len(words)), key=lambda i: abs(len(" ".join(words[:i])) - len(" ".join(words[i:]))))
                 lines = [" ".join(words[:cut]), " ".join(words[cut:])]
-                longest = max(len(line) for line in lines)
+                longest = max(len(line) for line in lines) * widen
             if 0.62 * size * longest > 0.9 * width_px:
                 size = 0.9 * width_px / (0.62 * longest)
+            if track:
+                lines = [" ".join(line) for line in lines]
             if size < 14 * s:
                 continue
             try:
@@ -279,7 +339,8 @@ def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: 
             if area < float(st["label_min_area_km2"]):
                 continue
             px = min(92 * s, max(24 * s, 0.045 * math.sqrt(area) * s))
-            try_label(g, _label_text(scene, t, True), px, "bold", "normal", 0.92)
+            try_label(g, _label_text(scene, t, True), px, "bold", "normal", 0.92,
+                      track=bool(st.get("label_tracking", True)))
     elif st.get("show_sub_labels", True):
         subs = [(pid, g) for pid, g in polities.items() if scene.data.top(pid) != pid]
         for pid, g in sorted(subs, key=lambda kv: -kv[1].area):
@@ -367,7 +428,7 @@ def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict]
     def in_box(p, bb):
         return bb[0] <= p["lon"] <= bb[2] and bb[1] <= p["lat"] <= bb[3]
 
-    _draw_layers(ax, scene, polities, tops, s)
+    _draw_layers(ax, scene, polities, tops, s, relief=scene.relief_overlay(extent, W, H), extent=extent)
     placed = _place_labels(fig, ax, scene, polities, tops, W, H, extent, [], "top", s)
     if show_places:
         main = [p for p in places if not any(in_box(p, i["bbox"]) for i in cfg.get("insets", []))]
@@ -558,7 +619,10 @@ def render(cfg: dict, cfg_path, slots: list[dict], out_dir: pathlib.Path, scale:
     H = int(round(cfg["frame"]["height"] * scale / 2) * 2)
     out_dir.mkdir(parents=True, exist_ok=True)
     data = D.load(cfg)
-    scene_places = Scene(cfg, data).places if slots else []
+    scene = Scene(cfg, data) if slots else None
+    scene_places = scene.places if scene else []
+    if scene:  # project the terrain once, here, before the workers each want it
+        scene.relief_overlay(geo.view_extent(cfg, W, H), W, H)
     firsts = {}
     for s in slots:
         active = [p for p in scene_places if p["start"] <= s["year"] <= p["end"]]

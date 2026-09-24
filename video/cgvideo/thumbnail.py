@@ -109,6 +109,17 @@ def make(cfg, data, text: str = "SINCE WHEN?", sizes=((1280, 720), (1920, 1080))
             layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             layer.paste(f, (cb[0], cb[1]))
             img.paste(layer.convert("RGB"), (0, 0), ImageChops.multiply(country, layer.getchannel("A")))
+        # terrain over the land and the flag alike, so the flag lies draped over the peninsula
+        from . import relief as R
+        try:
+            shade = R.relief(cfg, extent, W, H).astype(np.float32)
+            flat = float(np.argmax(np.bincount(shade.astype(np.uint8).ravel(), minlength=256)))
+            k = np.clip(shade / max(flat, 1.0), 0.45, 1.3)[..., None]
+            on = (np.asarray(land, np.float32) / 255.0)[..., None]
+            a = np.asarray(img.convert("RGB")).astype(np.float32)
+            img = Image.fromarray(np.clip(a * (1 - on) + a * k * on, 0, 255).astype(np.uint8))
+        except SystemExit:
+            pass
         edge = country.filter(ImageFilter.FIND_EDGES).point(lambda v: 255 if v > 40 else 0).filter(ImageFilter.MaxFilter(3))
         img.paste(Image.new("RGB", (W, H), (255, 255, 255)), (0, 0), edge)
         # the ball, bottom left, and the hook above it
@@ -128,6 +139,18 @@ def make(cfg, data, text: str = "SINCE WHEN?", sizes=((1280, 720), (1920, 1080))
             font = ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), size)
         d.text((int(W * 0.035), int(H * 0.06)), text, font=font, fill=(255, 255, 255, 255),
                stroke_width=int(9 * s), stroke_fill=(0, 0, 0, 255))
+        tagline = " ".join("ALTERNATE HISTORY OF ARABIA")
+        tsize = int(29 * s)
+        tag = ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), tsize)
+        while d.textlength(tagline, font=tag) > W * 0.45 and tsize > 12:  # clear of the map
+            tsize -= 1
+            tag = ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), tsize)
+        d.text((int(W * 0.038), int(H * 0.06 + size * 1.18)), tagline, font=tag,
+               fill=(236, 190, 92, 255), stroke_width=int(5 * s), stroke_fill=(0, 0, 0, 255))
+        # the channel's emblem in the empty sea, bottom right
+        from .logo import emblem
+        em = emblem(cfg, int(H * 0.24))
+        img.alpha_composite(em, (int(W - em.width - W * 0.02), int(H - em.height - H * 0.02)))
         dest = paths(cfg).output / f"thumbnail_{W}x{H}.png"
         dest.parent.mkdir(parents=True, exist_ok=True)
         img.convert("RGB").save(dest)

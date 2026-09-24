@@ -200,7 +200,7 @@ class Finale:
             k = ease((t - 0.4 - n * 0.12) / 0.8)
             d.text((pad, y), label, font=_font(17 * s), fill=(235, 232, 225, int(255 * max(0.2, k))))
             by = y + int(24 * s)
-            d.rectangle([pad, by, pad + bw, by + int(9 * s)], fill=(255, 255, 255, 28))
+            d.rectangle([pad, by, pad + bw, by + int(9 * s)], fill=(46, 50, 54, 240))  # opaque: see panel.py
             d.rectangle([pad, by, pad + int(bw * v / top * k), by + int(9 * s)], fill=hexrgb(col)[:3] + (255,))
             txt = f"{v:,.1f}{unit}"
             d.text((W - x0 - pad, y + int(10 * s)), txt, font=_font(18 * s, bold=True), fill=(244, 239, 230, int(255 * k)), anchor="ra")
@@ -274,16 +274,25 @@ class Finale:
         return Image.blend(Image.new("RGB", img.size, (0, 0, 0)), img.convert("RGB"), a)
 
     def _end_card(self, t):
+        from .logo import emblem
         s, W, H = self.s, self.W, self.H
         img = Image.new("RGB", (W, H), (6, 8, 12))
-        d = ImageDraw.Draw(img)
         dur = self.r.m["end_card_seconds"]
         a = min(ease(t / 0.8), ease((dur - t) / 0.8))
         c = lambda rgb: tuple(int(v * a) for v in rgb)
-        d.text((W / 2, H * 0.40), "CONTROGLOBE", font=_font(96 * s, bold=True, serif=True), fill=c((244, 239, 230)), anchor="mm")
-        d.text((W / 2, H * 0.40 + 78 * s), "THE GLOBAL SWAP", font=_font(28 * s, bold=True), fill=c((226, 182, 89)), anchor="mm")
-        d.text((W / 2, H * 0.62), "Every name, border and date: mofferato.github.io/controglobe", font=_font(24 * s),
+        # the emblem, turning slowly, above the name
+        size = int(H * 0.36)
+        em = emblem(self.cfg, size, lon0=40 + 9 * t)
+        em.putalpha(em.getchannel("A").point(lambda v: int(v * a)))
+        img = img.convert("RGBA")
+        img.alpha_composite(em, (int(W / 2 - size / 2), int(H * 0.30 - size / 2)))
+        d = ImageDraw.Draw(img)
+        d.text((W / 2, H * 0.58), " ".join("CONTROGLOBE"), font=_font(72 * s, bold=True, serif=True),
+               fill=c((244, 239, 230)), anchor="mm")
+        d.text((W / 2, H * 0.58 + 62 * s), "  ".join("THE GLOBAL SWAP"), font=_font(26 * s, bold=True),
+               fill=c((226, 182, 89)), anchor="mm")
+        d.text((W / 2, H * 0.78), "Every name, border and date: mofferato.github.io/controglobe", font=_font(24 * s),
                fill=c((190, 196, 204)), anchor="mm")
-        d.text((W / 2, H * 0.62 + 40 * s), "Coastlines, rivers and lakes: Natural Earth (public domain)", font=_font(18 * s),
-               fill=c((140, 146, 154)), anchor="mm")
-        return img
+        d.text((W / 2, H * 0.78 + 38 * s), "Coastlines, rivers, lakes, relief and depths: Natural Earth (public domain)",
+               font=_font(18 * s), fill=c((140, 146, 154)), anchor="mm")
+        return img.convert("RGB")
