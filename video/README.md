@@ -260,3 +260,10 @@ from `captions.srt` as subtitles.
 - **A region "shares a seed cell" or "has no cells"**: two seeds are too close for the mesh;
   move one, or add a finer `focus` box in the config.
 - **An MCP server shows as failed**: start its application and plug-in first, then `/mcp`.
+- **The GIMP MCP server will not install** (`Failed to build pydantic-core`, "Python 3.14 is
+  newer than PyO3's maximum"): its locked dependencies have no Python 3.14 build yet. In the
+  `gimp-mcp` folder run `uv python pin 3.12` then `uv sync`; uv downloads Python 3.12 itself.
+- **Tools > MCP is missing in GIMP**: GIMP only looks for new plug-ins when it starts, and
+  opening it again while an old copy is still running just brings that copy back. Quit it
+  with File > Quit (check Task Manager for `gimp-3`), then start it again. PhotoGIMP is fine:
+  it is GIMP 3.2 with a different layout.
