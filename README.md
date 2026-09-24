@@ -53,8 +53,8 @@ right-to-left text.
 
 | Region | Carries the history of |
 |---|---|
-| Middle East | North America. **al-Mashriq** is Arabia = the USA, Zagrosia = Canada (Anatolia is its Quebec, Iran the rest) and Qubrus = Greenland; Masr = Mexico is the neighbour outside it |
-| Africa | Europe (Kimfumu kya Kongo = Germany, Jolof = Spain, Derg Union = Russia) |
+| Middle East | North America. **al-Mashriq** is Arabia = the USA, Zagrosia = Canada (Anatolia is its Quebec, Iran the rest) and Qubrus = Greenland, a self-governing dependency of Ifriqiya (independent until Ifriqiya colonised it in 1721; home rule 1979, self-rule 2009); Masr = Mexico is the neighbour outside it |
+| Africa | Europe (Kimfumu kya Kongo = Germany, Jolof = Spain, Ifriqiya = Denmark, Derg Union = Russia) |
 | Europe | Africa |
 | North America | Middle East |
 | South Asia | Britain, Japan and China combined |
