@@ -39,18 +39,26 @@ What the viewer should feel is the rhyme:
 
 | Cut | Command | What it is |
 |---|---|---|
-| **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | A Controglobe logo sting, the premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, and at each era a push-in that settles, a focus pull and a sweep of the era's colour under a frosted-glass title card; animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), the Qumur inset, and an infobox: year, flag and Great Seal, head of state with portrait, term and party, events, population and the largest cities. Every election year holds (`pacing.election_seconds`) while its result counts up and the winner is named. It closes on demographics (population by state, religion and ancestry by county, the largest cities) and an end card with the logo. |
+| **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | A Controglobe logo sting, the premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, and at each era a push-in that settles, a focus pull and a sweep of the era's colour under a frosted-glass title card; animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), and an infobox with the Qumur inset docked at its foot: year, flag and Great Seal, head of state with portrait, term and party, events (earlier years' still on screen carry their year), population and the largest cities. Every election year holds (`pacing.election_seconds`) while its result counts up and the winner is named. After 2026 a close: the infobox slides away into a dark gradient, cinema bars close in and the years, the Union's name and its motto rise; then the map dims and the demographics follow in one continuous shot (population by state, religion and ancestry by county, the largest cities) before an end card with the logo. A soundtrack made in code runs under all of it (see Sound). |
 | **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
 
 Into Resolve: a whole `build.py motion` render ends by writing the Resolve build script for
 that cut and installing it in Resolve's Scripts menu; in Resolve, open a project and run
-**Workspace > Scripts > cg_resolve_build**. It sets the project to 30 fps, imports the cut,
-makes a timeline, and marks the opening, every era and event (moved past the opening), and the
-finale. `python build.py resolve [--media motion|sequence]` rewrites it by hand; it works on
-the free edition (see Troubleshooting).
+**Workspace > Scripts > cg_resolve_build**. It sets the project to 30 fps, imports the cut
+and its soundtrack stems, makes a timeline with the picture on V1, the music on A1 and the
+effects on A2, and marks the opening, every era and event (moved past the opening), the close
+and the finale. `python build.py resolve [--media motion|sequence]` rewrites it by hand; it
+works on the free edition (see Troubleshooting).
 
-The presidents' portraits, the flag and the Great Seal are the encyclopedia's own SVG artwork,
-rasterised at build time. Nabataean kings get portraits drawn in the same style, other polities
+Labels never get cut. Each map's names are drawn on a layer of their own and placed on the
+part of their country the camera shows, clear of the infobox and the inset (shrunk, slid or
+broken onto two lines to fit, over their own land or the sea rather than a neighbour); a name
+that the camera still carries toward the infobox, the inset, the frame edge, a war label or an
+era card fades out before it reaches it.
+
+The presidents' portraits, the flag and the Great Seal are the encyclopedia's own SVG artwork
+(`../united-states-of-arabia.html`), rasterised at build time and again whenever the page's
+drawing changes. Nabataean kings get portraits drawn in the same style, other polities
 flags drawn from their colours; your own art in `assets/portraits/<key>.png` or
 `assets/flags/<polity_id>.png` replaces any of them. `python build.py thumbnail` makes the
 YouTube thumbnail: a USArabia countryball beside a flag map of the country, the rest of the
@@ -179,7 +187,8 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py sequence [--frames DIR]` | `output/sequence/frame_000001.png ...` as hard links, for Resolve |
 | `python build.py animatic [--audio music.mp3]` | `output/animatic.mp4` |
 | `python build.py export-gis` | `build/history.gpkg`: every polity for every span of unchanged borders |
-| `python build.py motion [--scale 1] [--prores] [--from Y --to Y] [--frame N ...]` | The finished motion cut to `output/motion/`; a slice of years; or single PNG frames for review |
+| `python build.py motion [--scale 1] [--prores] [--from Y --to Y] [--frame N ...] [--silent]` | The finished motion cut to `output/motion/` with its soundtrack inside (stems in `output/audio/`); a slice of years; or single PNG frames for review |
+| `python build.py audio [--elevenlabs]` | Remake the soundtrack and put it into the newest motion cut, as a new file (no re-render); `--elevenlabs` first fetches every effect that has no file yet |
 | `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` (upload this one: YouTube's size, under its 2 MB limit) and `_1920x1080.png` |
 | `python build.py resolve [--media auto\|motion\|sequence]` | `output/resolve_build.lua`, installed as Workspace > Scripts > cg_resolve_build; `auto` takes the motion cut once rendered |
 | `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
@@ -252,8 +261,37 @@ The logo in the opening sting, on the end card and on the thumbnail is `assets/l
 you supply one (any size, square, transparent background: it is never committed); otherwise
 an emblem in the style of the site's favicon, ray-cast so it stays sharp at 4K and can turn.
 
-For the finish in Resolve: one music cue per era, a sound cue on each era card and election,
-and the captions from `captions.srt` as subtitles.
+For the finish in Resolve, add the captions from `captions.srt` as subtitles.
+
+## Sound
+
+`cgvideo/audio.py` makes the whole soundtrack in code with numpy, so nothing is licensed and
+nothing can be claimed on YouTube: wavetable pads, brass and a formant choir, Karplus-Strong
+plucked strings (oud, harp, harpsichord, a soft piano), drums built from pitched sines and
+shaped noise, whooshes shaped in the frequency domain, and a convolution reverb.
+
+- **The score** follows the cut: a shimmer under the logo, a drone under the premise, a swell
+  as the globe turns; then a band per era (`BANDS`), each in its own mode and tempo, from a
+  Hijaz drone, oud and darbuka in antiquity, through a harpsichord for the age of the crowns,
+  a snare march for the revolution, an ostinato for the industrial age, war drums, a cold-war
+  synth arpeggio, to a brighter, building band for the modern era; a held chord with choir and
+  brass under the close's title; a calm bed for the demographics; a last chord on the end card.
+  A reversed-cymbal rush leads into every era.
+- **The effects** fall on the cut's own cues: the logo, each line of the premise, the globe's
+  turn and dive, every era card (a boom and a whoosh), major events, battles (with the flash),
+  campaign arrows, each election result (a chime as the winner is named), the infobox leaving,
+  the title, the finale's panel and wipes, a pop per city bubble, and the end card.
+- **The mix**: the music ducks under the effects, the whole is set to about -15 LUFS with peaks
+  under -1 dBFS. `output/audio/soundtrack_<key>_{music,sfx,mix}.wav` hold the two stems and the
+  mix at 48 kHz; the mix goes inside the video, the stems onto their own tracks in Resolve.
+
+Your own sound wins. `assets/audio/music.(wav|mp3|flac|m4a)` replaces the score (looped or
+trimmed to the cut, faded out at the end); `assets/audio/sfx/<cue>.(wav|mp3)` replaces one kind
+of effect, the cue names being the keys of `SFX` in `cgvideo/audio.py` (`era`, `battle`,
+`elected`, `close_hit` ...). With an ElevenLabs account, set `ELEVENLABS_API_KEY` and run
+`python build.py audio --elevenlabs`: it asks the sound-effects API for every effect that has
+no file yet (the prompts are `PROMPTS` in `audio.py`), saves them there, and remakes the
+soundtrack. `python build.py audio` alone remakes the soundtrack after any such change.
 
 ## Python libraries
 
@@ -262,7 +300,7 @@ and the captions from `captions.srt` as subtitles.
 | geopandas, pyogrio | Reading Natural Earth, writing GeoPackages for QGIS |
 | shapely 2 | Voronoi, noding, polygonising, unions, label points (polylabel) |
 | pyproj | The azimuthal equal-area projection |
-| numpy | Seeds, the ownership matrix (year x region), the film look |
+| numpy | Seeds, the ownership matrix (year x region), the film look, the whole soundtrack |
 | matplotlib | Drawing each distinct map once |
 | Pillow | Year counter, captions, era cards, contact sheets |
 | PyYAML | The config |
@@ -301,6 +339,14 @@ and the captions from `captions.srt` as subtitles.
   and the Resolve script always imports the newest. If Resolve still reports the wrong length,
   the script stops and says so: close Resolve completely, reopen it, and run the script again.
   Old cuts can be deleted once no project uses them.
+- **The Resolve script says the newest cut no longer matches the timeline**: the data, the
+  pacing or the cut's structure changed after that cut was rendered, so its length and markers
+  would be wrong. Run `python build.py motion`; the new cut installs a matching script.
+- **The soundtrack stems are not on the timeline**: a Resolve that will not place clips on
+  chosen tracks from a script gets the timeline made from the cut itself, whose audio is the
+  finished mix, and the Console says so. To balance music and effects by hand, drag
+  `output/audio/soundtrack_<key>_music.wav` and `_sfx.wav` from the Media Pool onto two audio
+  tracks at the timeline's start, and mute the cut's own audio.
 - **The GIMP MCP server will not install** (`Failed to build pydantic-core`, "Python 3.14 is
   newer than PyO3's maximum"): its locked dependencies have no Python 3.14 build yet. In the
   `gimp-mcp` folder run `uv python pin 3.12` then `uv sync`; uv downloads Python 3.12 itself.

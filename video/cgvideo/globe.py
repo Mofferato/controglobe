@@ -187,10 +187,13 @@ def intro_frame(r, f) -> Image.Image:
     k = ease(min(1.0, tg / (dur - 1.4)))
     lon = -38 + (46.5 - -38) * k
     lat = 8 + (25 - 8) * k
-    radius = r.H * (0.40 + 0.06 * k)
+    radius = r.H * (0.40 + 0.04 * k)
     dive = max(0.0, (tg - (dur - 1.4)) / 1.4)
     radius *= 1 + 4.5 * ease(dive) ** 2
-    img = r.globe.render(lon, lat, radius, cx=r.W * 0.5, cy=r.H * 0.56,
+    # the globe sits low, under the title; in the dive it glides to where the first map puts Arabia
+    ax, ay = r.m["anchor"]
+    gd = ease(dive)
+    img = r.globe.render(lon, lat, radius, cx=r.W * (0.5 + (ax - 0.5) * gd), cy=r.H * (0.6 + (ay - 0.6) * gd),
                          highlight=(46, 24, 16, 14, 0.55 * ease((tg - 2.0) / 1.5)))
     s = r.H / 1080
     d = ImageDraw.Draw(img)
@@ -200,11 +203,12 @@ def intro_frame(r, f) -> Image.Image:
         f2 = ImageFont.truetype(_fontfile("DejaVuSans.ttf"), int(30 * s))
         f3 = ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), int(22 * s))
         c = lambda rgb: tuple(int(v * ta) for v in rgb)
-        d.text((r.W / 2, r.H * 0.12), "ALTERNATE HISTORY OF ARABIA", font=f1, fill=c((245, 240, 230)), anchor="mm",
+        d.text((r.W / 2, r.H * 0.075), "ALTERNATE HISTORY OF ARABIA", font=f1, fill=c((245, 240, 230)), anchor="mm",
                stroke_width=int(3 * s), stroke_fill=(0, 0, 0))
-        d.text((r.W / 2, r.H * 0.12 + 58 * s), "(in place of the United States)", font=f2, fill=c((210, 200, 180)), anchor="mm")
-        d.text((r.W / 2, r.H * 0.9), "EVERY YEAR  |  500 BCE - 2026  |  CONTROGLOBE: THE GLOBAL SWAP", font=f3,
-               fill=c((226, 182, 89)), anchor="mm")
+        d.text((r.W / 2, r.H * 0.075 + 52 * s), "(in place of the United States)", font=f2, fill=c((210, 200, 180)),
+               anchor="mm", stroke_width=int(2 * s), stroke_fill=(0, 0, 0))
+        d.text((r.W / 2, r.H * 0.93), "EVERY YEAR  |  500 BCE - 2026  |  CONTROGLOBE: THE GLOBAL SWAP", font=f3,
+               fill=c((226, 182, 89)), anchor="mm", stroke_width=int(3 * s), stroke_fill=(0, 0, 0))
     if dive > 0.55:  # hand over to the first map
         first = r.main_frame(0).convert("RGB")
         img = Image.blend(img, first, ease((dive - 0.55) / 0.45))

@@ -278,19 +278,95 @@ def _label_text(scene: Scene, pid: str, top: bool) -> str:
     return text
 
 
+def _visible_piece(part, visible):
+    """The piece of a polygon to put its label on in a moving shot, and the region its label
+    must stay inside. `visible` is (always, anywhere): what every frame showing this map sees
+    clear of the panel and the inset, and what at least one frame sees. The label goes where
+    it is always seen if enough of the polygon is there, else where it is seen at all;
+    (None, None) when no frame shows the polygon."""
+    always, anywhere = visible
+    for region, share in ((always, 0.2), (anywhere, 0.0)):
+        if region is None or region.is_empty:
+            continue
+        piece = part.intersection(region)
+        polys = [g for g in shapely.get_parts(piece) if g.geom_type == "Polygon" and not g.is_empty]
+        if not polys:
+            continue
+        best = max(polys, key=lambda g: g.area)
+        if best.area >= min(share * part.area, 6e10) and best.area > 0:
+            return best, region
+    return None, None
+
+
+def _fit_label(pt, piece, region, land, size, wps, hps, px_per_m, min_size):
+    """Place and size a label so that its whole box lies inside `region`, on its own polygon
+    or on water rather than on its neighbours: (x, y, size), or None. wps and hps are the
+    label's drawn width and height per pixel of font size. The largest size that has a good
+    place wins; among places, the one most on its country and nearest the pole. A long name
+    centred where its country is widest can otherwise run on under the infobox."""
+    shapely.prepare(region)
+    simple = piece.simplify(max(2000.0, 2.0 / px_per_m))
+    shapely.prepare(simple)
+    bx0, by0, bx1, by1 = piece.bounds
+    diag = math.hypot(bx1 - bx0, by1 - by0) or 1.0
+    cands = [(pt.x, pt.y)]
+    for fy in (0.5, 0.4, 0.6, 0.3, 0.7, 0.2, 0.8):
+        for fx in (0.5, 0.4, 0.6, 0.3, 0.7, 0.2, 0.8):
+            cands.append((bx0 + (bx1 - bx0) * fx, by0 + (by1 - by0) * fy))
+    cands = [c for k, c in enumerate(cands) if k == 0 or simple.contains(shapely.Point(c))]
+    gx, gy = np.meshgrid(np.linspace(-0.46, 0.46, 11), np.linspace(-0.38, 0.38, 3))
+    gx, gy = gx.ravel(), gy.ravel()
+    best_any = None
+    sz = size
+    while sz >= min_size:
+        w = wps * sz * 1.08 / px_per_m      # the halo and the collision margin
+        h = hps * sz * 1.2 / px_per_m
+        best = None
+        for k, (x, y) in enumerate(cands):
+            if not region.contains(shapely.box(x - w / 2, y - h / 2, x + w / 2, y + h / 2)):
+                continue
+            X, Y = x + gx * w, y + gy * h
+            own = shapely.contains_xy(simple, X, Y).mean()
+            wet = 1.0 - shapely.contains_xy(land, X, Y).mean() if land is not None else 0.0
+            good = min(1.0, own + wet)
+            score = own + 0.6 * wet - 0.35 * math.hypot(x - pt.x, y - pt.y) / diag + (0.05 if k == 0 else 0.0)
+            if best is None or score > best[0]:
+                best = (score, good, x, y, sz)
+        if best is not None:
+            if best[1] >= 0.7:
+                return best[2:]
+            if best_any is None or best[1] > best_any[1] + 0.1:
+                best_any = best
+        sz *= 0.9
+    return best_any[2:] if best_any is not None and best_any[1] >= 0.45 else None
+
+
 def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: int, extent,
-                  placed: list, which: str, scale: float | None = None) -> list:
+                  placed: list, which: str, scale: float | None = None, visible=None) -> list:
     """Country labels (which="top") or state and colony labels (which="sub"), largest first.
 
     A label that would overlap one already placed is dropped. A union or empire is labelled on
     its largest piece, and again only on pieces at least 15% that size (an exclave the size of
-    Adharbaijan carries its own state label instead).
+    Adharbaijan carries its own state label instead). With `visible` (see _visible_piece) each
+    label is placed on the part of its polygon that the moving camera actually shows.
     """
     st = scene.cfg["style"]
     x0, x1, y0, y1 = extent
     px_per_m = W / (x1 - x0)
     s = scale or H / 2160
     renderer = fig.canvas.get_renderer()
+    land = None
+    if visible is not None:   # labels may lie over water, but not over their neighbours
+        land = scene.land
+        shapely.prepare(land)
+
+    def measure(lines, weight, style):
+        """A label's drawn width and height per pixel of font size (probed at 100 px)."""
+        probe = ax.text(0, 0, "\n".join(lines), fontsize=100 * 72 / fig.dpi, fontweight=weight,
+                        fontstyle=style, linespacing=1.0)
+        e = probe.get_window_extent(renderer)
+        probe.remove()
+        return e.width / 100, e.height / 100
 
     def try_label(geom, text, px, weight, style, alpha, track=False):
         # tracked (letter-spaced) capitals for countries, the cartographer's convention for
@@ -300,29 +376,50 @@ def _place_labels(fig, ax, scene: Scene, polities: dict, tops: dict, W: int, H: 
         for n, part in enumerate(parts):
             if n and part.area < 0.15 * parts[0].area:
                 break
+            region = None
+            if visible is not None:
+                part, region = _visible_piece(part, visible)
+                if part is None:
+                    continue
             bx0, by0, bx1, by1 = part.bounds
             width_px = (bx1 - bx0) * px_per_m
             lines = text.split("\n")
             size = px
             longest = max(len(line) for line in lines) * widen
-            if 0.62 * size * longest > 0.9 * width_px and " " in lines[0] and len(lines) == 1:
+            split = None
+            if " " in lines[0] and len(lines) == 1:
                 words = lines[0].split(" ")
                 cut = min(range(1, len(words)), key=lambda i: abs(len(" ".join(words[:i])) - len(" ".join(words[i:]))))
-                lines = [" ".join(words[:cut]), " ".join(words[cut:])]
+                split = [" ".join(words[:cut]), " ".join(words[cut:])]
+            if 0.62 * size * longest > 0.9 * width_px and split:
+                lines, split = split, None
                 longest = max(len(line) for line in lines) * widen
             if 0.62 * size * longest > 0.9 * width_px:
                 size = 0.9 * width_px / (0.62 * longest)
-            if track:
-                lines = [" ".join(line) for line in lines]
             if size < 14 * s:
                 continue
             try:
                 pt = polylabel(part, tolerance=max(part.length / 400, 1000))
             except Exception:
                 pt = part.representative_point()
-            if not (x0 < pt.x < x1 and y0 < pt.y < y1):
+            lx, ly = pt.x, pt.y
+            if track:
+                lines = [" ".join(line) for line in lines]
+                split = [" ".join(line) for line in split] if split else None
+            if region is not None:
+                # the whole label inside what the camera shows: slide or shrink it, or break a
+                # one-line name in two, rather than let it run on under the infobox
+                fit = _fit_label(pt, part, region, land, size, *measure(lines, weight, style), px_per_m, 14 * s)
+                if fit is None and split:
+                    fit = _fit_label(pt, part, region, land, size, *measure(split, weight, style), px_per_m, 14 * s)
+                    if fit is not None:
+                        lines = split
+                if fit is None:
+                    continue
+                lx, ly, size = fit
+            if not (x0 < lx < x1 and y0 < ly < y1):
                 continue
-            t = ax.text(pt.x, pt.y, "\n".join(lines), ha="center", va="center", fontsize=size * 72 / fig.dpi,
+            t = ax.text(lx, ly, "\n".join(lines), ha="center", va="center", fontsize=size * 72 / fig.dpi,
                         fontweight=weight, fontstyle=style, color=st["label_color"], alpha=alpha,
                         linespacing=1.0, zorder=8,
                         path_effects=[pe.withStroke(linewidth=max(2.5, size / 6) * 72 / fig.dpi * 1.5,
@@ -404,10 +501,15 @@ def _inset_extent(cfg: dict, ins: dict, W: int, H: int):
     return cx - w_m / 2, cx + w_m / 2, cy - h_m / 2, cy + h_m / 2
 
 
+def _in_box(p, bb):
+    return bb[0] <= p["lon"] <= bb[2] and bb[1] <= p["lat"] <= bb[3]
+
+
 def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict] | None = None,
-               extent=None, px_scale: float | None = None, insets: bool = True) -> Image.Image:
+               extent=None, px_scale: float | None = None, insets: bool = True, labels: bool = True) -> Image.Image:
     """One map. By default the configured frame; the motion pass passes a larger `extent`
-    (a plate the camera moves over) and `px_scale` so text and lines keep their screen size."""
+    (a plate the camera moves over) and `px_scale` so text and lines keep their screen size,
+    and labels=False, because it draws the labels on a layer of their own (render_labels)."""
     cfg = scene.cfg
     st = cfg["style"]
     s = px_scale or H / 2160
@@ -425,15 +527,13 @@ def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict]
     places = places or []
     show_places = st.get("show_places", True)
 
-    def in_box(p, bb):
-        return bb[0] <= p["lon"] <= bb[2] and bb[1] <= p["lat"] <= bb[3]
-
     _draw_layers(ax, scene, polities, tops, s, relief=scene.relief_overlay(extent, W, H), extent=extent)
-    placed = _place_labels(fig, ax, scene, polities, tops, W, H, extent, [], "top", s)
-    if show_places:
-        main = [p for p in places if not any(in_box(p, i["bbox"]) for i in cfg.get("insets", []))]
-        _draw_places(fig, ax, scene, main, placed, s)
-    _place_labels(fig, ax, scene, polities, tops, W, H, extent, placed, "sub", s)
+    if labels:
+        placed = _place_labels(fig, ax, scene, polities, tops, W, H, extent, [], "top", s)
+        if show_places:
+            main = [p for p in places if not any(_in_box(p, i["bbox"]) for i in cfg.get("insets", []))]
+            _draw_places(fig, ax, scene, main, placed, s)
+        _place_labels(fig, ax, scene, polities, tops, W, H, extent, placed, "sub", s)
     for ins in (cfg.get("insets", []) if insets else []):
         ex0, ex1, ey0, ey1 = _inset_extent(cfg, ins, W, H)
         iax = fig.add_axes(ins["rect"])
@@ -450,7 +550,7 @@ def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict]
                          fontsize=26 * s * 72 / dpi, fontweight="bold", color=st["label_color"],
                          path_effects=[pe.withStroke(linewidth=4 * s, foreground=st["label_halo"])])
         if show_places:
-            mine = [p for p in places if in_box(p, ins["bbox"])]
+            mine = [p for p in places if _in_box(p, ins["bbox"])]
             _draw_places(fig, iax, scene, mine, [title.get_window_extent(fig.canvas.get_renderer())], s)
     buf = io.BytesIO()
     fig.savefig(buf, format="png", dpi=dpi, facecolor=fig.get_facecolor())
@@ -460,6 +560,44 @@ def render_map(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict]
     if img.size != (W, H):
         img = img.resize((W, H), Image.LANCZOS)
     return img
+
+
+def render_labels(scene: Scene, row: np.ndarray, W: int, H: int, places: list[dict] | None = None,
+                  extent=None, px_scale: float | None = None, visible=None):
+    """The labels of one map on a transparent layer of their own, for the motion cut: country
+    and state names, and the place markers with their names. Returns (RGBA image, boxes), a box
+    per label or marker as [x0, y0, x1, y1] in pixels from the top left, so each one can be
+    faded on its own where the infobox, an inset or the frame edge would cut it. `visible`
+    steers each label onto the part of its polygon the camera shows (see _visible_piece)."""
+    cfg = scene.cfg
+    st = cfg["style"]
+    s = px_scale or H / 2160
+    dpi = 100
+    fig = plt.figure(figsize=(W / dpi, H / dpi), dpi=dpi)
+    fig.patch.set_alpha(0.0)
+    ax = fig.add_axes([0, 0, 1, 1])
+    extent = extent or geo.view_extent(cfg, W, H)
+    ax.set_xlim(extent[0], extent[1])
+    ax.set_ylim(extent[2], extent[3])
+    ax.set_aspect("equal")
+    ax.axis("off")
+    polities, tops = scene.state(row)
+    placed = _place_labels(fig, ax, scene, polities, tops, W, H, extent, [], "top", s, visible=visible)
+    if st.get("show_places", True) and places:
+        main = [p for p in places if not any(_in_box(p, i["bbox"]) for i in cfg.get("insets", []))]
+        _draw_places(fig, ax, scene, main, placed, s)
+    _place_labels(fig, ax, scene, polities, tops, W, H, extent, placed, "sub", s, visible=visible)
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=dpi, transparent=True)
+    plt.close(fig)
+    buf.seek(0)
+    img = Image.open(buf).convert("RGBA")
+    sx, sy = W / img.width, H / img.height
+    if img.size != (W, H):
+        img = img.resize((W, H), Image.LANCZOS)
+    fh = fig.get_figheight() * dpi
+    boxes = [[b.x0 * sx, (fh - b.y1) * sy, b.x1 * sx, (fh - b.y0) * sy] for b in placed]
+    return img, boxes
 
 
 # -- HUD layer ---------------------------------------------------------------------

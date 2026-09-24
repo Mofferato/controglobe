@@ -11,7 +11,8 @@
   python build.py sequence               hard-linked image sequence for Resolve
   python build.py animatic [--audio f]   H.264 preview with ffmpeg
   python build.py export-gis             build/history.gpkg for QGIS
-  python build.py motion [--scale 1]     the finished moving cut (intro, camera, wars, infobox, finale)
+  python build.py motion [--scale 1]     the finished moving cut (intro, camera, wars, infobox, finale, soundtrack)
+  python build.py audio [--elevenlabs]   remake the soundtrack and put it into the newest motion cut
   python build.py thumbnail              YouTube thumbnail: countryball, flag map, "SINCE WHEN?"
   python build.py resolve [--media ...]  the Resolve build script, installed as Workspace > Scripts > cg_resolve_build
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
@@ -58,6 +59,11 @@ def main(argv=None) -> int:
     p.add_argument("--to", dest="last", default=None)
     p.add_argument("--frame", type=int, nargs="*", default=None, help="write these frames as PNGs instead")
     p.add_argument("--prores", action="store_true", help="ProRes 422 .mov for editing in Resolve")
+    p.add_argument("--silent", action="store_true", help="no soundtrack")
+    p = sub.add_parser("audio", help="remake the soundtrack and put it into the newest motion cut")
+    p.add_argument("--scale", type=float, default=0.5, help="the scale the cut was rendered at")
+    p.add_argument("--elevenlabs", action="store_true",
+                   help="first fetch every effect that has no file yet from ElevenLabs (needs ELEVENLABS_API_KEY)")
     p = sub.add_parser("thumbnail")
     p.add_argument("--text", default="SINCE WHEN?")
     p = sub.add_parser("resolve", help="write and install the Resolve build script (Workspace > Scripts > cg_resolve_build)")
@@ -111,7 +117,15 @@ def run(step: str, cfg: dict, args) -> int:
         motion.run(cfg, args.config, scale=args.scale, workers=args.workers,
                    first_year=Y.parse(args.first) if args.first else None,
                    last_year=Y.parse(args.last) if args.last else None,
-                   frames=args.frame, codec="prores" if args.prores else "h264")
+                   frames=args.frame, codec="prores" if args.prores else "h264", sound=not args.silent)
+        return 0
+
+    if step == "audio":
+        from cgvideo import audio, motion
+        if args.elevenlabs:
+            print(f"  {audio.elevenlabs_sfx(cfg)} effects fetched from ElevenLabs")
+        dest = motion.resound(cfg, args.config, scale=args.scale)
+        print(f"  {dest}" if dest else "  soundtrack made; no motion cut to put it in yet (python build.py motion)")
         return 0
 
     if step == "resolve":

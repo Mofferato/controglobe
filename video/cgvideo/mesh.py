@@ -359,13 +359,13 @@ def drawn_extent(cfg: dict, data: Data | None = None):
     screen rectangle from data/camera.csv (motion.views_extent, the same measure the motion
     plates use), so the motion cut never looks past the edge of the drawn land."""
     x0, x1, y0, y1 = geo.view_extent(cfg)
-    rows = getattr(data, "camera", None) or []
+    rows = sorted(getattr(data, "camera", None) or [], key=lambda k: int(k["year"]))
     if rows:
-        from .motion import views_extent
+        from .motion import camera_views, views_extent
         xs, ys = geo.project_points(cfg, [float(k["lon"]) for k in rows], [float(k["lat"]) for k in rows])
         keys = [(float(cx), float(cy), float(k["zoom"]), math.radians(float(k["rotation"])))
                 for cx, cy, k in zip(xs, ys, rows)]
-        v = views_extent(cfg, keys, cfg["frame"]["width"], cfg["frame"]["height"])
+        v = views_extent(cfg, camera_views(cfg, keys), cfg["frame"]["width"], cfg["frame"]["height"])
         x0, x1, y0, y1 = min(x0, v[0]), max(x1, v[1]), min(y0, v[2]), max(y1, v[3])
     return x0, x1, y0, y1
 

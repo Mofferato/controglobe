@@ -139,8 +139,9 @@ class Panel:
         return sorted(out, key=lambda t: -t[2])[:count]
 
     # -- drawing -------------------------------------------------------------------------
-    def draw(self, img: Image.Image, slot: dict, t_in_slot: float) -> None:
-        """Draw onto img (RGBA) for this slot; t_in_slot is seconds since the slot began."""
+    def draw(self, img: Image.Image, slot: dict, t_in_slot: float, offset: int = 0) -> None:
+        """Draw onto img (RGBA) for this slot; t_in_slot is seconds since the slot began, and
+        `offset` moves the whole panel right (the close slides it off the screen)."""
         s, x0, W, H = self.s, self.x0, self.W, self.H
         cfg = self.cfg
         hud = cfg["style"]["hud"]
@@ -263,14 +264,15 @@ class Panel:
             y += int(34 * s)
             y += int(8 * s)
 
-        # events
+        # events: this year's, and recent ones still on screen, which carry their own year
         caps = slot.get("captions", [])[:3]
         if caps and y < H - 200 * s:
             d.text((x, y), "EVENTS", font=self.font(15 * s, bold=True), fill=muted)
             y += int(24 * s)
             for n, c in enumerate(caps):
                 alpha = 255 if n == 0 else 150
-                for line in textwrap.wrap("- " + c["text"], 40)[:3]:
+                words = c["text"] if c.get("year", year) == year else f"{Y.label(int(c['year']))}: {c['text']}"
+                for line in textwrap.wrap("- " + words, 40)[:3]:
                     if y > H - 150 * s:
                         break
                     d.text((x, y), line, font=self.font(18 * s), fill=text[:3] + (alpha,))
@@ -298,4 +300,5 @@ class Panel:
                     d.text((self.w - pad, y), f"{cp:,.0f}", font=self.font(17 * s), fill=text, anchor="ra")
                     y += int(24 * s)
 
-        img.alpha_composite(over, (x0, 0))
+        if x0 + offset < W:
+            img.alpha_composite(over, (x0 + int(offset), 0))
