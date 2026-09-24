@@ -248,10 +248,13 @@ from `captions.srt` as subtitles.
 ## Troubleshooting
 
 - **`pip install` fails on geopandas**: use Python 3.11-3.13 64-bit; the wheels bundle GDAL.
-- **Resolve script cannot connect**: in Studio set External scripting to Local; in the free
-  version copy `integrations/resolve/cg_resolve_build.py` to
-  `%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\`, set
-  `CG_VIDEO_DIR`, and run it from Workspace > Scripts.
+- **Resolve script cannot connect**: in Studio set External scripting to Local. The free
+  edition of Resolve 21.1 and later runs no Python scripts at all, so neither
+  `cg_resolve_build.py` nor the Resolve MCP server can drive it. Use the Lua build instead:
+  `build.py timeline` writes `output/resolve_build.lua`; copy it to
+  `%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\`, open a
+  project, and run it from Workspace > Scripts. On free Resolve 21.0 and earlier the Python
+  script still works from that menu (set `CG_VIDEO_DIR` first).
 - **`sequence` makes copies, not links**: the drive does not support hard links (exFAT or
   FAT32); use an NTFS drive or expect about 1 GB per 15,000 frames at 1080p.
 - **A region "shares a seed cell" or "has no cells"**: two seeds are too close for the mesh;
