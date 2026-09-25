@@ -114,7 +114,7 @@ style:
 publish:                      # the YouTube upload kit (output/youtube/, see PUBLISHING.md)
   site: https://mofferato.github.io/controglobe/
   repo: https://github.com/Mofferato/controglobe
-  community: null             # an invite link for the team (a Discord server, say), once there is one
+  community: null             # the Discord invite (never expires, no limit), e.g. https://discord.gg/abc123; ../community/README.md
   hashtags: ["#AlternateHistory", "#Mapping", "#Controglobe"]
 
 paths:

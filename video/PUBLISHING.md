@@ -147,13 +147,15 @@ and who writes the textbooks, is history, not geography or people.
 > If that sounds like you, reply or message me. And thanks to WTF CD Foxy, whose videos
 > inspired the format.
 >
-> Video: (link) · Encyclopedia: https://mofferato.github.io/controglobe/
+> Video: (link) · Discord: (invite) · Encyclopedia: https://mofferato.github.io/controglobe/
 
 ## A friends-first team
 
 - Give people somewhere to talk. GitHub issues suit decisions about canon and code; a Discord
-  server suits getting to know each other. When you have one, put its invite link in
-  `publish: community:` in `config/project.yaml` and the video description will carry it.
+  server suits getting to know each other. [`../community/`](../community/README.md) holds the
+  Controglobe server's layout and a script that builds it. Put its invite link in
+  `publish: community:` in `config/project.yaml`: the description and the pinned comment then
+  carry it, and the pinned comment leads with it.
 - Welcome each newcomer yourself, and give them a small first task: a flag, an event with its
   date, a translation, a frame to check.
 - Credit every contributor in the description of the video they helped with.

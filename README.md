@@ -115,6 +115,12 @@ and DaVinci Resolve, with Claude writing the data and driving the tools. It is s
 encyclopedia (the site still has no build step and no dependencies); start at
 [`video/README.md`](video/README.md).
 
+## Community
+
+[`community/`](community/) holds the Controglobe Discord: its channels, roles, rules and
+onboarding as data, and a script that builds the server from them. Start at
+[`community/README.md`](community/README.md).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Open an **issue** to argue about canon;

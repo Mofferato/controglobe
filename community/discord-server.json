@@ -1,0 +1,269 @@
+{
+  "server": {
+    "name": "Controglobe",
+    "tagline": "Geography is fixed. Only history moves.",
+    "description": "An open-source alternate-history world. Geography is fixed; only history moves. Maps, canon, videos. Friends first.",
+    "system_channel": "general",
+    "rules_channel": "rules",
+    "updates_channel": "mod-log",
+    "verification_level": 1,
+    "default_message_notifications": 1,
+    "explicit_content_filter": 2
+  },
+
+  "links": {
+    "site": "https://mofferato.github.io/controglobe/",
+    "repo": "https://github.com/Mofferato/controglobe",
+    "arabic": "https://mofferato.github.io/controglobe/ar/",
+    "youtube": null
+  },
+
+  "roles": [
+    {"key": "founder", "name": "Founder", "color": "#F0B232", "hoist": true,
+     "about": "Started Controglobe. Given to the owner by the build script."},
+    {"key": "moderator", "name": "Moderator", "color": "#4CC7D5", "hoist": true,
+     "permissions": ["KICK_MEMBERS", "BAN_MEMBERS", "MODERATE_MEMBERS", "MANAGE_MESSAGES", "MANAGE_THREADS",
+                     "MANAGE_NICKNAMES", "VIEW_AUDIT_LOG", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS",
+                     "MANAGE_EVENTS"],
+     "about": "Keeps the peace. Sees the Staff channels and can post in the read-only ones."},
+    {"key": "contributor", "name": "Contributor", "color": "#7BD389", "hoist": true,
+     "about": "Has had work land in the encyclopedia or a video. Given by hand, and credited in the video."},
+    {"key": "cartographer", "name": "Cartographer", "color": "#E67E22",
+     "about": "Maps: borders, projections, QGIS."},
+    {"key": "chronicler", "name": "Chronicler", "color": "#5DADE2",
+     "about": "Writing: articles, canon, captions."},
+    {"key": "illuminator", "name": "Illuminator", "color": "#EC407A",
+     "about": "Art: flags, seals, emblems, thumbnails."},
+    {"key": "engineer", "name": "Engineer", "color": "#5865F2",
+     "about": "Code: the site and the video pipeline."},
+    {"key": "translator", "name": "Translator", "color": "#AF7AC5",
+     "about": "Translation: the Arabic edition and any other language."},
+    {"key": "producer", "name": "Producer", "color": "#E74C3C",
+     "about": "Video, music and sound."},
+    {"key": "historian", "name": "Historian", "color": "#B9770E",
+     "about": "Knows the real history the swap is built on, and checks it."},
+    {"key": "arabic", "name": "العربية",
+     "about": "Speaks Arabic. Opens the Arabic chat."},
+    {"key": "video-pings", "name": "Video Pings",
+     "about": "Pinged for new videos and premieres."},
+    {"key": "event-pings", "name": "Event Pings",
+     "about": "Pinged for voice events and watch parties."}
+  ],
+
+  "categories": [
+    {"name": "📌 Start here", "channels": [
+      {"key": "welcome", "name": "👋・welcome", "readonly": true,
+       "topic": "What Controglobe is, where everything lives, and how to join in.",
+       "message": [
+         "# Welcome to Controglobe 🌍",
+         "**Geography is fixed. Only history moves.**",
+         "",
+         "Controglobe is an open-source alternate-history world. From 500 BCE the Global North and the Global South trade their histories, and the land stays exactly where it is. Arabia carries the story of the United States, Africa carries Europe's and Europe carries Africa's. So who industrialises, who colonises and who writes the textbooks turns out to be history, not geography.",
+         "",
+         "**Where it all lives**",
+         "🎥 The videos: {youtube}",
+         "📖 The encyclopedia: <{site}>",
+         "💻 Code, data and canon, all open source: <{repo}>",
+         "",
+         "**Start here**",
+         "1. Read {#rules}.",
+         "2. Say hi in {#introductions}: who you are and what you like.",
+         "3. Want to help? Take a small job in {#first-tasks}. There is always a flag to draw, a date to check or a page to translate.",
+         "4. Tell us what the next video should be in {#next-video}.",
+         "",
+         "This is a friends-first project: people who like maps, history, writing, art, music or code, building a world together. Glad you're here."
+       ]},
+      {"key": "rules", "name": "📜・rules", "readonly": true,
+       "topic": "Eight short rules. Friends first.",
+       "message": [
+         "# Rules",
+         "Controglobe is friends first. Eight rules keep it that way.",
+         "",
+         "**1. Be kind.** Welcome newcomers. Argue about the story, never the person.",
+         "**2. No hate.** The Global Swap reverses who colonises whom; it never says any people deserved either. No attacks on any nation, ethnicity, religion or group, in either timeline.",
+         "**3. Leave today's politics at the door.** Real history is welcome. Present-day political fights are not.",
+         "**4. Keep it safe for work**, and follow Discord's Terms (<https://discord.com/terms>) and Community Guidelines (<https://discord.com/guidelines>).",
+         "**5. Credit and honesty.** Credit the work you build on, never post someone else's work as yours, and say when something is AI-made.",
+         "**6. Share your own work in {#showcase}**, once per piece. No advertising in DMs.",
+         "**7. Chat is not canon.** Ideas go to {#proposals}, decisions to a GitHub issue, and canon is what reaches the encyclopedia. Forks and competing canon are welcome.",
+         "**8. Listen to the moderators.** If one asks you to stop, stop. Disagree in a DM, calmly.",
+         "",
+         "Something wrong? Message a Moderator."
+       ]},
+      {"key": "announcements", "name": "📢・announcements", "type": "announcement", "readonly": true,
+       "topic": "New videos, new articles and canon decisions. Follow it to get them in your own server."}
+    ]},
+
+    {"name": "💬 The Square", "channels": [
+      {"key": "general", "name": "💬・general",
+       "topic": "Talk about anything. New here? Say hi in {#introductions}."},
+      {"key": "introductions", "name": "🙋・introductions",
+       "topic": "Who you are, where you're from, and what you like: maps, history, writing, art, music, code.",
+       "message": [
+         "**Say hi!** A few things to tell us, if you like:",
+         "• What should we call you, and where are you from?",
+         "• What do you like: maps, history, writing, art, music, code, or just watching?",
+         "• Your favourite era or region of the swap, or of real history.",
+         "• One alternate-history map or video you love."
+       ]},
+      {"key": "arabic", "name": "🗣️・عربي",
+       "topic": "دردشة بالعربية عن أي شيء. Chat in Arabic, about anything."},
+      {"key": "off-topic", "name": "🎲・off-topic",
+       "topic": "Memes, games, food, everything else."}
+    ]},
+
+    {"name": "🌍 The Global Swap", "channels": [
+      {"key": "canon-talk", "name": "🧭・canon-talk",
+       "topic": "Talk about the world: nations, eras, what happens next. Chat is not canon: an idea that holds up becomes a post in {#proposals}."},
+      {"key": "proposals", "name": "💡・proposals", "type": "forum", "reaction": "👍",
+       "topic": "One post per idea, with a tag. React 👍 to back one. Ideas that hold up become a GitHub issue, and canon is what reaches the encyclopedia. Check the three rules first: geography is fixed; no frontier from a partition conference; roles, not costumes.",
+       "tags": [
+         {"name": "New canon", "emoji": "🆕"},
+         {"name": "Contradiction", "emoji": "⚠️"},
+         {"name": "Question", "emoji": "❓"},
+         {"name": "Unassigned region", "emoji": "🌏"},
+         {"name": "Fork", "emoji": "🔀"},
+         {"name": "Accepted", "emoji": "✅", "moderated": true},
+         {"name": "On GitHub", "emoji": "📦", "moderated": true}
+       ],
+       "posts": [
+         {"title": "Unassigned regions: what should they carry?", "tags": ["Unassigned region"],
+          "message": [
+            "East Asia, the rest of northern Asia, mainland South-East Asia and Australia have no counterpart yet, and the world maps leave them grey.",
+            "",
+            "Which history should each carry, and why? One idea per reply. Remember the rules: geography is fixed, and a region takes a role, not a costume. The ideas that hold up become a GitHub issue."
+          ]}
+       ]}
+    ]},
+
+    {"name": "🛠️ The Workshop", "channels": [
+      {"key": "first-tasks", "name": "🌱・first-tasks", "type": "forum", "reaction": "✋",
+       "topic": "Small jobs to start with. Reply to claim one, post what you made, and it gets credited. Anyone can add a task.",
+       "tags": [
+         {"name": "Map", "emoji": "🗺️"},
+         {"name": "Art", "emoji": "🎨"},
+         {"name": "Writing", "emoji": "✍️"},
+         {"name": "Translation", "emoji": "🌐"},
+         {"name": "Code", "emoji": "💻"},
+         {"name": "Video", "emoji": "🎬"},
+         {"name": "Claimed", "emoji": "✋"},
+         {"name": "Done", "emoji": "✅", "moderated": true}
+       ],
+       "posts": [
+         {"title": "Spot the mistakes in the Arabia video", "tags": ["Video"],
+          "message": [
+            "Watch *Alternate History of Arabia (in place of the United States)* and post anything that looks wrong: a border, a date, a spelling, a caption that is cut off. Give the timestamp.",
+            "",
+            "Every fix is credited in the next video's description."
+          ]},
+         {"title": "Design the server's emoji", "tags": ["Art"],
+          "message": [
+            "The server has no custom emoji yet. Draw some: the Controglobe globe, a countryball of the Union, the flags of the atlas nations, a 👍 in the Union's colours.",
+            "",
+            "Square PNG or GIF, 128 × 128 is plenty, under 256 KB (Discord's limit). Post them here."
+          ]},
+         {"title": "Proofread a page of the Arabic edition", "tags": ["Translation"],
+          "message": [
+            "Read one page of the Arabic edition (<{arabic}>) against `ar/GLOSSARY.md` in the repository, which fixes every proper noun.",
+            "",
+            "Post typos, awkward sentences, or a name that breaks the glossary, with the page and the section."
+          ]},
+         {"title": "Find the canon for an inferred row", "tags": ["Writing"],
+          "message": [
+            "Some rows in the video's data (`video/data/` in the repository: polities, elections, wars and more) are marked `inferred`: placeholders by analogy, waiting for canon.",
+            "",
+            "Pick one, find what the encyclopedia says, or propose what it should say, and post it here."
+          ]}
+       ]},
+      {"key": "maps", "name": "🗺️・maps",
+       "topic": "Borders, projections, QGIS and critique. Geography is fixed; only history moves."},
+      {"key": "art-and-flags", "name": "🎨・art-and-flags",
+       "topic": "Flags, seals, portraits, emblems and thumbnails. The site draws everything as inline SVG."},
+      {"key": "writing", "name": "✍️・writing",
+       "topic": "Encyclopedia articles and translation. Encyclopedic register, past tense, no winking. ar/GLOSSARY.md fixes every Arabic name."},
+      {"key": "code", "name": "💻・code",
+       "topic": "The site, the video pipeline (Python, QGIS, DaVinci Resolve) and help with GitHub."},
+      {"key": "github-feed", "name": "🔔・github-feed", "readonly": true, "webhook": "GitHub",
+       "topic": "Issues, pull requests and commits, posted by GitHub."}
+    ]},
+
+    {"name": "🎬 The Series", "channels": [
+      {"key": "videos", "name": "🎥・videos",
+       "topic": "The every-year videos: favourite moments, questions, and mistakes with a timestamp."},
+      {"key": "next-video", "name": "🔮・next-video",
+       "topic": "Which era or region gets the next video? Pitch it here and vote in the polls.",
+       "poll": {"question": "Which era should get its own video next?", "hours": 336, "multiselect": true,
+                "answers": [
+                  {"text": "Antiquity and the Nabataean unification", "emoji": "🏺"},
+                  {"text": "The caliphal centuries", "emoji": "📜"},
+                  {"text": "The Interregnum", "emoji": "⏳"},
+                  {"text": "The age of the crowns", "emoji": "👑"},
+                  {"text": "Revolution and expansion", "emoji": "🔥"},
+                  {"text": "Servitude, industry and the partition of Europe", "emoji": "🏭"},
+                  {"text": "The world wars", "emoji": "⚔️"},
+                  {"text": "Arabia and the Derg Union", "emoji": "🚀"},
+                  {"text": "After the Cold War", "emoji": "🌐"},
+                  {"text": "Another region of the swap (say which!)", "emoji": "🗺️"}
+                ]}},
+      {"key": "showcase", "name": "🖼️・showcase", "slowmode": 60,
+       "topic": "Your own maps and alternate-history work. Credit what you build on, say if AI was used, one post per piece."}
+    ]},
+
+    {"name": "🔊 Voice", "channels": [
+      {"key": "lounge", "name": "🔊 Lounge", "type": "voice"},
+      {"key": "map-room", "name": "🗺️ Map Room", "type": "voice"}
+    ]},
+
+    {"name": "🔒 Staff", "private": true, "channels": [
+      {"key": "mod-chat", "name": "🛡️・mod-chat", "topic": "Moderators only."},
+      {"key": "mod-log", "name": "📋・mod-log", "topic": "AutoMod alerts and Discord's community updates."}
+    ]}
+  ],
+
+  "automod": [
+    {"name": "Block slurs and sexual content", "trigger": "keyword_preset", "presets": ["sexual_content", "slurs"],
+     "message": "Controglobe is friends first: that message was blocked. See the rules."},
+    {"name": "Block mention spam", "trigger": "mention_spam", "mention_limit": 5},
+    {"name": "Block suspected spam", "trigger": "spam"}
+  ],
+
+  "onboarding": {
+    "default_channels": ["welcome", "rules", "announcements", "general", "introductions", "canon-talk",
+                         "proposals", "videos", "next-video", "showcase"],
+    "questions": [
+      {"title": "What do you like to make?", "multiple": true, "options": [
+        {"emoji": "🗺️", "title": "Maps", "description": "Borders, projections, QGIS", "roles": ["cartographer"], "channels": ["maps", "first-tasks"]},
+        {"emoji": "✍️", "title": "Writing and canon", "description": "Articles, eras, what happens next", "roles": ["chronicler"], "channels": ["writing", "first-tasks"]},
+        {"emoji": "🎨", "title": "Art", "description": "Flags, seals, emblems, thumbnails", "roles": ["illuminator"], "channels": ["art-and-flags", "first-tasks"]},
+        {"emoji": "💻", "title": "Code", "description": "The site and the video pipeline", "roles": ["engineer"], "channels": ["code", "github-feed", "first-tasks"]},
+        {"emoji": "🌐", "title": "Translation", "description": "The Arabic edition and other languages", "roles": ["translator"], "channels": ["writing", "first-tasks"]},
+        {"emoji": "🎬", "title": "Video, music and sound", "description": "Editing, music, the every-year videos", "roles": ["producer"], "channels": ["first-tasks"]},
+        {"emoji": "📚", "title": "Real history", "description": "The history the swap is built on", "roles": ["historian"], "channels": []},
+        {"emoji": "👀", "title": "Just here to watch", "description": "Welcome all the same", "roles": [], "channels": []}
+      ]},
+      {"title": "Which languages do you speak?", "multiple": true, "options": [
+        {"emoji": "🔤", "title": "English", "description": "", "roles": [], "channels": []},
+        {"emoji": "🗣️", "title": "العربية", "description": "Arabic: opens the Arabic chat", "roles": ["arabic"], "channels": ["arabic"]}
+      ]},
+      {"title": "Want a ping?", "multiple": true, "options": [
+        {"emoji": "🔔", "title": "New videos and premieres", "description": "", "roles": ["video-pings"], "channels": []},
+        {"emoji": "📅", "title": "Voice events and watch parties", "description": "", "roles": ["event-pings"], "channels": []}
+      ]}
+    ],
+    "todo": [
+      {"title": "Read the rules", "channel": "rules"},
+      {"title": "Say hi", "channel": "introductions"},
+      {"title": "Take a first task", "channel": "first-tasks"},
+      {"title": "Vote on the next video", "channel": "next-video"}
+    ],
+    "resources": ["welcome", "rules"]
+  },
+
+  "later": [
+    "📚 real-history, when history talk crowds out #general",
+    "🌐 translation, when there is more than one translator",
+    "🍿 a Watch Party stage for premieres (a Discord Event in the Lounge works until then)",
+    "📰 a channel per region or era, when a video on it is in production",
+    "🎨 a media channel for art, when #art-and-flags gets busy"
+  ]
+}
