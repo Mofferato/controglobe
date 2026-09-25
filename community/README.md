@@ -168,26 +168,101 @@ server at boost level 3, so use the generated one.
 **Safety for moderators.** When you add moderators, **Settings** > **Safety Setup** >
 *Require 2FA for moderator actions* (your own account needs 2FA first).
 
-## Putting it on the channel
+## Announcing it
 
-1. Put the invite in `video/config/project.yaml`, `publish: community:`, then run
+Everything below needs the invite. In `#welcome`: **Invite** > **Edit invite link** > *Expire
+after*: Never, *Max number of uses*: No limit, then **Copy**.
+
+### On the video
+
+1. Put the invite in `video/config/project.yaml`, `publish: community:`, and run
    `python build.py timeline` in `video/`. `output/youtube/pinned_comment.txt` then leads with
-   the Discord and ends by sending the "which era next?" question to the poll, and
-   `description.txt` carries the link beside the encyclopedia's.
-2. Under the video: post the pinned comment and pin it. If the video is already up, edit its
-   description in YouTube Studio and add the same line: `Join the Discord: <invite>`.
-3. On the channel: YouTube Studio > **Customisation** > **Profile** > **Links** > add
-   *Discord* with the invite, so it shows on the channel page.
-4. In `#announcements`, once the video is live:
+   the Discord, `description.txt` carries it beside the encyclopedia, and every video rendered
+   from now on shows it on the end card ("Join the team on Discord: discord.gg/…").
+2. The Arabia video, if it is already up: in YouTube Studio add `Join the Discord: <invite>`
+   under the encyclopedia link in the description, then post the pinned comment and pin it
+   (the comment's ⋮ menu > **Pin**).
+3. Answer the first commenters yourself and point them to the pinned comment. A reply carrying a
+   link is often held for review, so the pinned comment is the reliable place for it.
+4. In the next video, say it once near the end: "the Discord's in the pinned comment".
 
-   > **Alternate History of Arabia (in place of the United States): every year, 500 BCE to 2026**
-   > is out. The United States' story, told on Arabia's land. Watch it, then tell us in
-   > #videos what you spotted and vote in #next-video for the era that gets the next one.
-   > (link)
+### On the channel
+
+1. YouTube Studio > **Customisation** > **Profile** > **Links** > **Add link**: title
+   *Discord*, the invite. The first link shows under the channel name on the channel page.
+2. The same screen, **Description**: add a line, *Join the Controglobe Discord: <invite>*.
+3. A post on the channel's **Posts** tab (**Create** > **Create post**), with a screenshot of
+   the server:
+
+   > The Controglobe Discord is open 🌍
+   > It's where the world of the Global Swap gets built: arguing canon, drawing maps and
+   > flags, translating the encyclopedia, and deciding what the next video is. You don't have
+   > to make anything; you're welcome just to talk alternate history.
+   > When you join, pick what you like (maps, writing, art, code, translation, video) and the
+   > channels for it open. There's a poll running on which era gets the next video.
+   > <invite>
+
+   A week later, a second post as a YouTube poll, *Which era should get its own video next?*,
+   with the four eras leading the Discord poll, and "the full vote is on the Discord".
+
+### On the project
+
+Once there is an invite, the encyclopedia gets it in every page's footer and on the hub, and
+`README.md` and `CONTRIBUTING.md` point newcomers to it. The footer is part of the design
+system, so the link goes on all sixteen pages at once.
+
+### In the server
+
+Post the launch in `#announcements`, and make a Discord **Event** (the server name > **Create
+Event**) for a first hangout in the Lounge: events show at the top of the server and can ping
+Event Pings. When the video goes live:
+
+> **Alternate History of Arabia (in place of the United States): every year, 500 BCE to 2026**
+> is out. The United States' story, told on Arabia's land. Watch it, then tell us in
+> #videos what you spotted and vote in #next-video for the era that gets the next one.
+> (link)
 
 End screens and cards can only link outside YouTube once the channel is in the YouTube Partner
-Programme, so until then the pinned comment and the description are where the link lives.
-Saying it out loud in the next video ("the Discord is in the pinned comment") works too.
+Programme; until then the pinned comment, the description and the end card carry the link.
+
+## Announcing new videos by itself
+
+`.github/workflows/discord-announcements.yml` checks the channel's public upload feed every half
+hour and posts each new video in `#announcements`, pinging Video Pings. It runs on GitHub's
+machines through a webhook: no bot in the server, no YouTube key, nothing left running on your PC,
+free for a public repository. [`announce.py`](announce.py) does the work.
+
+1. **The webhook.** In Discord, `#announcements` > **Edit Channel** > **Integrations** >
+   **Webhooks** > **New Webhook**. Name it *Controglobe*, give it the globe as its picture, and
+   **Copy Webhook URL**. Anyone with that address can post there, so it goes only into GitHub.
+2. **The settings.** In the repository on GitHub: **Settings** > **Secrets and variables** >
+   **Actions**.
+   - *Secrets* > **New repository secret**: `DISCORD_ANNOUNCE_WEBHOOK`, the webhook address.
+   - *Variables* > **New repository variable**: `YOUTUBE_CHANNEL_ID`, the channel's ID (`UC`
+     and 22 more characters; YouTube Studio > **Settings** > **Channel** > **Advanced
+     settings**, or youtube.com/account_advanced).
+   - Optional variable `DISCORD_PING_ROLE`: the Video Pings role's ID. Turn on **Developer
+     Mode** (User Settings > Advanced), then Server Settings > Roles > Video Pings > ⋯ >
+     **Copy Role ID**.
+3. **Switching it on.** GitHub runs scheduled workflows from the default branch, so it starts
+   once this is merged into `main`. Its first run only records the videos already on the
+   channel; after that each new upload is posted within about half an hour.
+
+**Posting by hand**: **Actions** > **Discord announcements** > **Run workflow**, type the
+message (`\n` starts a new line), tick *Ping* if it should ping Video Pings. It works from the
+GitHub phone app, and Claude can start it too, which is how Claude posts in `#announcements`
+without a Discord connector. On a PC, `python announce.py --message "…"` does the same with
+`DISCORD_ANNOUNCE_WEBHOOK` set.
+
+Until it is set up the workflow does nothing and says so; a YouTube hiccup is a warning, not a
+failed run, so it never fills your inbox. GitHub pauses scheduled workflows after 60 days
+without a commit to the repository and emails you first; **Enable workflow** on the Actions tab
+turns it back on.
+
+Why not a bot or an MCP server: notification bots (MEE6, Pingcord and others) do the same job
+but hold permissions in your server and change their free plans, and the community Discord MCP
+servers need a bot token and a PC running Claude Code. Neither Claude's connector directory nor
+YouTube's API can make community posts or pin comments, so those stay a click of yours.
 
 ## Changing it later
 
