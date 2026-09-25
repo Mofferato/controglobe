@@ -1,0 +1,66 @@
+# Posts each new upload on the Controglobe YouTube channel to the Discord's #announcements, and
+# posts a message by hand from Actions > Discord announcements > Run workflow (the GitHub app too).
+# Setup and settings: community/README.md, "Announcing new videos by itself".
+name: Discord announcements
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"         # every half hour
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "A message for #announcements (empty: check YouTube for new videos instead). \\n makes a new line."
+        required: false
+        default: ""
+      ping:
+        description: "Ping the Video Pings role with it"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: discord-announcements
+  cancel-in-progress: false
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: community
+
+      - name: Restore the list of videos already announced
+        uses: actions/cache/restore@v4
+        with:
+          path: .announced.json
+          key: announced-${{ github.run_id }}
+          restore-keys: announced-
+
+      - name: Announce
+        env:
+          DISCORD_ANNOUNCE_WEBHOOK: ${{ secrets.DISCORD_ANNOUNCE_WEBHOOK }}
+          YOUTUBE_CHANNEL_ID: ${{ vars.YOUTUBE_CHANNEL_ID }}
+          DISCORD_PING_ROLE: ${{ vars.DISCORD_PING_ROLE }}
+          MESSAGE: ${{ inputs.message }}
+          PING: ${{ inputs.ping }}
+        run: |
+          if [ -n "$MESSAGE" ]; then
+            if [ "$PING" = "true" ]; then
+              python community/announce.py --message "$MESSAGE" --ping
+            else
+              python community/announce.py --message "$MESSAGE"
+            fi
+          else
+            python community/announce.py --state .announced.json
+          fi
+
+      - name: Keep the list for the next run
+        if: always() && hashFiles('.announced.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .announced.json
+          key: announced-${{ hashFiles('.announced.json') }}

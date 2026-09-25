@@ -40,7 +40,8 @@ def write(cfg, slots, S, fps) -> None:
     first, last = slots[0].label, slots[-1].label
     end_card = int(round(float(mcfg(cfg)["end_card_seconds"])))
     chap ="\n".join(f"{timecode(f, fps)} {title}" for f, title in chapters(slots, S, fps))
-    join = (f"Come and say hi, or join the team: {community}\n" if community else
+    discord = f"Join the Discord: {community}\n" if community else ""
+    join = ("Come and say hi on the Discord, or join the team there.\n" if community else
             f"Come and say hi, or join the team: open an issue at {repo}/issues\n")
     (out / "title.txt").write_text("\n".join(t for t in TITLES if len(t) <= 100) + "\n", encoding="utf8")
     (out / "tags.txt").write_text(", ".join(TAGS) + "\n", encoding="utf8")
@@ -55,7 +56,7 @@ How it was made
 An AI-assisted mapping video. The world, its history and the direction are human; the maps, the animation, the music and the edit come from an open-source pipeline built with Claude as a coding assistant, with QGIS, Python and DaVinci Resolve. Every border is drawn on real coastlines (Natural Earth), year by year, from the encyclopedia's canon.
 
 Read the encyclopedia: {site}
-Code, data and canon (open source, CC BY-SA 4.0): {repo}
+{discord}Code, data and canon (open source, CC BY-SA 4.0): {repo}
 
 Controglobe is a friends-first project. If you like maps, alternate history, writing, art, music or code, you are welcome to help build this world.
 {join}
@@ -66,7 +67,14 @@ Map data: Natural Earth (public domain). Music and sound effects: made in code f
 {tags}
 """
     (out / "description.txt").write_text(description, encoding="utf8")
-    pinned = f"""The encyclopedia behind this video: {site}
+    if community:
+        pinned = f"""Join the Controglobe Discord: {community}
+Talk maps and canon, pitch the next video, or help build the world (maps, writing, art, music, code). The project is open source and friends-first.
+The encyclopedia behind this video: {site}
+Which era should get its own video next? Vote on the Discord, or reply here.
+"""
+    else:
+        pinned = f"""The encyclopedia behind this video: {site}
 Everything is open source, and the project is friends-first: if you want to help (maps, writing, art, music, code) or just talk alternate history, reply here or open an issue at {repo}
 Which era should get its own video next?
 """

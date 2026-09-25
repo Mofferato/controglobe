@@ -343,6 +343,10 @@ class Finale:
                fill=c((244, 239, 230)), anchor="mm")
         d.text((W / 2, H * 0.58 + 62 * s), "  ".join("THE GLOBAL SWAP"), font=_font(26 * s, bold=True),
                fill=c((226, 182, 89)), anchor="mm")
+        invite = (self.cfg.get("publish") or {}).get("community")
+        if invite:                                   # the Discord, once publish.community has its invite
+            d.text((W / 2, H * 0.70), "Join the team on Discord: " + invite.split("://", 1)[-1],
+                   font=_font(28 * s, bold=True), fill=c((79, 211, 224)), anchor="mm")
         d.text((W / 2, H * 0.78), "Every name, border and date: mofferato.github.io/controglobe", font=_font(24 * s),
                fill=c((190, 196, 204)), anchor="mm")
         d.text((W / 2, H * 0.78 + 38 * s), "Coastlines, rivers, lakes, relief and depths: Natural Earth (public domain)",
