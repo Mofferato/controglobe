@@ -3,6 +3,15 @@
 Controglobe is open source. Competing canon is expected; the project keeps a *main* canon
 and welcomes forks.
 
+## Friends first
+
+Controglobe is made by people who enjoy building a world together, and the team is meant to be
+friends first. Be kind, welcome newcomers, and remember that an argument about canon is an
+argument about a story, never about the person making it. The project will take on more
+structure as it grows, but that rule stays. If you would like to help and do not know where to
+start, open an issue and say hello: there is always a flag to draw, a date to check or a page
+to translate.
+
 ## Before you write
 
 Read the rules on the [hub page](index.html). The three that get broken most often:

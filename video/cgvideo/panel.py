@@ -139,8 +139,9 @@ class Panel:
         return sorted(out, key=lambda t: -t[2])[:count]
 
     # -- drawing -------------------------------------------------------------------------
-    def draw(self, img: Image.Image, slot: dict, t_in_slot: float) -> None:
-        """Draw onto img (RGBA) for this slot; t_in_slot is seconds since the slot began."""
+    def draw(self, img: Image.Image, slot: dict, t_in_slot: float, offset: int = 0) -> None:
+        """Draw onto img (RGBA) for this slot; t_in_slot is seconds since the slot began, and
+        `offset` moves the whole panel right (the close slides it off the screen)."""
         s, x0, W, H = self.s, self.x0, self.W, self.H
         cfg = self.cfg
         hud = cfg["style"]["hud"]
@@ -227,30 +228,51 @@ class Panel:
         # election
         e = self.elections.get(year)
         if e and y < H - 300 * s:
-            d.text((x, y), f"PRESIDENTIAL ELECTION {year}", font=self.font(15 * s, bold=True), fill=muted)
+            # election years hold on screen (pacing.election_seconds): the block is lit, the bars
+            # count up slowly enough to follow, and the winner is named
+            parts = e["results"].split("|")[:4]
+            eg = ease((t_in_slot - 0.15) / 1.3)
+            lit = 1 - ease(t_in_slot / 2.2)
+            top = y - int(12 * s)
+            bottom = y + int(26 * s + 42 * s * len(parts) + 36 * s)
+            # colours pre-mixed with the panel: ImageDraw replaces pixels rather than blending, so a
+            # see-through fill would punch a hole in the panel
+            def tint(k, a):
+                return tuple(int(panel[i] * (1 - k) + accent[i] * k) for i in range(3)) + (a,)
+            d.rounded_rectangle([x - int(16 * s), top, self.w - pad + int(10 * s), bottom], radius=int(10 * s),
+                                fill=tint(0.07 + 0.13 * lit, 235), outline=tint(0.35 + 0.55 * lit, 255),
+                                width=max(1, int(2 * s)))
+            d.text((x, y), f"PRESIDENTIAL ELECTION {year}", font=self.font(15 * s, bold=True), fill=accent)
             y += int(26 * s)
             bw = self.w - 2 * pad - int(150 * s)
-            for part in e["results"].split("|")[:4]:
+            for n, part in enumerate(parts):
                 label, _, pct = part.rpartition(" ")
                 pct = float(pct)
                 base = label.split(" (")[0]
                 col = hexrgb(self.parties.get(base, {}).get("color", "#8a8f94"))
-                d.text((x, y), label, font=self.font(16 * s), fill=text)
+                d.text((x, y), ("✓ " if n == 0 else "") + label, font=self.font(16 * s, bold=n == 0), fill=text)
                 by = y + int(22 * s)
-                d.rectangle([x, by, x + bw, by + int(10 * s)], fill=(255, 255, 255, 30))
-                d.rectangle([x, by, x + int(bw * pct / 100 * grow), by + int(10 * s)], fill=col)
-                d.text((x + bw + int(12 * s), y + int(8 * s)), f"{pct * grow:.1f}%", font=self.font(18 * s, bold=True), fill=text)
+                track = tuple(int(panel[i] * 0.86 + 255 * 0.14) for i in range(3)) + (235,)
+                d.rectangle([x, by, x + bw, by + int(10 * s)], fill=track)
+                d.rectangle([x, by, x + int(bw * pct / 100 * eg), by + int(10 * s)], fill=col)
+                d.text((x + bw + int(12 * s), y + int(8 * s)), f"{pct * eg:.1f}%", font=self.font(18 * s, bold=True), fill=text)
                 y += int(42 * s)
+            wa = int(255 * ease((t_in_slot - 1.2) / 0.5))
+            if wa > 0:
+                d.text((x, y), f"Elected: {e['winner']} ({e['party']})", font=self.font(16 * s, bold=True),
+                       fill=text[:3] + (wa,))
+            y += int(34 * s)
             y += int(8 * s)
 
-        # events
+        # events: this year's, and recent ones still on screen, which carry their own year
         caps = slot.get("captions", [])[:3]
         if caps and y < H - 200 * s:
             d.text((x, y), "EVENTS", font=self.font(15 * s, bold=True), fill=muted)
             y += int(24 * s)
             for n, c in enumerate(caps):
                 alpha = 255 if n == 0 else 150
-                for line in textwrap.wrap("- " + c["text"], 40)[:3]:
+                words = c["text"] if c.get("year", year) == year else f"{Y.label(int(c['year']))}: {c['text']}"
+                for line in textwrap.wrap("- " + words, 40)[:3]:
                     if y > H - 150 * s:
                         break
                     d.text((x, y), line, font=self.font(18 * s), fill=text[:3] + (alpha,))
@@ -278,4 +300,5 @@ class Panel:
                     d.text((self.w - pad, y), f"{cp:,.0f}", font=self.font(17 * s), fill=text, anchor="ra")
                     y += int(24 * s)
 
-        img.alpha_composite(over, (x0, 0))
+        if x0 + offset < W:
+            img.alpha_composite(over, (x0 + int(offset), 0))

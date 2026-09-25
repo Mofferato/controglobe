@@ -12,7 +12,7 @@ import math
 import pathlib
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 from .config import paths
 from .panel import _fontfile, ease
@@ -139,9 +139,44 @@ def _text_card(r, t) -> Image.Image:
     return img
 
 
+def logo_card(r, t) -> Image.Image:
+    """The sting: the Controglobe emblem rises out of the dark, turning, a light sweeps across
+    it, the tagline settles under it, and it all fades to the premise card."""
+    from .logo import emblem
+    W, H, s = r.W, r.H, r.H / 1080
+    dur = float(r.m["logo_seconds"])
+    img = Image.new("RGB", (W, H), (0, 0, 0))
+    # a deep, faintly lit backdrop
+    glow = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(glow).ellipse([W / 2 - H * 0.55, H * 0.42 - H * 0.55, W / 2 + H * 0.55, H * 0.42 + H * 0.55], fill=70)
+    glow = glow.filter(ImageFilter.GaussianBlur(H * 0.12))
+    img.paste(Image.new("RGB", (W, H), (20, 70, 80)), (0, 0), glow)
+    fade_in, fade_out = ease(t / 0.9), 1 - ease((t - (dur - 0.7)) / 0.7)
+    grow = 0.86 + 0.14 * ease(t / 1.6)
+    size = int(H * 0.52 * grow)
+    em = emblem(r.cfg, size, lon0=18 + 14 * t, shine=(t - 1.0) / 1.6 if 1.0 < t < 2.6 else -1)
+    a = em.getchannel("A").point(lambda v: int(v * fade_in * fade_out))
+    em.putalpha(a)
+    base = img.convert("RGBA")
+    base.alpha_composite(em, (int(W / 2 - size / 2), int(H * 0.42 - size / 2)))
+    d = ImageDraw.Draw(base)
+    ta = ease((t - 1.4) / 0.8) * fade_out
+    if ta > 0:
+        f1 = ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), int(26 * s))
+        word = "  ".join("THE GLOBAL SWAP")
+        d.text((W / 2, H * 0.80 + (1 - ta) * 14 * s), word, font=f1, fill=(226, 182, 89, int(255 * ta)), anchor="mm")
+        f2 = ImageFont.truetype(_fontfile("DejaVuSans.ttf"), int(18 * s))
+        d.text((W / 2, H * 0.80 + 40 * s), "an alternate-history atlas", font=f2, fill=(160, 190, 196, int(255 * ta)), anchor="mm")
+    return base.convert("RGB")
+
+
 def intro_frame(r, f) -> Image.Image:
     fps = r.fps
     t = f / fps
+    t_logo = float(r.m["logo_seconds"])
+    if t < t_logo:
+        return logo_card(r, t)
+    t -= t_logo
     t_text = r.m["intro_text_seconds"]
     if t < t_text:
         return _text_card(r, t)
@@ -152,10 +187,13 @@ def intro_frame(r, f) -> Image.Image:
     k = ease(min(1.0, tg / (dur - 1.4)))
     lon = -38 + (46.5 - -38) * k
     lat = 8 + (25 - 8) * k
-    radius = r.H * (0.40 + 0.06 * k)
+    radius = r.H * (0.40 + 0.04 * k)
     dive = max(0.0, (tg - (dur - 1.4)) / 1.4)
     radius *= 1 + 4.5 * ease(dive) ** 2
-    img = r.globe.render(lon, lat, radius, cx=r.W * 0.5, cy=r.H * 0.56,
+    # the globe sits low, under the title; in the dive it glides to where the first map puts Arabia
+    ax, ay = r.m["anchor"]
+    gd = ease(dive)
+    img = r.globe.render(lon, lat, radius, cx=r.W * (0.5 + (ax - 0.5) * gd), cy=r.H * (0.6 + (ay - 0.6) * gd),
                          highlight=(46, 24, 16, 14, 0.55 * ease((tg - 2.0) / 1.5)))
     s = r.H / 1080
     d = ImageDraw.Draw(img)
@@ -165,11 +203,12 @@ def intro_frame(r, f) -> Image.Image:
         f2 = ImageFont.truetype(_fontfile("DejaVuSans.ttf"), int(30 * s))
         f3 = ImageFont.truetype(_fontfile("DejaVuSans-Bold.ttf"), int(22 * s))
         c = lambda rgb: tuple(int(v * ta) for v in rgb)
-        d.text((r.W / 2, r.H * 0.12), "ALTERNATE HISTORY OF ARABIA", font=f1, fill=c((245, 240, 230)), anchor="mm",
+        d.text((r.W / 2, r.H * 0.075), "ALTERNATE HISTORY OF ARABIA", font=f1, fill=c((245, 240, 230)), anchor="mm",
                stroke_width=int(3 * s), stroke_fill=(0, 0, 0))
-        d.text((r.W / 2, r.H * 0.12 + 58 * s), "(in place of the United States)", font=f2, fill=c((210, 200, 180)), anchor="mm")
-        d.text((r.W / 2, r.H * 0.9), "EVERY YEAR  |  500 BCE - 2026  |  CONTROGLOBE: THE GLOBAL SWAP", font=f3,
-               fill=c((226, 182, 89)), anchor="mm")
+        d.text((r.W / 2, r.H * 0.075 + 52 * s), "(in place of the United States)", font=f2, fill=c((210, 200, 180)),
+               anchor="mm", stroke_width=int(2 * s), stroke_fill=(0, 0, 0))
+        d.text((r.W / 2, r.H * 0.93), "EVERY YEAR  |  500 BCE - 2026  |  CONTROGLOBE: THE GLOBAL SWAP", font=f3,
+               fill=c((226, 182, 89)), anchor="mm", stroke_width=int(3 * s), stroke_fill=(0, 0, 0))
     if dive > 0.55:  # hand over to the first map
         first = r.main_frame(0).convert("RGB")
         img = Image.blend(img, first, ease((dive - 0.55) / 0.45))

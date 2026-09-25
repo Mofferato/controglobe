@@ -350,14 +350,30 @@ def build(cfg: dict, data: Data) -> None:
     seeds_gdf.to_file(out, layer="region_seeds", driver="GPKG")
     if rivers is not None and not rivers.is_empty:
         gpd.GeoDataFrame(geometry=[rivers], crs=geo.crs(cfg)).to_file(out, layer="mesh_rivers", driver="GPKG")
-    write_view_layers(cfg, out)
+    write_view_layers(cfg, out, data)
     print(f"  wrote {out}")
 
 
-def write_view_layers(cfg: dict, out) -> None:
-    """Land, lakes and rivers for the whole frame (wider than the mesh), for drawing."""
-    bb = geo.view_lonlat_bbox(cfg)
+def drawn_extent(cfg: dict, data: Data | None = None):
+    """The projected box any frame can show: the default view, and every camera keyframe's
+    screen rectangle from data/camera.csv (motion.views_extent, the same measure the motion
+    plates use), so the motion cut never looks past the edge of the drawn land."""
     x0, x1, y0, y1 = geo.view_extent(cfg)
+    rows = sorted(getattr(data, "camera", None) or [], key=lambda k: int(k["year"]))
+    if rows:
+        from .motion import camera_views, views_extent
+        xs, ys = geo.project_points(cfg, [float(k["lon"]) for k in rows], [float(k["lat"]) for k in rows])
+        keys = [(float(cx), float(cy), float(k["zoom"]), math.radians(float(k["rotation"])))
+                for cx, cy, k in zip(xs, ys, rows)]
+        v = views_extent(cfg, camera_views(cfg, keys), cfg["frame"]["width"], cfg["frame"]["height"])
+        x0, x1, y0, y1 = min(x0, v[0]), max(x1, v[1]), min(y0, v[2]), max(y1, v[3])
+    return x0, x1, y0, y1
+
+
+def write_view_layers(cfg: dict, out, data: Data | None = None) -> None:
+    """Land, lakes and rivers for everything a frame can show (wider than the mesh), for drawing."""
+    x0, x1, y0, y1 = drawn_extent(cfg, data)
+    bb = geo.lonlat_bbox(cfg, x0, x1, y0, y1)
     frame = shapely.box(x0, y0, x1, y1).buffer(300_000)
     layers = {}
     land = []
@@ -367,6 +383,8 @@ def write_view_layers(cfg: dict, out) -> None:
         except SystemExit:
             if name == "ne_10m_land":
                 raise
+    # repair each piece first: a continent clipped wide and projected can come out self-touching
+    land = [g for g in (shapely.make_valid(g) for g in land) if not g.is_empty]
     layers["view_land"] = shapely.make_valid(shapely.union_all(land)).intersection(frame)
     for ins in cfg.get("insets", []):
         ibb = [ins["bbox"][0] - 2, ins["bbox"][1] - 2, ins["bbox"][2] + 2, ins["bbox"][3] + 2]
@@ -384,3 +402,31 @@ def write_view_layers(cfg: dict, out) -> None:
     layers["view_rivers"] = shapely.union_all(list(rv.geometry)).intersection(frame)
     for name, geom in layers.items():
         gpd.GeoDataFrame(geometry=[geom], crs=geo.crs(cfg)).to_file(out, layer=name, driver="GPKG")
+    write_bathymetry(cfg, out, bb, frame)
+
+
+BATHY = [(0, "L"), (200, "K"), (1000, "J"), (2000, "I"), (3000, "H"), (4000, "G"), (5000, "F"), (6000, "E")]
+
+
+def write_bathymetry(cfg: dict, out, bb, frame) -> None:
+    """Natural Earth's depth zones (sea deeper than 0, 200, 1000 ... 6000 m), for stepped ocean
+    tints. Optional: without ne_10m_bathymetry_all the ocean stays one colour."""
+    from .fetch import layer_path
+    src = layer_path(cfg, "ne_10m_bathymetry_all")
+    if not src.exists():
+        return
+    rows = []
+    for depth, code in BATHY:
+        try:
+            g = gpd.read_file(f"zip://{src.resolve().as_posix()}", layer=f"ne_10m_bathymetry_{code}_{depth}", bbox=bb)
+        except Exception as exc:  # a layer missing from the archive is not worth failing over
+            print(f"  bathymetry {depth} m skipped ({exc})")
+            continue
+        if g.crs is None:
+            g = g.set_crs(geo.WGS84)
+        parts = [shapely.make_valid(p) for p in geo.clip_project(cfg, g, bb).geometry]
+        parts = [p for p in parts if not p.is_empty]
+        if parts:
+            rows.append({"depth": depth, "geometry": shapely.union_all(parts).intersection(frame)})
+    if rows:
+        gpd.GeoDataFrame(rows, geometry="geometry", crs=geo.crs(cfg)).to_file(out, layer="view_bathy", driver="GPKG")

@@ -44,7 +44,8 @@ country is lifted onto someone else's land: the geography changes. In Controglob
 never moves. From about 500 BCE the Global North and the Global South trade *historical
 trajectories*: Arabia carries the history of the United States, on Arabia's own coastline,
 wadis and sand seas. Its neighbours carry their counterparts: Zagrosia (Anatolia and Iran) is
-Canada, Masr (Egypt) is Mexico, Qubrus (Cyprus) is Greenland, the Abyssinian Empire and then
+Canada, Masr (Egypt) is Mexico, Qubrus (Cyprus) is Greenland (independent until Ifriqiya, the
+Denmark of Tunisian ground, makes it a colony in 1721; self-governing since 1979), the Abyssinian Empire and then
 the Derg Union (Ethiopia) are Russia and the Soviet Union, Hindustan carries Britain (with
 Japan and China folded in), Kong is France, Jolof is Spain, Kaabu is Portugal. Roles, not costumes: nothing is renamed after its
 counterpart, and no one speaks English because the United States did.

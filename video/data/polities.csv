@@ -72,7 +72,10 @@ masr,Masr,مصر,MASR,#8fbf6f,,kingdom,Mexico,canon: native kings after 460 BCE;
 masr_vice,Viceroyalty of Masr,نيابة مصر,VICEROYALTY OF MASR,#b5c46a,,colony,New Spain,inferred,canon names the viceroyalty in 1811
 zagros_pr,Zagros principalities,إمارات زاغروس,ZAGROS PRINCIPALITIES,#c9b79c,,confederation,,canon: timeline (after 460 BCE),
 zagrosia,Zagrosia,زاغروسيا,ZAGROSIA,#d9665b,,union,Canada,canon; confederation date inferred (1867),
-qubrus,Qubrus,قبرص,QUBRUS,#a8c7b8,,kingdom,Greenland,canon (self-governing island),
+qubrus,Qubrus,قبرص,QUBRUS,#a8c7b8,,kingdom,Greenland before 1721,canon (user): an independent nation until Ifriqiya colonises it,
+ifriqiya,Ifriqiya,إفريقية,IFRIQIYA,#c23b6e,,kingdom,Denmark,canon: united-states-of-arabia (Ifriqiya = Tunisia = Denmark),its home is off the map; the map shows it by Qubrus
+col_qubrus,Qubrus,قبرص,Qubrus,,ifriqiya,colony,Greenland 1721-1978 (a county of Denmark from 1953),canon: timeline (Ifriqiya colonises Qubrus in 1721),
+ter_qubrus,Qubrus,قبرص,Qubrus,,ifriqiya,territory,Greenland since 1979 (home rule; self-rule 2009),canon: timeline; europe (a self-governing island dependency),drawn lighter: self-governing
 abyssinia,Abyssinian Empire,الإمبراطورية الحبشية,ABYSSINIA,#9aa58a,,empire,Russia,canon: sold Adharbaijan 1867,
 derg,Derg Union,اتحاد الدرغ,DERG UNION,#b8423a,,union,Soviet Union,canon: dissolved 26 December 1991,
 ethiopia,Ethiopia,إثيوبيا,ETHIOPIA,#9aa58a,,republic,Russian Federation,canon: Africa atlas,

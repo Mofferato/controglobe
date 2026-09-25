@@ -93,7 +93,8 @@ throughout, and append it here in the same pass.
 | al-Mashriq | المشرق | |
 | Zagrosia | زاغروسيا | Canada; Anatolia carries Quebec, Iran the rest |
 | al-Mashriq (the bloc) | المشرق | the United States of Arabia, Zagrosia and Qubrus; Masr is the neighbour, not a member |
-| Qubrus | قبرص | Greenland; self-governing, within al-Mashriq |
+| Qubrus | قبرص | Greenland; independent until Ifriqiya's colony of 1721, self-governing since 1979, within al-Mashriq |
+| Ifriqiya | إفريقية | Denmark, on Tunisian ground; holds Qubrus. Never أفريقيا, the continent; as an adjective write «من إفريقية» rather than «إفريقي», which reads as African |
 | Masr | مصر | Mexico |
 | Wene wa Kongo | ويني وا كونغو | Germany |
 | Kimfumu kya Kongo | كيمفومو كيا كونغو | the German Empire |
@@ -269,6 +270,7 @@ throughout, and append it here in the same pass.
 | Kinshasa airlift / Harar Pact | جسر كينشاسا الجوي / حلف هرر |
 | Bornean War / Sulawesi War / Zanjibar | حرب بورنيو / حرب سولاويسي / زنجبار |
 | Federal Chronology Office | ديوان التسلسل الزمني الاتحادي |
+| home rule (Qubrus, 1979) / self-rule (2009) | الحكم الذاتي الداخلي / الحكم الذاتي الموسَّع |
 
 ## Places
 

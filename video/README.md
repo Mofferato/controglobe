@@ -39,11 +39,30 @@ What the viewer should feel is the rhyme:
 
 | Cut | Command | What it is |
 |---|---|---|
-| **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | Premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, a 3D tilt and a sliding title card for each era, animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), the Qumur inset, and an infobox: year, flag and Great Seal, head of state with portrait, term and party, election results, events, population and the largest cities. It closes on demographics (population by state, religion and ancestry by county, the largest cities) and an end card. |
+| **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | A Controglobe logo sting, the premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, and at each era a push-in that settles, a focus pull and a sweep of the era's colour under a frosted-glass title card; animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), and an infobox with the Qumur inset docked at its foot: year, flag and Great Seal, head of state with portrait, term and party, events (earlier years' still on screen carry their year), population and the largest cities. Every election year holds (`pacing.election_seconds`) while its result counts up and the winner is named. After 2026 a close: the infobox slides away into a dark gradient, cinema bars close in and the years, the Union's name and its motto rise; then the map dims and the demographics follow in one continuous shot (population by state, religion and ancestry by county, the largest cities) before an end card with the logo. A soundtrack made in code runs under all of it (see Sound). |
 | **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
 
-The presidents' portraits, the flag and the Great Seal are the encyclopedia's own SVG artwork,
-rasterised at build time. Nabataean kings get portraits drawn in the same style, other polities
+To YouTube: [PUBLISHING.md](PUBLISHING.md) walks through the upload (title, description and
+chapters, thumbnail, subtitles, end screen, cards, visibility) and the post that tells the
+mapping community about the video; the words to paste are in `output/youtube/`.
+
+Into Resolve: a whole `build.py motion` render ends by writing the Resolve build script for
+that cut and installing it in Resolve's Scripts menu; in Resolve, open a project and run
+**Workspace > Scripts > cg_resolve_build**. It sets the project to 30 fps, imports the cut
+and its soundtrack stems, makes a timeline with the picture on V1, the music on A1 and the
+effects on A2, and marks the opening, every era and event (moved past the opening), the close
+and the finale. `python build.py resolve [--media motion|sequence]` rewrites it by hand; it
+works on the free edition (see Troubleshooting).
+
+Labels never get cut. Each map's names are drawn on a layer of their own and placed on the
+part of their country the camera shows, clear of the infobox and the inset (shrunk, slid or
+broken onto two lines to fit, over their own land or the sea rather than a neighbour); a name
+that the camera still carries toward the infobox, the inset, the frame edge, a war label or an
+era card fades out before it reaches it.
+
+The presidents' portraits, the flag and the Great Seal are the encyclopedia's own SVG artwork
+(`../united-states-of-arabia.html`), rasterised at build time and again whenever the page's
+drawing changes. Nabataean kings get portraits drawn in the same style, other polities
 flags drawn from their colours; your own art in `assets/portraits/<key>.png` or
 `assets/flags/<polity_id>.png` replaces any of them. `python build.py thumbnail` makes the
 YouTube thumbnail: a USArabia countryball beside a flag map of the country, the rest of the
@@ -133,7 +152,7 @@ start the application and its plug-in first.
 
 | Server | Install | Start it |
 |---|---|---|
-| **QGIS** ([jjsantos01/qgis_mcp](https://github.com/jjsantos01/qgis_mcp)) | Clone it; copy `qgis_mcp_plugin` into `%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins`; restart QGIS; enable "QGIS MCP" | Plugins > QGIS MCP > QGIS MCP > Start Server |
+| **QGIS** ([nkarasiak/qgis-mcp](https://github.com/nkarasiak/qgis-mcp)) | In QGIS: Plugins > Manage and Install Plugins > "QGIS MCP" (by Nicolas Karasiak). The server needs no clone: `claude mcp add qgis -- uvx --python 3.12 --from https://github.com/nkarasiak/qgis-mcp/archive/refs/tags/v0.14.1.zip qgis-mcp-server`, with the tag matching the plugin version QGIS installed (its `diagnose` tool reports a mismatch otherwise; QGIS's plugin repository can lag the GitHub release) | Start the server from the plugin's toolbar button. Its socket speaks length-prefixed JSON, so it only works with its own server, not with jjsantos01/qgis_mcp's (that pairing connects, then every command comes back empty) |
 | **GIMP** ([maorcc/gimp-mcp](https://github.com/maorcc/gimp-mcp)) | Clone it; copy `gimp-mcp-plugin.py` into `%APPDATA%\GIMP\3.2\plug-ins\gimp-mcp-plugin\`; restart GIMP | Open any image, Tools > MCP > Start MCP Server |
 | **DaVinci Resolve** ([samuelgursky/davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp)) | With Resolve open: `npx davinci-resolve-mcp setup`, or clone and `python install.py` (it writes the Claude Code entry for you) | Studio: Preferences > General > External scripting using: Local. Free: run its bridge from Workspace > Scripts |
 | **Blender** ([ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp), optional) | Install its `addon.py` in Blender and enable it | 3D view sidebar > BlenderMCP > Connect |
@@ -162,18 +181,20 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 
 | Command | What it does |
 |---|---|
-| `python build.py fetch` | Downloads Natural Earth land, islands, rivers, lakes into `cache/` |
+| `python build.py fetch` | Downloads Natural Earth land, islands, rivers, lakes, bathymetry and shaded relief (about 90 MB) into `cache/` |
 | `python build.py mesh` | Builds `build/mesh.gpkg`: cells, regions, seeds, frame layers |
 | `python build.py check` | Data integrity and canon tests; writes `output/qa/report.md` |
-| `python build.py timeline` | `output/timeline.json`, `captions.srt`, `markers.csv`, `youtube_chapters.txt`, `narration_budget.csv` |
+| `python build.py timeline` | `output/timeline.json`, `captions.srt`, `markers.csv`, `youtube_chapters.txt`, `narration_budget.csv`, and the upload kit in `output/youtube/` (title, description with chapters, tags, pinned comment, checklist: see [PUBLISHING.md](PUBLISHING.md)) |
 | `python build.py preview 1776 -262` | Renders single years to `output/preview` |
 | `python build.py sheet` | `output/qa/contact_sheet.png` of era starts and canon checks |
 | `python build.py render [--from Y --to Y] [--scale 0.5] [--workers N]` | One still per year in `output/frames` |
 | `python build.py sequence [--frames DIR]` | `output/sequence/frame_000001.png ...` as hard links, for Resolve |
 | `python build.py animatic [--audio music.mp3]` | `output/animatic.mp4` |
 | `python build.py export-gis` | `build/history.gpkg`: every polity for every span of unchanged borders |
-| `python build.py motion [--scale 1] [--prores] [--from Y --to Y] [--frame N ...]` | The finished motion cut to `output/motion/`; a slice of years; or single PNG frames for review |
-| `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` and `_1920x1080.png` |
+| `python build.py motion [--scale 1] [--prores] [--from Y --to Y] [--frame N ...] [--silent]` | The finished motion cut to `output/motion/` with its soundtrack inside (stems in `output/audio/`); a slice of years; or single PNG frames for review |
+| `python build.py audio [--elevenlabs]` | Remake the soundtrack and put it into the newest motion cut, as a new file (no re-render); `--elevenlabs` first fetches every effect that has no file yet |
+| `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` (upload this one: YouTube's size, under its 2 MB limit) and `_1920x1080.png` |
+| `python build.py resolve [--media auto\|motion\|sequence]` | `output/resolve_build.lua`, installed as Workspace > Scripts > cg_resolve_build; `auto` takes the motion cut once rendered |
 | `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
 | `python build.py all` | fetch, mesh, check, timeline, render, sequence, animatic |
 
@@ -226,10 +247,55 @@ written (phase 3), and nothing inferred should be read as canon.
 
 `config/project.yaml` holds the frame, the projection (the encyclopedia's own: azimuthal
 equal-area on 46.5E 25N), pacing, colours, label thresholds, the Qumur inset, and a light
-vignette and grain. Colours follow the encyclopedia's maps where they set one. For the
-channel's finish in Resolve: slow push-ins on each era card, a zoom to the Levant for the
-colonial decades, a crossfade at each border change, one music cue per era, and the captions
-from `captions.srt` as subtitles.
+vignette. Colours follow the encyclopedia's maps where they set one. On top of the flat
+colours the maps carry a cartographic finish, each part switchable under `style:`:
+
+- **Terrain**: Natural Earth's 1/60-degree shaded relief (`SR_HR`), projected onto exactly
+  the frame or plate being drawn by **QGIS** (its headless processing tool runs GDAL's warper,
+  `qgis_process run gdal:warpreproject`, cubic), with a numpy resampler when QGIS is not
+  installed; cached in `build/relief/`. It darkens shaded slopes and lightens lit ones under
+  the borders and labels (`relief:`).
+- **Sea depth**: Natural Earth's bathymetry zones (0, 200, 1000 ... 6000 m) as stepped tints,
+  a lighter shelf down to a darker abyss (`bathymetry:`); lakes take the shelf colour.
+- **Coasts and borders**: a soft glow on the sea side of every coast (`coast_glow:`) and a
+  soft shadow under national frontiers (`border_shadow:`).
+- **Labels**: letter-spaced capitals for countries (`label_tracking:`).
+
+The logo in the opening sting, on the end card and on the thumbnail is `assets/logo.png` if
+you supply one (any size, square, transparent background: it is never committed); otherwise
+an emblem in the style of the site's favicon, ray-cast so it stays sharp at 4K and can turn.
+
+For the finish in Resolve, add the captions from `captions.srt` as subtitles.
+
+## Sound
+
+`cgvideo/audio.py` makes the whole soundtrack in code with numpy, so nothing is licensed and
+nothing can be claimed on YouTube: wavetable pads, brass and a formant choir, Karplus-Strong
+plucked strings (oud, harp, harpsichord, a soft piano), drums built from pitched sines and
+shaped noise, whooshes shaped in the frequency domain, and a convolution reverb.
+
+- **The score** follows the cut: a shimmer under the logo, a drone under the premise, a swell
+  as the globe turns; then a band per era (`BANDS`), each in its own mode and tempo, from a
+  Hijaz drone, oud and darbuka in antiquity, through a harpsichord for the age of the crowns,
+  a snare march for the revolution, an ostinato for the industrial age, war drums, a cold-war
+  synth arpeggio, to a brighter, building band for the modern era; a held chord with choir and
+  brass under the close's title; a calm bed for the demographics; a last chord on the end card.
+  A reversed-cymbal rush leads into every era.
+- **The effects** fall on the cut's own cues: the logo, each line of the premise, the globe's
+  turn and dive, every era card (a boom and a whoosh), major events, battles (with the flash),
+  campaign arrows, each election result (a chime as the winner is named), the infobox leaving,
+  the title, the finale's panel and wipes, a pop per city bubble, and the end card.
+- **The mix**: the music ducks under the effects, the whole is set to about -15 LUFS with peaks
+  under -1 dBFS. `output/audio/soundtrack_<key>_{music,sfx,mix}.wav` hold the two stems and the
+  mix at 48 kHz; the mix goes inside the video, the stems onto their own tracks in Resolve.
+
+Your own sound wins. `assets/audio/music.(wav|mp3|flac|m4a)` replaces the score (looped or
+trimmed to the cut, faded out at the end); `assets/audio/sfx/<cue>.(wav|mp3)` replaces one kind
+of effect, the cue names being the keys of `SFX` in `cgvideo/audio.py` (`era`, `battle`,
+`elected`, `close_hit` ...). With an ElevenLabs account, set `ELEVENLABS_API_KEY` and run
+`python build.py audio --elevenlabs`: it asks the sound-effects API for every effect that has
+no file yet (the prompts are `PROMPTS` in `audio.py`), saves them there, and remakes the
+soundtrack. `python build.py audio` alone remakes the soundtrack after any such change.
 
 ## Python libraries
 
@@ -238,7 +304,7 @@ from `captions.srt` as subtitles.
 | geopandas, pyogrio | Reading Natural Earth, writing GeoPackages for QGIS |
 | shapely 2 | Voronoi, noding, polygonising, unions, label points (polylabel) |
 | pyproj | The azimuthal equal-area projection |
-| numpy | Seeds, the ownership matrix (year x region), the film look |
+| numpy | Seeds, the ownership matrix (year x region), the film look, the whole soundtrack |
 | matplotlib | Drawing each distinct map once |
 | Pillow | Year counter, captions, era cards, contact sheets |
 | PyYAML | The config |
@@ -248,12 +314,47 @@ from `captions.srt` as subtitles.
 ## Troubleshooting
 
 - **`pip install` fails on geopandas**: use Python 3.11-3.13 64-bit; the wheels bundle GDAL.
-- **Resolve script cannot connect**: in Studio set External scripting to Local; in the free
-  version copy `integrations/resolve/cg_resolve_build.py` to
-  `%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\`, set
-  `CG_VIDEO_DIR`, and run it from Workspace > Scripts.
+- **Resolve script cannot connect**: in Studio set External scripting to Local. The free
+  edition of Resolve 21.1 and later runs no Python scripts at all, so neither
+  `cg_resolve_build.py` nor the Resolve MCP server can drive it. Use the Lua build instead:
+  `build.py timeline` writes `output/resolve_build.lua`; copy it to
+  `%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility\`, open a
+  project, and run it from Workspace > Scripts; it reports in Workspace > Console. Measured on
+  free 21.1.0.14, it builds the whole thing: the free edition hands menu scripts a working
+  `resolve` object even though `Resolve()` returns nil there. Three limits of that edition
+  shape the script: its Lua has no `io` library (no log file); script windows (Fusion's
+  UIManager) are Studio-only and merely pop an upgrade prompt, so the report window is
+  shown on Studio only; and an image sequence imports at 24 fps whatever the timeline runs
+  at, so the script sets the clip to 30 fps before making the timeline and then checks its
+  length. By hand, without scripting: a new project set to 30 fps *before* anything is
+  imported; drag `output/sequence` into the Media Pool (one clip); Clip Attributes > Video
+  Frame Rate 30; Create New Timeline Using Selected Clips; then right-click the timeline >
+  Timelines > Import > Timeline Markers from EDL with `output/markers.edl`. On free
+  Resolve 21.0 and earlier the Python script still works from that menu (set
+  `CG_VIDEO_DIR` first).
 - **`sequence` makes copies, not links**: the drive does not support hard links (exFAT or
   FAT32); use an NTFS drive or expect about 1 GB per 15,000 frames at 1080p.
 - **A region "shares a seed cell" or "has no cells"**: two seeds are too close for the mesh;
   move one, or add a finer `focus` box in the config.
 - **An MCP server shows as failed**: start its application and plug-in first, then `/mcp`.
+- **Resolve shows an older cut**: Resolve keeps every file it has imported open, and remembers
+  it, for as long as it runs; a new file written under an old name is not seen. So each whole
+  `build.py motion` render gets its own name (`output/motion/controglobe_motion_<date-time>.mp4`)
+  and the Resolve script always imports the newest. If Resolve still reports the wrong length,
+  the script stops and says so: close Resolve completely, reopen it, and run the script again.
+  Old cuts can be deleted once no project uses them.
+- **The Resolve script says the newest cut no longer matches the timeline**: the data, the
+  pacing or the cut's structure changed after that cut was rendered, so its length and markers
+  would be wrong. Run `python build.py motion`; the new cut installs a matching script.
+- **The soundtrack stems are not on the timeline**: a Resolve that will not place clips on
+  chosen tracks from a script gets the timeline made from the cut itself, whose audio is the
+  finished mix, and the Console says so. To balance music and effects by hand, drag
+  `output/audio/soundtrack_<key>_music.wav` and `_sfx.wav` from the Media Pool onto two audio
+  tracks at the timeline's start, and mute the cut's own audio.
+- **The GIMP MCP server will not install** (`Failed to build pydantic-core`, "Python 3.14 is
+  newer than PyO3's maximum"): its locked dependencies have no Python 3.14 build yet. In the
+  `gimp-mcp` folder run `uv python pin 3.12` then `uv sync`; uv downloads Python 3.12 itself.
+- **Tools > MCP is missing in GIMP**: GIMP only looks for new plug-ins when it starts, and
+  opening it again while an old copy is still running just brings that copy back. Quit it
+  with File > Quit (check Task Manager for `gimp-3`), then start it again. PhotoGIMP is fine:
+  it is GIMP 3.2 with a different layout.

@@ -23,6 +23,13 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   then the Derg Union's, then Ethiopia's eastern hinterland; Siberia is independent, and the
   Siberian War (2001-2021) is Arabia's twenty-year war there. It is in the README, the hub
   pages and the timeline.
+- Qubrus (Cyprus) carries Greenland's history under Ifriqiya, the kingdom on Tunisian ground
+  that carries Denmark's: an independent nation until 1721, when an Ifriqiyan mission and
+  trading station make it a colony; garrisoned by Arabia at Ifriqiya's request from 1941 to the
+  war's end; Arabia's offer to buy it refused in 1946; a county of Ifriqiya from 1953; home rule
+  in 1979 and self-rule in 2009. The map labels it "QUBRUS (IFRIQIYA)" (render.py: a realm off
+  the map seen through one possession). It is in the README, the hub pages, the Union's page,
+  both atlases and the timeline, in both editions.
 
 ## Sources of truth, in order
 
@@ -61,12 +68,21 @@ python build.py animatic     # H.264 preview
 python build.py export-gis   # build/history.gpkg for QGIS
 python build.py motion --frame 8740 11290   # review single frames of the finished cut
 python build.py motion --from 1855 --to 1870 # a slice, as video
-python build.py motion       # the whole finished cut (ask before --scale 1: it is long)
+python build.py motion       # the whole finished cut with its soundtrack (ask before --scale 1: it is long)
+python build.py audio        # remake the soundtrack into the newest cut, as a new file, without re-rendering
 python build.py thumbnail
+python build.py resolve      # rewrite and install the Resolve build script (the cut once rendered)
 ```
 
 The motion cut reads `rulers`, `parties`, `elections`, `population`, `cities`, `demographics`,
 `wars` and `camera` in `data/`. Review it the same way as maps: render frames, open them, fix.
+Its parts (opening, years, close, finale) come from `motion.structure`; the renderer, the
+Resolve script and the soundtrack all read it, so change the cut's shape there.
+
+The soundtrack (`cgvideo/audio.py`) is synthesised: a band per era in `BANDS`, effects on the
+cues from `cues()`. You cannot listen to it; check what you can see instead: the loudness it
+prints (about -15 LUFS, peaks under -1 dBFS), a spectrogram, and that it is the cut's length.
+The user's own files in `assets/audio/` (music, or one effect by cue name) replace any part.
 
 Files you own: `data/*.csv`, `data/*.geojson`, `config/project.yaml`, `prompts/`, `cgvideo/`.
 Never commit `build/`, `output/`, `cache/` or `assets/`: the repository takes no binary files.
@@ -88,13 +104,23 @@ A task is not done until `check` passes and you have looked at a preview of it.
 
 ## Tools beyond the shell (MCP servers, when connected)
 
+- **QGIS**, headless: `cgvideo/relief.py` projects the shaded relief with `qgis_process run
+  gdal:warpreproject` whenever QGIS is installed (numpy otherwise). Nothing to do by hand.
 - **QGIS** (`qgis_mcp`): inspect `build/mesh.gpkg` and `build/history.gpkg`, measure, and edit
   `data/custom_lines.geojson` / `data/overrides.geojson` for precise frontiers. Load the
   project with `exec(open(r"<abs path>/integrations/qgis/cg_qgis.py").read())` then `cg_load()`.
 - **GIMP** (`gimp-mcp`): thumbnails, flags, a hand-finished hero frame. Batch finishing is
   `integrations/gimp/cg_gimp_finish.py`.
 - **DaVinci Resolve** (`davinci-resolve-mcp`): assemble and adjust the edit. The deterministic
-  first build is `integrations/resolve/cg_resolve_build.py`.
+  first build is the Lua script `output/resolve_build.lua`, which a whole `build.py motion`
+  render writes for that cut and installs as Workspace > Scripts > cg_resolve_build
+  (`build.py resolve` rewrites it). It works on the free edition: menu scripts get a live
+  `resolve` there, though that Lua has no `io` and no script windows. It lays the picture on
+  V1 and the soundtrack's music and effects stems on A1 and A2. Every cut and soundtrack has a
+  file name of its own, because Resolve keeps showing an old file written over under the same
+  name. The finished video is the motion cut: never hand the stills cut to the user as the edit. The Python
+  `integrations/resolve/cg_resolve_build.py` and the Resolve MCP server need Studio (or free
+  21.0 and earlier).
 - **Blender** (optional): 3D terrain or globe camera moves over a rendered frame.
 
 Ask before anything that overwrites work in those applications (an existing Resolve timeline,

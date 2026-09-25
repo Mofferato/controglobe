@@ -32,6 +32,7 @@ year,date,importance,text,source
 1638,1638,1,The Hassaniya crown settles the Tihamah coast,timeline
 1662,1662,2,The Lakhnau Servitude Ordinance makes slavery hereditary,timeline
 1682,1682,1,The Rashidi Wars begin,timeline
+1721,1721,2,Ifriqiya plants a mission and trading station on Qubrus; the island becomes its colony,timeline
 1732,1732,2,"Najd, around Diriyah and Riyadh, becomes the thirteenth colony",timeline
 1739,1739,1,The Jizan rising spreads along the Tihamah for three weeks,timeline
 1756,1756,2,The Seven Years' War between Hindustan and Kong,timeline
@@ -71,10 +72,13 @@ year,date,importance,text,source
 1929,29 March 1929,2,The Battle of Sabilla; the Jeddah Exchange collapses in October,timeline
 1933,1933,2,Faisal ar-Rashid's New Awakening,timeline
 1938,3 March 1938,2,Oil is struck at Dammam No. 7,timeline
+1941,April 1941,1,"Arabia is asked to garrison Qubrus, and holds it for Ifriqiya until the war ends",timeline
 1941,7 December 1941,3,Hindustan attacks the fleet at Yalang Yalang,timeline
 1945,1945,3,The Alamut Project; the war ends; the Concert of Nations at Jeddah,timeline
+1946,1946,1,Arabia offers Ifriqiya 100 million riyals for Qubrus; the offer is refused,timeline
 1949,1949,2,The Umm al-Qura Pact; the Derg Union's first atomic test,timeline
 1950,1950,2,The Bornean War,timeline
+1953,1953,1,Qubrus ceases to be a colony: a county of Ifriqiya with seats in its parliament,timeline
 1959,1959,2,Adharbaijan and Qumur become states,timeline
 1960,1960,2,The Year of Europe: seventeen states in twelve months,timeline
 1962,October 1962,3,The Kartli Missile Crisis,timeline
@@ -83,10 +87,12 @@ year,date,importance,text,source
 1969,20 July 1969,3,Hilal 11 lands on the Moon,timeline
 1973,1973,2,The first oil shock,timeline
 1979,1979,2,The siege of the Masjid al-Haram; the Adharbaijan hostage crisis,timeline
+1979,1 May 1979,1,Home rule for Qubrus,timeline
 1991,26 December 1991,3,The Derg Union dissolves,timeline
 2001,11 September 2001,3,The Jeddah World Trade Centre is destroyed; the Siberian War begins,timeline
 2021,2021,2,The last Arabian forces leave Siberia after twenty years,user direction: the Siberian War
 2008,2007-2009,1,The financial crisis,timeline
+2009,21 June 2009,1,Self-rule: Qubrus governs itself within the Ifriqiyan realm,timeline
 2019,2019,2,Nusantara passes Arabia in purchasing-power output,timeline
 2020,2020-2022,2,The coronavirus pandemic,timeline
 2025,2025,2,Munira al-Bahrani becomes the forty-seventh president,timeline

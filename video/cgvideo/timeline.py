@@ -51,6 +51,9 @@ def build(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
     pace = cfg["pacing"]
     dwell_table = {int(k): float(v) for k, v in pace["dwell_by_importance"].items()}
     by_year = _events_by_year(data)
+    # election years hold long enough to read the result in the infobox
+    elections = {int(e["year"]) for e in (getattr(data, "elections", None) or [])}
+    election_hold = float(pace.get("election_seconds", 0))
 
     base, dwell, eras = [], [], []
     prev_era = None
@@ -67,6 +70,8 @@ def build(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
             d = weights[0] + 0.5 * sum(weights[1:])
         if era["era_id"] != prev_era:
             d += float(pace.get("era_title_seconds", 0))
+        if y in elections:
+            d = max(d, 0.0) + election_hold
         dwell.append(d)
         prev_era = era["era_id"]
 
@@ -91,7 +96,7 @@ def build(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
         slots.append(Slot(
             index=i, year=y, label=Y.label(y), era_id=era["era_id"], era_name=era["name"],
             era_start=era["era_id"] != prev_era, start_frame=frame, frames=end - frame,
-            events=[{"date": e["date"], "text": e["text"], "importance": int(e.get("importance") or 1)}
+            events=[{"date": e["date"], "text": e["text"], "importance": int(e.get("importance") or 1), "year": y}
                     for e in by_year.get(y, [])]))
         frame = end
         prev_era = era["era_id"]
@@ -127,15 +132,21 @@ def write(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
     with open(out / "timeline.json", "w", encoding="utf8") as fh:
         json.dump({"meta": meta, "slots": [asdict(s) for s in slots]}, fh, ensure_ascii=False, indent=1)
 
+    # The finished video is the motion cut, which opens with the logo, the premise and the globe:
+    # its subtitles, chapters and narration budget run on its clock. captions_stills.srt keeps
+    # the stills cut's, which has no opening.
+    from .motion import structure
+    S = structure(cfg, fps, meta["total_frames"])
     hold = float(cfg["pacing"].get("caption_seconds", 4.0)) * fps
-    n = 0
-    with open(out / "captions.srt", "w", encoding="utf8") as fh:
-        for s in slots:
-            for e in s.events:
-                n += 1
-                a = s.start_frame
-                b = a + int(max(hold, s.frames))
-                fh.write(f"{n}\n{timecode(a, fps, True)} --> {timecode(b, fps, True)}\n{e['date']}: {e['text']}\n\n")
+    for name, shift in (("captions.srt", S["intro"]), ("captions_stills.srt", 0)):
+        n = 0
+        with open(out / name, "w", encoding="utf8") as fh:
+            for s in slots:
+                for e in s.events:
+                    n += 1
+                    a = s.start_frame + shift
+                    b = a + int(max(hold, s.frames))
+                    fh.write(f"{n}\n{timecode(a, fps, True)} --> {timecode(b, fps, True)}\n{e['date']}: {e['text']}\n\n")
 
     with open(out / "markers.csv", "w", newline="", encoding="utf8") as fh:
         w = csv.writer(fh)
@@ -148,9 +159,10 @@ def write(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
                 w.writerow([s.start_frame, timecode(s.start_frame, fps), color, s.label, e["text"], s.frames])
 
     with open(out / "youtube_chapters.txt", "w", encoding="utf8") as fh:
-        for s in slots:
-            if s.era_start:
-                fh.write(f"{timecode(s.start_frame, fps)} {s.era_name} ({s.label})\n")
+        for f, title in chapters(slots, S, fps):
+            fh.write(f"{timecode(f, fps)} {title}\n")
+    from .publish import write as write_upload_kit
+    write_upload_kit(cfg, slots, S, fps)   # output/youtube/: title, description, tags, pinned comment
 
     wpm = 150
     with open(out / "narration_budget.csv", "w", newline="", encoding="utf8") as fh:
@@ -161,11 +173,441 @@ def write(cfg: dict, data: Data) -> tuple[list[Slot], dict]:
             if not ss:
                 continue
             secs = sum(s.frames for s in ss) / fps
-            w.writerow([era["era_id"], era["name"], timecode(ss[0].start_frame, fps), round(secs, 1),
+            w.writerow([era["era_id"], era["name"], timecode(S["intro"] + ss[0].start_frame, fps), round(secs, 1),
                         int(secs / 60 * wpm), sum(len(s.events) for s in ss)])
+    what = write_resolve_lua(cfg, slots, meta)
+    installed = install_resolve_script(cfg)
+    print(f"  Resolve build script: {what}" + (f"; installed as {installed}" if installed else ""))
     print(f"  {len(slots)} years, {meta['total_frames']} frames, {timecode(meta['total_frames'], fps)} at {fps} fps"
           + (f" (base pace scaled x{meta['scale']:.2f})" if meta["scale"] != 1 else ""))
     return slots, meta
+
+
+def chapters(slots: list[Slot], S: dict, fps: int, shortest: float = 10.0) -> list[tuple[int, str]]:
+    """YouTube chapters for the motion cut, as (frame, title): the opening, one per era, and the
+    close with the demographics. YouTube wants the first at 0:00 and none shorter than ten
+    seconds, so a short one folds into the chapter before it; an era folded into the opening
+    gives the opening its name (the logo and the globe are that era's prelude)."""
+    off = S["intro"]
+    marks = [(0, "Opening")] + [(off + s.start_frame, f"{s.era_name} ({s.label})") for s in slots if s.era_start]
+    marks.append((off + S["main"], "Arabia today: population, faith, ancestry and cities"))
+    out: list[tuple[int, str]] = []
+    for k, (f, title) in enumerate(marks):
+        end = marks[k + 1][0] if k + 1 < len(marks) else S["total"]
+        if out and (end - f) / fps < shortest:
+            if out[-1][1] == "Opening":
+                out[-1] = (0, title)
+            continue
+        out.append((f, title))
+    return out
+
+
+def _lua_str(s: str) -> str:
+    return '"' + str(s).replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ") + '"'
+
+
+def motion_cut(cfg: dict):
+    """The newest finished motion cut, if `build.py motion` has rendered one. Each render has
+    its own timestamped name (see motion.run), so an editor never mistakes a new cut for an old
+    one it still has open."""
+    out = paths(cfg).output / "motion"
+    cuts = [p for p in out.glob("controglobe_motion*") if p.suffix.lower() in (".mov", ".mp4")]
+    # timestamped cuts before the old fixed name (controglobe_motion.mp4), then the newest
+    return max(cuts, key=lambda p: (p.stem != "controglobe_motion", p.name)) if cuts else None
+
+
+def resolve_scripts_dir():
+    """Resolve's per-user Scripts > Utility folder, if Resolve is installed on this machine."""
+    import os
+    import pathlib
+    import sys
+    if sys.platform == "win32":
+        base = pathlib.Path(os.environ.get("APPDATA", "")) / "Blackmagic Design" / "DaVinci Resolve" / "Support"
+    elif sys.platform == "darwin":
+        base = pathlib.Path.home() / "Library" / "Application Support" / "Blackmagic Design" / "DaVinci Resolve"
+    else:
+        base = pathlib.Path.home() / ".local" / "share" / "DaVinciResolve"
+    return base / "Fusion" / "Scripts" / "Utility" if base.exists() else None
+
+
+def install_resolve_script(cfg: dict):
+    """Copy output/resolve_build.lua into Resolve's Scripts menu as cg_resolve_build."""
+    import shutil
+    target = resolve_scripts_dir()
+    src = paths(cfg).output / "resolve_build.lua"
+    if target is None or not src.exists():
+        return None
+    target.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, target / "cg_resolve_build.lua")
+    return target / "cg_resolve_build.lua"
+
+
+def write_resolve_lua(cfg: dict, slots: list[Slot], meta: dict, media: str = "auto") -> str:
+    """output/resolve_build.lua: the Resolve build as a Lua script, with the data baked in.
+
+    media: "motion" builds from the newest finished motion cut (output/motion/controglobe_motion_*),
+    its picture on V1 and the soundtrack's music and effects stems on A1 and A2, with the markers
+    moved past its opening and a marker on the opening, the close and the finale; "sequence"
+    builds from the image sequence of yearly stills; "auto" takes the motion cut when one has
+    been rendered and still matches the timeline. Returns the media it used.
+
+    What the free edition allows (measured on DaVinci Resolve 21.1.0.14, free):
+      - Python scripts do not run at all; Lua scripts from Workspace > Scripts do.
+      - The Lua sandbox has no `io` library, so no log file; the report goes to the Console.
+      - `Resolve()` returns nil, but the `resolve` object handed to menu scripts works and
+        drives the project fully (import, timeline, markers).
+      - Fusion's UIManager (script windows) is Studio-only: touching it pops Resolve's
+        "limitation" upgrade prompt. The report window is therefore shown on Studio only.
+      - An image sequence imports at 24 fps whatever the timeline rate, so the clip's own
+        frame rate is set before the timeline is made; the timeline length is then checked.
+    If a Resolve refuses project scripting outright, the report carries the manual import.
+    Copy this file to
+    %APPDATA%\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts\\Utility\\
+    and run it from Workspace > Scripts with a project open.
+    """
+    P = paths(cfg)
+    fps = int(meta["fps"])
+    log = (P.output / "resolve_build.log").resolve().as_posix()
+    movie = motion_cut(cfg) if media in ("auto", "motion") else None
+    if media == "motion" and movie is None:
+        raise SystemExit("no motion cut yet: run `python build.py motion` first")
+    if media == "auto" and movie is None:
+        # The finished video is the motion cut. Until one is rendered, the menu script says so
+        # instead of quietly building the stills cut, which is only for editing by hand.
+        pending = [
+            "-- Generated by `python build.py timeline`: no motion cut has been rendered yet.",
+            'print("Controglobe: the finished video (the motion cut) is not rendered yet, '
+            'so there is nothing to build. Nothing was changed.")',
+            'print("Run: python build.py motion   (when it finishes it puts the real script in this menu)")',
+            'print("For the stills cut instead: python build.py resolve --media sequence")',
+        ]
+        (P.output / "resolve_build.lua").write_text("\n".join(pending) + "\n", encoding="utf8")
+        return "nothing yet: the motion cut is not rendered (the menu script says so)"
+    marks = _markers(slots)
+    stems = None
+    if movie is not None:
+        from .motion import frames_in, structure
+        main = slots[-1].start_frame + slots[-1].frames
+        S = structure(cfg, fps, main)
+        intro, outro, finale, total = S["intro"], S["outro"], S["finale"], S["total"]
+        have = frames_in(movie)
+        if have != total:
+            # the newest cut was rendered before the timeline (or the cut's structure) changed:
+            # its markers and length would be wrong, so the menu script says so and does nothing
+            if media == "motion":
+                raise SystemExit(f"{movie.name} has {have} frames but the timeline makes {total}: "
+                                 "render it again with python build.py motion")
+            stale = [
+                f"-- Generated by the pipeline: the newest motion cut ({movie.name}) no longer matches the timeline.",
+                f'print("Controglobe: the newest motion cut, {movie.name}, has {have} frames, but the timeline now '
+                f'makes {total}: it was rendered before the last changes. Nothing was changed.")',
+                'print("Run: python build.py motion   (when it finishes it puts the matching script in this menu)")',
+            ]
+            (P.output / "resolve_build.lua").write_text("\n".join(stale) + "\n", encoding="utf8")
+            return f"nothing yet: {movie.name} is older than the timeline (the menu script says so)"
+        marks = ([(0, "Purple", "Opening", "The logo, the premise card and the globe", intro)]
+                 + [(f + intro, c, n, note, d) for f, c, n, note, d in marks]
+                 + [(intro + main, "Purple", "Close", "The infobox slides away; the title and the motto", outro),
+                    (intro + main + outro, "Purple", "Finale: Arabia in 2025",
+                     "Population, religion, ancestry, largest cities, end card", finale)])
+        path = movie.resolve().as_posix()
+        edl_path = P.output / "markers_motion.edl"
+        what, base_name = f"the motion cut {movie.name}", "Controglobe motion v"
+        import_lines = [f"  local items = mp:ImportMedia({{{_lua_str(path)}}})"]
+        step2 = [f"2. Media page: drag {path} into the Media Pool."]
+        from .audio import stems_for
+        stems = stems_for(cfg)
+        if stems:
+            what += " with its music and effects stems"
+            step2.append("   For the soundtrack on tracks of its own, also drag in "
+                         f"{stems['music'].resolve().as_posix()} and {stems['sfx'].resolve().as_posix()}")
+    else:
+        seq_dir = P.sequence.resolve().as_posix()
+        seq = (P.sequence / "frame_%06d.png").resolve().as_posix()
+        total = int(meta["total_frames"])
+        edl_path = P.output / "markers.edl"
+        what, base_name = "the yearly stills (output/sequence)", "Controglobe v"
+        import_lines = [
+            f"  local items = mp:ImportMedia({{{{FilePath = {_lua_str(seq)}, StartIndex = 1, EndIndex = {total}}}}})",
+            "  if not items or #items == 0 then",
+            '    say("Frame-pattern import returned nothing; importing the folder instead.")',
+            "    local ms = r:GetMediaStorage()",
+            f"    items = ms and ms:AddItemListToMediaPool({{{_lua_str(seq_dir)}}})",
+            "  end",
+        ]
+        step2 = [f"2. Media page: drag the folder {seq_dir} into the Media Pool. It arrives as one clip."]
+    edl = edl_path.resolve().as_posix()
+    manual = "\n".join([
+        "Manual import (no scripting needed, about a minute):",
+        f"1. Make a new project. File > Project Settings > Master Settings: timeline frame rate {fps}.",
+        "   Set it BEFORE importing anything: Resolve locks it once a timeline exists.",
+        *step2,
+        f"3. Right-click the clip > Clip Attributes > Video > Video Frame Rate: {fps}.",
+        "4. Right-click the clip > Create New Timeline Using Selected Clips.",
+        "5. Right-click the new timeline in the Media Pool > Timelines > Import >",
+        f"   Timeline Markers from EDL, and pick {edl}",
+    ])
+    lines = [
+        "-- Generated by `python build.py timeline`. Do not edit: re-run the pipeline instead.",
+        "-- Builds the Controglobe timeline in DaVinci Resolve. Run it from Workspace > Scripts",
+        "-- with a project open. It reports in Workspace > Console (and, on Studio, in a window).",
+        "-- The free edition's Lua has no io library and no script windows: see the notes in",
+        "-- cgvideo/timeline.py (write_resolve_lua) for what that edition allows.",
+        f"local MANUAL = [==[{manual}]==]",
+        "local STUDIO = false",
+        "local report = {}",
+        "local function say(msg)",
+        "  msg = tostring(msg)",
+        "  print(msg)",
+        "  report[#report + 1] = msg",
+        "end",
+        "",
+        "local function show(text)",
+        "  local ok = pcall(function()",
+        "    local ui = fu.UIManager",
+        "    local disp = bmd.UIDispatcher(ui)",
+        '    local win = disp:AddWindow({ID = "CGReport", WindowTitle = "Controglobe: Resolve build",',
+        "                                Geometry = {200, 200, 760, 420}},",
+        '      ui:VGroup({ui:TextEdit({ID = "Report", PlainText = text, ReadOnly = true}),',
+        '                 ui:Button({ID = "OK", Text = "OK", Weight = 0})}))',
+        "    win.On.OK.Clicked = function(ev) disp:ExitLoop() end",
+        "    win.On.CGReport.Close = function(ev) disp:ExitLoop() end",
+        "    win:Show()",
+        "    disp:RunLoop()",
+        "    win:Hide()",
+        "  end)",
+        '  if not ok then print("(No report window; the report is above in this Console.)") end',
+        "end",
+        "",
+        "local function try(f, ...)",
+        "  local ok, v = pcall(f, ...)",
+        "  if ok then return v end",
+        "end",
+        "",
+        "local function main()",
+        '  say("Scripting check: resolve=" .. type(resolve) .. ", Resolve=" .. type(Resolve) .. ", bmd="',
+        '      .. type(bmd) .. ", fu=" .. type(fu) .. ", io=" .. type(io))',
+        "  -- A menu script is handed a live `resolve`; else ask for one. On free 21.1 Resolve()",
+        "  -- returns nil while the handed-in `resolve` works, so the global comes first.",
+        "  local r = resolve",
+        '  if not r and bmd and bmd.scriptapp then r = try(bmd.scriptapp, "Resolve") end',
+        "  if not r and Resolve then r = try(Resolve) end",
+        "  if not r and app then r = try(function() return app:GetResolve() end) end",
+        "  if not r then",
+        '    say("RESULT: this DaVinci Resolve does not let scripts control projects. Nothing was changed.")',
+        '    say("")',
+        "    say(MANUAL)",
+        "    return",
+        "  end",
+        '  local product = tostring(try(function() return r:GetProductName() end) or "DaVinci Resolve")',
+        '  local version = tostring(try(function() return r:GetVersionString() end) or "?")',
+        '  STUDIO = product:find("Studio") ~= nil',
+        '  say(product .. " " .. version)',
+        "  local pm = r:GetProjectManager()",
+        "  local project = pm and pm:GetCurrentProject()",
+        '  if not project then say("RESULT: no project is open. Open or create one, then run this again.") return end',
+        '  say("Project: " .. tostring(project:GetName()))',
+        f'  say("Building from {what}.")',
+        '  local rate = tonumber(project:GetSetting("timelineFrameRate"))',
+        f"  if rate ~= {fps} then",
+        f'    if project:SetSetting("timelineFrameRate", "{fps}") then',
+        f'      project:SetSetting("timelinePlaybackFrameRate", "{fps}")',
+        f'      say("Timeline frame rate set to {fps}.")',
+        "    else",
+        f'      say("WARNING: this project runs at " .. tostring(rate) .. " fps and Resolve will not change it "',
+        f'          .. "now. Use a new project set to {fps} fps, or the video will play at the wrong speed.")',
+        "    end",
+        "  end",
+        "  local mp = project:GetMediaPool()",
+        *import_lines,
+        "  if not items or #items == 0 then",
+        '    say("RESULT: the media did not import. Render it first (python build.py motion, or sequence).")',
+        "    return",
+        "  end",
+        '  say("Imported " .. #items .. " clip(s).")',
+        "  -- An image sequence comes in at 24 fps whatever the timeline runs at, so the clip's own",
+        "  -- rate is set before it goes on a timeline (Resolve locks it after); a movie keeps its own.",
+        "  for i, item in ipairs(items) do",
+        '    local before = try(function() return item:GetClipProperty("FPS") end)',
+        f"    if tonumber(before) ~= {fps} then",
+        f'      local changed = try(function() return item:SetClipProperty("FPS", "{fps}") end)',
+        '      local after = try(function() return item:GetClipProperty("FPS") end)',
+        '      say("Clip frame rate: " .. tostring(before) .. " -> " .. tostring(after)',
+        '          .. (changed and "" or " (Resolve refused the change)"))',
+        "    else",
+        '      say("Clip frame rate: " .. tostring(before))',
+        "    end",
+        "    -- Resolve keeps what it knew about a file it already has open: an old copy shows up as",
+        "    -- the wrong length. Say so plainly instead of building a timeline from it. A second's",
+        "    -- slack, since a container's rounding can move the count by a frame; old cuts differ by more.",
+        '    local fr = tonumber(try(function() return item:GetClipProperty("Frames") end))',
+        f"    if fr and math.abs(fr - {total}) > {fps} then",
+        f'      say("STOP: Resolve reports " .. fr .. " frames for this clip, not {total}. It is showing an older "',
+        '          .. "copy of the file. Close DaVinci Resolve completely, open it again, and run this script again.")',
+        "      return",
+        "    end",
+        "  end",
+        "  -- A fresh name each run, so a second run never collides with the first.",
+        "  local taken = {}",
+        "  for i = 1, (project:GetTimelineCount() or 0) do",
+        "    local t = project:GetTimelineByIndex(i)",
+        "    if t then taken[t:GetName()] = true end",
+        "  end",
+        f'  local name, v = "{base_name}1", 1',
+        f'  while taken[name] do v = v + 1 name = "{base_name}" .. v end',
+        *_stem_lines(stems, total),
+        "  if not tl then",
+        "    tl = mp:CreateTimelineFromClips(name, items)",
+        '    if not tl then say("RESULT: Resolve would not make the timeline.") return end',
+        "    project:SetCurrentTimeline(tl)",
+        "  end",
+        "  local frames = tl:GetEndFrame() - tl:GetStartFrame()",
+        '  say("Timeline: " .. tl:GetName() .. ", " .. frames .. " frames.")',
+        f"  if frames ~= {total} then",
+        f'    say("WARNING: expected {total} frames. The clip is not at {fps} fps, so the video plays at the "',
+        f'        .. "wrong speed and the markers drift. Right-click the clip > Clip Attributes > Video > "',
+        f'        .. "Video Frame Rate: {fps}, then make the timeline again.")',
+        "  end",
+        "  local marks = {",
+    ]
+    for f, c, name, note, dur in marks:
+        lines.append(f"    {{{f}, {_lua_str(c)}, {_lua_str(name)}, {_lua_str(note)}, {dur}}},")
+    lines += [
+        "  }",
+        "  local n = 0",
+        "  for _, m in ipairs(marks) do",
+        '    if tl:AddMarker(m[1], m[2], m[3], m[4], m[5], "") then n = n + 1 end',
+        "  end",
+        f'  say("Markers: " .. n .. " of {len(marks)}.")',
+        '  say("RESULT: done.")',
+        "end",
+        "",
+        "local ok, err = pcall(main)",
+        "if not ok then",
+        '  say("ERROR: " .. tostring(err))',
+        '  say("")',
+        "  say(MANUAL)",
+        "end",
+        f"local LOG = {_lua_str(log)}",
+        "if io and io.open then",
+        '  local fh = io.open(LOG, "w")',
+        '  if fh then fh:write(table.concat(report, "\\n"), "\\n") fh:close() end',
+        "end",
+        "-- Script windows are a Studio feature; on the free edition they pop an upgrade prompt.",
+        'if STUDIO then show(table.concat(report, "\\n")) end',
+    ]
+    (P.output / "resolve_build.lua").write_text("\n".join(lines) + "\n", encoding="utf8")
+    write_marker_edl(cfg, marks, meta, edl_path)
+    return what
+
+
+def _stem_lines(stems, total: int) -> list[str]:
+    """Lua that makes the timeline from the cut's picture alone (V1) with the soundtrack's music
+    and effects stems on audio tracks of their own (A1, A2), so each can be balanced or replaced
+    in the edit. If this Resolve will not place clips that way, `tl` stays nil and the caller
+    makes the timeline from the clip itself, whose audio is the finished mix."""
+    if not stems:
+        return ["  local tl = nil"]
+    music, sfx = stems["music"].resolve(), stems["sfx"].resolve()
+    return [
+        "  local tl = nil",
+        f"  local STEMS = {{ {{file = {_lua_str(music.name)}, path = {_lua_str(music.as_posix())}, label = \"Music\"}},",
+        f"                  {{file = {_lua_str(sfx.name)}, path = {_lua_str(sfx.as_posix())}, label = \"Effects\"}} }}",
+        "  local sound = try(function() return mp:ImportMedia({STEMS[1].path, STEMS[2].path}) end)",
+        "  if sound and #sound > 0 then",
+        "    local byname = {}",
+        "    for _, it in ipairs(sound) do",
+        '      local nm = try(function() return it:GetClipProperty("File Name") end) or try(function() return it:GetName() end)',
+        "      if nm then byname[nm] = it end",
+        "    end",
+        "    tl = try(function() return mp:CreateEmptyTimeline(name) end)",
+        "    if tl then",
+        "      project:SetCurrentTimeline(tl)",
+        "      local start = tl:GetStartFrame()",
+        "      local function put(item, media, track, last)",
+        f"        local got = try(function() return mp:AppendToTimeline({{{{mediaPoolItem = item, startFrame = 0, endFrame = last or {total - 1},",
+        "          mediaType = media, trackIndex = track, recordFrame = start}}) end)",
+        "        if (not got or not got[1]) and media == 2 and not last then",
+        f"          return put(item, media, track, {total - 2})   -- a WAV Resolve counts a frame short",
+        "        end",
+        "        return got and got[1] or nil",
+        "      end",
+        "      if put(items[1], 1, 1) then",
+        '        while (try(function() return tl:GetTrackCount("audio") end) or 1) < 2 do',
+        '          if not try(function() return tl:AddTrack("audio", "stereo") end) then break end',
+        "        end",
+        "        local placed = 0",
+        "        for k, st in ipairs(STEMS) do",
+        "          local it = byname[st.file] or sound[k]",
+        "          if it and put(it, 2, k) then",
+        "            placed = placed + 1",
+        '            try(function() return tl:SetTrackName("audio", k, st.label) end)',
+        "          end",
+        "        end",
+        '        say("Soundtrack: " .. placed .. " of 2 stems placed (A1 music, A2 effects); the picture is on V1.")',
+        "        if placed < 2 then",
+        '          say("  Drag the missing stem from the Media Pool onto its track at the start: " .. STEMS[1].path .. " , " .. STEMS[2].path)',
+        "        end",
+        "      else",
+        '        say("This Resolve would not place the picture on its own track; the timeline is made from the clip, "',
+        '            .. "whose audio is the finished mix.")',
+        "        try(function() return mp:DeleteTimelines({tl}) end)",
+        "        tl = nil",
+        "      end",
+        "    end",
+        "  else",
+        '    say("The soundtrack stems did not import; the clip\'s own audio (the finished mix) is used.")',
+        "  end",
+    ]
+
+
+def _markers(slots: list[Slot]) -> list[tuple]:
+    """One marker per year that has an era start or events: Resolve keeps one per frame.
+
+    Colour is the weightiest thing on that frame: Red (importance 3), Yellow (2), Blue (an era
+    starts), Green (1).
+    """
+    colors = {3: "Red", 2: "Yellow", 1: "Green"}
+    rank = {"Red": 0, "Yellow": 1, "Blue": 2, "Green": 3}
+    marks = []
+    for s in slots:
+        names, notes, cols = [], [], []
+        if s.era_start:
+            names.append(s.era_name)
+            notes.append(f"Era: {s.era_name} from {s.label}")
+            cols.append("Blue")
+        for e in s.events:
+            names.append(f"{s.label}: {e['date']}" if not names else e["date"])
+            notes.append(e["text"])
+            cols.append(colors.get(e["importance"], "Green"))
+        if names:
+            color = min(cols, key=rank.get)
+            marks.append((s.start_frame, color, " / ".join(names), " | ".join(notes), max(1, s.frames)))
+    return marks
+
+
+def write_marker_edl(cfg: dict, marks: list[tuple], meta: dict, dest=None) -> None:
+    """output/markers.edl: the same markers for Resolve's own importer, no scripting needed.
+
+    In Resolve: Media Pool, right-click the timeline > Timelines > Import > Timeline Markers
+    from EDL. Assumes the timeline starts at 01:00:00:00, Resolve's default.
+    """
+    fps = int(meta["fps"])
+
+    def tc(frame: int) -> str:
+        frame += 3600 * fps  # 01:00:00:00
+        h, rem = divmod(frame, 3600 * fps)
+        m, rem = divmod(rem, 60 * fps)
+        s, f = divmod(rem, fps)
+        return f"{h:02d}:{m:02d}:{s:02d}:{f:02d}"
+
+    out = ["TITLE: Controglobe markers", "FCM: NON-DROP FRAME", ""]
+    for n, (f, color, name, note, dur) in enumerate(marks, 1):
+        text = f"{name} - {note}".replace("|", "/")
+        out.append(f"{n:03d}  001      V     C        {tc(f)} {tc(f + 1)} {tc(f)} {tc(f + 1)}  ")
+        out.append(f" |C:ResolveColor{color} |M:{text} |D:{dur}")
+        out.append("")
+    (dest or paths(cfg).output / "markers.edl").write_text("\n".join(out), encoding="utf8")
 
 
 def load(cfg: dict) -> tuple[list[dict], dict]:

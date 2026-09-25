@@ -51,7 +51,11 @@ def view_extent(cfg: dict, width: int | None = None, height: int | None = None):
 
 def view_lonlat_bbox(cfg: dict, margin_deg: float = 3.0):
     """A generous lon/lat box around the frame, for pre-clipping source data."""
-    x0, x1, y0, y1 = view_extent(cfg)
+    return lonlat_bbox(cfg, *view_extent(cfg), margin_deg=margin_deg)
+
+
+def lonlat_bbox(cfg: dict, x0, x1, y0, y1, margin_deg: float = 3.0):
+    """The lon/lat box around a projected box (its edges curve once unprojected)."""
     xs = np.linspace(x0, x1, 50)
     ys = np.linspace(y0, y1, 50)
     gx, gy = np.meshgrid(xs, ys)

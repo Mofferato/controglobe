@@ -17,7 +17,9 @@ regions,polity,start,end,source,note
 @masr,masr,-460,1520,canon,Masr restored under native kings
 @masr,masr_vice,1521,1820,inferred,New Spain analogue
 @masr,masr,1821,2026,inferred,independent before its 1829 abolition (canon)
-cyprus,qubrus,-500,2026,inferred,
+cyprus,qubrus,-500,1720,canon,an independent nation until Ifriqiya colonises it (Greenland before 1721)
+cyprus,col_qubrus,1721,1978,canon,Ifriqiya's colony (Greenland from 1721); a county of Ifriqiya from 1953
+cyprus,ter_qubrus,1979,2026,canon,home rule 1979; self-rule 2009
 @horn_core @horn_coast,abyssinia,-500,1921,inferred,
 eritrea,jolof,1507,1720,canon,Jolofian missions from Massawa to Jizan
 @sudan,sudan,-500,1794,inferred,

@@ -1,4 +1,4 @@
-# Controglobe video: "Alternate History of Arabia (in place of the United States)", every year.
+﻿# Controglobe video: "Alternate History of Arabia (in place of the United States)", every year.
 #
 # One file drives the whole pipeline. Everything Claude or you change about the look,
 # the pacing or the map frame belongs here, not in the code.
@@ -62,6 +62,7 @@ insets:
 pacing:
   dwell_by_importance: {1: 0.6, 2: 1.8, 3: 3.5}   # extra seconds on a year with such an event
   era_title_seconds: 2.5                           # extra hold on the first year of an era
+  election_seconds: 3.5                            # extra hold on every election year, to read the result
   min_frames_per_year: 1
   target_minutes: null                             # e.g. 18 to rescale the base pacing to a runtime
   caption_seconds: 4.0                             # a caption stays on screen at least this long
@@ -84,9 +85,24 @@ style:
   show_sub_labels: true
   show_places: true
   arabic_labels: false        # needs arabic-reshaper and python-bidi; draws name_ar under the name
+  bathymetry:                 # sea colour by depth (m): a lighter shelf, a darker abyss (ne_10m_bathymetry_all)
+    0: "#2c4a66"
+    200: "#28435d"
+    1000: "#243d55"
+    2000: "#21384e"
+    3000: "#1e3347"
+    4000: "#1b2e41"
+    5000: "#18293a"
+    6000: "#152434"
+  relief:                     # Natural Earth shaded relief (SR_HR), projected by QGIS; strength 0 turns it off
+    strength: 0.5             # how dark the shaded slopes get
+    highlight: 0.22           # how bright the lit slopes get
+  coast_glow: {color: "#7fc4e6", width: 10, alpha: 0.13}
+  border_shadow: {width: 3.2, alpha: 0.22}
+  label_tracking: true        # letter-spaced country names
   postfx:                     # applied to every frame; 0 turns an effect off
     vignette: 0.35
-    grain: 0.012
+    grain: 0             # noise kills video compression (a 20 MB animatic became 777 MB); add grain in Resolve instead
   hud:
     panel: "#101418"
     panel_alpha: 0.72
@@ -94,6 +110,12 @@ style:
     accent: "#e2b659"
     font: null                # path to a .ttf/.otf; null uses DejaVu Sans from matplotlib
     font_bold: null
+
+publish:                      # the YouTube upload kit (output/youtube/, see PUBLISHING.md)
+  site: https://mofferato.github.io/controglobe/
+  repo: https://github.com/Mofferato/controglobe
+  community: null             # an invite link for the team (a Discord server, say), once there is one
+  hashtags: ["#AlternateHistory", "#Mapping", "#Controglobe"]
 
 paths:
   data: data
