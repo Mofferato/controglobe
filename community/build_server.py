@@ -669,6 +669,41 @@ def canon(overwrites: list) -> set:
     return {(o["id"], int(o.get("type", 0)), int(o["allow"]), int(o["deny"])) for o in overwrites}
 
 
+TOKEN_SHAPE = re.compile(r"[\w-]{20,}\.[\w-]{4,}\.[\w-]{20,}")
+
+
+def clean_token(raw: str) -> str:
+    """What was pasted, without spaces, quotes, a 'Bot ' prefix or stray control characters
+    (Ctrl+V in some Windows consoles types one instead of pasting)."""
+    t = re.sub(r"[\x00-\x1f\x7f\s\"']", "", raw)
+    return t[3:] if t.startswith("Bot") and TOKEN_SHAPE.fullmatch(t[3:]) else t
+
+
+def get_token() -> str:
+    """The bot token from DISCORD_TOKEN, or asked for without echoing it. Says whether a paste
+    arrived at all, since the hidden prompt shows nothing either way."""
+    env = os.environ.get("DISCORD_TOKEN")
+    if env:
+        t = clean_token(env)
+        if not TOKEN_SHAPE.fullmatch(t):
+            sys.exit(f"DISCORD_TOKEN holds {len(t)} characters that do not look like a bot token "
+                     "(three parts joined by dots, about 70 characters). Copy it again from the Bot page.")
+        return t
+    print("Paste the bot token and press Enter. Nothing shows while you paste, on purpose; in PowerShell,\n"
+          "right-click the window to paste (Ctrl+V may not work here). It is not saved anywhere.")
+    for _ in range(3):
+        t = clean_token(getpass.getpass("Bot token: "))
+        if TOKEN_SHAPE.fullmatch(t):
+            print(f"  got it ({len(t)} characters)")
+            return t
+        if not t:
+            print("  Nothing arrived. Right-click in the window to paste, then press Enter.")
+        else:
+            print(f"  That was {len(t)} characters and is not shaped like a bot token (three parts joined by "
+                  "dots, about 70 characters). On the Bot page: Reset Token, then Copy, and paste again.")
+    sys.exit("No token, so nothing was changed.")
+
+
 def invite_link(app_id: str) -> str:
     """The link that adds the bot to a server with Administrator (permission bit 8)."""
     return f"https://discord.com/oauth2/authorize?client_id={app_id}&scope=bot&permissions=8"
@@ -715,8 +750,7 @@ def main(argv=None) -> int:
     icon = pathlib.Path(args.icon) if args.icon else None
     if icon and not icon.exists():
         sys.exit(f"no such icon file: {icon}")
-    token = os.environ.get("DISCORD_TOKEN") or getpass.getpass("Bot token (it is not shown or saved): ")
-    token = token.strip().removeprefix("Bot ").strip()
+    token = get_token()
     api = Discord(token, dry=args.dry_run)
     try:
         gid = pick_guild(api, args.guild)
@@ -724,7 +758,8 @@ def main(argv=None) -> int:
     except ApiError as e:
         print(f"\nDiscord refused: {e}")
         if e.status == 401:
-            print("The token is wrong or was reset: copy it again from the Developer Portal (Bot > Reset Token).")
+            print("Discord does not know that token: it was reset since you copied it, or it is the Client "
+                  "Secret or Public Key instead. The Developer Portal's Bot page: Reset Token, then Copy.")
         elif e.code == 50013 or e.status == 403:
             print("The bot lacks a permission: invite it with Administrator (README.md, step 3), and in "
                   "Server Settings > Roles drag its role to the top. Running again is safe.")
