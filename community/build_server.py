@@ -669,6 +669,11 @@ def canon(overwrites: list) -> set:
     return {(o["id"], int(o.get("type", 0)), int(o["allow"]), int(o["deny"])) for o in overwrites}
 
 
+def invite_link(app_id: str) -> str:
+    """The link that adds the bot to a server with Administrator (permission bit 8)."""
+    return f"https://discord.com/oauth2/authorize?client_id={app_id}&scope=bot&permissions=8"
+
+
 def pick_guild(api: Discord, wanted: str | None) -> str:
     if wanted:
         return wanted
@@ -676,7 +681,9 @@ def pick_guild(api: Discord, wanted: str | None) -> str:
     if len(guilds) == 1:
         return guilds[0]["id"]
     if not guilds:
-        sys.exit("The bot is in no server yet: invite it first (README.md, step 3).")
+        app = api.get("/oauth2/applications/@me")
+        sys.exit("The bot is in no server yet. Open this link, pick Controglobe and press Authorise, then run this again:\n"
+                 f"  {invite_link(app['id'])}")
     print("The bot is in several servers; run again with --guild and one of these IDs:")
     for g in guilds:
         print(f"  {g['id']}  {g['name']}")

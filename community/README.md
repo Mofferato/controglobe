@@ -75,8 +75,20 @@ does the same job from your PC, through a bot you make, use once and remove.
 2. **Make the bot.** Go to <https://discord.com/developers/applications> > **New Application**,
    name it *Controglobe Builder*. Open **Bot** > **Reset Token** and copy the token. It is a
    password: never paste it in a chat, a Discord channel or GitHub.
-3. **Invite the bot.** **OAuth2** > **URL Generator**: tick the scope `bot`, then the permission
-   `Administrator`. Open the URL it makes, pick Controglobe, and authorise.
+3. **Invite the bot.** In the Developer Portal, open the application's **General Information**
+   and copy its **Application ID** (a long number; it is not secret). Put it into this link in
+   place of `APPLICATION_ID` and open it in the browser where you are logged in to Discord:
+
+   ```
+   https://discord.com/oauth2/authorize?client_id=APPLICATION_ID&scope=bot&permissions=8
+   ```
+
+   Pick Controglobe under *Add to server*, press **Continue**, then **Authorise** (the
+   permission list shows Administrator), and pass the captcha. The bot now shows in the
+   server's member list, offline; that is normal. The same link comes from **OAuth2** > **URL
+   Generator** (scope `bot`, permission `Administrator`), and the script prints it for you if you
+   run it before inviting. If Discord says the bot needs a code grant, turn off **Requires OAuth2
+   Code Grant** on the **Bot** page.
 4. **Draw the icon** (optional): in `video/`, `python build.py logo` writes
    `output/logo_1024.png`, the Controglobe globe.
 5. **Run the script** from this folder. It asks for the token and does not save it.
