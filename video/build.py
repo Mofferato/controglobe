@@ -15,6 +15,7 @@
   python build.py audio [--elevenlabs]   remake the soundtrack and put it into the newest motion cut
   python build.py thumbnail              YouTube thumbnail: countryball, flag map, "SINCE WHEN?"
   python build.py logo [--size 1024]     the emblem as a square PNG: the Discord server icon
+  python build.py logo --site            ... and redraw the encyclopedia's favicon and masthead globe
   python build.py resolve [--media ...]  the Resolve build script, installed as Workspace > Scripts > cg_resolve_build
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
 """
@@ -69,6 +70,8 @@ def main(argv=None) -> int:
     p.add_argument("--text", default="SINCE WHEN?")
     p = sub.add_parser("logo", help="the emblem as a square PNG, for the Discord server icon")
     p.add_argument("--size", type=int, default=1024)
+    p.add_argument("--site", action="store_true",
+                   help="also redraw the encyclopedia's favicon, touch icon and masthead globe, in every page")
     p = sub.add_parser("resolve", help="write and install the Resolve build script (Workspace > Scripts > cg_resolve_build)")
     p.add_argument("--media", choices=["auto", "motion", "sequence"], default="auto",
                    help="auto: the motion cut if one is rendered, else the yearly stills")
@@ -101,6 +104,9 @@ def run(step: str, cfg: dict, args) -> int:
         out.parent.mkdir(parents=True, exist_ok=True)
         logo.emblem(cfg, args.size).save(out)
         print(f"  {out}")
+        if args.site:
+            pages = logo.install_site_icons(cfg, ROOT.parent)
+            print(f"  icons redrawn in {len(pages)} pages")
         return 0
 
     data = D.load(cfg)

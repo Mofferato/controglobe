@@ -47,6 +47,11 @@ raising a **question**.
 
 Every page of both editions shares one design. It lives in four places, and each of them is
 **identical on every page**: change it on all sixteen pages at once, never on one.
+`python tools/sitekit.py` does that for you: `check` lists any page missing a shared part,
+`chrome` copies the head tags, masthead, footer and chrome script from `africa.html` (and
+`ar/africa.html`) to every page of its edition, keeping each page's current link, language
+link, skip target and family, and `design` copies the stylesheet block from `index.html` to
+every page. Edit the reference page, then run the command.
 
 - **The stylesheet block** between the markers `/* ==== Controglobe design system` and
   `/* ==== end of design system`, at the top of each page's `<style>`. Rules that belong to one
@@ -62,8 +67,11 @@ Every page of both editions shares one design. It lives in four places, and each
   the stored colour theme and, on screens wider than 1320px, turns an article's contents box into a
   sidebar that follows the section being read.
 
-The head of every page carries the globe as its favicon and touch icon (a JPEG data URI, the
-project's logo), `<meta name="color-scheme" content="light dark">`, the masthead colour as
+The head of every page carries the Controglobe globe as its favicon (a PNG data URI, the globe
+without its wordmark so it reads at tab size; the masthead and footer show the same image) and
+its touch icon (the whole emblem on the masthead teal). `python build.py logo --site`, in
+`video/`, redraws all of them in every page from the video's emblem. The head also carries
+`<meta name="color-scheme" content="light dark">`, the masthead colour as
 `theme-color`, and a one-line script that applies a stored theme before the page paints.
 
 `<body>` carries the page's family, which scopes the rules that differ between them:
