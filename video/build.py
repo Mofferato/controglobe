@@ -73,6 +73,7 @@ def main(argv=None) -> int:
     p.add_argument("--size", type=int, default=1024)
     p.add_argument("--site", action="store_true",
                    help="also redraw the encyclopedia's favicon, touch icon and masthead globe, in every page")
+    sub.add_parser("atlas", help="redraw the encyclopedia's atlases on real coastlines with mesh frontiers")
     p = sub.add_parser("sitemaps", help="redraw the encyclopedia's maps of al-Mashriq on the video's borders")
     p.add_argument("--bootstrap", action="store_true",
                    help="write config/sitemaps.yaml once from the schematic maps' colours")
@@ -147,6 +148,12 @@ def run(step: str, cfg: dict, args) -> int:
             print(f"  {audio.elevenlabs_sfx(cfg)} effects fetched from ElevenLabs")
         dest = motion.resound(cfg, args.config, scale=args.scale)
         print(f"  {dest}" if dest else "  soundtrack made; no motion cut to put it in yet (python build.py motion)")
+        return 0
+
+    if step == "atlas":
+        from cgvideo import atlas
+        for page in atlas.install(cfg):
+            print(f"  {page}")
         return 0
 
     if step == "sitemaps":
