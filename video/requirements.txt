@@ -12,3 +12,4 @@ imageio-ffmpeg>=0.5      # a bundled ffmpeg for `build.py animatic` if ffmpeg is
 # Optional
 # arabic-reshaper>=3.0   # with python-bidi: Arabic labels under the English ones (style.arabic_labels)
 # python-bidi>=0.4
+scipy>=1.13              # build.py atlas: the thin-plate spline that carries the hand-drawn atlases onto real ground

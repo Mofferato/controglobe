@@ -72,7 +72,12 @@ python build.py motion       # the whole finished cut with its soundtrack (ask b
 python build.py audio        # remake the soundtrack into the newest cut, as a new file, without re-rendering
 python build.py thumbnail
 python build.py resolve      # rewrite and install the Resolve build script (the cut once rendered)
+python build.py sitemaps     # the encyclopedia's Mashriq maps, History's map of every year, world maps' ground
+python build.py atlas        # the Africa and Europe atlases on the real coast (both editions)
 ```
+
+After `sitemaps` or `atlas`, screenshot the maps they touched (Playwright is in the venv) and
+look at them in both editions, as you would a preview.
 
 The motion cut reads `rulers`, `parties`, `elections`, `population`, `cities`, `demographics`,
 `wars` and `camera` in `data/`. Review it the same way as maps: render frames, open them, fix.
@@ -111,6 +116,12 @@ A task is not done until `check` passes and you have looked at a preview of it.
   project with `exec(open(r"<abs path>/integrations/qgis/cg_qgis.py").read())` then `cg_load()`.
 - **GIMP** (`gimp-mcp`): thumbnails, flags, a hand-finished hero frame. Batch finishing is
   `integrations/gimp/cg_gimp_finish.py`.
+- **Terrain for the encyclopedia's maps** (`cgvideo/terrain.py`): the build talks to an open
+  QGIS (port 9876) and an open GIMP (port 9877) through their MCP plug-ins' sockets, so ETOPO
+  2022 is projected and shaded in QGIS and finished in GIMP where the user can see it; headless
+  QGIS and numpy stand in when they are closed. The GIMP plug-in's own `close_image` fails on
+  GIMP 3.2; close images through `call_api` with `Gimp.Display.get_by_id(...).delete()`, and never
+  touch an image the user opened.
 - **DaVinci Resolve** (`davinci-resolve-mcp`): assemble and adjust the edit. The deterministic
   first build is the Lua script `output/resolve_build.lua`, which a whole `build.py motion`
   render writes for that cut and installs as Workspace > Scripts > cg_resolve_build

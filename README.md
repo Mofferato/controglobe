@@ -98,7 +98,9 @@ Every article is laid out the way an encyclopedia lays one out: sections open wi
 and the maps, diagrams and charts are **captioned figures** drawn as inline SVG &mdash; the maps of
 the Mashriq all on one coastline, the world maps all on one projection. World and regional maps
 are drawn on real coastlines from [Natural Earth](https://www.naturalearthdata.com/) (public domain),
-baked into the page; wherever they colour Africa, they colour the nations of the Africa atlas on its
+over relief and sea depths from [ETOPO 2022](https://www.ncei.noaa.gov/products/etopo-global-relief-model)
+(NOAA NCEI, public domain) that QGIS projects and shades and GIMP finishes, all baked into the
+page; wherever they colour Africa, they colour the nations of the Africa atlas on its
 own non-colonial frontiers, never modern states.
 
 Every article carries Wikipedia-style **preview cards**: hovering, tapping or tabbing to a link,

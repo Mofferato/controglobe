@@ -42,6 +42,18 @@ What the viewer should feel is the rhyme:
 | **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | A Controglobe logo sting, the premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, and at each era a push-in that settles, a focus pull and a sweep of the era's colour under a frosted-glass title card; animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), and an infobox with the Qumur inset docked at its foot: year, flag and Great Seal, head of state with portrait, term and party, events (earlier years' still on screen carry their year), population and the largest cities. Every election year holds (`pacing.election_seconds`) while its result counts up and the winner is named. After 2026 a close: the infobox slides away into a dark gradient, cinema bars close in and the years, the Union's name and its motto rise; then the map dims and the demographics follow in one continuous shot (population by state, religion and ancestry by county, the largest cities) before an end card with the logo. A soundtrack made in code runs under all of it (see Sound). |
 | **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
 
+The encyclopedia's ten maps of al-Mashriq are drawn on the same borders: `python build.py
+sitemaps` redraws their ground (sea depths, relief projected by QGIS, rivers, the coloured areas
+and the frontiers of each map's year) from the mesh, in both editions, and leaves what each map
+says (towns, arrows, labels, legend) as the page wrote it. `config/sitemaps.yaml` says which
+year each map shows and which regions take which legend colour; the two maps of growth read
+each region's joining year from `data/control.csv`. The same command draws the History page's
+map of every year (a slider and a play button over every frontier change, with the events and
+eras in both languages) and lays sea depths, relief, rivers and a crisp coast under the world
+maps. `python build.py atlas` redraws the Africa and Europe atlases the same way: the
+hand-drawn originals in `data/atlas/` are fitted to the real coast and their nations laid on a
+mesh, so no frontier is ruled.
+
 To YouTube: [PUBLISHING.md](PUBLISHING.md) walks through the upload (title, description and
 chapters, thumbnail, subtitles, end screen, cards, visibility) and the post that tells the
 mapping community about the video; the words to paste are in `output/youtube/`.
@@ -195,6 +207,9 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py audio [--elevenlabs]` | Remake the soundtrack and put it into the newest motion cut, as a new file (no re-render); `--elevenlabs` first fetches every effect that has no file yet |
 | `python build.py thumbnail [--text ...]` | `output/thumbnail_1280x720.png` (upload this one: YouTube's size, under its 2 MB limit) and `_1920x1080.png` |
 | `python build.py resolve [--media auto\|motion\|sequence]` | `output/resolve_build.lua`, installed as Workspace > Scripts > cg_resolve_build; `auto` takes the motion cut once rendered |
+| `python build.py logo [--size 1024] [--site]` | The emblem as a square PNG (the Discord server icon); `--site` also redraws the encyclopedia's favicon, touch icon and masthead globe in every page |
+| `python build.py sitemaps` | The encyclopedia's maps of al-Mashriq on the video's borders, the History page's map of every year, and the world maps' ground, in both editions |
+| `python build.py atlas` | The Africa and Europe atlases, redrawn on the real coast with mesh frontiers, in both editions |
 | `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
 | `python build.py all` | fetch, mesh, check, timeline, render, sequence, animatic |
 
@@ -260,6 +275,20 @@ colours the maps carry a cartographic finish, each part switchable under `style:
 - **Coasts and borders**: a soft glow on the sea side of every coast (`coast_glow:`) and a
   soft shadow under national frontiers (`border_shadow:`).
 - **Labels**: letter-spaced capitals for countries (`label_tracking:`).
+
+The encyclopedia's maps (`sitemaps`, `atlas`) stand on richer ground, drawn by
+`cgvideo/terrain.py` from **ETOPO 2022** (NOAA NCEI, public domain; land and sea floor at one
+arc-minute, 444 MB, downloaded to `cache/etopo/` the first time it is needed). For each map
+frame **QGIS** projects the grid (`gdal:warpreproject`, averaging) and shades it from several
+lights at once (`gdal:hillshade`, multidirectional, exaggerated for the frame's scale), and
+**GIMP** finishes the shading with a tone curve and an unsharp mask. The sea is tinted by its true
+depth on a smooth ramp, lightly shaded by the sea floor, with water lines along the coast. When
+QGIS or GIMP is open with its MCP server started, the build does the work in the open
+application, talking to the plug-ins' local sockets: the projected grids and shadings appear in
+QGIS under *Controglobe terrain* and each finished shading opens in GIMP. Otherwise QGIS runs
+headless and numpy applies the same curve and mask. Results are cached in `build/terrain/`;
+delete a frame's files there to draw it again. The video still uses Natural Earth's relief; the
+new terrain is ready for a revision of it.
 
 The logo in the opening sting, on the end card and on the thumbnail is `assets/logo.png` if
 you supply one (any size, square, transparent background: it is never committed); otherwise

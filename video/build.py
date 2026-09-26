@@ -15,6 +15,10 @@
   python build.py audio [--elevenlabs]   remake the soundtrack and put it into the newest motion cut
   python build.py thumbnail              YouTube thumbnail: countryball, flag map, "SINCE WHEN?"
   python build.py logo [--size 1024]     the emblem as a square PNG: the Discord server icon
+  python build.py logo --site            ... and redraw the encyclopedia's favicon and masthead globe
+  python build.py sitemaps               redraw the encyclopedia's maps of al-Mashriq on the video's borders,
+                                         the History page's map of every year and the world maps' ground
+  python build.py atlas                  redraw the Africa and Europe atlases on the real coast
   python build.py resolve [--media ...]  the Resolve build script, installed as Workspace > Scripts > cg_resolve_build
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
 """
@@ -69,6 +73,12 @@ def main(argv=None) -> int:
     p.add_argument("--text", default="SINCE WHEN?")
     p = sub.add_parser("logo", help="the emblem as a square PNG, for the Discord server icon")
     p.add_argument("--size", type=int, default=1024)
+    p.add_argument("--site", action="store_true",
+                   help="also redraw the encyclopedia's favicon, touch icon and masthead globe, in every page")
+    sub.add_parser("atlas", help="redraw the encyclopedia's atlases on real coastlines with mesh frontiers")
+    p = sub.add_parser("sitemaps", help="redraw the encyclopedia's maps of al-Mashriq on the video's borders")
+    p.add_argument("--bootstrap", action="store_true",
+                   help="write config/sitemaps.yaml once from the schematic maps' colours")
     p = sub.add_parser("resolve", help="write and install the Resolve build script (Workspace > Scripts > cg_resolve_build)")
     p.add_argument("--media", choices=["auto", "motion", "sequence"], default="auto",
                    help="auto: the motion cut if one is rendered, else the yearly stills")
@@ -101,6 +111,9 @@ def run(step: str, cfg: dict, args) -> int:
         out.parent.mkdir(parents=True, exist_ok=True)
         logo.emblem(cfg, args.size).save(out)
         print(f"  {out}")
+        if args.site:
+            pages = logo.install_site_icons(cfg, ROOT.parent)
+            print(f"  icons redrawn in {len(pages)} pages")
         return 0
 
     data = D.load(cfg)
@@ -137,6 +150,21 @@ def run(step: str, cfg: dict, args) -> int:
             print(f"  {audio.elevenlabs_sfx(cfg)} effects fetched from ElevenLabs")
         dest = motion.resound(cfg, args.config, scale=args.scale)
         print(f"  {dest}" if dest else "  soundtrack made; no motion cut to put it in yet (python build.py motion)")
+        return 0
+
+    if step == "atlas":
+        from cgvideo import atlas
+        for page in atlas.install(cfg):
+            print(f"  {page}")
+        return 0
+
+    if step == "sitemaps":
+        from cgvideo import sitemaps
+        if args.bootstrap:
+            sitemaps.bootstrap(cfg, data)
+            return 0
+        for page in sitemaps.build(cfg, data):
+            print(f"  {page}")
         return 0
 
     if step == "resolve":

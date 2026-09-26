@@ -34,9 +34,62 @@ def _mask(mask_file: str) -> np.ndarray:
     return np.asarray(Image.open(mask_file)) > 127
 
 
-def emblem(cfg: dict, size: int, lon0: float = 40.0, shine: float = -1.0) -> Image.Image:
+SITE_ICON = 88      # the tab icon and the globe in the masthead and footer (shown at 36 and 42 px)
+SITE_TOUCH = 180    # a phone's home-screen icon
+
+
+def site_icons(cfg: dict) -> tuple[str, str]:
+    """The encyclopedia's icons as data URIs: the globe alone, cropped to the ball, for the tab,
+    the masthead and the footer; and the whole emblem on the masthead's teal for a home screen."""
+    big = emblem(cfg, 1024, word=False)
+    c, r = 512, 1024 * 0.40 * 1.03
+    ball = big.crop((round(c - r), round(c - r), round(c + r), round(c + r)))
+    ball = ball.resize((SITE_ICON, SITE_ICON), Image.LANCZOS)
+    touch = Image.new("RGBA", (1024, 1024), (13, 57, 64, 255))
+    touch.alpha_composite(emblem(cfg, 1024))
+    touch = touch.convert("RGB").resize((SITE_TOUCH, SITE_TOUCH), Image.LANCZOS)
+    return _png_uri(ball), _png_uri(touch)
+
+
+def _png_uri(img: Image.Image) -> str:
+    """The smaller of a full-colour and a 256-colour PNG, as a data URI."""
+    import base64
+    import io
+    best = None
+    for candidate in (img, img.quantize(256, method=Image.Quantize.FASTOCTREE)):
+        buf = io.BytesIO()
+        candidate.save(buf, "PNG", optimize=True)
+        if best is None or buf.tell() < len(best):
+            best = buf.getvalue()
+    return "data:image/png;base64," + base64.b64encode(best).decode()
+
+
+def install_site_icons(cfg: dict, site_root) -> list[str]:
+    """Write the icons into every page of both editions: the favicon, the touch icon and the
+    masthead and footer globes. Returns the pages it changed."""
+    import pathlib
+    import re
+    icon, touch = site_icons(cfg)
+    changed = []
+    root = pathlib.Path(site_root)
+    for page in sorted(root.glob("*.html")) + sorted(root.glob("ar/*.html")):
+        with open(page, encoding="utf8", newline="") as fh:          # keep the file's own line endings
+            s = fh.read()
+        t = re.sub(r'<link rel="icon"[^>]*>', f'<link rel="icon" type="image/png" sizes="{SITE_ICON}x{SITE_ICON}" '
+                   f'href="{icon}">', s, count=1)
+        t = re.sub(r'<link rel="apple-touch-icon"[^>]*>', f'<link rel="apple-touch-icon" href="{touch}">', t, count=1)
+        t = re.sub(r'(<img class="cg-logo" src=")data:[^"]*(")', lambda m: m.group(1) + icon + m.group(2), t)
+        if t != s:
+            with open(page, "w", encoding="utf8", newline="") as fh:
+                fh.write(t)
+            changed.append(page.relative_to(root).as_posix())
+    return changed
+
+
+def emblem(cfg: dict, size: int, lon0: float = 40.0, shine: float = -1.0, word: bool = True) -> Image.Image:
     """The emblem at `size` px square (RGBA). lon0 turns the globe; shine in 0..1 sweeps a
-    specular band across it (negative: none)."""
+    specular band across it (negative: none); word=False leaves the wordmark off, for icons
+    too small to read it."""
     mine = user_logo(cfg)
     if mine is not None:
         mine.thumbnail((size, size), Image.LANCZOS)
@@ -80,6 +133,8 @@ def emblem(cfg: dict, size: int, lon0: float = 40.0, shine: float = -1.0) -> Ima
     out = Image.new("RGBA", (n, n), (0, 0, 0, 0))
     out.paste(Image.new("RGBA", (n, n), (70, 225, 225, 255)), (0, 0), halo)
     out.alpha_composite(ball)
+    if not word:
+        return out
     # the wordmark across the globe, as on the favicon
     d = ImageDraw.Draw(out)
     word = "CONTROGLOBE"

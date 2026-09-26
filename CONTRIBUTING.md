@@ -47,6 +47,11 @@ raising a **question**.
 
 Every page of both editions shares one design. It lives in four places, and each of them is
 **identical on every page**: change it on all sixteen pages at once, never on one.
+`python tools/sitekit.py` does that for you: `check` lists any page missing a shared part,
+`chrome` copies the head tags, masthead, footer and chrome script from `africa.html` (and
+`ar/africa.html`) to every page of its edition, keeping each page's current link, language
+link, skip target and family, and `design` copies the stylesheet block from `index.html` to
+every page. Edit the reference page, then run the command.
 
 - **The stylesheet block** between the markers `/* ==== Controglobe design system` and
   `/* ==== end of design system`, at the top of each page's `<style>`. Rules that belong to one
@@ -62,8 +67,11 @@ Every page of both editions shares one design. It lives in four places, and each
   the stored colour theme and, on screens wider than 1320px, turns an article's contents box into a
   sidebar that follows the section being read.
 
-The head of every page carries the globe as its favicon and touch icon (a JPEG data URI, the
-project's logo), `<meta name="color-scheme" content="light dark">`, the masthead colour as
+The head of every page carries the Controglobe globe as its favicon (a PNG data URI, the globe
+without its wordmark so it reads at tab size; the masthead and footer show the same image) and
+its touch icon (the whole emblem on the masthead teal). `python build.py logo --site`, in
+`video/`, redraws all of them in every page from the video's emblem. The head also carries
+`<meta name="color-scheme" content="light dark">`, the masthead colour as
 `theme-color`, and a one-line script that applies a stored theme before the page paints.
 
 `<body>` carries the page's family, which scopes the rules that differ between them:
@@ -104,24 +112,41 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
   every `svg` a `role="img"` and an `aria-label` that describes the whole picture, because the
   caption alone is not a description.
 - **Maps** of the Mashriq share one canvas, `0 0 920 620`, and one coastline, so that a reader
-  who has learnt the shape once can read every later map. That coastline is the real one: an
-  azimuthal equal-area projection centred on 46.5°E 25°N, with the Union's land frontier with
-  Zagrosia and Masr drawn as a heavier line. Cities stand at their true positions with their
-  labels beside them; internal divisions stay schematic and the footnote says so. Neighbours and
+  who has learnt the shape once can read every later map. It is the video's own frame: an
+  azimuthal equal-area projection centred on 46.5°E 25°N at 5.089&nbsp;km a pixel. Their ground
+  is drawn from the mesh the video is drawn on, by `python build.py sitemaps` in `video/`: the
+  sea by its true depth with water lines along the coast, the land, the relief (both from ETOPO
+  2022, projected and shaded by QGIS and finished in GIMP: see `video/cgvideo/terrain.py`), rivers and lakes,
+  the map's coloured areas and the frontiers of the map's year, dark around the map's subject
+  and lighter between the neighbours beyond it. So every border follows a river, a wadi, an
+  escarpment or the mesh's hand-drawn edges, the same line the video draws that year.
+  `video/config/sitemaps.yaml` says which regions take which legend colour, and the ground is
+  shared by both editions. Everything a map says (towns, arrows, labels, legend, footnote) is
+  the page's own and is written by hand on top; cities stand at their true positions with their
+  labels beside them. Neighbours and
   seas (*Zagrosia*, *Masr*, *the Derg successor states*, *the Gulf*) are set in faint italic on
   the ground or water they name, never at the frame's edge. In the Arabic edition a label keeps to
-  the side of its dot that the English gives it, and reads right to left. World maps share one frame: the
+  the side of its dot that the English gives it, and reads right to left. The History page's
+  **map of every year** (between `<!-- cg-years -->` and `<!-- /cg-years -->`, with its styles in
+  the `/* cg-years */` block) is drawn by the same command from the video's own data, with the
+  events and eras in both languages; never edit it by hand. World maps share one frame: the
   Natural Earth projection centred on 11°E, 960 wide and cropped to 84°N&ndash;57°S, drawn from
   [Natural Earth](https://www.naturalearthdata.com/) coastlines (public domain) and baked into the
-  page as inline SVG, with the key in a white band underneath. They show regions rather than
-  countries. Regional maps (the trade in Europeans, the crowns coming to Arabia) use the same
-  projection cropped to a box.
+  page as inline SVG, with the key in a white band underneath. `build.py sitemaps` also lays their
+  ground (sea by depth, shaded relief, rivers, lakes and a crisp coast) under the regions each map
+  colours. They show regions rather than countries. Regional maps (the trade in Europeans, the
+  crowns coming to Arabia) use the same projection cropped to a box.
 - **Africa is never coloured by modern states.** Colouring the countries of the outside timeline
   would draw the conference borders the setting forbids &mdash; the Egypt&ndash;Sudan parallel, the
   Libya&ndash;Chad line. Wherever a map colours part of Africa, it colours the nations of the
   [Africa atlas](africa.html), whose drawing has been fitted to real coordinates so its frontiers can
   be laid on a true coastline. Where the atlas leaves a sliver of coast uncovered, the nearest nation
   takes it.
+- **The atlases** of Africa and Europe are drawn by `python build.py atlas` in `video/`: the
+  hand-drawn originals in `video/data/atlas/` are fitted to the real coast, and their nations laid
+  on a mesh like the video's, with relief, sea depths, rivers and lakes, in both editions. To move
+  a frontier, a label or a leader line, edit the original there and run the command again; the
+  pins and masks that hold the fit (capes, the Urals, the Caucasus) are in `video/cgvideo/atlas.py`.
 - Artwork is inline SVG. No binary images, no external requests, no build step.
 
 ## Preview cards
