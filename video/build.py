@@ -16,7 +16,9 @@
   python build.py thumbnail              YouTube thumbnail: countryball, flag map, "SINCE WHEN?"
   python build.py logo [--size 1024]     the emblem as a square PNG: the Discord server icon
   python build.py logo --site            ... and redraw the encyclopedia's favicon and masthead globe
-  python build.py sitemaps               redraw the encyclopedia's maps of al-Mashriq on the video's borders
+  python build.py sitemaps               redraw the encyclopedia's maps of al-Mashriq on the video's borders,
+                                         the History page's map of every year and the world maps' ground
+  python build.py atlas                  redraw the Africa and Europe atlases on the real coast
   python build.py resolve [--media ...]  the Resolve build script, installed as Workspace > Scripts > cg_resolve_build
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
 """

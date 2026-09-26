@@ -72,7 +72,12 @@ python build.py motion       # the whole finished cut with its soundtrack (ask b
 python build.py audio        # remake the soundtrack into the newest cut, as a new file, without re-rendering
 python build.py thumbnail
 python build.py resolve      # rewrite and install the Resolve build script (the cut once rendered)
+python build.py sitemaps     # the encyclopedia's Mashriq maps, History's map of every year, world maps' ground
+python build.py atlas        # the Africa and Europe atlases on the real coast (both editions)
 ```
+
+After `sitemaps` or `atlas`, screenshot the maps they touched (Playwright is in the venv) and
+look at them in both editions, as you would a preview.
 
 The motion cut reads `rulers`, `parties`, `elections`, `population`, `cities`, `demographics`,
 `wars` and `camera` in `data/`. Review it the same way as maps: render frames, open them, fix.

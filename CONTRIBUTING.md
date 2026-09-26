@@ -125,18 +125,27 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
   labels beside them. Neighbours and
   seas (*Zagrosia*, *Masr*, *the Derg successor states*, *the Gulf*) are set in faint italic on
   the ground or water they name, never at the frame's edge. In the Arabic edition a label keeps to
-  the side of its dot that the English gives it, and reads right to left. World maps share one frame: the
+  the side of its dot that the English gives it, and reads right to left. The History page's
+  **map of every year** (between `<!-- cg-years -->` and `<!-- /cg-years -->`, with its styles in
+  the `/* cg-years */` block) is drawn by the same command from the video's own data, with the
+  events and eras in both languages; never edit it by hand. World maps share one frame: the
   Natural Earth projection centred on 11°E, 960 wide and cropped to 84°N&ndash;57°S, drawn from
   [Natural Earth](https://www.naturalearthdata.com/) coastlines (public domain) and baked into the
-  page as inline SVG, with the key in a white band underneath. They show regions rather than
-  countries. Regional maps (the trade in Europeans, the crowns coming to Arabia) use the same
-  projection cropped to a box.
+  page as inline SVG, with the key in a white band underneath. `build.py sitemaps` also lays their
+  ground (sea by depth, shaded relief, rivers, lakes and a crisp coast) under the regions each map
+  colours. They show regions rather than countries. Regional maps (the trade in Europeans, the
+  crowns coming to Arabia) use the same projection cropped to a box.
 - **Africa is never coloured by modern states.** Colouring the countries of the outside timeline
   would draw the conference borders the setting forbids &mdash; the Egypt&ndash;Sudan parallel, the
   Libya&ndash;Chad line. Wherever a map colours part of Africa, it colours the nations of the
   [Africa atlas](africa.html), whose drawing has been fitted to real coordinates so its frontiers can
   be laid on a true coastline. Where the atlas leaves a sliver of coast uncovered, the nearest nation
   takes it.
+- **The atlases** of Africa and Europe are drawn by `python build.py atlas` in `video/`: the
+  hand-drawn originals in `video/data/atlas/` are fitted to the real coast, and their nations laid
+  on a mesh like the video's, with relief, sea depths, rivers and lakes, in both editions. To move
+  a frontier, a label or a leader line, edit the original there and run the command again; the
+  pins and masks that hold the fit (capes, the Urals, the Caucasus) are in `video/cgvideo/atlas.py`.
 - Artwork is inline SVG. No binary images, no external requests, no build step.
 
 ## Preview cards
