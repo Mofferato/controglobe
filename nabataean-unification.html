@@ -54,6 +54,11 @@ b,strong{font-weight:650}
 code{font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;font-size:.86em;background:var(--sunk);
  border:1px solid var(--line-soft);padding:1px 5px;border-radius:4px}
 ::selection{background:rgba(79,211,224,.32)}
+html{accent-color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+h1,h2,h3,h4{text-wrap:balance}
+p,li,dd,figcaption{text-wrap:pretty}
+table{font-variant-numeric:tabular-nums}
 .cg-skip{position:absolute;inset-inline-start:12px;top:-80px;z-index:100;background:var(--panel);color:var(--ink);padding:8px 12px;border-radius:6px;box-shadow:var(--shadow)}
 .cg-skip:focus{top:10px}
 
@@ -62,6 +67,13 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;font-size:
  box-shadow:0 1px 0 rgba(255,255,255,.05),0 6px 18px -12px rgba(0,0,0,.6)}
 .cg-mast::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
  background:linear-gradient(90deg,transparent,rgba(79,211,224,.55) 30%,rgba(79,211,224,.55) 70%,transparent)}
+/* reading progress: on an article or an atlas the masthead's lower edge fills as the page is read */
+@supports (animation-timeline:scroll()){
+ .cg-article .cg-mast::before,.cg-atlas .cg-mast::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;z-index:1;
+  background:linear-gradient(90deg,var(--glow),#b6f4f8);transform-origin:0 50%;transform:scaleX(0);
+  animation:cg-read linear both;animation-timeline:scroll(root block)}
+ [dir="rtl"] .cg-mast::before{transform-origin:100% 50%}}
+@keyframes cg-read{to{transform:scaleX(1)}}
 .cg-mast-in{max-width:1400px;margin:0 auto;min-height:var(--mast-h);display:flex;align-items:center;gap:18px;padding:0 20px}
 .cg-brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none;flex:none}
 .cg-brand:hover{color:#fff;text-decoration:none}
@@ -91,7 +103,9 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;font-size:
  .cg-mast-in{flex-wrap:wrap;gap:0 10px;padding:8px 14px 0}
  .cg-tag{display:none}
  .cg-tools{margin-inline-start:auto}
- .cg-links{order:3;flex-basis:100%;margin:6px -8px 0;padding-bottom:6px}
+ .cg-links{order:3;flex-basis:100%;margin:6px -8px 0;padding-bottom:6px;padding-inline-end:30px;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
+ [dir="rtl"] .cg-links{-webkit-mask-image:linear-gradient(270deg,#000 calc(100% - 30px),transparent);mask-image:linear-gradient(270deg,#000 calc(100% - 30px),transparent)}
  html{scroll-padding-top:14px}}
 
 /* -- site footer ----------------------------------------------------------- */
@@ -254,7 +268,7 @@ figure.mapwrap{margin-left:0;margin-right:0}
 .cg-article .infobox .section td{background:var(--sunk);font-weight:700;text-align:center;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);padding:6px}
 .cg-article .caption{text-align:center;color:var(--muted);font-size:11.3px;padding:4px 4px 8px}
 .cg-article .flag{width:calc(100% - 20px);border:1px solid var(--line);display:block;border-radius:3px}
-.cg-article .seal{width:148px;display:block;margin:10px auto 0;background:transparent}
+.cg-article .seal,.cg-article .infobox>svg.seal{width:148px;display:block;margin:10px auto 0;background:transparent}
 .cg-article .infobox svg{background:var(--plate)}
 .cg-article .toc{display:inline-block;border:1px solid var(--line);background:var(--sunk);padding:14px 26px 14px 18px;margin:14px 0 22px;font-size:13.5px;max-width:100%;border-radius:10px}
 .cg-article .toc-title{font-family:var(--serif);font-weight:600;font-size:16px;margin-bottom:6px}
@@ -272,6 +286,12 @@ figure.mapwrap{margin-left:0;margin-right:0}
 .cg-article .clear{clear:both}
 .cg-article .refsection{font-size:12.5px;column-count:2;column-gap:30px}
 .cg-article .refsection ol{padding-inline-start:26px;margin-top:0}
+.cg-article .refsection li:target,.cg-article sup.ref:target{background:color-mix(in srgb,var(--glow) 22%,transparent);border-radius:3px;
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--glow) 22%,transparent)}
+.cg-article :is(h2,h3):target{animation:cg-here 2.4s ease-out}
+.cg-article figure:target{animation:cg-ring 2.4s ease-out}
+@keyframes cg-here{from{background:color-mix(in srgb,var(--glow) 24%,transparent)}to{background:transparent}}
+@keyframes cg-ring{from{box-shadow:0 0 0 4px color-mix(in srgb,var(--glow) 45%,transparent)}to{box-shadow:0 0 0 4px transparent}}
 .cg-article .catlinks{margin-top:40px;border:1px solid var(--line);background:var(--sunk);padding:10px 14px;font-size:12.8px;border-radius:8px}
 .cg-article .navbox{clear:both;margin-top:28px;border:1px solid var(--line);font-size:12.6px;border-radius:10px;overflow:hidden}
 .cg-article .navbox-title{background:var(--brand);color:#fff;text-align:center;padding:8px;font-weight:600;font-family:var(--serif);font-size:15px}
@@ -349,6 +369,7 @@ figure.mapwrap{margin-left:0;margin-right:0}
  .cg-article .quotebox{margin-inline-start:0}}
 @media (max-width:700px){.cg-article .refsection,.cg-article .two-col ul{column-count:1}
  .cg-article .navbox-row{grid-template-columns:1fr;gap:2px}}
+.cg-side,.mapscroll,.tablewrap,.tw,.tblwrap,.mapbox{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.cg-mast,.cg-foot,.cg-side,#pvcard{display:none!important}.cg-article #container{box-shadow:none;border:0;padding:0}}
 
