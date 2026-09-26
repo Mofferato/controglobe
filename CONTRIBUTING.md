@@ -112,10 +112,17 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
   every `svg` a `role="img"` and an `aria-label` that describes the whole picture, because the
   caption alone is not a description.
 - **Maps** of the Mashriq share one canvas, `0 0 920 620`, and one coastline, so that a reader
-  who has learnt the shape once can read every later map. That coastline is the real one: an
-  azimuthal equal-area projection centred on 46.5°E 25°N, with the Union's land frontier with
-  Zagrosia and Masr drawn as a heavier line. Cities stand at their true positions with their
-  labels beside them; internal divisions stay schematic and the footnote says so. Neighbours and
+  who has learnt the shape once can read every later map. It is the video's own frame: an
+  azimuthal equal-area projection centred on 46.5°E 25°N at 5.089&nbsp;km a pixel. Their ground
+  is drawn from the mesh the video is drawn on, by `python build.py sitemaps` in `video/`: the
+  sea by depth, the land, Natural Earth's shaded relief (projected by QGIS), rivers and lakes,
+  the map's coloured areas and the frontiers of the map's year, dark around the map's subject
+  and lighter between the neighbours beyond it. So every border follows a river, a wadi, an
+  escarpment or the mesh's hand-drawn edges, the same line the video draws that year.
+  `video/config/sitemaps.yaml` says which regions take which legend colour, and the ground is
+  shared by both editions. Everything a map says (towns, arrows, labels, legend, footnote) is
+  the page's own and is written by hand on top; cities stand at their true positions with their
+  labels beside them. Neighbours and
   seas (*Zagrosia*, *Masr*, *the Derg successor states*, *the Gulf*) are set in faint italic on
   the ground or water they name, never at the frame's edge. In the Arabic edition a label keeps to
   the side of its dot that the English gives it, and reads right to left. World maps share one frame: the

@@ -42,6 +42,13 @@ What the viewer should feel is the rhyme:
 | **Motion cut** (the finished video) | `python build.py motion` (`--scale 1` for 4K, `--prores` for Resolve) | A Controglobe logo sting, the premise card, a lit 3D globe that turns to Arabia and dives in, then every year with a moving camera (pans, zooms, rotation from `data/camera.csv`), crossfades on every border change, and at each era a push-in that settles, a focus pull and a sweep of the era's colour under a frosted-glass title card; animated war arrows, pulsing battles with a flash and camera shake (`data/wars.csv`), and an infobox with the Qumur inset docked at its foot: year, flag and Great Seal, head of state with portrait, term and party, events (earlier years' still on screen carry their year), population and the largest cities. Every election year holds (`pacing.election_seconds`) while its result counts up and the winner is named. After 2026 a close: the infobox slides away into a dark gradient, cinema bars close in and the years, the Union's name and its motto rise; then the map dims and the demographics follow in one continuous shot (population by state, religion and ancestry by county, the largest cities) before an end card with the logo. A soundtrack made in code runs under all of it (see Sound). |
 | **Stills cut** | `render`, `sequence`, `animatic` | One still per year, to edit by hand in Resolve |
 
+The encyclopedia's ten maps of al-Mashriq are drawn on the same borders: `python build.py
+sitemaps` redraws their ground (sea depths, relief projected by QGIS, rivers, the coloured areas
+and the frontiers of each map's year) from the mesh, in both editions, and leaves what each map
+says (towns, arrows, labels, legend) as the page wrote it. `config/sitemaps.yaml` says which
+year each map shows and which regions take which legend colour; the two maps of growth read
+each region's joining year from `data/control.csv`.
+
 To YouTube: [PUBLISHING.md](PUBLISHING.md) walks through the upload (title, description and
 chapters, thumbnail, subtitles, end screen, cards, visibility) and the post that tells the
 mapping community about the video; the words to paste are in `output/youtube/`.
