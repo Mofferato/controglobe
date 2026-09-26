@@ -196,9 +196,12 @@ def _children(svg: str):
 
 
 def _maps(text: str):
-    """Spans of every map of al-Mashriq on a page, in order: (start, end) of its <svg>."""
+    """Spans of every map of al-Mashriq on a page, in order: (start, end) of its <svg>.
+    The map of every year (figure.cg-years) is drawn by year_map() and is not one of them."""
     spans = []
     for fig in re.finditer(r"<figure\b[^>]*>.*?</figure>", text, re.S):
+        if "cg-years" in fig.group(0)[:120]:
+            continue
         m = re.search(r'<svg\b[^>]*viewBox="0 0 920 620"[^>]*>.*?</svg>', fig.group(0), re.S)
         if m:
             spans.append((fig.start() + m.start(), fig.start() + m.end()))
@@ -553,8 +556,8 @@ def bootstrap(cfg: dict, data: D.Data) -> None:
               "#   unit: cell); fills: legend colour -> the regions or cells it covers; keep: colours of the\n"
               "#   schematic map's own shapes kept above the ground (the energy map's solar arrays);\n"
               "#   category_lines: white lines between the fill colours; relief and fill_opacity: strengths.\n")
-    CONFIG.write_text(header + yaml.safe_dump({"maps": maps}, sort_keys=False, allow_unicode=True, width=120),
-                      encoding="utf8")
+    CONFIG.write_text(header + yaml.safe_dump({"maps": maps}, sort_keys=False, allow_unicode=True, width=110,
+                                              default_flow_style=None), encoding="utf8")
     print(f"  wrote {CONFIG}")
 
 
@@ -594,4 +597,8 @@ def build(cfg: dict, data: D.Data) -> list[str]:
                 with open(path, "w", encoding="utf8", newline="") as fh:
                     fh.write(new)
                 changed.append(path.relative_to(SITE).as_posix())
+    from . import yearmap
+    for page in yearmap.install(cfg, data, g):
+        if page not in changed:
+            changed.append(page)
     return changed
