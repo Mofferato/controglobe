@@ -597,8 +597,8 @@ def build(cfg: dict, data: D.Data) -> list[str]:
                 with open(path, "w", encoding="utf8", newline="") as fh:
                     fh.write(new)
                 changed.append(path.relative_to(SITE).as_posix())
-    from . import yearmap
-    for page in yearmap.install(cfg, data, g):
+    from . import worldmaps, yearmap
+    for page in yearmap.install(cfg, data, g) + worldmaps.install(cfg):
         if page not in changed:
             changed.append(page)
     return changed
