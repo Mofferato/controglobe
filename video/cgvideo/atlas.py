@@ -25,9 +25,10 @@ its leader line) and redraws what they show:
      behind the Urals and the Caucasus. Land the atlas left bare next to a nation joins it,
      ring by ring; a nation the atlas cut off at its edge (Russia) grows on to the frame. A
      hatched shape (Sapmi) is laid over the cells it covers.
-  4. The map is drawn afresh on an equal-area projection: sea by depth, relief projected by
-     QGIS, rivers and lakes, the nations with white frontiers, and the page's own labels on
-     top, carried through the warp. A key band under the map stays where it is. Both editions
+  4. The map is drawn afresh on an equal-area projection: the sea by its true depth with water
+     lines, the relief (both from ETOPO 2022, projected and shaded by QGIS and finished in GIMP:
+     see terrain.py), rivers and lakes, the nations with white frontiers, and the page's own
+     labels on top, carried through the warp. A key band under the map stays where it is. Both editions
      get the same ground under their own words.
 
 The hand-drawn originals are kept in data/atlas/: the build reads them, not the pages, so it
@@ -494,6 +495,24 @@ def sea_uri(cfg, A, F: Frame) -> str:
     return _image(img.filter(ImageFilter.GaussianBlur(1.2)), quality=45, method=6)
 
 
+def ground_images(cfg, A, F: Frame, land_px) -> tuple[str, str]:
+    """(sea, relief) from ETOPO 2022, drawn by QGIS and finished in GIMP (see terrain.py), with
+    the relief exaggerated to suit the atlas's scale; without QGIS, Natural Earth's as before."""
+    from . import terrain
+    x0, y0, w, h = F.area
+    k = 1.5
+    metres = 1 / (F.k * k)                              # one terrain pixel on the ground
+    land = shapely.affinity.affine_transform(land_px, [k, 0, 0, k, -x0 * k, -y0 * k])
+    name = A["page"].split(".")[0].capitalize() + " atlas"
+    try:
+        relief, sea = terrain.images(cfg, name, A["proj"], F.extent_m(), int(w * k), int(h * k), land,
+                                     z=round(6 * math.sqrt(metres / 3393), 1), floor=0.2)
+        return sea, relief
+    except RuntimeError as exc:
+        print(f"    {exc}; using Natural Earth's shaded relief")
+        return sea_uri(cfg, A, F), relief_uri(cfg, A, F)
+
+
 def graticule(A, F: Frame, step=10):
     w, s, e, n = A["bbox"]
     lines = []
@@ -687,7 +706,7 @@ def draw(cfg, A, sources: dict[str, dict[str, str]], texts: dict[str, str]) -> d
     lakes = F.g(shapely.union_all(_to(A["proj"], lk.geometry)), tol=0.4, min_area=1.5)
     rivers_px = F.g(rivers, tol=0.5, lines=True)
     grat = graticule(A, F)
-    sea, relief = sea_uri(cfg, A, F), relief_uri(cfg, A, F)
+    sea, relief = ground_images(cfg, A, F, shapely.union(body_px, other))
     x0, y0, w, h = F.area
     grounds = {}
     neutral_keys = {key for key, fill, _ in old_nations(src_en, A) if fill in A.get("neutral", [])}

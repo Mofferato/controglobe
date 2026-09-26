@@ -4,9 +4,10 @@ Six world maps (the hub, the timeline's two, the History page's Cold War map and
 article on motor vehicles, and their Arabic twins) share one frame: the Natural Earth
 projection centred on 11E, fitted to the maps' own outline to under half a pixel. Their
 colours, labels, markers and legends are the pages' own and are left alone; `python build.py
-sitemaps` slips the missing ground in between: Natural Earth's depth zones under the land,
-its shaded relief (projected by QGIS) over the colours, the major rivers and lakes, and a
-thin dark coastline. Everything added carries a cgw class, so a second run replaces it.
+sitemaps` slips the missing ground in between: the sea by its true depth with water lines
+under the land, the relief over the colours (both from ETOPO 2022, projected and shaded by
+QGIS and finished in GIMP: see terrain.py), the major rivers and lakes, and a thin dark
+coastline. Everything added carries a cgw class, so a second run replaces it.
 """
 
 from __future__ import annotations
@@ -132,8 +133,24 @@ def sea_image(cfg: dict) -> str:
     return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
+def ground_images(cfg: dict, land) -> tuple[str, str]:
+    """The frame's relief and sea from ETOPO 2022, drawn by QGIS and finished in GIMP (see
+    terrain.py); without QGIS, Natural Earth's shaded relief and depth zones as before."""
+    from . import terrain
+    k = 1.5
+    extent = ((0 - X0) / SCALE, (W - X0) / SCALE, (Y0 - H) / SCALE, Y0 / SCALE)
+    try:
+        return terrain.images(cfg, "World frame", PROJ, extent, int(W * k), int(H * k),
+                              shapely.affinity.scale(land, k, k, origin=(0, 0)), z=16, floor=0.22,
+                              lines=((2.2, .30), (5.0, .16)), outside=np.asarray(globe_mask(k)) < 128)
+    except RuntimeError as exc:
+        print(f"    {exc}; using Natural Earth's shaded relief")
+        return relief_image(cfg), sea_image(cfg)
+
+
 def shared_defs(cfg: dict) -> str:
     land = _clip(_project(_ne(cfg, "ne_50m_land").geometry), 0.45, min_area=0.8)
+    relief_uri, sea_uri = ground_images(cfg, land)
     rv = _ne(cfg, "ne_10m_rivers_lake_centerlines")
     rv = rv[rv["scalerank"].fillna(99) <= 3]
     rivers = _clip(_project(rv.geometry), 0.7, lines=True)
@@ -141,9 +158,9 @@ def shared_defs(cfg: dict) -> str:
     lk = lk[lk["scalerank"].fillna(99) <= 2]
     lakes = _clip(_project(lk.geometry), 0.6, min_area=2)
     return ('<defs class="cgw-shared">'
-            f'<image id="cgw-sea" width="{W}" height="{H}" preserveAspectRatio="none" href="{sea_image(cfg)}"/>'
+            f'<image id="cgw-sea" width="{W}" height="{H}" preserveAspectRatio="none" href="{sea_uri}"/>'
             f'<path id="cgw-land" d="{path_d(land)}"/>'
-            f'<image id="cgw-relief" width="{W}" height="{H}" preserveAspectRatio="none" href="{relief_image(cfg)}"/>'
+            f'<image id="cgw-relief" width="{W}" height="{H}" preserveAspectRatio="none" href="{relief_uri}"/>'
             f'<g id="cgw-water"><path fill="{INK["lake"]}" stroke="{INK["coast"]}" stroke-width=".4" '
             f'd="{path_d(lakes)}"/><path fill="none" stroke="{INK["river"]}" stroke-width=".6" '
             f'stroke-linejoin="round" stroke-linecap="round" d="{path_d(rivers)}"/></g>'

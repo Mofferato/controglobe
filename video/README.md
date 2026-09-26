@@ -276,6 +276,20 @@ colours the maps carry a cartographic finish, each part switchable under `style:
   soft shadow under national frontiers (`border_shadow:`).
 - **Labels**: letter-spaced capitals for countries (`label_tracking:`).
 
+The encyclopedia's maps (`sitemaps`, `atlas`) stand on richer ground, drawn by
+`cgvideo/terrain.py` from **ETOPO 2022** (NOAA NCEI, public domain; land and sea floor at one
+arc-minute, 444 MB, downloaded to `cache/etopo/` the first time it is needed). For each map
+frame **QGIS** projects the grid (`gdal:warpreproject`, averaging) and shades it from several
+lights at once (`gdal:hillshade`, multidirectional, exaggerated for the frame's scale), and
+**GIMP** finishes the shading with a tone curve and an unsharp mask. The sea is tinted by its true
+depth on a smooth ramp, lightly shaded by the sea floor, with water lines along the coast. When
+QGIS or GIMP is open with its MCP server started, the build does the work in the open
+application, talking to the plug-ins' local sockets: the projected grids and shadings appear in
+QGIS under *Controglobe terrain* and each finished shading opens in GIMP. Otherwise QGIS runs
+headless and numpy applies the same curve and mask. Results are cached in `build/terrain/`;
+delete a frame's files there to draw it again. The video still uses Natural Earth's relief; the
+new terrain is ready for a revision of it.
+
 The logo in the opening sting, on the end card and on the thumbnail is `assets/logo.png` if
 you supply one (any size, square, transparent background: it is never committed); otherwise
 an emblem in the style of the site's favicon, ray-cast so it stays sharp at 4K and can turn.

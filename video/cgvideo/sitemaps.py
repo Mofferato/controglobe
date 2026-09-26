@@ -3,8 +3,9 @@
 Every map of al-Mashriq in the encyclopedia (ten of them, in both editions) shares one frame:
 the video's projection, an azimuthal equal-area projection centred on 46.5E 25N, at 5.089 km a
 pixel on a 920 x 620 canvas. `python build.py sitemaps` redraws the ground of each from the mesh
-the video is drawn on: the sea by depth, the land, Natural Earth's shaded relief (projected by
-QGIS), rivers and lakes, the map's coloured areas, the frontiers of the map's year and the coast.
+the video is drawn on: the sea by its true depth with water lines along the coast, the land, the
+relief (ETOPO 2022, projected and shaded by QGIS, finished in GIMP: see terrain.py), rivers and
+lakes, the map's coloured areas, the frontiers of the map's year and the coast.
 So the encyclopedia and the video share one set of borders, and they follow rivers, wadis,
 escarpments and the mesh's hand-drawn edges, never a ruled line.
 
@@ -377,9 +378,26 @@ def relief_image(cfg: dict) -> str:
     return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
-def shared_defs(g: Ground, relief_uri: str) -> str:
+def ground_images(cfg: dict, g: Ground) -> tuple[str, str | None]:
+    """The frame's relief and sea from ETOPO 2022, drawn by QGIS and finished in GIMP (see
+    terrain.py); without QGIS, Natural Earth's shaded relief and depth zones as before."""
+    from . import geo, terrain
+    k = RELIEF_SCALE
+    w, h = int(W * k), int(H * k)
+    extent = ((0 - X0) / K, (W - X0) / K, (Y0 - H) / K, Y0 / K)
+    try:
+        return terrain.images(cfg, "Mashriq frame", geo.crs(cfg), extent, w, h,
+                              shapely.affinity.scale(g.land, k, k, origin=(0, 0)), z=6)
+    except RuntimeError as exc:
+        print(f"    {exc}; using Natural Earth's shaded relief")
+        return relief_image(cfg), None
+
+
+def shared_defs(g: Ground, relief_uri: str, sea_uri: str | None = None) -> str:
     sea = [f'<rect width="{W}" height="{H}" fill="{INK["sea"]}"/>']
-    for depth in sorted(g.depths):
+    if sea_uri:
+        sea = [f'<image width="{W}" height="{H}" preserveAspectRatio="none" href="{sea_uri}"/>']
+    for depth in sorted(g.depths) if not sea_uri else []:
         d = path_d(g.depths[depth])
         if d:
             sea.append(f'<path fill="{INK["depths"][depth]}" d="{d}"/>')
@@ -569,7 +587,7 @@ def build(cfg: dict, data: D.Data) -> list[str]:
     for s in specs:
         by_page[s["page"]][int(s["map"])] = s
     g = Ground(cfg, data)
-    defs = shared_defs(g, relief_image(cfg))
+    defs = shared_defs(g, *ground_images(cfg, g))
     bases = {(p, n): base_group(g, s) for p, maps in by_page.items() for n, s in maps.items()}
     changed = []
     for page, maps in by_page.items():

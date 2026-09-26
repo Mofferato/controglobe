@@ -115,7 +115,8 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
   who has learnt the shape once can read every later map. It is the video's own frame: an
   azimuthal equal-area projection centred on 46.5°E 25°N at 5.089&nbsp;km a pixel. Their ground
   is drawn from the mesh the video is drawn on, by `python build.py sitemaps` in `video/`: the
-  sea by depth, the land, Natural Earth's shaded relief (projected by QGIS), rivers and lakes,
+  sea by its true depth with water lines along the coast, the land, the relief (both from ETOPO
+  2022, projected and shaded by QGIS and finished in GIMP: see `video/cgvideo/terrain.py`), rivers and lakes,
   the map's coloured areas and the frontiers of the map's year, dark around the map's subject
   and lighter between the neighbours beyond it. So every border follows a river, a wadi, an
   escarpment or the mesh's hand-drawn edges, the same line the video draws that year.
