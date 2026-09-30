@@ -1,0 +1,189 @@
+# The thirteen marches (Marken) of the Kingdom of Solms-America, as they lie on the ground
+# (lon, lat). The kingdom itself is cut out of North America by north-america-frontiers.yaml;
+# these lines cut the kingdom. They are drawn the same way, and mostly on watersheds, because the
+# marches are river countries: the Kansas, the Arkansas, the Red, the Trinity and the Brazos, the
+# Pecos, the upper Rio Grande, the Yaqui. The Staked Plain is walled by its own Caprock and the
+# holy land of Paquime is the closed basin of the Casas Grandes.
+#   river:  follow the named Natural Earth river(s) to a point on them
+#   divide: follow the rim of a river basin, as GRASS r.watershed computes it in QGIS
+#   via:    a smooth curve through points set along an escarpment or a crest
+# Re-bake in QGIS with cg_frontiers("solms-america") after cg_frontiers("north-america").
+
+nodes:
+  palmer: {at: [-103.6, 39.35], divide: kansas}
+  flint: {at: [-96.15, 38.8], divide: kansas}
+  logan: {at: [-103.4, 35.37], river: Canadian}
+  breaks: {at: [-100.9, 35.78], river: Canadian}           # where the Caprock leaves the Canadian breaks
+  caprock_south: [-101.2, 33.95]                           # the Caprock between the Red and the Brazos
+  trinity_head: {at: [-96.15, 33.5], divide: trinity}      # Red, Trinity and Sabine part here
+  livingston: {at: [-94.85, 30.95], divide: trinity}
+  riverside: [-95.38, 30.85]
+  llano_north: {at: [-103.75, 34.95], divide: pecos}       # the north-west corner of the Staked Plain
+  llano_south: {at: [-102.35, 31.4], divide: pecos}
+  pecos_mouth: {at: [-101.45, 29.85], divide: pecos}
+  sangre: {at: [-105.5, 35.9], divide: pecos}              # the springs of the Pecos
+  culebra: {at: [-105.2, 37.0], divide: rio_grande}
+  guadalupe: {at: [-104.9, 31.9], divide: pecos}
+  el_paso: {at: [-106.5, 31.77], river: Rio Grande}        # the pass of the north
+  boquillas: {at: [-102.9, 29.2], river: Rio Grande}
+  palomas: [-107.4, 31.78]
+  hatchet: {at: [-108.25, 31.7], divide: colorado}         # on the Continental Divide
+  black_range: {at: [-107.85, 33.4], divide: colorado}
+  yaqui_east: {at: [-108.95, 31.35], divide: yaqui}
+  yaqui_west: {at: [-110.3, 31.4], divide: yaqui}
+  yaqui_north: {at: [-110.5, 27.8], divide: yaqui}
+  nido: {at: [-106.5, 29.6], divide: conchos}
+  tutuaca: {at: [-107.18, 28.72], divide: conchos}         # where the rims of the Yaqui and the Conchos meet
+  papigochi: {at: [-107.55, 28.0], divide: conchos}
+
+frontiers:
+  - id: kansa-wichita
+    nations: [kansa, wichita]
+    follows: "the divide between the Smoky Hill and the Arkansas"
+    from: palmer
+    legs:
+      - {divide: kansas, to: flint}
+  - id: wichita-rotland
+    nations: [wichita, rotland]
+    follows: "the Canadian to its mouth, and the Arkansas to the narrows"
+    from: breaks
+    legs:
+      - {river: [Canadian, Arkansas], to: [-94.4, 35.4]}
+  - id: wichita-hochebene
+    nations: [wichita, hochebene]
+    follows: "the Canadian and its breaks, the northern wall of the Staked Plain"
+    from: llano_north
+    legs:
+      - {via: [[-103.55, 35.2], logan]}
+      - {river: Canadian, to: breaks}
+  - id: rotland-hochebene
+    nations: [rotland, hochebene]
+    follows: "the Caprock Escarpment across the canyons of the Red"
+    from: breaks
+    legs:
+      - {via: [[-100.85, 35.3], [-101.05, 34.85], [-101.25, 34.4], caprock_south]}
+  - id: rotland-dreifurt
+    nations: [rotland, dreifurt]
+    follows: "the divide between the Red and the Brazos, along the heads of the Wichita and the Pease"
+    from: caprock_south
+    legs:
+      - {via: [[-100.6, 33.85], [-100.0, 33.55], [-99.4, 33.45], [-98.9, 33.6], [-98.4, 33.45], [-97.9, 33.62], [-97.4, 33.55], [-96.95, 33.62], [-96.55, 33.58], trinity_head]}
+  - id: rotland-ostmark
+    nations: [rotland, ostmark]
+    follows: "the low divide south of the Red, above the Sulphur"
+    from: trinity_head
+    legs:
+      - {via: [[-95.4, 33.5], [-94.7, 33.42], [-94.2, 33.4], [-93.85, 33.42]]}
+  - id: dreifurt-ostmark
+    nations: [dreifurt, ostmark]
+    follows: "the divide between the Trinity and the Neches, then down to the Trinity at Riverside"
+    from: trinity_head
+    legs:
+      - {divide: trinity, to: livingston}
+      - {via: [[-95.1, 30.92], riverside]}
+  - id: dreifurt-hochebene
+    nations: [dreifurt, hochebene]
+    follows: "the Caprock Escarpment, the eastern wall of the Staked Plain"
+    from: caprock_south
+    legs:
+      - {via: [[-101.2, 33.2], [-101.4, 32.6], [-101.6, 32.1], [-101.95, 31.65], llano_south]}
+  - id: hochebene-pecos
+    nations: [hochebene, pecos]
+    follows: "the Mescalero Ridge: the eastern rim of the Pecos"
+    from: llano_north
+    legs:
+      - {divide: pecos, to: llano_south}
+  - id: dreifurt-pecos
+    nations: [dreifurt, pecos]
+    follows: "the eastern rim of the Pecos across the Edwards Plateau"
+    from: llano_south
+    legs:
+      - {divide: pecos, to: pecos_mouth}
+  - id: wichita-pecos
+    nations: [wichita, pecos]
+    follows: "the divide between the Canadian and the Pecos"
+    from: llano_north
+    legs:
+      - {divide: pecos, to: sangre}
+  - id: wichita-oberland
+    nations: [wichita, oberland]
+    follows: "the crest of the Sangre de Cristo"
+    from: culebra
+    legs:
+      - {divide: rio_grande, to: sangre}
+  - id: oberland-pecos
+    nations: [oberland, pecos]
+    follows: "the Sandia, Manzano and Sacramento crests: the western rim of the Pecos; then the Hueco Bolson to the Pass"
+    from: sangre
+    legs:
+      - {divide: pecos, to: guadalupe}
+      - {via: [[-105.6, 31.85], el_paso]}
+  - id: pecos-chihuahua
+    nations: [pecos, chihuahua]
+    follows: "the Rio Grande from the Pass to the Big Bend"
+    from: el_paso
+    legs:
+      - {river: Rio Grande, to: boquillas}
+  - id: oberland-chihuahua
+    nations: [oberland, chihuahua]
+    follows: "the low divide south of the Mimbres"
+    from: el_paso
+    legs:
+      - {via: [[-106.95, 31.8], palomas]}
+  - id: oberland-paquime
+    nations: [oberland, paquime]
+    follows: "the low divide between the Mimbres and the lakes of Guzman"
+    from: palomas
+    legs:
+      - {via: [[-107.85, 31.72], hatchet]}
+  - id: oberland-chukson
+    nations: [oberland, chukson]
+    follows: "the Continental Divide"
+    from: black_range
+    legs:
+      - {divide: colorado, to: hatchet}
+  - id: chukson-paquime
+    nations: [chukson, paquime]
+    follows: "the Continental Divide in the Animas country"
+    from: hatchet
+    legs:
+      - {divide: colorado, to: yaqui_east}
+  - id: chukson-bergland
+    nations: [chukson, bergland]
+    follows: "the rim between the Gila and the Yaqui"
+    from: yaqui_east
+    legs:
+      - {divide: colorado, to: yaqui_west}
+  - id: chukson-kuestenland
+    nations: [chukson, kuestenland]
+    follows: "the southern rim of the Gila across the Papagueria"
+    from: yaqui_west
+    legs:
+      - {divide: colorado, to: [-114.8, 32.3]}
+  - id: kuestenland-bergland
+    nations: [kuestenland, bergland]
+    follows: "the western rim of the Yaqui"
+    from: yaqui_west
+    legs:
+      - {divide: yaqui, to: yaqui_north}
+      - {via: [[-110.62, 27.72], [-110.75, 27.6]]}
+  - id: paquime-bergland
+    nations: [paquime, bergland]
+    follows: "the crest of the Sierra Madre: the eastern rim of the Yaqui"
+    from: yaqui_east
+    legs:
+      - {divide: yaqui, to: tutuaca}
+  - id: bergland-chihuahua
+    nations: [bergland, chihuahua]
+    follows: "the divide between the Papigochi and the Conchos"
+    from: tutuaca
+    legs:
+      - {divide: conchos, to: papigochi}
+      - {via: [[-107.62, 27.93], [-107.72, 27.85]]}
+  - id: paquime-chihuahua
+    nations: [paquime, chihuahua]
+    follows: "the Sierra del Nido and the northern rim of the Conchos"
+    from: palomas
+    legs:
+      - {via: [[-107.05, 31.0], [-106.85, 30.3], nido]}
+      - {divide: conchos, to: tutuaca}

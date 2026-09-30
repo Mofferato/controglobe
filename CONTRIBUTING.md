@@ -46,7 +46,7 @@ raising a **question**.
 ## Design system
 
 Every page of both editions shares one design. It lives in four places, and each of them is
-**identical on every page**: change it on all sixteen pages at once, never on one.
+**identical on every page**: change it on every page of both editions at once, never on one.
 `python tools/sitekit.py` does that for you: `check` lists any page missing a shared part,
 `chrome` copies the head tags, masthead, footer and chrome script from `africa.html` (and
 `ar/africa.html`) to every page of its edition, keeping each page's current link, language
@@ -161,6 +161,19 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
     hand-drawn maps' own (`video/data/atlas/europe*.svg`), carried onto the real ground by a warp
     whose pins (capes, the Urals, the Caucasus) are in `video/cgvideo/atlas.py`: move a label
     there, and a frontier in the YAML.
+- **The maps of North America** (the continent's states and militias, the marches of
+  Solms-America, its unification, the infobox locator) are drawn by `python build.py namaps` in
+  `video/`, and set wherever a page carries a pair of markers, `<!-- cg-na:political -->` and
+  `<!-- /cg-na:political -->` (or `marches`, `unification`, `locator`); never edit what is
+  between them by hand. They are drawn the way the atlases are. `north-america-frontiers.yaml`
+  says what each frontier follows (the Gila, the Sabine, the Continental Divide, the rim of the
+  Mississippi's basin), QGIS traces it (`cg_frontiers("north-america")`, then
+  `cg_frontiers("solms-america")` for the marches, which are cut out of the kingdom the continent's
+  frontiers leave), and the `-nations.csv` beside each gives the seeds, colours and names in both
+  languages. The states and their places come from *A More Fractured Union*; its state lines,
+  meridians and parallels do not, and none may come back. The zones of occupied territory and of
+  non-state actors are rings under `overlays` in the YAML, clipped to the nation they lie in, and
+  the numbered key and every label are in `video/cgvideo/namaps.py`, in English and Arabic.
 - Artwork is inline SVG. No binary images, no external requests, no build step.
 
 ## Preview cards

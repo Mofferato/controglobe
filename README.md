@@ -12,11 +12,12 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 | [`index.html`](index.html) | Project hub, premise, rules of the setting |
 | [`united-states-of-arabia.html`](united-states-of-arabia.html) | The featured article: the federal republic in al-Mashriq, modelled on the *United States* article (primary) and *Saudi Arabia* (secondary) |
 | [`history-of-the-united-states-of-arabia.html`](history-of-the-united-states-of-arabia.html) | History of Arabia from prehistory to the present, modelled on *History of the United States* (primary) and *History of Saudi Arabia* (secondary), including the Islamic-era and colonial trades in Europeans |
+| [`kingdom-of-solms-america.html`](kingdom-of-solms-america.html) | North America carries the Middle East: the oil monarchy of the southern plains, modelled on the *Saudi Arabia* article (primary) and *Texas* and *United States* (secondary). The House of Solms and the Plain Rule, the Two Sanctuaries of Paquim&eacute; and Chukson, the thirteen marches, and the continent's states, militias and unrecognised authorities on maps traced on the ground |
 | [`nabataean-unification.html`](nabataean-unification.html) | The Nabataean Kingdom (c. 440 BCE – 36 CE), a custom entity modelled on the *Nabataean Kingdom* article: the Covenant of the Wells, the water administration and the origin of written Arabic |
 | [`vehicles.html`](vehicles.html) | Motor vehicles in the Global Swap: the Kongolese invention of the car, Mosul mass production, the Hindustani turn after the oil shocks, Nusantaran electrification, and the regional design traditions, with schematic drawings |
 | [`africa.html`](africa.html) | Reference atlas: every African nation, its Global-North counterpart, and a map whose frontiers are traced on rivers, watersheds and escarpments, never on a partition line |
 | [`europe.html`](europe.html) | Reference atlas: every European nation, its Global-South counterpart, the African partition of the continent, and the mirror rule that keeps the two atlases consistent |
-| [`timeline-of-the-global-swap.html`](timeline-of-the-global-swap.html) | Chronology of the whole setting in ten eras, from the Achaemenid withdrawal of 460&nbsp;BCE to 2026, with maps of the trade in Europeans, the crowns coming to Arabia and the Cold War. Every entry is drawn from, and links to, the article that treats it |
+| [`timeline-of-the-global-swap.html`](timeline-of-the-global-swap.html) | Chronology of the whole setting in ten eras, from the Achaemenid withdrawal of 460&nbsp;BCE to 2026, with maps of the trade in Europeans, the crowns coming to Arabia and the Cold War. Every entry is drawn from, and links to, the article that treats it. Its last section is the setting's **master swap key**: the regions, the events, the states of al-Mashriq and North America, and North America's militias and unrecognised authorities, with their map |
 
 ## Arabic edition &mdash; الطبعة العربية
 
@@ -30,6 +31,7 @@ Every article has an Arabic edition, and every English article carries an interl
 | [`ar/index.html`](ar/index.html) | translated |
 | [`ar/united-states-of-arabia.html`](ar/united-states-of-arabia.html) | translated |
 | [`ar/history-of-the-united-states-of-arabia.html`](ar/history-of-the-united-states-of-arabia.html) | translated |
+| [`ar/kingdom-of-solms-america.html`](ar/kingdom-of-solms-america.html) | translated |
 | [`ar/nabataean-unification.html`](ar/nabataean-unification.html) | translated |
 | [`ar/vehicles.html`](ar/vehicles.html) | translated |
 | [`ar/africa.html`](ar/africa.html) | translated |
@@ -56,7 +58,7 @@ right-to-left text.
 | Middle East | North America. **al-Mashriq** is Arabia = the USA, Zagrosia = Canada (Anatolia is its Quebec, Iran the rest) and Qubrus = Greenland, a self-governing dependency of Ifriqiya (independent until Ifriqiya colonised it in 1721; home rule 1979, self-rule 2009); Masr = Mexico is the neighbour outside it |
 | Africa | Europe (Kimfumu kya Kongo = Germany, Jolof = Spain, Manden = Italy, Ifriqiya = Denmark, Derg Union = Russia) |
 | Europe | Africa |
-| North America | Middle East |
+| North America | Middle East (**Solms-America** = Saudi Arabia on the ground of Texas, Mississippi = Iraq, Atlantica = Iran, Aztlan = Israel, California = Palestine, Cascadia = Syria, Oregon = Lebanon, Colorado = Jordan, Mexico = Egypt, Nuevo Le&oacute;n = Yemen, the Gulf states of Ludwigsland, Karankawa, the Counties, R&iacute;o Grande and Puerto Rico = Kuwait, Qatar, the Emirates, Oman and Bahrain, Canada = Turkey) |
 | South Asia | Britain, Japan and China combined |
 | Maritime South-East Asia | China |
 | South America | Mainland South Asia |
@@ -72,6 +74,14 @@ kingdom that no empire held for long, the ground of the Siberian War. Anatolia i
 Within Africa the swap follows civilisation before geography: Italy's role is carried by Manden, on the ground of Mali,
 heir to Wagadu (the Ghana Empire) as Italy is heir to Rome, in the Latin west rather than the far south; Angola (Ndongo)
 carries Montenegro instead.
+
+North America was peopled from the 1400s by Europe's tribal Christian confederations (the Crossing), so its
+nations are Germanic, French, Castilian, Slavic and English by speech. The Abrahamic religions' part is carried
+by the prophetic monotheisms of native America: the Path, preached at Paquim&eacute;, whose holy places the
+conquerors adopted as their own, and the older faith of the Nahua, who carry the Jews' part in Aztlan. The
+nations of the plains and the lakes carry the Kurds'. The
+[Timeline's swap key](timeline-of-the-global-swap.html#north-america) has the whole continent, with its
+militias and unrecognised authorities.
 
 Unassigned: East Asia, the rest of northern Asia, mainland South-East Asia and Australia have no counterpart
 yet, and the world maps leave them grey. Proposals are welcome in the issue tracker.
@@ -127,6 +137,17 @@ Come and say hello on the Discord: **https://discord.gg/XYZXVFjQUj**
 [`community/`](community/) holds the Controglobe Discord: its channels, roles, rules and
 onboarding as data, and a script that builds the server from them. Start at
 [`community/README.md`](community/README.md).
+
+## Credits
+
+Controglobe branched off from
+[*A More Fractured Union: USA and Middle East swap*](https://www.reddit.com/r/imaginarymaps/comments/1hk5ngv/a_more_fractured_union_usa_and_middle_east_swap/)
+(r/imaginarymaps, December 2023), a map by **Bemon** (u/kaselev: scenario writer, chief cartographer, flag
+designer, editor) and **Body25** (u/bodycornflower: co-writer, flag designer, editor). The states of North
+America, the Middle Eastern country each one stands for, the non-state actors and *The Damascus Times* are
+theirs; Controglobe keeps them, moves their frontiers from state lines onto rivers and watersheds, and adds
+the peoples, the religions and the histories. Both of them also helped with the timeline in its first
+months, before contact with them was lost. The project is grateful to them, and the door stays open.
 
 ## Contributing
 

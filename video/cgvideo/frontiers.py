@@ -66,7 +66,37 @@ def europe_land(land_ll):
     return shapely.union_all(keep)
 
 
+# North America's map reaches from Vancouver Island to Yucatan and from the Pacific to Puerto Rico;
+# the land it cuts is the whole continent and the Antilles within that reach
+NORTH_AMERICA_BBOX = (-140, 7, -52, 62)
+
+
+# the Greater Antilles west of Puerto Rico and the Bahamas carry the Caucasus: neutral ground here
+ANTILLES = [(-85.5, 21.6), (-82.0, 23.7), (-80.2, 23.9), (-79.6, 24.5), (-79.6, 27.6), (-76.5, 27.6),
+            (-70.5, 22.5), (-68.0, 19.2), (-68.0, 17.5), (-72.0, 17.0), (-79.0, 17.0), (-85.5, 18.5)]
+
+
+def north_america_land(land_ll):
+    """North America, Puerto Rico and the coastal islands within the map's reach (lon/lat)."""
+    land = shapely.intersection(land_ll, shapely.box(*NORTH_AMERICA_BBOX))
+    antilles = shapely.Polygon(ANTILLES)
+    keep = [p for p in shapely.get_parts(land) if not antilles.contains(p.representative_point())]
+    return shapely.union_all(keep)
+
+
 REGIONS = {
+    "north-america": {"land": north_america_land, "grass": "-128,-64,14,54", "work": "north-america",
+                      # a third value is the window (in cells) in which the outlet is moved onto the
+                      # strongest flow; 0 takes the cell itself, where two streams run side by side
+                      "outlets": {"mississippi": (-91.225, 30.075, 0), "arkansas": (-94.525, 35.325, 0),
+                                  "kansas": (-94.975, 38.975, 0), "red": (-93.875, 33.625, 0),
+                                  "canadian": (-100.425, 35.925, 0), "rio_grande": (-97.425, 26.375, 0),
+                                  "pecos": (-101.525, 29.825, 0), "conchos": (-104.525, 29.625, 0),
+                                  "colorado": (-114.825, 32.525, 0), "columbia": (-123.375, 46.175, 0),
+                                  "upper_missouri": (-100.4, 44.4, 2), "trinity": (-94.75, 29.9, 2),
+                                  "nueces": (-97.775, 27.925, 0), "yaqui": (-110.175, 27.275, 0)}},
+    # the marches of Solms-America: the same ground, cut out of the nation the continent's frontiers leave
+    "solms-america": {"of": ("north-america", "solms")},
     "africa": {"land": africa_land, "grass": "-20,55,-36,38", "work": "",
                "outlets": {"congo": (13.1, -5.85), "niger": (6.75, 6.1), "volta": (0.1, 6.2),
                            "senegal": (-15.8, 16.45), "gambia": (-14.6, 13.4), "zambezi": (35.4, -17.8),
@@ -104,7 +134,7 @@ def read_nations(path) -> list[dict]:
     return rows
 
 
-def write_geojson(path, traced: list[dict], ndigits: int = 4, tol: float = 0.004) -> None:
+def write_geojson(path, traced: list[dict], ndigits: int = 4, tol: float = 0.004, name: str = "africa-frontiers") -> None:
     feats = []
     for t in traced:
         line = shapely.simplify(t["line"], tol)
@@ -112,7 +142,7 @@ def write_geojson(path, traced: list[dict], ndigits: int = 4, tol: float = 0.004
         feats.append({"type": "Feature", "properties": {"id": t["id"], "nations": " | ".join(t["nations"]),
                                                         "follows": t["follows"]},
                       "geometry": {"type": "LineString", "coordinates": xy}})
-    doc = {"type": "FeatureCollection", "name": "africa-frontiers",
+    doc = {"type": "FeatureCollection", "name": name,
            "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": feats}
     text = json.dumps(doc, ensure_ascii=False, separators=(",", ":"))
     # one feature to a line, so a change to one frontier is one line of a diff
@@ -336,10 +366,12 @@ def _dedupe(xy: np.ndarray) -> np.ndarray:
 
 # -- nations ------------------------------------------------------------------------------------
 
-def _joined(lines: list[LineString], land=None, reach: float = 0.05) -> list[LineString]:
+def _joined(lines: list[LineString], land=None, reach: float = 0.05, snap: bool = False) -> list[LineString]:
     """A frontier that stops a hair short of the one it meets (simplified, or edited by hand in
     QGIS) is carried on to it; one that stops short of the sea, on a coast finer than the one it
-    was drawn against, is carried on in its own direction until it is off the land."""
+    was drawn against, is carried on in its own direction until it is off the land. With `snap`
+    (the marches of one nation, whose land ends at that nation's own frontiers) an end just inside
+    the land's edge is carried straight to it."""
     out = []
     for i, ln in enumerate(lines):
         xy = [tuple(c) for c in ln.coords]
@@ -347,6 +379,16 @@ def _joined(lines: list[LineString], land=None, reach: float = 0.05) -> list[Lin
         for end in (0, -1):
             p = Point(xy[end])
             d = others.distance(p)
+            if snap and land is not None and land.contains(p) and land.boundary.distance(p) <= reach:
+                q = shapely.ops.nearest_points(land.boundary, p)[0]
+                dx, dy = q.x - p.x, q.y - p.y
+                n = math.hypot(dx, dy) or 1e-12
+                q2 = (q.x + dx / n * 1e-4, q.y + dy / n * 1e-4)
+                if end == 0:
+                    xy.insert(0, q2)
+                else:
+                    xy.append(q2)
+                continue
             if d > reach and land is not None and land.contains(p) and len(xy) > 1:
                 a, b = np.array(xy[end + (1 if end == 0 else -1)]), np.array(xy[end])
                 step = (b - a) / max(np.hypot(*(b - a)), 1e-9) * 0.01
@@ -365,7 +407,7 @@ def _joined(lines: list[LineString], land=None, reach: float = 0.05) -> list[Lin
                 q = shapely.ops.nearest_points(others, p)[0]
                 # overshoot a little so the two lines cross rather than merely touch
                 dx, dy = q.x - p.x, q.y - p.y
-                n = math.hypot(dx, dy)
+                n = math.hypot(dx, dy) or 1e-12
                 q2 = (q.x + dx / n * 1e-6, q.y + dy / n * 1e-6)
                 if end == 0:
                     xy.insert(0, q2)
@@ -375,14 +417,15 @@ def _joined(lines: list[LineString], land=None, reach: float = 0.05) -> list[Lin
     return out
 
 
-def nations(lines: list[LineString], land, seeds: dict[str, list[tuple]], neutral=(), island_reach: float = 1.5):
+def nations(lines: list[LineString], land, seeds: dict[str, list[tuple]], neutral=(), island_reach: float = 1.5,
+            snap: bool = False):
     """Cut the land (lon/lat) with the frontiers and give each piece to the nation whose seed is
     in it. A piece with no seed on the mainland (a sliver) joins the neighbour it shares most
     frontier with; an island with none goes to the nearest nation within reach (degrees), or
     stays neutral, as does any island with a `neutral` point on it (the islands outside the
     swap). Returns ({nation: MultiPolygon}, [unclaimed pieces])."""
     shapely.prepare(land)
-    lines = _joined(list(lines), land)
+    lines = _joined(list(lines), land, snap=snap)
     net = shapely.union_all([land.boundary] + lines)
     faces = [f for f in shapely.get_parts(shapely.polygonize(list(shapely.get_parts(net))))]
     shapely.prepare(land)
@@ -433,3 +476,38 @@ def nations(lines: list[LineString], land, seeds: dict[str, list[tuple]], neutra
         else:
             unclaimed.append(f)
     return held, unclaimed
+
+
+# -- a region's ground ----------------------------------------------------------------------------
+
+def region_ground(region: str, land_ll, store):
+    """(the land a region's frontiers cut, whether ends snap to its edge): a continent's own land,
+    or, for the marches of one nation (`of` in REGIONS), that nation as its continent's frontiers
+    leave it."""
+    R = REGIONS[region]
+    if "of" not in R:
+        return R["land"](land_ll), False
+    parent, nation = R["of"]
+    return held_nations(parent, land_ll, store)[0][nation], True
+
+
+def region_basins(region: str) -> str:
+    """The region whose river basins a region is traced on (its own, or its continent's)."""
+    R = REGIONS[region]
+    return R["of"][0] if "of" in R else region
+
+
+def held_nations(region: str, land_ll, store):
+    """A traced region's nations from its files in `store` (data/atlas): ({key: shape},
+    [neutral pieces], the nations' rows, the frontiers' spec)."""
+    import yaml
+    store = pathlib.Path(store)
+    spec = yaml.safe_load((store / f"{region}-frontiers.yaml").read_text(encoding="utf8"))
+    rows = read_nations(store / f"{region}-nations.csv")
+    seeds = {r["key"]: [(r["seed_lon"], r["seed_lat"])] for r in rows}
+    for k, pts in (spec.get("seeds") or {}).items():
+        seeds[k] = seeds.get(k, []) + [tuple(p) for p in pts]
+    land, snap = region_ground(region, land_ll, store)
+    held, unclaimed = nations(read_geojson(store / f"{region}-frontiers.geojson"), land, seeds,
+                              spec.get("neutral", []), snap=snap)
+    return held, unclaimed, rows, spec

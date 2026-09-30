@@ -1,0 +1,24 @@
+# The nations of North America, which carries the Middle East. seed: a point inside the nation
+# (lon, lat) that claims the piece of land the frontiers cut around it (more seeds, for a nation
+# in several pieces, are under `seeds` in north-america-frontiers.yaml). label: where its name is
+# set; `size` big names carry their twin under them, small ones do not; `lead` draws a line from
+# the label to the seed (a name set out at sea). `parent` marks a self-governing region of another
+# nation: it takes that nation's colour, lightened, and a lighter frontier.
+key,name,twin,name_ar,twin_ar,colour,size,seed_lon,seed_lat,label_lon,label_lat,lead,parent
+solms,Solms-America,Saudi Arabia,زولمس-أمريكا,السعودية,#a9bfdc,big,-99.5,33.5,-100.2,33.3,0,
+mississippi,Mississippi,Iraq,المسيسيبي,العراق,#cdd9d3,big,-93.0,40.5,-92.0,40.2,0,
+ohio,Ohio Region,Kurdistan Region,إقليم أوهايو,إقليم كردستان,#dfe8e2,small,-85.0,44.0,-85.2,44.3,0,mississippi
+atlantica,Atlantica,Iran,أتلانتيكا,إيران,#a6d3b7,big,-81.0,35.0,-81.3,34.6,0,
+cascadia,Cascadia,Syria,كاسكاديا,سوريا,#d9b7d6,big,-112.0,46.5,-110.5,46.2,0,
+oregon,Oregon,Lebanon,أوريغون,لبنان,#e6d78f,small,-123.0,44.5,-126.9,44.9,1,
+aztlan,Aztlan,Israel,أزتلان,إسرائيل,#e3aa98,big,-118.5,39.0,-118.0,39.3,0,
+california,California,Palestine,كاليفورنيا,فلسطين,#8fcbbd,small,-117.9,33.8,-121.2,30.7,1,
+colorado,Colorado,Jordan,كولورادو,الأردن,#f2c9a4,big,-109.5,38.5,-109.4,37.2,0,
+mexico,Mexico,Egypt,المكسيك,مصر,#d7de9f,big,-102.0,22.5,-102.5,22.0,0,
+nuevoleon,Nuevo León,Yemen,نويفو ليون,اليمن,#ecb3c3,small,-100.5,25.5,-100.7,25.2,0,
+riogrande,Río Grande,Oman,ريو غراندي,عُمان,#dcd294,small,-99.3,28.0,-99.6,28.3,0,
+counties,The Counties,U.A.E.,المقاطعات,الإمارات,#a7d4d9,small,-97.5,29.3,-95.9,26.6,1,
+karankawa,Karankawa,Qatar,كارانكاوا,قطر,#cfc98a,small,-95.5,29.9,-93.7,27.6,1,
+ludwigsland,Ludwigsland,Kuwait,لودفيغسلاند,الكويت,#eec79c,small,-92.3,30.3,-90.9,28.0,1,
+canada,Canada,Turkey,كندا,تركيا,#dedcd3,big,-100.0,52.0,-96.0,51.0,0,
+puertorico,Puerto Rico,Bahrain,بورتوريكو,البحرين,#eec79c,small,-66.4,18.2,-66.4,19.3,0,

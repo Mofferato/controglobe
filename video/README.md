@@ -57,7 +57,11 @@ frontiers traced on the ground: `data/atlas/<region>-frontiers.yaml` says what e
 `data/atlas/<region>-frontiers.geojson`, and the build cuts the land into the nations of
 `data/atlas/<region>-nations.csv` and gives each frontier a wall map's ribbon, finished in GIMP.
 Europe keeps the labels, keys and legend of its hand-drawn maps (`data/atlas/europe*.svg`),
-carried onto the real ground by a warp.
+carried onto the real ground by a warp. `python build.py namaps` draws North America the same
+way (`north-america-frontiers.yaml`, after the map "A More Fractured Union", with its occupied
+territories and non-state actors laid over the states) and, cut out of it, the thirteen marches
+of Solms-America (`solms-america-frontiers.yaml`), and sets each map wherever a page carries its
+`cg-na` markers.
 
 To YouTube: [PUBLISHING.md](PUBLISHING.md) walks through the upload (title, description and
 chapters, thumbnail, subtitles, end screen, cards, visibility) and the post that tells the
@@ -215,6 +219,7 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py logo [--size 1024] [--site]` | The emblem as a square PNG (the Discord server icon); `--site` also redraws the encyclopedia's favicon, touch icon and masthead globe in every page |
 | `python build.py sitemaps` | The encyclopedia's maps of al-Mashriq on the video's borders, the History page's map of every year, and the world maps' ground, in both editions |
 | `python build.py atlas [--only africa\|europe]` | The Africa and Europe atlases on their traced frontiers and the real coast, in both editions |
+| `python build.py namaps [--only political marches ...] [--dump dir]` | The maps of North America and of the Kingdom of Solms-America on their traced frontiers, in both editions; `--dump` also writes each as an SVG file to look at |
 | `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
 | `python build.py all` | fetch, mesh, check, timeline, render, sequence, animatic |
 
