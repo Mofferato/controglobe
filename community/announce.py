@@ -11,6 +11,8 @@ fills from the repository's secrets and variables:
 
   DISCORD_ANNOUNCE_WEBHOOK   the #announcements webhook address (a secret: never commit it)
   YOUTUBE_CHANNEL_ID         the channel's ID: UC and 22 more characters
+  YOUTUBE_API_KEY            optional but steadier: a YouTube Data API v3 key (a secret); without
+                             it the public feeds are read, and they fail for hours at a time
   DISCORD_PING_ROLE          optional: the Video Pings role's ID, pinged with each new video
 
 The state file lists the uploads already announced. A first run without one only records what is
@@ -28,12 +30,17 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
 UA = "DiscordBot (https://github.com/Mofferato/controglobe, 1.0)"
-# The same uploads, two ways: the channel's feed, and the feed of its uploads playlist (UU + the
-# channel ID after UC). Either now and then answers 404 for a channel that exists, rarely both.
+BROWSER = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36"
+# The uploads playlist (UU + the channel ID after UC) through the YouTube Data API: one unit of the
+# free 10,000-unit daily quota per run, and far steadier than the feeds. Needs YOUTUBE_API_KEY.
+API = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=15&playlistId=UU{}&key={}"
+# Without a key: the channel's public feed and its uploads playlist's feed. Since December 2025
+# both answer 404 for hours at a time for channels that exist, so they are only the fallback.
 FEEDS = ["https://www.youtube.com/feeds/videos.xml?channel_id={}",
          "https://www.youtube.com/feeds/videos.xml?playlist_id=UU{}"]
 NS = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
@@ -52,8 +59,8 @@ class Stop(Exception):
         self.fatal = fatal
 
 
-def fetch(url: str, data: bytes | None = None, tries: int = 4, timeout: float = 30) -> bytes:
-    headers = {"User-Agent": UA}
+def fetch(url: str, data: bytes | None = None, tries: int = 4, timeout: float = 30, ua: str = UA) -> bytes:
+    headers = {"User-Agent": ua}
     if data is not None:
         headers["Content-Type"] = "application/json"
     for attempt in range(tries):
@@ -82,14 +89,58 @@ def fetch(url: str, data: bytes | None = None, tries: int = 4, timeout: float = 
     raise Stop(f"{url.split('?')[0]} kept asking to wait", fatal=False)
 
 
-def uploads(channel_id: str) -> list[dict]:
-    """The channel's latest uploads, oldest first."""
+def uploads(channel_id: str, key: str | None = None) -> list[dict]:
+    """The channel's latest uploads, oldest first: from the Data API when there is a key, from the
+    public feeds when there is none or the API is out of quota for the day."""
+    if key:
+        vids = uploads_api(channel_id, key)
+        if vids is not None:
+            return vids
+    return uploads_feed(channel_id)
+
+
+def uploads_api(channel_id: str, key: str) -> list[dict] | None:
+    """None when the API cannot answer today (quota, an outage): the feeds are tried instead."""
+    try:
+        data = json.loads(fetch(API.format(channel_id[2:], urllib.parse.quote(key)), tries=3, timeout=20))
+    except Stop as e:
+        msg = str(e)                             # the URL in it is cut before "?", so the key never shows
+        if any(r in msg for r in ("keyInvalid", "API_KEY_INVALID", "API key not valid")):
+            raise Stop("YOUTUBE_API_KEY is not a valid key: copy it again from Google Cloud > APIs & "
+                       "Services > Credentials", fatal=True) from None
+        if any(r in msg for r in ("accessNotConfigured", "SERVICE_DISABLED", "has not been used")):
+            raise Stop("YOUTUBE_API_KEY works, but its Google Cloud project has not enabled the YouTube "
+                       "Data API v3: APIs & Services > Library > YouTube Data API v3 > Enable", fatal=True) from None
+        if "playlistNotFound" in msg:
+            raise Stop("YouTube has no uploads for that channel: check YOUTUBE_CHANNEL_ID", fatal=True) from None
+        if any(r in msg for r in ("API_KEY_HTTP_REFERRER_BLOCKED", "API_KEY_IP_ADDRESS_BLOCKED",
+                                  "API_KEY_SERVICE_BLOCKED", "referer")):
+            raise Stop("YOUTUBE_API_KEY is restricted in a way that blocks GitHub: in Google Cloud > "
+                       "Credentials, set Application restrictions to None and API restrictions to the "
+                       "YouTube Data API v3 only", fatal=True) from None
+        print(f"The YouTube Data API did not answer ({msg.split(': ', 1)[0]}); trying the public feeds.")
+        return None
+    except ValueError:
+        print("The YouTube Data API sent something unreadable; trying the public feeds.")
+        return None
+    out = []
+    for item in data.get("items", []):
+        sn = item.get("snippet") or {}
+        vid = (sn.get("resourceId") or {}).get("videoId")
+        if not vid or sn.get("title") in ("Private video", "Deleted video"):
+            continue
+        out.append({"id": vid, "title": sn.get("title", "").strip(),
+                    "url": f"https://www.youtube.com/watch?v={vid}", "published": sn.get("publishedAt", "")})
+    return sorted(out, key=lambda v: v["published"])
+
+
+def uploads_feed(channel_id: str) -> list[dict]:
     urls = [FEEDS[0].format(channel_id), FEEDS[1].format(channel_id[2:])]
     root, last = None, None
     for attempt in range(ROUNDS):                  # both feeds, a few times, with a pause between rounds
         for url in urls:
             try:
-                root = ET.fromstring(fetch(url, tries=1, timeout=15))
+                root = ET.fromstring(fetch(url, tries=1, timeout=15, ua=BROWSER))
                 break
             except Stop as e:
                 last = str(e).split(": ", 1)[0]    # "HTTP 404 from <feed>", without YouTube's error page
@@ -101,8 +152,10 @@ def uploads(channel_id: str) -> list[dict]:
             time.sleep(PAUSE * (attempt + 1))
     if root is None:
         # A mistyped channel ID fails the same way, every run, and this says so.
-        raise Stop(f"neither YouTube feed answered after {ROUNDS} tries ({last}); the next run tries again. "
-                   f"If this repeats on every run, check YOUTUBE_CHANNEL_ID", fatal=False)
+        raise Stop(f"neither YouTube feed answered after {ROUNDS} tries ({last}). YouTube's feeds have been "
+                   f"failing like this on and off since December 2025; a YOUTUBE_API_KEY secret makes the "
+                   f"announcer use the YouTube Data API instead (community/README.md). The next run tries "
+                   f"again.", fatal=False)
     out = []
     for entry in root.findall("a:entry", NS):
         vid = entry.findtext("yt:videoId", default="", namespaces=NS)
@@ -144,7 +197,7 @@ def check(state_path: pathlib.Path, channel_id: str, webhook: str, role: str | N
     seen, new = None, []
     if state_path.exists():
         seen = json.loads(state_path.read_text(encoding="utf8")).get("announced", [])
-    vids = uploads(channel_id)
+    vids = uploads(channel_id, (os.environ.get("YOUTUBE_API_KEY") or "").strip() or None)
     if seen is None:
         summary(f"First run: recorded the {len(vids)} uploads on the channel; the next new one is announced.")
         seen = [v["id"] for v in vids]
