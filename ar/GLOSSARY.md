@@ -105,7 +105,9 @@ throughout, and append it here in the same pass.
 | Aïr | آير | custom (Niger) |
 | Kong / Republic of Kong | كونغ / جمهورية كونغ | France |
 | Kaabu | كابو | Portugal |
-| Ndongo | ندونغو | Italy |
+| Ndongo | ندونغو | Montenegro, on Angolan ground (it carried Italy in earlier drafts) |
+| Manden | ماندن | Italy, on the ground of Mali; the Axis power of the 1940s |
+| Wagadu (the Ghana Empire) | واغادو (إمبراطورية غانا) | Rome: the classical empire of the west |
 | Sokoto | سوكوتو | Britain |
 | DN Kongo | دي إن كونغو | Austria; the initials are not expanded, so they are transliterated |
 | Union of Zambezia | اتحاد الزامبيزيا | Yugoslavia; dissolved in the 1990s |
@@ -182,7 +184,7 @@ throughout, and append it here in the same pass.
 | Mysore Loom & Motor / the Mysore method | ميسور للأنوال والمحركات / أسلوب ميسور |
 | chit class | طبقة الأقساط |
 | Kilat / Kivu / Sanwi / Bouaké Motors | كيلات / كيفو / سانوي / بواكيه موتورز |
-| Ombaka 275 / Awash 2101 / Ilorin / Tarma / Chasqui | أومباكا 275 / أواش 2101 / إيلورين / ترما / تشاسكي |
+| Djoliba 275 / Awash 2101 / Ilorin / Tarma / Chasqui | جوليبا 275 / أواش 2101 / إيلورين / ترما / تشاسكي |
 | Hamil / Hamil Wadi | الحامل / حامل وادي |
 | Kinshasa Regulations | لوائح كينشاسا |
 | Federal Standard 209 | المعيار الاتحادي 209 |
@@ -308,6 +310,13 @@ throughout, and append it here in the same pass.
 | the Rhine / the Danube / the Vistula / the Tornio / the Prut | الراين / الدانوب / الفيستولا / تورنيو / بروت |
 | the Carpathians / the Dinarides / the Pyrenees | الكاربات / الدينار / البرانس |
 | Sicily / Sardinia / Malta / Crete | صقلية / سردينيا / مالطا / كريت |
+| Mali / Angola / Mozambique / Montenegro / Moldova | مالي / أنغولا / موزمبيق / الجبل الأسود / مولدوفا |
+| Timbuktu / Djenné / Ségou / Mopti / Bamako | تمبكتو / جنّي / سيغو / موبتي / باماكو |
+| the Niger / the Po / the middle Niger / the Tossaye narrows / the Dallols | النيجر / البو / النيجر الأوسط / مضيق توساي / الدلول |
+| the Adrar des Ifoghas / the Mossi plateau / the upper Volta | أدرار إفوغاس / هضبة الموسي / الفولتا العليا |
+| the Bié highlands / the Barotse plain / the Tagant / the Drakensberg / the Ogooué | مرتفعات بييه / سهل باروتسي / تاغانت / دراكنزبرغ / أوغووي |
+| Serer / Fula / Tukulor | السيرير / الفولاني / التكرور |
+| Malian (of Mali) | من مالي — never the bare adjective «مالي», which reads as "financial" |
 
 ## Hatnotes and furniture
 

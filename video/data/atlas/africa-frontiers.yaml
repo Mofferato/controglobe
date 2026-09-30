@@ -1,0 +1,780 @@
+# The frontiers of the Africa atlas, as they lie on the ground (lon, lat).
+#
+# Africa carries Europe, so its frontiers are drawn the way Europe's are: along great rivers
+# (the Congo is this map's Rhine, the Zambezi its Danube), along watersheds and crests (the
+# desert's edge is the Alpine frontier of the Italy of the Niger), and through dune seas and
+# lakes. None is a meridian, a parallel or a partition line. Each frontier is a chain of legs
+# (see cgvideo/frontiers.py):
+#   river:  follow the named Natural Earth river(s) to a point on them
+#   divide: follow the rim of a river basin, as GRASS r.watershed computes it in QGIS
+#   via:    a smooth curve through points set along an escarpment, a crest or a lake
+# `nations` names the two sides; `follows` is what the frontier is, in words.
+# To move a frontier: edit it here, then re-bake in QGIS with
+# integrations/qgis/cg_frontiers.py (it writes africa-frontiers.geojson, which the build reads).
+
+nodes:
+  # the north
+  moulouya_mouth: [-2.25, 35.22]
+  draa_saguia: [-8.95, 28.52]            # where Saguia's frontier meets the Draa
+  saguia_corner: [-9.25, 26.45]          # Saguia, Mauritania, Algeria
+  tunisia_corner: [9.55, 31.55]          # Tunisia, Algeria, Libya
+  djouf: [-5.35, 18.7]                   # Mauritania, Algeria, Mali
+  ifoghas: [0.85, 19.55]                 # Mali, Algeria, Air
+  central: [11.25, 23.05]                # Algeria, Libya, Air, Kanem: the Tummo and the Djado
+  uweinat: [25.0, 21.95]                 # Jebel Uweinat: Libya, Egypt, Sudan
+  libya_sudan: [23.7, 20.85]             # Libya, Kanem, Sudan
+  # the west
+  karakoro: {at: [-12.1, 14.9], river: [Sénégal, Bafing]}        # Jolof, Mauritania, Mali
+  bafing_fouta: {at: [-11.05, 12.25], river: [Sénégal, Bafing]}  # Jolof, Fouta Djallon, Mali
+  gambia_fouta: {at: [-12.45, 12.45], river: Gambia}           # Jolof, Kaabu, Fouta Djallon
+  scarcies_head: [-11.1, 9.75]           # Fouta Djallon, Sierra Leone, Mali (the Niger's source)
+  mano_head: [-10.4, 8.9]                # Sierra Leone, Liberia, Mali
+  nimba: [-8.15, 8.15]                   # Liberia, Kong, Mali
+  volta_tip: {at: [-1.95, 14.0], divide: volta}                # Mali, Kong, Songhai: the Volta basin's northern tip
+  tossaye: [-0.35, 17.25]                # Mali, Songhai, Air, north of the Tossaye narrows
+  pendjari: {at: [1.55, 11.05], river: Oti}                     # Kong, Tem, Dahomey
+  w_park: [2.35, 11.95]                  # Kong, Dahomey, Songhai: the W of the Niger
+  gaya: {at: [3.45, 11.9], river: Niger}                        # Songhai, Dahomey, Nigeria
+  azawagh: [4.4, 14.95]                  # Songhai, Nigeria, Air
+  termit: [10.5, 15.6]                   # Nigeria, Air, Kanem
+  lake_chad: [14.1, 13.05]               # Nigeria, Kanem, Cameroon, in the lake
+  # the centre
+  adamawa: [15.25, 7.3]                  # Cameroon, Kanem, the Central African Republic
+  darfur: [22.85, 10.95]                 # Kanem, Sudan, the Central African Republic
+  sangha: [16.1, 2.45]                   # Cameroon, DN Kongo, the Central African Republic
+  ogooue_head: {at: [13.1, 2.0], divide: ogooue}               # Cameroon, Gabon, DN Kongo
+  muni: [11.35, 2.12]                    # Cameroon, Gabon, Equatorial Guinea
+  bateke: {at: [14.0, -2.3], divide: ogooue}                   # where Gabon leaves the Ogooue's rim
+  ubangi: {at: [18.6, 3.75], river: Ubangi}                     # DN Kongo, Kongo, the Central African Republic
+  uele: {at: [27.35, 5.05], divide: congo}                      # Kongo, the CAR, South Sudan: the Nile-Congo divide
+  bahr_arab: {at: [24.0, 8.6], divide: congo}                   # the CAR, Sudan, South Sudan
+  # the east
+  ethiopia_north: [34.45, 10.45]         # Sudan, South Sudan, Ethiopia
+  setit: {at: [36.55, 14.3], river: [Setit, Tekezé]}            # Sudan, Eritrea, Ethiopia
+  danakil: [42.35, 12.55]                # Eritrea, Ethiopia, Djibouti
+  zeila: [43.05, 10.98]                  # Djibouti, Ethiopia, Somaliland
+  nugaal: [46.6, 8.1]                    # Somaliland, Ethiopia, Somalia
+  dolo: [42.05, 4.2]                     # Ethiopia, Kenya, Somalia
+  turkana: [35.8, 4.95]                  # Ethiopia, Kenya, South Sudan
+  kidepo: [33.85, 4.2]                   # Kenya, Uganda, South Sudan
+  west_nile: [30.8, 3.6]                 # Uganda, Kongo, South Sudan
+  virunga: [29.55, -1.38]                # Uganda, Kongo, Rwanda
+  rusizi: [28.95, -2.5]                  # Kongo, Rwanda, Burundi
+  kagera: [30.8, -2.4]                   # Rwanda, Burundi, Tanzania
+  ruk: [30.85, -1.05]                    # Rwanda, Uganda, Tanzania
+  victoria: [33.95, -1.0]                # Uganda, Kenya, Tanzania, in the lake
+  tanganyika: [29.45, -4.45]             # Kongo, Burundi, Tanzania, in the lake
+  tanganyika_south: [30.7, -8.3]         # Kongo, Tanzania, Zambia, in the lake
+  # the south
+  mafinga: [33.3, -9.6]                  # Zambia, Malawi, Tanzania
+  nyasa_east: [34.75, -11.6]             # Malawi, Tanzania, Mozambique, in the lake
+  luangwa_mid: {at: [31.3, -14.4], river: Luangwa}             # Zambia, Malawi, Mozambique
+  zumbo: {at: [30.42, -15.62], river: Zambezi}                 # Zambia, Zimbabwe, Mozambique
+  kazungula: {at: [25.26, -17.8], river: Zambezi}              # Zambia, Zimbabwe, Botswana
+  linyanti: {at: [23.3, -18.0], river: [Linyanti, Chobe, Cuando]}  # Zambia, Botswana, Angola
+  zambezi_head: {at: [24.1, -11.45], divide: congo}           # Kongo, Zambia, Angola
+  dirico: {at: [20.75, -17.95], river: [Cubango, Okavango]}   # Angola, Namibia, Botswana
+  twee_rivieren: [20.6, -26.45]          # Namibia, Botswana, Cape Republic
+  molopo_east: [25.2, -25.75]            # Botswana, Cape Republic, Xhosa Republic
+  shashe: {at: [29.35, -22.2], river: Limpopo}                 # Botswana, Zimbabwe, Xhosa Republic
+  pafuri: {at: [31.3, -22.4], river: Limpopo}                  # Zimbabwe, Mozambique, Xhosa Republic
+  swazi_north: [31.98, -25.95]           # Eswatini, Mozambique, Xhosa Republic
+  swazi_south: [31.95, -27.3]            # Eswatini, Mozambique, Xhosa Republic
+
+frontiers:
+  # ---- the north: Iceland, the Faroes, Norway, Sweden, Denmark, Finland ------------------
+  - id: morocco-south
+    nations: [morocco, algeria/saguia]
+    follows: the Moulouya, the east end of the High Atlas, the Tafilalt's edge, then the Draa to the sea
+    from: [-2.3, 35.3]
+    legs:
+      - {river: Moulouya, to: [-4.35, 32.7]}
+      - via: [[-4.3, 32.25], [-4.05, 31.75], [-3.9, 31.25], [-4.3, 30.6], [-5.05, 30.05], [-5.65, 29.8],
+              [-6.4, 29.5], [-7.3, 29.15], [-8.2, 28.75], draa_saguia, [-9.9, 28.45], [-10.6, 28.55],
+              [-11.15, 28.72], [-11.4, 28.85]]
+  - id: saguia-algeria
+    nations: [saguia, algeria]
+    follows: the western rim of the Tindouf basin
+    from: draa_saguia
+    legs:
+      - via: [[-9.15, 28.0], [-9.35, 27.4], [-9.1, 26.9], saguia_corner]
+  - id: saguia-mauritania
+    nations: [saguia, mauritania]
+    follows: the southern watershed of the Saguia el-Hamra, north of the Zemmour
+    from: [-14.75, 26.0]
+    legs:
+      - via: [[-14.3, 26.05], [-13.3, 25.95], [-12.1, 26.1], [-10.8, 26.2], [-9.9, 26.3], saguia_corner]
+  - id: mauritania-algeria
+    nations: [mauritania, algeria]
+    follows: the south-western edge of the Erg Iguidi and the Erg Chech, then El Djouf
+    from: saguia_corner
+    legs:
+      - via: [[-8.4, 25.85], [-7.3, 24.85], [-6.55, 23.65], [-6.05, 22.2], [-5.7, 20.8], [-5.45, 19.6], djouf]
+  - id: tunisia-algeria
+    nations: [tunisia, algeria]
+    follows: the Kroumirie and Tebessa mountains, the Chott el Gharsa, then the northern edge of the Grand Erg Oriental
+    from: [8.72, 37.05]
+    legs:
+      - via: [[8.5, 36.65], [8.35, 36.05], [8.3, 35.4], [7.95, 34.8], [7.6, 34.25], [7.65, 33.6], [8.4, 32.65],
+              [9.05, 31.95], tunisia_corner]
+  - id: tunisia-libya
+    nations: [tunisia, libya]
+    follows: the Jeffara plain to the Dahar escarpment
+    from: [11.62, 33.3]
+    legs:
+      - via: [[11.35, 32.8], [10.75, 32.25], [10.1, 31.8], tunisia_corner]
+  - id: algeria-libya
+    nations: [algeria, libya]
+    follows: the eastern edge of the Grand Erg Oriental, the Hamada, and the gap between the Tassili and the Acacus
+    from: tunisia_corner
+    legs:
+      - via: [[9.6, 30.85], [9.3, 30.25], [9.25, 29.5], [9.55, 28.55], [9.85, 27.4], [10.1, 26.3], [9.95, 25.5],
+              [10.05, 24.7], [10.6, 23.8], central]
+  - id: libya-egypt
+    nations: [libya, egypt]
+    follows: the Sollum escarpment, then the western edge of the Great Sand Sea to Gilf Kebir and Uweinat
+    from: [25.2, 31.75]
+    legs:
+      - via: [[24.95, 30.9], [24.8, 30.0], [24.95, 29.1], [25.35, 28.1], [25.55, 26.8], [25.3, 25.3], [25.55, 24.0],
+              [25.25, 22.7], uweinat]
+  - id: egypt-sudan
+    nations: [egypt, sudan]
+    follows: the Selima sand sheet, the second cataract, then the Wadi Allaqi to Gebel Elba
+    from: uweinat
+    legs:
+      - via: [[26.5, 21.55], [28.2, 21.4], [29.8, 21.6], [31.35, 21.8], [32.3, 21.95], [33.2, 22.35], [34.3, 22.2],
+              [35.3, 22.05], [36.25, 22.1], [36.95, 22.1]]
+  - id: libya-sudan
+    nations: [libya, sudan]
+    follows: the Uweinat massif
+    from: libya_sudan
+    legs:
+      - via: [[24.35, 21.45], uweinat]
+  - id: libya-kanem
+    nations: [libya, kanem]
+    follows: the Tummo, the northern foot of the Tibesti, and the Sarir Tibesti
+    from: central
+    legs:
+      - via: [[12.4, 22.95], [13.6, 22.6], [15.4, 22.95], [17.4, 22.55], [19.6, 22.2], [21.6, 21.7], libya_sudan]
+  - id: algeria-air
+    nations: [algeria, air]
+    follows: the south foot of the Tassili du Hoggar
+    from: ifoghas
+    legs:
+      - via: [[1.25, 20.75], [2.3, 21.3], [3.5, 21.0], [5.0, 20.7], [6.5, 20.95], [8.0, 21.6], [9.4, 22.4], central]
+  - id: mali-algeria
+    nations: [mali, algeria]
+    follows: the northern edge of the Azawad
+    from: djouf
+    legs:
+      - via: [[-4.25, 19.1], [-2.75, 19.45], [-1.2, 19.55], [0.2, 19.35], ifoghas]
+  - id: mali-mauritania
+    nations: [mali, mauritania]
+    follows: the Karakoro, the Assaba, and the escarpment of the Tagant, Tichitt, Oualata and Nema above the Hodh
+    from: karakoro
+    legs:
+      - via: [[-12.1, 15.3], [-11.95, 15.8], [-11.7, 16.35], [-11.55, 16.95], [-11.4, 17.5], [-11.0, 17.95], [-10.1, 18.1],
+              [-9.2, 18.2], [-8.3, 18.1], [-7.55, 17.75], [-7.1, 17.25], [-6.3, 17.75], djouf]
+  - id: jolof-mauritania
+    nations: [jolof, mauritania]
+    follows: the Senegal
+    from: [-16.6, 15.85]
+    legs:
+      - {river: [Sénégal, Bafing], to: karakoro}
+  # ---- the west: Spain, Portugal, Galicia, Italy, France and the duchies --------------------
+  - id: jolof-mali
+    nations: [jolof, mali]
+    follows: the Senegal to Bafoulabe, then the Bafing
+    from: karakoro
+    legs:
+      - {river: [Sénégal, Bafing], to: bafing_fouta}
+  - id: jolof-fouta
+    nations: [jolof, fouta]
+    follows: the northern escarpment of the Fouta Djallon
+    from: bafing_fouta
+    legs:
+      - via: [[-11.55, 12.3], [-12.0, 12.45], gambia_fouta]
+  - id: jolof-kaabu
+    nations: [jolof, kaabu]
+    follows: the Gambia
+    from: gambia_fouta
+    legs:
+      - {river: Gambia, to: [-16.55, 13.5]}
+      - via: [[-16.9, 13.5]]
+  - id: kaabu-fouta
+    nations: [kaabu, fouta]
+    follows: the western foot of the Fouta Djallon
+    from: gambia_fouta
+    legs:
+      - via: [[-13.3, 12.1], [-13.75, 11.7], [-14.2, 11.35], [-14.65, 11.1], [-15.2, 10.95]]
+  - id: fouta-mali
+    nations: [fouta, mali]
+    follows: the eastern escarpment of the Fouta Djallon
+    from: bafing_fouta
+    legs:
+      - via: [[-11.2, 11.8], [-11.35, 11.3], [-11.2, 10.8], [-11.35, 10.2], scarcies_head]
+  - id: fouta-sierra-leone
+    nations: [fouta, sierra_leone]
+    follows: the Great Scarcies
+    from: [-13.35, 8.85]
+    legs:
+      - via: [[-12.95, 9.1], [-12.55, 9.55], [-12.1, 9.95], [-11.55, 9.95], scarcies_head]
+  - id: sierra-leone-mali
+    nations: [sierra_leone, mali]
+    follows: the Loma and Kissi highlands, the Niger's first watershed
+    from: scarcies_head
+    legs:
+      - via: [[-10.75, 9.3], mano_head]
+  - id: sierra-leone-liberia
+    nations: [sierra_leone, liberia]
+    follows: the Mano
+    from: [-11.55, 6.8]
+    legs:
+      - via: [[-11.3, 7.1], [-11.0, 7.45], [-10.7, 7.8], [-10.6, 8.35], mano_head]
+  - id: liberia-mali
+    nations: [liberia, mali]
+    follows: the Guinea highlands between Macenta and Nimba
+    from: mano_head
+    legs:
+      - via: [[-9.8, 8.95], [-9.1, 8.75], [-8.5, 8.4], nimba]
+  - id: liberia-kong
+    nations: [liberia, kong]
+    follows: the Cavalla
+    from: nimba
+    legs:
+      - via: [[-8.25, 7.6], [-8.35, 7.0], [-8.1, 6.45], [-7.65, 5.95], [-7.45, 5.35], [-7.52, 4.6], [-7.55, 4.2]]
+  - id: mali-kong
+    nations: [mali, kong]
+    follows: the Niger-Volta watershed, the Banfora cliff, then the Niger's southern rim
+    from: volta_tip
+    legs:
+      - {divide: niger, to: nimba}
+  - id: mali-songhai
+    nations: [mali, songhai]
+    follows: the Tossaye narrows of the Niger, the Gourma and the eastern foot of the Hombori hills
+    from: tossaye
+    legs:
+      - via: [[-0.55, 16.9], [-0.85, 16.3], [-1.25, 15.6], [-1.6, 14.8], volta_tip]
+  - id: mali-air
+    nations: [mali, air]
+    follows: the western foot of the Adrar des Ifoghas
+    from: ifoghas
+    legs:
+      - via: [[0.45, 18.7], [0.05, 17.9], tossaye]
+  - id: kong-songhai
+    nations: [kong, songhai]
+    follows: the Volta-Niger watershed
+    from: volta_tip
+    legs:
+      - {divide: volta, to: w_park}
+  - id: kong-dahomey
+    nations: [kong, dahomey]
+    follows: the Pendjari and the Atakora's northern end
+    from: w_park
+    legs:
+      - via: [[1.95, 11.5], pendjari]
+  - id: kong-tem
+    nations: [kong, tem]
+    follows: the Volta and the Oti
+    from: [0.72, 5.6]
+    legs:
+      - {river: [Volta, Oti], to: pendjari}
+  - id: tem-dahomey
+    nations: [tem, dahomey]
+    follows: the Mono, then the eastern foot of the Atakora
+    from: [1.68, 6.15]
+    legs:
+      - via: [[1.62, 6.9], [1.52, 7.6], [1.55, 8.3], [1.65, 9.0], [1.75, 9.7], [1.95, 10.35], pendjari]
+  - id: songhai-dahomey
+    nations: [songhai, dahomey]
+    follows: the Mekrou, then the Niger
+    from: w_park
+    legs:
+      - via: [[2.6, 12.15]]
+      - {river: Niger, to: gaya}
+  - id: dahomey-nigeria
+    nations: [dahomey, nigeria]
+    follows: the Okpara and the Ogun-Oueme watershed
+    from: gaya
+    legs:
+      - via: [[3.6, 11.35], [3.5, 10.6], [3.2, 9.9], [2.95, 9.2], [2.78, 8.4], [2.72, 7.5], [2.72, 6.8], [2.74, 6.2]]
+  - id: songhai-nigeria
+    nations: [songhai, nigeria]
+    follows: the Dallol Maouri
+    from: gaya
+    legs:
+      - via: [[3.72, 12.5], [3.92, 13.3], [4.12, 14.1], azawagh]
+  - id: songhai-air
+    nations: [songhai, air]
+    follows: the southern edge of the Azawagh and the lower Tilemsi
+    from: azawagh
+    legs:
+      - via: [[3.5, 15.5], [2.5, 16.1], [1.3, 16.7], [0.3, 17.05], tossaye]
+  - id: nigeria-air
+    nations: [nigeria, air]
+    follows: the Tiguidit escarpment and the Damergou
+    from: azawagh
+    legs:
+      - via: [[5.3, 15.5], [6.3, 16.2], [7.5, 16.45], [8.8, 16.3], [9.8, 16.0], termit]
+  - id: air-kanem
+    nations: [air, kanem]
+    follows: the Tenere
+    from: termit
+    legs:
+      - via: [[11.0, 16.8], [11.4, 18.2], [11.5, 19.6], [11.3, 21.0], [11.2, 22.2], central]
+  - id: nigeria-kanem
+    nations: [nigeria, kanem]
+    follows: the Manga, then the Komadugu Yobe into Lake Chad
+    from: termit
+    legs:
+      - via: [[11.0, 14.7], [11.6, 13.75], [12.1, 13.3]]
+      - {river: Komadugu Yobe, to: [13.3, 13.65]}
+      - via: [lake_chad]
+  - id: nigeria-cameroon
+    nations: [nigeria, cameroon]
+    follows: the Cameroon line (the Rumpi, Bamenda and Mambilla highlands, the Alantika and the Mandara crest)
+    from: [8.5, 4.4]
+    legs:
+      - via: [[8.9, 5.1], [9.3, 5.8], [9.9, 6.6], [10.9, 7.2], [11.8, 7.9], [12.5, 8.8], [12.85, 9.4], [13.3, 10.2],
+              [13.75, 10.9], [14.1, 11.7], [14.2, 12.4], lake_chad]
+  # ---- the centre: Germany, Austria, Bavaria, the Low Countries, Poland ----------------------
+  - id: kanem-cameroon
+    nations: [kanem, cameroon]
+    follows: the Chari and the Logone
+    from: lake_chad
+    legs:
+      - via: [[14.45, 12.95]]
+      - {river: Chari, to: [15.05, 12.1]}
+      - {river: Logone, to: [16.05, 8.6]}
+      - via: [[15.7, 7.9], adamawa]
+  - id: kanem-car
+    nations: [kanem, car]
+    follows: the northern foot of the Ubangi plateau, then the Bahr Aouk
+    from: adamawa
+    legs:
+      - via: [[16.0, 7.6], [17.0, 7.75], [18.0, 8.05], [18.9, 8.85]]
+      - {river: Bahr Aouk, to: [21.4, 9.6]}
+      - via: [[22.2, 10.3], darfur]
+  - id: kanem-sudan
+    nations: [kanem, sudan]
+    follows: the Ennedi's eastern foot, the Wadi Howar's head, and the Dar Masalit
+    from: libya_sudan
+    legs:
+      - via: [[23.3, 19.6], [23.0, 18.2], [22.7, 16.8], [22.5, 15.4], [22.3, 14.1], [22.45, 12.9], [22.75, 11.8], darfur]
+  - id: car-sudan
+    nations: [car, sudan]
+    follows: the Dar Fertit
+    from: darfur
+    legs:
+      - via: [[23.35, 9.9], bahr_arab]
+  - id: cameroon-car
+    nations: [cameroon, car]
+    follows: the eastern foot of the Adamawa and the Kadei
+    from: adamawa
+    legs:
+      - via: [[14.75, 6.4], [14.55, 5.35], [15.0, 4.2], [15.65, 3.2], sangha]
+  - id: cameroon-dn-kongo
+    nations: [cameroon, dn_kongo]
+    follows: the Ngoko and the Dja
+    from: sangha
+    legs:
+      - via: [[15.3, 2.0], [14.3, 2.15], ogooue_head]
+  - id: cameroon-gabon
+    nations: [cameroon, gabon]
+    follows: the upper Ntem
+    from: ogooue_head
+    legs:
+      - via: [[12.3, 2.2], muni]
+  - id: cameroon-eq-guinea
+    nations: [cameroon, eq_guinea]
+    follows: the Ntem
+    from: [9.7, 2.36]
+    legs:
+      - via: [[10.3, 2.2], [11.0, 2.15], muni]
+  - id: eq-guinea-gabon
+    nations: [eq_guinea, gabon]
+    follows: the Muni estuary and the Utamboni
+    from: muni
+    legs:
+      - via: [[11.35, 1.5], [11.15, 1.05], [10.3, 1.0], [9.45, 0.98]]
+  - id: gabon-dn-kongo
+    nations: [gabon, dn_kongo]
+    follows: the Ogooue's eastern watershed, the Bateke plateau, then the Chaillu to the sea
+    from: ogooue_head
+    legs:
+      - {divide: ogooue, to: bateke}
+      - via: [[13.2, -2.9], [12.2, -3.2], [11.3, -3.7], [10.9, -4.15]]
+  - id: dn-kongo-car
+    nations: [dn_kongo, car]
+    follows: the Sangha-Lobaye watershed
+    from: sangha
+    legs:
+      - via: [[16.8, 3.2], [17.6, 3.55], ubangi]
+  - id: kongo-dn-kongo
+    nations: [ww_kongo, dn_kongo]
+    follows: the Ubangi and the Congo to the sea
+    from: ubangi
+    legs:
+      - {river: [Ubangi, Congo], to: [12.3, -6.02]}
+      - via: [[12.05, -6.1]]
+  - id: kongo-car
+    nations: [ww_kongo, car]
+    follows: the Ubangi and the Mbomou
+    from: ubangi
+    legs:
+      - {river: [Ubangi, Uele, Bomu], to: [26.9, 5.05]}
+      - via: [uele]
+  - id: car-south-sudan
+    nations: [car, south_sudan]
+    follows: the Congo-Nile divide
+    from: uele
+    legs:
+      - {divide: congo, to: bahr_arab}
+  - id: kongo-south-sudan
+    nations: [ww_kongo, south_sudan]
+    follows: the Congo-Nile divide
+    from: uele
+    legs:
+      - {divide: congo, to: west_nile}
+  # ---- the east: Russia, Belarus, the Baltic, Ukraine, Romania, Hungary, the Czech lands, Bulgaria
+  - id: sudan-south-sudan
+    nations: [sudan, south_sudan]
+    follows: the Bahr el Arab and the northern edge of the Sudd
+    from: bahr_arab
+    legs:
+      - via: [[25.0, 10.2], [26.6, 9.8], [28.3, 9.5], [29.8, 9.55], [30.9, 10.0], [32.3, 10.6], [33.5, 10.7], ethiopia_north]
+  - id: sudan-ethiopia
+    nations: [sudan, ethiopia]
+    follows: the foot of the Ethiopian highlands
+    from: ethiopia_north
+    legs:
+      - via: [[35.0, 11.3], [35.6, 12.3], [36.2, 13.2], [36.5, 13.9], setit]
+  - id: sudan-eritrea
+    nations: [sudan, eritrea]
+    follows: the Gash and the Barka
+    from: setit
+    legs:
+      - via: [[36.7, 15.3], [37.2, 16.2], [37.9, 17.2], [38.5, 17.9], [38.75, 18.1]]
+  - id: eritrea-ethiopia
+    nations: [eritrea, ethiopia]
+    follows: the Setit, the Mareb, then the Danakil escarpment
+    from: setit
+    legs:
+      - {river: [Setit, Tekezé], to: [37.1, 14.2]}
+      - via: [[37.9, 14.5], [38.8, 14.55], [39.5, 14.4], [40.0, 14.0], [40.7, 13.6], [41.5, 13.1], danakil]
+  - id: eritrea-djibouti
+    nations: [eritrea, djibouti]
+    follows: Ras Doumeira
+    from: danakil
+    legs:
+      - via: [[42.8, 12.6], [43.15, 12.75]]
+  - id: djibouti-ethiopia
+    nations: [djibouti, ethiopia]
+    follows: Lake Abbe and the lower Awash
+    from: danakil
+    legs:
+      - via: [[41.9, 12.0], [41.85, 11.45], [42.45, 11.0], zeila]
+  - id: djibouti-somaliland
+    nations: [djibouti, somaliland]
+    follows: Loyada
+    from: zeila
+    legs:
+      - via: [[43.3, 11.55]]
+  - id: somaliland-ethiopia
+    nations: [somaliland, ethiopia]
+    follows: the northern edge of the Haud
+    from: zeila
+    legs:
+      - via: [[43.35, 10.1], [44.1, 9.25], [45.2, 8.6], [46.0, 8.3], nugaal]
+  - id: somaliland-somalia
+    nations: [somaliland, somalia]
+    follows: the Nugaal valley
+    from: nugaal
+    legs:
+      - via: [[47.5, 8.3], [48.5, 8.35], [49.4, 8.1], [49.95, 7.9]]
+  - id: ethiopia-somalia
+    nations: [ethiopia, somalia]
+    follows: the foot of the Harar highlands, then the Shebelle
+    from: nugaal
+    legs:
+      - via: [[45.3, 8.2], [44.0, 8.35], [43.2, 8.15], [42.6, 7.6], [42.3, 6.95]]
+      - {river: [Shebele, Shabeelle, Shebelle], to: [43.55, 5.95]}
+      - via: [[43.0, 5.2], dolo]
+  - id: ethiopia-kenya
+    nations: [ethiopia, kenya]
+    follows: the southern foot of the Ethiopian escarpment, then the Dawa
+    from: turkana
+    legs:
+      - via: [[36.3, 4.4], [37.2, 4.05], [38.3, 3.7], [39.2, 3.6], [40.3, 4.0], [41.2, 4.05], dolo]
+  - id: kenya-somalia
+    nations: [kenya, somalia]
+    follows: the Lagh Dera country, west of the Juba
+    from: dolo
+    legs:
+      - via: [[41.3, 3.2], [40.9, 2.0], [41.0, 0.8], [41.3, -0.4], [41.4, -1.2], [41.65, -1.75]]
+  - id: ethiopia-south-sudan
+    nations: [ethiopia, south_sudan]
+    follows: the western foot of the Ethiopian highlands
+    from: turkana
+    legs:
+      - via: [[35.3, 5.9], [35.0, 6.8], [34.9, 7.6], [34.5, 8.4], [34.4, 9.3], ethiopia_north]
+  - id: kenya-south-sudan
+    nations: [kenya, south_sudan]
+    follows: the Ilemi
+    from: kidepo
+    legs:
+      - via: [[34.5, 4.75], turkana]
+  - id: uganda-south-sudan
+    nations: [uganda, south_sudan]
+    follows: the Imatong foothills and the Albert Nile
+    from: kidepo
+    legs:
+      - via: [[33.3, 3.8], [32.6, 3.6], [31.7, 3.6], [31.0, 3.7], west_nile]
+  - id: uganda-kongo
+    nations: [uganda, ww_kongo]
+    follows: the Blue Mountains, Lake Albert, the Semliki, the Rwenzori and Lake Edward
+    from: west_nile
+    legs:
+      - via: [[30.75, 2.6], [30.85, 2.05], [30.55, 1.6], [30.2, 1.15], [29.95, 0.6], [29.9, 0.2], [29.65, -0.2],
+              [29.6, -0.75], virunga]
+  - id: kenya-uganda
+    nations: [kenya, uganda]
+    follows: Mount Elgon and the Karamoja escarpment
+    from: victoria
+    legs:
+      - via: [[33.95, -0.2], [34.1, 0.15], [34.5, 0.8], [34.65, 1.25], [35.0, 1.85], [35.0, 2.6], [34.6, 3.3], [34.1, 3.9], kidepo]
+  - id: uganda-tanzania
+    nations: [uganda, tanzania]
+    follows: the Kagera, then Lake Victoria
+    from: ruk
+    legs:
+      - via: [[31.3, -1.0], [31.75, -0.95], [32.6, -1.0], [33.4, -1.02], victoria]
+  - id: kenya-tanzania
+    nations: [kenya, tanzania]
+    follows: the Mara, the Loita and Longido hills, the north of Kilimanjaro, Lake Jipe and the Umba
+    from: victoria
+    legs:
+      - via: [[34.6, -1.25], [35.3, -1.55], [36.0, -2.1], [36.8, -2.75], [37.55, -2.95], [38.1, -3.5], [38.8, -4.2], [39.3, -4.72]]
+  - id: uganda-rwanda
+    nations: [uganda, rwanda]
+    follows: the Virunga and the Kagitumba
+    from: virunga
+    legs:
+      - via: [[29.95, -1.3], [30.4, -1.1], ruk]
+  - id: rwanda-kongo
+    nations: [rwanda, ww_kongo]
+    follows: Lake Kivu
+    from: virunga
+    legs:
+      - via: [[29.25, -1.7], [29.12, -2.1], rusizi]
+  - id: rwanda-burundi
+    nations: [rwanda, burundi]
+    follows: the Akanyaru
+    from: rusizi
+    legs:
+      - via: [[29.35, -2.65], [29.85, -2.6], [30.35, -2.42], kagera]
+  - id: rwanda-tanzania
+    nations: [rwanda, tanzania]
+    follows: the Kagera
+    from: kagera
+    legs:
+      - via: [[30.85, -1.75], ruk]
+  - id: burundi-kongo
+    nations: [burundi, ww_kongo]
+    follows: the Rusizi, then Lake Tanganyika
+    from: rusizi
+    legs:
+      - via: [[29.1, -2.95], [29.25, -3.4], [29.35, -4.0], tanganyika]
+  - id: burundi-tanzania
+    nations: [burundi, tanzania]
+    follows: the Malagarasi and the Kagera heights
+    from: tanganyika
+    legs:
+      - via: [[29.85, -4.3], [30.4, -3.7], [30.8, -3.1], kagera]
+  - id: kongo-tanzania
+    nations: [ww_kongo, tanzania]
+    follows: Lake Tanganyika
+    from: tanganyika
+    legs:
+      - via: [[29.55, -5.3], [29.75, -6.3], [30.1, -7.3], tanganyika_south]
+  # ---- the south: the Zambezian union, Moldova, Greece and the Cape --------------------------
+  - id: kongo-zambia
+    nations: [ww_kongo, zambia]
+    follows: Lake Mweru and the Luapula, then the Congo-Zambezi watershed
+    from: tanganyika_south
+    legs:
+      - via: [[29.8, -8.45], [29.1, -8.7], [28.8, -9.35]]
+      - {river: Luapula, to: [28.55, -11.5]}
+      - {divide: congo, to: zambezi_head}
+  - id: kongo-angola
+    nations: [ww_kongo, angola]
+    follows: the Congo-Zambezi and Congo-Kwanza watersheds, then the Loge to the sea
+    from: zambezi_head
+    legs:
+      - {divide: congo, to: [16.1, -8.4]}
+      - via: [[15.1, -7.9], [14.1, -7.8], [13.25, -7.85], [12.95, -7.9]]
+  - id: zambia-tanzania
+    nations: [zambia, tanzania]
+    follows: the Saisi and the Tanganyika-Nyasa corridor
+    from: tanganyika_south
+    legs:
+      - via: [[31.4, -8.7], [32.0, -9.1], [32.9, -9.3], mafinga]
+  - id: zambia-malawi
+    nations: [zambia, malawi]
+    follows: the Mafinga hills, then the Luangwa
+    from: mafinga
+    legs:
+      - via: [[33.0, -10.2]]
+      - {river: Luangwa, to: luangwa_mid}
+  - id: zambia-mozambique
+    nations: [zambia, mozambique]
+    follows: the lower Luangwa
+    from: luangwa_mid
+    legs:
+      - {river: Luangwa, to: zumbo}
+  - id: zambia-zimbabwe
+    nations: [zambia, zimbabwe]
+    follows: the Zambezi
+    from: zumbo
+    legs:
+      - {river: Zambezi, to: kazungula}
+  - id: zambia-botswana
+    nations: [zambia, botswana]
+    follows: the Chobe and the Linyanti
+    from: kazungula
+    legs:
+      - {river: [Chobe, Linyanti, Cuando, Zambezi], to: linyanti}
+  - id: zambia-angola
+    nations: [zambia, angola]
+    follows: the Cuando, then the western edge of the Barotse plain and the Zambezi's head
+    from: linyanti
+    legs:
+      - {river: [Cuando, Linyanti], to: [22.05, -16.4]}
+      - via: [[21.95, -15.5], [22.05, -14.4], [22.5, -13.4], [23.4, -12.3], zambezi_head]
+  - id: angola-botswana
+    nations: [angola, botswana]
+    follows: the Okavango panhandle's north
+    from: linyanti
+    legs:
+      - via: [[22.2, -17.95], [21.4, -18.0], dirico]
+  - id: angola-namibia
+    nations: [angola, namibia]
+    follows: the Cubango, then the Cuvelai country to the Ruacana falls and the Cunene
+    from: dirico
+    legs:
+      - {river: [Cubango, Okavango], to: [17.75, -17.9]}
+      - via: [[16.6, -17.45], [15.4, -17.25], [14.25, -17.4]]
+      - {river: Cunene, to: [11.8, -17.25]}
+      - via: [[11.6, -17.25]]
+  - id: namibia-botswana
+    nations: [namibia, botswana]
+    follows: the western dune line of the Kalahari
+    from: dirico
+    legs:
+      - via: [[20.95, -18.8], [20.55, -20.0], [20.3, -21.3], [20.35, -22.7], [20.25, -24.2], [20.45, -25.4], twee_rivieren]
+  - id: namibia-cape
+    nations: [namibia, cape]
+    follows: the lower Molopo, then the Orange
+    from: twee_rivieren
+    legs:
+      - via: [[20.3, -27.2], [20.1, -28.0]]
+      - {river: Orange, to: [16.48, -28.6]}
+      - via: [[16.3, -28.7]]
+  - id: botswana-cape
+    nations: [botswana, cape]
+    follows: the Molopo
+    from: twee_rivieren
+    legs:
+      - {river: Molopo, to: [24.0, -25.75]}
+      - via: [molopo_east]
+  - id: botswana-xhosa
+    nations: [botswana, xhosa]
+    follows: the Marico, then the Limpopo
+    from: molopo_east
+    legs:
+      - via: [[25.9, -25.3], [26.5, -24.6], [26.95, -24.1]]
+      - {river: Limpopo, to: shashe}
+  - id: botswana-zimbabwe
+    nations: [botswana, zimbabwe]
+    follows: the edge of the Kalahari sand, then the Shashe
+    from: kazungula
+    legs:
+      - via: [[25.7, -18.6], [26.2, -19.6], [27.2, -20.4], [27.9, -21.0], [28.6, -21.6], shashe]
+  - id: zimbabwe-xhosa
+    nations: [zimbabwe, xhosa]
+    follows: the Limpopo
+    from: shashe
+    legs:
+      - {river: Limpopo, to: pafuri}
+  - id: zimbabwe-mozambique
+    nations: [zimbabwe, mozambique]
+    follows: the Save, the Chimanimani and Nyanga highlands, then the Mazowe country to the Zambezi
+    from: pafuri
+    legs:
+      - via: [[31.9, -21.5], [32.5, -20.6], [33.0, -19.8], [32.9, -19.0], [32.95, -18.2], [32.9, -17.6], [32.6, -16.9],
+              [31.8, -16.35], [31.0, -15.9], zumbo]
+  - id: mozambique-xhosa
+    nations: [mozambique, xhosa/eswatini]
+    follows: the Lebombo range
+    from: pafuri
+    legs:
+      - via: [[31.75, -23.5], [31.95, -24.6], swazi_north, [32.1, -26.6], swazi_south, [32.4, -27.05], [32.95, -26.88], [33.15, -26.9]]
+  - id: eswatini-xhosa
+    nations: [eswatini, xhosa]
+    follows: the Komati, the escarpment and the Pongola
+    from: swazi_north
+    legs:
+      - via: [[31.4, -25.75], [30.85, -26.2], [30.9, -26.9], [31.4, -27.35], swazi_south]
+  - id: cape-xhosa
+    nations: [cape, xhosa]
+    follows: the Harts, the Vaal and the Orange, the Sneeuberg, then the Great Fish River to the sea
+    from: molopo_east
+    legs:
+      - via: [[24.95, -26.8], [24.75, -28.0], [24.2, -28.8], [24.6, -29.8], [25.3, -30.5], [25.3, -31.3], [25.95, -32.2],
+              [26.55, -32.95], [27.1, -33.5], [27.25, -33.6]]
+  - id: greater-lesotho
+    nations: [lesotho, xhosa]
+    follows: the Drakensberg escarpment, the Witteberge, and the Caledon's western watershed
+    from: [27.0, -30.5]
+    legs:
+      - via: [[27.7, -30.7], [28.2, -30.62], [28.7, -30.1], [29.15, -29.6], [29.45, -29.0], [29.2, -28.6], [28.7, -28.35],
+              [28.0, -28.3], [27.4, -28.6], [26.95, -29.1], [26.75, -29.7], [26.8, -30.15], [27.0, -30.5]]
+  - id: malawi-mozambique
+    nations: [malawi, mozambique]
+    follows: the Angonia plateau, the Shire highlands and Lake Chilwa, then the middle of Lake Nyasa
+    from: luangwa_mid
+    legs:
+      - via: [[32.2, -14.85], [33.2, -14.75], [34.0, -15.1], [34.4, -15.9], [34.65, -16.6], [35.2, -16.9], [35.6, -16.3],
+              [35.9, -15.5], [35.75, -14.9], [35.3, -14.45], [35.05, -13.6], [34.85, -12.6], nyasa_east]
+  - id: malawi-tanzania
+    nations: [malawi, tanzania]
+    follows: the middle of Lake Nyasa, then the Songwe
+    from: nyasa_east
+    legs:
+      - via: [[34.6, -10.8], [34.3, -10.0], [34.0, -9.55], [33.6, -9.5], mafinga]
+  - id: tanzania-mozambique
+    nations: [tanzania, mozambique]
+    follows: the Ruvuma
+    from: [40.5, -10.42]
+    legs:
+      - {river: Ruvuma, to: [36.0, -11.45]}
+      - via: [[35.3, -11.55], nyasa_east]
+
+# islands that belong to a nation other than the nearest one
+seeds:
+  eq_guinea: [[8.75, 3.55]]   # Bioko
+
+# the islands outside the European swap (the Pacific's counterparts), left neutral
+neutral:
+  - [-15.6, 28.3]     # the Canaries
+  - [-16.95, 32.75]   # Madeira
+  - [-23.8, 15.9]     # Cape Verde
+  - [6.6, 0.25]       # Sao Tome
+  - [7.4, 1.6]        # Principe
+  - [43.4, -11.7]     # the Comoros
+  - [44.3, -12.2]
+  - [55.5, -4.65]     # the Seychelles
+  - [57.55, -20.25]   # Mauritius
+  - [55.5, -21.1]     # Reunion
+  - [53.8, 12.5]      # Socotra
+  - [5.6, -1.45]      # Annobon

@@ -239,6 +239,84 @@ def finish(name: str, raw) -> np.ndarray:
     return arr
 
 
+def ribbons(cfg: dict, name: str, w: int, h: int, nations, frontiers, *, k: int = 2, out_k: float = 1.5,
+            blur: float = 2.6, curve=((0.0, 0.0), (0.12, 0.26), (0.45, 0.72), (1.0, 1.0)),
+            strength: float = 0.5, quality: int = 62) -> str:
+    """The frontier ribbons, as on a hand-finished wall map: along each frontier, a band of the
+    nation's own colour, deepened, fading inward. `nations` is [(shape in map pixels, colour)],
+    `frontiers` the frontier lines in map pixels. The lines are drawn crisp; GIMP blurs them
+    into a band and shapes its falloff with a tone curve (numpy the same, without GIMP); the
+    band is then tinted, nation by nation, and returned as a WebP data URI with its alpha."""
+    import colorsys
+    key = hashlib.sha1(json.dumps([name, w, h, k, blur, curve, [c for _, c in nations],
+                                   round(float(shapely.length(frontiers)), 1)]).encode()).hexdigest()[:10]
+    work = paths(cfg).build / "terrain"
+    work.mkdir(parents=True, exist_ok=True)
+    src, out = work / f"{_slug(name)}_{key}_frontiers.png", work / f"{_slug(name)}_{key}_ribbons.png"
+    W, H = int(w * k), int(h * k)
+    if not out.exists():
+        lines = Image.new("L", (W, H), 0)
+        draw = ImageDraw.Draw(lines)
+        for ln in shapely.get_parts(frontiers):
+            if ln.geom_type == "LineString" and len(ln.coords) > 1:
+                draw.line([(x * k, y * k) for x, y in ln.coords], fill=255, width=max(1, int(k)), joint="curve")
+        lines.save(src)
+        flat = [v for pt in curve for v in pt]
+        s = blur * k
+        reply = _gimp_live([
+            "from gi.repository import Gimp, Gio",
+            f"cg_img = Gimp.file_load(Gimp.RunMode.NONINTERACTIVE, Gio.File.new_for_path({str(src)!r}))",
+            "cg_layer = cg_img.get_layers()[0]",
+            "cg_f = Gimp.DrawableFilter.new(cg_layer, 'gegl:gaussian-blur', '')",
+            "cg_c = cg_f.get_config()",
+            f"cg_c.set_property('std-dev-x', {s!r})",
+            f"cg_c.set_property('std-dev-y', {s!r})",
+            "cg_layer.merge_filter(cg_f)",
+            "cg_layer.levels_stretch()",
+            f"cg_layer.curves_spline(Gimp.HistogramChannel.VALUE, {flat!r})",
+            f"Gimp.file_save(Gimp.RunMode.NONINTERACTIVE, cg_img, Gio.File.new_for_path({str(out)!r}), None)",
+            f"cg_img.set_file(Gio.File.new_for_path({str(out)!r}))",
+            "cg_img.clean_all()",
+            "cg_shown = globals().setdefault('cg_shown', {})",
+            f"cg_old = cg_shown.pop({_slug(name) + '-ribbons'!r}, None)",
+            "Gimp.Display.get_by_id(cg_old).delete() if cg_old and Gimp.Display.id_is_valid(cg_old) else None",
+            f"cg_shown[{_slug(name) + '-ribbons'!r}] = Gimp.Display.new(cg_img).get_id()",
+            "Gimp.displays_flush()",
+        ])
+        if reply is not None and reply.get("status") == "success" and out.exists():
+            print(f"    {name}: frontier ribbons finished in GIMP (gaussian blur, levels, curves)")
+        else:
+            if reply is not None:
+                print(f"    {name}: GIMP could not finish the ribbons ({str(reply)[:200]}); numpy does")
+            from scipy.interpolate import PchipInterpolator
+            from scipy.ndimage import gaussian_filter
+            a = gaussian_filter(np.asarray(lines, np.float32), s)
+            a = a / max(float(a.max()), 1e-6)
+            xs, ys = zip(*curve)
+            Image.fromarray((np.clip(PchipInterpolator(xs, ys)(a), 0, 1) * 255).astype(np.uint8)).save(out)
+            print(f"    {name}: frontier ribbons finished with numpy (GIMP not open)")
+    band = np.asarray(Image.open(out).convert("L"), np.float32) / 255.0
+    tint = Image.new("RGB", (W, H), (0, 0, 0))
+    inside = Image.new("L", (W, H), 0)
+    dt, di = ImageDraw.Draw(tint), ImageDraw.Draw(inside)
+    for geom, colour in nations:
+        r, g, b = (int(colour[i:i + 2], 16) / 255 for i in (1, 3, 5))
+        hh, ll, ss = colorsys.rgb_to_hls(r, g, b)
+        deep = tuple(int(v * 255) for v in colorsys.hls_to_rgb(hh, ll * 0.7, min(1.0, ss * 1.2)))
+        for p in shapely.get_parts(geom):
+            if p.geom_type != "Polygon" or p.is_empty:
+                continue
+            ring = [(x * k, y * k) for x, y in p.exterior.coords]
+            dt.polygon(ring, fill=deep)
+            di.polygon(ring, fill=255)
+            for hole in p.interiors:
+                di.polygon([(x * k, y * k) for x, y in hole.coords], fill=0)
+    alpha = (band * strength * (np.asarray(inside, np.float32) / 255.0) * 255).astype(np.uint8)
+    rgba = np.dstack([np.asarray(tint), alpha])
+    img = Image.fromarray(rgba, "RGBA").resize((int(w * out_k), int(h * out_k)), Image.LANCZOS)
+    return _uri(img, quality)
+
+
 def _finish_numpy(a: np.ndarray) -> np.ndarray:
     from scipy.interpolate import PchipInterpolator
     from scipy.ndimage import gaussian_filter

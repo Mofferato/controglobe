@@ -14,7 +14,7 @@ trade historical trajectories. Geography stays exactly where it is; everything e
 | [`history-of-the-united-states-of-arabia.html`](history-of-the-united-states-of-arabia.html) | History of Arabia from prehistory to the present, modelled on *History of the United States* (primary) and *History of Saudi Arabia* (secondary), including the Islamic-era and colonial trades in Europeans |
 | [`nabataean-unification.html`](nabataean-unification.html) | The Nabataean Kingdom (c. 440 BCE – 36 CE), a custom entity modelled on the *Nabataean Kingdom* article: the Covenant of the Wells, the water administration and the origin of written Arabic |
 | [`vehicles.html`](vehicles.html) | Motor vehicles in the Global Swap: the Kongolese invention of the car, Mosul mass production, the Hindustani turn after the oil shocks, Nusantaran electrification, and the regional design traditions, with schematic drawings |
-| [`africa.html`](africa.html) | Reference atlas: every African nation, its Global-North counterpart, and a map on non-colonial borders |
+| [`africa.html`](africa.html) | Reference atlas: every African nation, its Global-North counterpart, and a map whose frontiers are traced on rivers, watersheds and escarpments, never on a partition line |
 | [`europe.html`](europe.html) | Reference atlas: every European nation, its Global-South counterpart, the African partition of the continent, and the mirror rule that keeps the two atlases consistent |
 | [`timeline-of-the-global-swap.html`](timeline-of-the-global-swap.html) | Chronology of the whole setting in ten eras, from the Achaemenid withdrawal of 460&nbsp;BCE to 2026, with maps of the trade in Europeans, the crowns coming to Arabia and the Cold War. Every entry is drawn from, and links to, the article that treats it |
 
@@ -54,7 +54,7 @@ right-to-left text.
 | Region | Carries the history of |
 |---|---|
 | Middle East | North America. **al-Mashriq** is Arabia = the USA, Zagrosia = Canada (Anatolia is its Quebec, Iran the rest) and Qubrus = Greenland, a self-governing dependency of Ifriqiya (independent until Ifriqiya colonised it in 1721; home rule 1979, self-rule 2009); Masr = Mexico is the neighbour outside it |
-| Africa | Europe (Kimfumu kya Kongo = Germany, Jolof = Spain, Ifriqiya = Denmark, Derg Union = Russia) |
+| Africa | Europe (Kimfumu kya Kongo = Germany, Jolof = Spain, Manden = Italy, Ifriqiya = Denmark, Derg Union = Russia) |
 | Europe | Africa |
 | North America | Middle East |
 | South Asia | Britain, Japan and China combined |
@@ -69,6 +69,9 @@ right-to-left text.
 Exceptions: Iceland = Morocco, Greenland = Cyprus. Afghanistan and Siberia trade places one for one: Afghanistan is
 the Abyssinian Empire's (later the Derg Union's) vast eastern hinterland, and Siberia is the independent, mountain-ringed
 kingdom that no empire held for long, the ground of the Siberian War. Anatolia is Zagrosian ground, so Turkey is outside the African swap the way Egypt is outside the European one.
+Within Africa the swap follows civilisation before geography: Italy's role is carried by Manden, on the ground of Mali,
+heir to Wagadu (the Ghana Empire) as Italy is heir to Rome, in the Latin west rather than the far south; Angola (Ndongo)
+carries Montenegro instead.
 
 Unassigned: East Asia, the rest of northern Asia, mainland South-East Asia and Australia have no counterpart
 yet, and the world maps leave them grey. Proposals are welcome in the issue tracker.
