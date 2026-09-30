@@ -119,6 +119,8 @@ encyclopedia (the site still has no build step and no dependencies); start at
 
 ## Community
 
+Come and say hello on the Discord: **https://discord.gg/XYZXVFjQUj**
+
 [`community/`](community/) holds the Controglobe Discord: its channels, roles, rules and
 onboarding as data, and a script that builds the server from them. Start at
 [`community/README.md`](community/README.md).

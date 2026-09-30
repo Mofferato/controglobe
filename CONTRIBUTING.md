@@ -9,8 +9,8 @@ Controglobe is made by people who enjoy building a world together, and the team 
 friends first. Be kind, welcome newcomers, and remember that an argument about canon is an
 argument about a story, never about the person making it. The project will take on more
 structure as it grows, but that rule stays. If you would like to help and do not know where to
-start, open an issue and say hello: there is always a flag to draw, a date to check or a page
-to translate.
+start, say hello on the [Discord](https://discord.gg/XYZXVFjQUj) or in an issue: there is always
+a flag to draw, a date to check or a page to translate.
 
 ## Before you write
 
