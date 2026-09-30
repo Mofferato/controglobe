@@ -40,7 +40,7 @@ NS = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/sche
 WEBHOOK = re.compile(r"https://(?:(?:ptb|canary)\.)?discord(?:app)?\.com/api/(?:v\d+/)?webhooks/\d+/[\w-]+")
 CHANNEL = re.compile(r"UC[\w-]{22}")
 ROLE = re.compile(r"\d{15,21}")
-ROUNDS, PAUSE = 3, 8             # feed attempts per run, and the growing pause between them (s)
+ROUNDS, PAUSE = 3, 8             # feed rounds per run and the growing pause between them (s): 2 min at worst
 KEEP = 500                      # announced IDs remembered; the feed only ever shows the latest 15
 
 
@@ -52,14 +52,14 @@ class Stop(Exception):
         self.fatal = fatal
 
 
-def fetch(url: str, data: bytes | None = None, tries: int = 4) -> bytes:
+def fetch(url: str, data: bytes | None = None, tries: int = 4, timeout: float = 30) -> bytes:
     headers = {"User-Agent": UA}
     if data is not None:
         headers["Content-Type"] = "application/json"
     for attempt in range(tries):
         req = urllib.request.Request(url, data=data, headers=headers, method="POST" if data else "GET")
         try:
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.read()
         except urllib.error.HTTPError as e:
             body = e.read().decode("utf8", "replace")
@@ -89,7 +89,7 @@ def uploads(channel_id: str) -> list[dict]:
     for attempt in range(ROUNDS):                  # both feeds, a few times, with a pause between rounds
         for url in urls:
             try:
-                root = ET.fromstring(fetch(url, tries=2))
+                root = ET.fromstring(fetch(url, tries=1, timeout=15))
                 break
             except Stop as e:
                 last = str(e).split(": ", 1)[0]    # "HTTP 404 from <feed>", without YouTube's error page
