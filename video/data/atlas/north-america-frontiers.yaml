@@ -1,0 +1,399 @@
+# The frontiers of North America, as they lie on the ground (lon, lat).
+#
+# North America carries the Middle East, and Controglobe branched off from "A More Fractured
+# Union" (Bemon and Body25, 2023), whose map of the continent this one descends from: the same
+# states, in the same places, with the same neighbours. What that map drew along state lines,
+# meridians and parallels is drawn here on the ground, the way the Africa and Europe atlases are:
+# along rivers (the Gila, the Sabine, the Brazos, the lower Colorado, the Rio Grande), along
+# watersheds (the Continental Divide, the rim of the Mississippi's basin, the Sangre de Cristo as
+# the rim of the Rio Grande's) and along crests, escarpments and lakes. None is a meridian, a
+# parallel or a partition line. Each frontier is a chain of legs (see cgvideo/frontiers.py):
+#   river:  follow the named Natural Earth river(s) to a point on them
+#   divide: follow the rim of a river basin, as GRASS r.watershed computes it in QGIS
+#   via:    a smooth curve through points set along a crest, an escarpment, a lake or a strait
+# `nations` names the two sides; `follows` is what the frontier is, in words.
+# To move a frontier: edit it here, then re-bake in QGIS with
+# integrations/qgis/cg_frontiers.py (it writes north-america-frontiers.geojson, which
+# `python build.py namaps` reads).
+
+nodes:
+  # Solms-America and the Gulf
+  kisatchie: {at: [-93.57, 31.15], river: Sabine}             # Solms-America, Ludwigsland, Mississippi
+  logansport: {at: [-94.0, 31.97], river: Sabine}             # where the Sabine turns west
+  fulton: {at: [-93.87, 33.62], divide: red}                  # the Great Bend of the Red
+  rich_mountain: {at: [-94.35, 34.68], divide: red}           # the Ouachita crest
+  fort_smith: {at: [-94.52, 35.33], divide: arkansas}         # the narrows of the Arkansas
+  flint: {at: [-96.15, 38.8], divide: kansas}                 # Kansas, Osage and Neosho part here
+  kaw_south: {at: [-94.97, 38.93], divide: kansas}
+  kaw_north: {at: [-94.97, 39.03], divide: kansas}
+  kaw_mouth: {at: [-94.61, 39.12], river: Missouri}           # Kansas City: Solms-America, Mississippi
+  palmer: {at: [-103.6, 39.35], divide: kansas}               # Kansas, Arkansas and South Platte part here
+  narrows: {at: [-103.1, 40.5], divide: kansas}               # Solms-America, Colorado, Mississippi
+  maya: {at: [-104.0, 36.95], divide: canadian}               # the east end of Raton Mesa
+  culebra: {at: [-105.2, 37.0], divide: rio_grande}           # Rio Grande, Arkansas and Canadian part here
+  cochetopa: {at: [-106.25, 38.42], divide: colorado}         # where the Rio Grande's rim leaves the Divide
+  black_range: {at: [-107.85, 33.4], divide: colorado}
+  mangas: {at: [-108.1, 34.45], divide: colorado}             # the Divide west of the Plains of San Agustin
+  gila_head: {at: [-108.3, 33.2], river: Gila}
+  gila_mouth: {at: [-114.55, 32.72], river: Gila}             # Solms-America, Colorado, Aztlan
+  delta: {at: [-114.95, 32.25], river: Colorado}              # Solms-America, Aztlan, Mexico
+  papigochi: {at: [-107.55, 28.0], divide: conchos}           # Conchos, Yaqui and Fuerte part here
+  yaqui_south: {at: [-110.2, 27.35], divide: yaqui}
+  mapimi: {at: [-104.75, 27.1], divide: conchos}              # Solms-America, Nuevo Leon, Mexico
+  boquillas: {at: [-102.9, 29.2], river: Rio Grande}          # Solms-America, Rio Grande, Nuevo Leon
+  pecos_mouth: {at: [-101.4, 29.72], river: Rio Grande}
+  nueces_west: {at: [-100.45, 29.9], divide: nueces}
+  nueces_head: {at: [-99.6, 30.05], divide: nueces}           # Solms-America, the Counties, Rio Grande
+  nueces_bay: {at: [-97.75, 27.97], divide: nueces}
+  hearne: {at: [-96.6, 30.87], river: Brazos}                 # where the Balcones line reaches the Brazos
+  navasota: {at: [-96.19, 30.33], river: Brazos}              # Solms-America, the Counties, Karankawa
+  riverside: [-95.38, 30.85]                                   # on the Trinity, which Natural Earth does not name
+  falcon: {at: [-99.2, 26.6], river: Rio Grande}
+  alexandria: {at: [-92.45, 31.31], river: Red}
+  # the Mississippi and the east
+  amite: {at: [-91.05, 31.0], divide: mississippi}
+  chautauqua: {at: [-79.5, 42.25], divide: mississippi}       # Mississippi, Atlantica, in sight of Lake Erie
+  erie: [-79.9, 42.45]                                         # Mississippi, Atlantica, Canada, in the lake
+  mesabi: {at: [-92.9, 47.45], divide: mississippi}           # the Hill of Three Waters
+  coteau: {at: [-100.4, 47.75], divide: upper_missouri}       # Canada, Cascadia, Mississippi
+  pierre: {at: [-100.4, 44.42], divide: upper_missouri}
+  # the mountains and the west
+  three_waters: {at: [-109.75, 43.42], divide: colorado}      # Columbia, Colorado and Missouri part here
+  cameron: {at: [-105.9, 40.5], divide: colorado}
+  commissary: {at: [-110.65, 42.4], divide: colorado}         # Bear, Snake and Green part here
+  uinta: {at: [-111.0, 40.72], divide: colorado}              # Colorado, Aztlan, the East Basin
+  pine_valley: {at: [-113.6, 37.55], divide: colorado}        # Colorado, Aztlan, the East Basin
+  virgin: {at: [-114.4, 36.15], river: Colorado}
+  triple_divide: {at: [-113.52, 48.57], divide: columbia}     # Columbia, Missouri and Saskatchewan part here
+  similkameen: {at: [-120.85, 49.1], divide: columbia}
+  siskiyou: [-122.3, 42.05]                                    # Oregon, Cascadia, Aztlan
+  cascade_locks: {at: [-121.9, 45.67], river: Columbia}
+  tecate: [-116.45, 32.62]                                     # Aztlan, the L.A. Strip, Mexico
+
+frontiers:
+  # ---- Solms-America ---------------------------------------------------------------------------
+  - id: solms-mississippi-north
+    nations: [solms, mississippi]
+    follows: "the northern rim of the Kansas River's basin, the divide between the Republican and the Platte, to the Missouri at the Kaw's mouth"
+    from: narrows
+    legs:
+      - {divide: kansas, to: kaw_north}
+      - {via: [[-94.8, 39.1], kaw_mouth]}
+  - id: solms-mississippi-east
+    nations: [solms, mississippi]
+    follows: "the Flint Hills and the Ozark front (the eastern rim of the Arkansas above its narrows), the Ouachita crest, the Great Bend of the Red, and the Sabine"
+    from: kaw_mouth
+    legs:
+      - {via: [[-94.8, 39.02], kaw_south]}
+      - {divide: kansas, to: flint}
+      - {divide: arkansas, to: fort_smith}
+      - {via: [[-94.5, 35.0], rich_mountain]}
+      - {divide: red, to: fulton}
+      - {via: [[-93.98, 33.2], [-94.04, 32.75], [-94.02, 32.3], logansport]}
+      - {river: Sabine, to: kisatchie}
+  - id: solms-ludwigsland
+    nations: [solms, ludwigsland]
+    follows: "the Sabine to the sea"
+    from: kisatchie
+    legs:
+      - {river: Sabine, to: [-93.74, 30.1]}
+      - {via: [[-93.8, 29.95], [-93.86, 29.72], [-93.83, 29.5]]}
+  - id: solms-karankawa
+    nations: [solms, karankawa]
+    follows: "the hills that rim the San Jacinto, then the Trinity to its bay and out by the Bolivar Roads"
+    from: navasota
+    legs:
+      - {via: [[-95.9, 30.72], [-95.6, 30.88], riverside]}
+      - {via: [[-95.12, 30.62], [-94.87, 30.3], [-94.76, 30.0], [-94.74, 29.78], [-94.82, 29.55], [-94.74, 29.35], [-94.6, 29.15]]}
+  - id: solms-counties
+    nations: [solms, counties]
+    follows: "the Brazos, then the Balcones Escarpment above the coastal plain to the head of the Nueces"
+    from: navasota
+    legs:
+      - {river: Brazos, to: hearne}
+      - {via: [[-97.25, 30.9], [-97.9, 30.62], [-98.3, 30.15], [-98.8, 29.8], [-99.25, 29.85], nueces_head]}
+  - id: solms-riogrande
+    nations: [solms, riogrande]
+    follows: "the rim of the Nueces above the Balcones, the canyons of the Devils River, and the Rio Grande through the Big Bend"
+    from: nueces_head
+    legs:
+      - {divide: nueces, to: nueces_west}
+      - {via: [[-100.9, 30.05], [-101.3, 29.95], pecos_mouth]}
+      - {river: Rio Grande, to: boquillas}
+  - id: solms-nuevoleon
+    nations: [solms, nuevoleon]
+    follows: "the Sierra del Carmen and the eastern rim of the Bolson de Mapimi"
+    from: boquillas
+    legs:
+      - {via: [[-103.35, 28.75], [-103.95, 28.15], [-104.4, 27.55], mapimi]}
+  - id: solms-mexico
+    nations: [solms, mexico]
+    follows: "the southern and western rim of the Conchos, then the crest between the Yaqui and the Mayo down to the Gulf of California"
+    from: mapimi
+    legs:
+      - {divide: conchos, to: papigochi}
+      - {divide: yaqui, to: yaqui_south}
+      - {via: [[-110.4, 27.15], [-110.7, 26.9]]}
+  - id: solms-mexico-delta
+    nations: [solms, mexico]
+    follows: "the Colorado through its delta to the head of the Gulf of California"
+    from: delta
+    legs:
+      - {river: Colorado, to: [-114.8, 31.95]}
+      - {via: [[-114.78, 31.75], [-114.7, 31.5]]}
+  - id: solms-aztlan
+    nations: [solms, aztlan]
+    follows: "the Colorado below the mouth of the Gila"
+    from: gila_mouth
+    legs:
+      - {river: Colorado, to: delta}
+  - id: solms-colorado
+    nations: [solms, colorado]
+    follows: "the Gila to its springs, the Continental Divide, the Sangre de Cristo as the rim of the Rio Grande, Raton Mesa, the scarp of the High Plains above the Arkansas, and the divide between the Republican and the South Platte"
+    from: gila_mouth
+    legs:
+      - {river: Gila, to: gila_head}
+      - {via: [[-108.05, 33.3], black_range, [-107.85, 33.85], [-108.05, 34.15], mangas]}
+      - {divide: colorado, to: cochetopa}
+      - {divide: rio_grande, to: culebra}
+      - {divide: canadian, to: maya}
+      - {via: [[-103.65, 37.55], [-103.55, 38.1], [-103.62, 38.8], palmer]}
+      - {divide: kansas, to: narrows}
+  # ---- the Gulf states -------------------------------------------------------------------------
+  - id: ludwigsland-mississippi
+    nations: [ludwigsland, mississippi]
+    follows: "the Kisatchie Wold, the Red below Alexandria, and the Mississippi to the Head of Passes"
+    from: kisatchie
+    legs:
+      - {via: [[-93.2, 31.27], [-92.8, 31.36], alexandria]}
+      - {river: [Red, Mississippi], to: [-89.4, 29.15]}
+      - {via: [[-89.15, 28.95]]}
+  - id: karankawa-counties
+    nations: [karankawa, counties]
+    follows: "the Brazos to the sea"
+    from: navasota
+    legs:
+      - {river: Brazos, to: [-95.4, 28.95]}
+      - {via: [[-95.3, 28.75]]}
+  - id: counties-riogrande
+    nations: [counties, riogrande]
+    follows: "the eastern rim of the Nueces to its bay, and out by the Aransas Pass"
+    from: nueces_head
+    legs:
+      - {divide: nueces, to: nueces_bay}
+      - {via: [[-97.45, 27.87], [-97.2, 27.84], [-96.95, 27.8]]}
+  - id: riogrande-nuevoleon
+    nations: [riogrande, nuevoleon]
+    follows: "the sierras south of the Sabinas valley, then the Rio Grande from Falcon to the sea"
+    from: boquillas
+    legs:
+      - {via: [[-102.45, 28.55], [-101.9, 27.75], [-101.2, 27.3], [-100.4, 26.95], falcon]}
+      - {river: Rio Grande, to: [-97.25, 25.95]}
+      - {via: [[-97.0, 25.95]]}
+  - id: nuevoleon-mexico
+    nations: [nuevoleon, mexico]
+    follows: "the western edge of the Bolson de Mapimi, the Sierra de Parras and the crest of the Sierra Madre Oriental to the Panuco's mouth"
+    from: mapimi
+    legs:
+      - {via: [[-103.9, 26.75], [-103.1, 26.1], [-102.65, 25.3], [-101.9, 24.7], [-100.9, 24.3], [-100.2, 23.6], [-99.75, 22.95], [-99.0, 22.55], [-98.3, 22.4], [-97.6, 22.3]]}
+  # ---- Mississippi, Atlantica and Canada --------------------------------------------------------
+  - id: mississippi-atlantica
+    nations: [mississippi, atlantica]
+    follows: "the eastern rim of the Mississippi's basin: the Allegheny Plateau, the Blue Ridge and the hills above the Tombigbee and the Pearl; then the Amite, Lake Pontchartrain and the Rigolets"
+    from: erie
+    legs:
+      - {via: [[-79.7, 42.35], chautauqua]}
+      - {divide: mississippi, to: amite}
+      - {via: [[-90.95, 30.65], [-90.72, 30.32], [-90.4, 30.28], [-90.08, 30.2], [-89.75, 30.17], [-89.5, 30.12], [-89.15, 30.05]]}
+  - id: ohio-mississippi
+    nations: [ohio, mississippi]
+    follows: "the rim of the Mississippi's basin around the Great Lakes: the waters that run to the lakes are the Ohio Region's"
+    from: mesabi
+    legs:
+      - {divide: mississippi, to: chautauqua}
+  - id: canada-ohio
+    nations: [canada, ohio]
+    follows: "the Laurentian Divide to the Pigeon River, the middle of Lakes Superior and Huron, the St Clair and Detroit rivers and the middle of Lake Erie"
+    from: mesabi
+    legs:
+      - {via: [[-92.2, 47.65], [-91.3, 47.9], [-90.4, 48.05], [-89.6, 48.0], [-88.6, 48.1], [-87.2, 47.85], [-85.8, 47.3], [-84.85, 46.85], [-84.45, 46.5], [-84.1, 46.25], [-83.6, 45.95], [-82.8, 45.4], [-82.3, 44.3], [-82.35, 43.3], [-82.45, 42.75], [-82.7, 42.45], [-83.1, 42.2], [-82.7, 41.85], [-81.2, 42.15], erie]}
+  - id: canada-mississippi
+    nations: [canada, mississippi]
+    follows: "the rim of the Mississippi's basin: the Missouri Coteau, Lake Traverse and the heights above the Red River of the North"
+    from: coteau
+    legs:
+      - {divide: mississippi, to: mesabi}
+  - id: canada-atlantica
+    nations: [canada, atlantica]
+    follows: "the Niagara, Lake Ontario and the St Lawrence to Lake St Francis, then the watershed between the St Lawrence and the Atlantic, and the St Croix"
+    from: erie
+    legs:
+      - {via: [[-79.0, 42.85], [-79.05, 43.1], [-79.1, 43.3], [-78.5, 43.6], [-77.2, 43.65], [-76.45, 44.1], [-75.8, 44.45], [-75.05, 44.95], [-74.6, 45.05], [-74.35, 44.75], [-74.1, 44.3], [-73.8, 43.85], [-73.55, 43.4], [-73.15, 43.45], [-72.9, 44.0], [-72.7, 44.55], [-72.3, 44.85], [-71.5, 45.05], [-70.85, 45.35], [-70.4, 45.8], [-70.2, 46.3], [-69.95, 46.75], [-69.25, 47.4], [-68.4, 47.3], [-67.8, 47.05], [-67.78, 46.1], [-67.45, 45.6], [-67.25, 45.15], [-66.9, 44.75], [-66.5, 44.3]]}
+  # ---- Cascadia -------------------------------------------------------------------------------
+  - id: canada-cascadia
+    nations: [canada, cascadia]
+    follows: "the Strait of Juan de Fuca and Haro Strait, the crest between the Fraser and the Skagit, the northern rim of the Columbia's basin, and the northern rim of the Missouri's"
+    from: [-125.6, 48.45]
+    legs:
+      - {via: [[-124.2, 48.3], [-123.3, 48.3], [-123.2, 48.65], [-123.0, 48.85], [-122.8, 49.0], [-122.0, 49.0], [-121.35, 49.05], similkameen]}
+      - {divide: columbia, to: triple_divide}
+      - {divide: upper_missouri, to: coteau}
+  - id: cascadia-mississippi
+    nations: [cascadia, mississippi]
+    follows: "the Missouri Coteau to the river at Pierre, then the southern rim of the upper Missouri: the divide above the White, the Niobrara and the North Platte, to the Wind River Range"
+    from: coteau
+    legs:
+      - {divide: upper_missouri, to: pierre}
+      - {divide: upper_missouri, to: three_waters}
+  - id: cascadia-colorado
+    nations: [cascadia, colorado]
+    follows: "the northern rim of the Green River's basin: the Wind River Range"
+    from: three_waters
+    legs:
+      - {divide: colorado, to: commissary}
+  - id: cascadia-aztlan
+    nations: [cascadia, aztlan]
+    follows: "the divide between the Snake and the Great Basin, from the Bear River's bend to the Warner Mountains and the Medicine Lake Highland"
+    from: commissary
+    legs:
+      - {via: [[-111.25, 42.45], [-111.9, 42.5], [-112.45, 42.1], [-113.3, 41.95], [-114.2, 41.9], [-115.1, 41.75], [-116.0, 41.45], [-117.0, 41.75], [-117.9, 41.95], [-119.2, 41.9], [-120.2, 41.85], [-121.3, 41.75], siskiyou]}
+  - id: oregon-cascadia
+    nations: [oregon, cascadia]
+    follows: "the crest of the Cascades from the Siskiyous to the Columbia, then the Columbia to the sea"
+    from: siskiyou
+    legs:
+      - {via: [[-122.15, 42.9], [-122.0, 43.7], [-121.85, 44.4], [-121.75, 45.0], [-121.7, 45.37], cascade_locks]}
+      - {river: Columbia, to: [-123.95, 46.25]}
+      - {via: [[-124.4, 46.27]]}
+  - id: oregon-aztlan
+    nations: [oregon, aztlan]
+    follows: "the crest of the Siskiyous"
+    from: siskiyou
+    legs:
+      - {via: [[-123.0, 41.98], [-123.7, 41.97], [-124.5, 41.98]]}
+  # ---- Colorado, Aztlan and California -----------------------------------------------------------
+  - id: colorado-mississippi
+    nations: [colorado, mississippi]
+    follows: "the narrows of the South Platte, the Chalk Bluffs, the Laramie Range, and the Continental Divide around the springs of the North Platte"
+    from: narrows
+    legs:
+      - {via: [[-103.3, 40.8], [-103.6, 41.1], [-104.3, 41.45], [-105.0, 41.55], [-105.4, 41.3], [-105.55, 40.95], [-105.75, 40.65], cameron]}
+      - {divide: colorado, to: three_waters}
+  - id: colorado-aztlan-north
+    nations: [colorado, aztlan]
+    follows: "the rim of the Green River's basin above the Bear"
+    from: commissary
+    legs:
+      - {divide: colorado, to: uinta}
+  - id: colorado-california
+    nations: [colorado, california]
+    follows: "the Wasatch Plateau and the High Plateaus: the crest between the Colorado and the Great Basin"
+    from: uinta
+    legs:
+      - {via: [[-111.12, 40.2], [-111.2, 39.7], [-111.3, 39.2], [-111.6, 38.6], [-111.9, 38.1], [-112.2, 37.65], [-112.7, 37.45], [-113.2, 37.5], pine_valley]}
+  - id: colorado-aztlan
+    nations: [colorado, aztlan]
+    follows: "the valley of the Virgin, then the Colorado from Black Canyon to the mouth of the Gila"
+    from: pine_valley
+    legs:
+      - {via: [[-113.95, 37.1], [-114.2, 36.6], virgin]}
+      - {river: Colorado, to: gila_mouth}
+  - id: california-aztlan-east-basin
+    nations: [california, aztlan]
+    follows: "the desert ranges west of the Sevier and the south shore of the Great Salt Lake, closing on the Wasatch north of the lake city"
+    from: pine_valley
+    legs:
+      - {via: [[-113.75, 38.3], [-113.5, 39.0], [-113.0, 39.7], [-112.6, 40.35], [-112.35, 40.78], [-112.05, 40.95], [-111.6, 40.97], uinta]}
+  - id: california-aztlan-strip
+    nations: [california, aztlan]
+    follows: "the crests of the Santa Monica, San Gabriel, Santa Ana and Laguna mountains, which shut the coastal plain off from the desert"
+    from: [-119.4, 34.0]
+    legs:
+      - {via: [[-119.0, 34.12], [-118.7, 34.3], [-118.2, 34.33], [-117.7, 34.25], [-117.45, 33.95], [-117.4, 33.6], [-116.95, 33.35], [-116.65, 33.0], tecate]}
+  - id: california-mexico
+    nations: [california, mexico]
+    follows: "the ridge above the Tijuana River"
+    from: tecate
+    legs:
+      - {via: [[-116.8, 32.57], [-117.35, 32.56]]}
+  - id: aztlan-mexico
+    nations: [aztlan, mexico]
+    follows: "the Sierra Juarez and the crest of the delta cone, which parts the Salton Sink from the Gulf"
+    from: tecate
+    legs:
+      - {via: [[-116.1, 32.55], [-115.75, 32.45], [-115.3, 32.3], delta]}
+  # ---- the south ------------------------------------------------------------------------------
+  - id: mexico-south
+    nations: [mexico, ""]
+    follows: "the Suchiate, the Cuchumatanes, the Usumacinta and the Hondo: Central America, beyond it, carries Central Asia"
+    from: [-92.45, 14.35]
+    legs:
+      - {via: [[-92.15, 14.7], [-92.05, 15.3], [-91.75, 16.05], [-90.9, 16.1], [-90.5, 16.4], [-91.0, 17.25], [-90.5, 17.65], [-89.6, 17.85], [-88.9, 18.1], [-88.35, 18.48], [-87.9, 18.35]]}
+
+# a nation in more than one piece: California is the L.A. Strip and the East Basin
+seeds:
+  california: [[-112.0, 39.3]]
+  mexico: [[-113.5, 28.5]]                  # Baja California
+
+# ground outside the swap's North America: Central America, which carries Central Asia
+neutral:
+  - [-90.3, 15.4]
+  - [-88.7, 17.2]
+
+# zones laid over the nations they lie in (lon, lat rings, clipped to `within`): territories
+# occupied or held by non-state actors at the end of 2023, the date of the map this one descends
+# from. kind: occupied (hatched in the occupier's colour), held (hatched), presence (dashed ring)
+overlays:
+  fremont:
+    within: cascadia
+    kind: occupied
+    by: aztlan
+    ring: [[-122.35, 42.0], [-122.2, 42.9], [-121.7, 43.3], [-120.6, 43.25], [-119.9, 42.8], [-119.8, 41.8], [-121.3, 41.7]]
+  wiyohiyanpa:
+    within: cascadia
+    kind: held
+    ring: [[-111.0, 49.6], [-100.5, 49.6], [-99.5, 46.5], [-100.2, 44.2], [-102.6, 45.0], [-104.4, 46.6], [-107.8, 47.3], [-110.6, 47.8]]
+  kohoe:
+    within: cascadia
+    kind: held
+    ring: [[-103.2, 44.9], [-100.9, 44.95], [-100.6, 44.35], [-101.6, 43.7], [-103.1, 43.9]]
+  fca:
+    within: cascadia
+    kind: held
+    ring: [[-120.4, 49.5], [-115.6, 49.5], [-115.8, 48.35], [-120.2, 48.45]]
+  plc:
+    within: cascadia
+    kind: held
+    ring: [[-125.0, 49.3], [-121.4, 49.3], [-121.3, 46.9], [-124.9, 46.8]]
+  thermopolis:
+    within: cascadia
+    kind: held
+    ring: [[-109.0, 44.1], [-107.6, 44.1], [-107.5, 43.2], [-108.9, 43.15]]
+  gods_faction:
+    within: oregon
+    kind: held
+    ring: [[-124.8, 43.5], [-121.8, 43.5], [-121.8, 41.8], [-124.8, 41.8]]
+  deseret:
+    within: solms
+    kind: presence
+    ring: [[-108.6, 37.6], [-106.0, 38.2], [-104.9, 37.0], [-105.2, 35.2], [-106.1, 33.6], [-107.6, 33.4], [-108.3, 35.2]]
+  huastecas:
+    within: nuevoleon
+    kind: held
+    ring: [[-105.0, 28.4], [-101.0, 27.6], [-99.85, 26.3], [-99.95, 25.0], [-101.2, 24.1], [-103.4, 25.4]]
+  tamaulipas:
+    within: nuevoleon
+    kind: held
+    ring: [[-99.7, 24.35], [-97.2, 24.35], [-97.2, 22.1], [-99.8, 22.3]]
+  the_base:
+    within: nuevoleon
+    kind: held
+    ring: [[-98.6, 25.15], [-97.7, 25.15], [-97.7, 24.5], [-98.6, 24.5]]
+  santo_templo:
+    within: mexico
+    kind: held
+    ring: [[-106.7, 23.6], [-106.0, 23.6], [-105.95, 23.0], [-106.6, 22.95]]
+  florida:
+    within: atlantica
+    kind: presence
+    ring: [[-91.2, 31.3], [-85.2, 31.2], [-84.6, 29.4], [-91.2, 29.0]]

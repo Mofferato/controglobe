@@ -1,0 +1,17 @@
+# The thirteen marches of Solms-America. seed: a point inside the march (lon, lat); label: where
+# its name is set. `twin` is the region of Saudi Arabia whose role it carries; `capital` and its
+# place are drawn by `python build.py namaps`.
+key,name,twin,name_ar,twin_ar,colour,size,seed_lon,seed_lat,label_lon,label_lat,lead,capital,capital_ar,cap_lon,cap_lat
+dreifurt,Dreifurt,Riyadh,درايفورت,الرياض,#b9c9e6,big,-97.5,31.8,-98.2,31.7,0,Dreifurt,درايفورت,-96.8,32.78
+ostmark,Ostmark,Eastern Province,أوستمارك,المنطقة الشرقية,#e2c58f,big,-94.6,31.6,-94.75,31.95,0,Neches,نيتشيس,-94.1,30.08
+rotland,Rotland,Qassim,روتلاند,القصيم,#dba9a0,big,-98.0,34.3,-98.2,34.35,0,Waschita,واشيتا,-97.13,34.17
+wichita,Wichita,Ha'il,ويتشيتا,حائل,#c6d9a7,big,-98.5,36.8,-99.3,36.9,0,Wichita,ويتشيتا,-97.34,37.69
+kansa,Kansa,Northern Borders,كانسا,الحدود الشمالية,#d8cfe8,big,-99.5,39.3,-99.6,39.45,0,Topeka,توبيكا,-95.68,39.05
+hochebene,Hochebene,Al-Jawf,هوخ إيبنه,الجوف,#ead9a3,big,-102.4,33.6,-102.5,34.45,0,Gelbhaus,غيلبهاوس,-101.85,33.58
+pecos,Pecos,Tabuk,بيكوس,تبوك,#c9bfa6,big,-104.0,32.2,-103.5,30.7,0,Pecos,بيكوس,-103.49,31.42
+oberland,Oberland,Al-Bahah,أوبرلاند,الباحة,#b5d6cf,big,-106.5,35.0,-106.95,34.3,0,Tewa,تيوا,-105.94,35.69
+chihuahua,Chihuahua,Najran,تشيواوا,نجران,#e6c3a6,big,-105.5,28.5,-105.0,27.6,0,Chihuahua,تشيواوا,-106.08,28.63
+paquime,Paquimé,Makkah,باكيمي,مكة المكرمة,#a9d4a5,big,-107.6,30.3,-107.4,31.15,0,Paquimé,باكيمي,-107.95,30.37
+chukson,Chukson,Madinah,تشوكسون,المدينة المنورة,#bfe0b0,big,-111.0,32.0,-112.7,32.3,0,Chukson,تشوكسون,-110.97,32.22
+kuestenland,Küstenland,Tihamah (Jizan),كوستنلاند,تهامة (جازان),#e9b9c4,big,-111.8,29.8,-111.75,30.2,0,Waimas,وايماس,-110.9,27.92
+bergland,Bergland,Asir,بيرغلاند,عسير,#c4b8dc,big,-109.2,29.2,-109.15,29.4,0,Papigochi,بابيغوتشي,-107.5,28.55

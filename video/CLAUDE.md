@@ -45,6 +45,23 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   crests; in Europe the Rhine, the Danube and the real crests themselves. They live in
   `data/atlas/<region>-frontiers.yaml`, traced in QGIS by `integrations/qgis/cg_frontiers.py`.
 
+- North America carries the Middle East, and descends from "A More Fractured Union" (Bemon and
+  Body25, 2023), from which Controglobe branched: the same states in the same places (Solms-America
+  = Saudi Arabia on the ground of Texas, Mississippi = Iraq, Atlantica = Iran, Aztlan = Israel,
+  California = Palestine, Cascadia = Syria, Oregon = Lebanon, Colorado = Jordan, Mexico = Egypt,
+  Nuevo León = Yemen, Ludwigsland, Karankawa, the Counties, Río Grande and Puerto Rico = Kuwait,
+  Qatar, the Emirates, Oman and Bahrain, Canada = Turkey) and the same militias and unrecognised
+  authorities, which the Timeline's swap key lists. What is new is Controglobe's: nations of
+  different European peoples (the Crossing, from the 1400s), frontiers on rivers and watersheds
+  instead of state lines, and the religions. The Abrahamic religions' part is carried by native
+  American prophetic monotheisms with an unbroken line to the present (the Path, preached at
+  Paquimé; the Nahua's older faith), whose lands the tribal Christians of Europe conquered and
+  whose holy places they adopted. Credit Bemon and Body25 wherever the continent is shown. It is
+  in the README, the hub pages, the Union's swap key, the Timeline (rows and master key), the
+  article on vehicles (the embargo of 1973 was over Aztlan, the revolution of 1979 Atlantica's)
+  and `kingdom-of-solms-america.html`, in both editions. How much of the religious design stays
+  is the user's to say: it was improvised from one line of theirs.
+
 ## Sources of truth, in order
 
 1. The encyclopedia pages in the repository root (`../*.html`, Arabic in `../ar/`), above all
@@ -88,9 +105,10 @@ python build.py thumbnail
 python build.py resolve      # rewrite and install the Resolve build script (the cut once rendered)
 python build.py sitemaps     # the encyclopedia's Mashriq maps, History's map of every year, world maps' ground
 python build.py atlas        # the Africa and Europe atlases on the real coast (both editions; --only africa)
+python build.py namaps       # North America and Solms-America: the maps between the pages' cg-na markers
 ```
 
-After `sitemaps` or `atlas`, screenshot the maps they touched (Playwright is in the venv) and
+After `sitemaps`, `atlas` or `namaps`, screenshot the maps they touched (Playwright is in the venv) and
 look at them in both editions, as you would a preview.
 
 The motion cut reads `rulers`, `parties`, `elections`, `population`, `cities`, `demographics`,

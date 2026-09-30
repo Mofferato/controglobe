@@ -395,6 +395,70 @@ throughout, and append it here in the same pass.
 | Manumission Day | يوم العتق |
 | European Arabians | العرب الأوروبيون |
 
+## North America (the Kingdom of Solms-America and the master swap key)
+
+North America carries the Middle East. Its religious vocabulary is deliberately **not** the
+Islamic one, even where the role is Islam's: the faith is a native one and its terms must not
+read as Arabian. So the Path's prophet is «المبعوث», never «الرسول»; its holy places are
+«المزاران», never «الحرمان»; its pilgrimage is «الزيارة», never «الحج»; the Migration is «الرحيل»,
+never «الهجرة». The militant network is «تنظيم «الأساس»», never «القاعدة», which would name a real
+organisation. The Plain Rule is «النهج البسيط» for the same reason («القاعدة البسيطة» is out).
+
+| English | العربية | Carries / note |
+|---|---|---|
+| Kingdom of Solms-America / Solms-America | مملكة زولمس-أمريكا / زولمس-أمريكا | Saudi Arabia; the z is the German s |
+| Solms-American / Solmser | زولمسي-أمريكي / زولمسي | |
+| House of Solms | آل زولمس | the House of Saud |
+| Karl the Uniter / Karl Ferdinand | كارل الموحِّد / كارل فرديناند | |
+| Philipp / Ludwig / Georg / Friedrich / Albrecht / Wilhelm | فيليب / لودفيغ / غيورغ / فريدريش / ألبريشت / فيلهلم | the kings |
+| Bernhard / Ernst / Heinrich / Konrad | برنهارت / إرنست / هاينريش / كونراد | |
+| Johann Eberlin / the Eberlins | يوهان إيبرلين / آل إيبرلين | |
+| the Leiningen / the Isenburg | آل لاينينغن / آل إيزنبورغ | |
+| Dreifurt / Braunfels | درايفورت / براونفيلس | Riyadh / Diriyah |
+| Paquimé / Chukson / Waimas | باكيمي / تشوكسون / وايماس | Makkah / Madinah / Jeddah |
+| Neches / Sabinehaven / Nordpass / Kawsmund | نيتشيس / زابينهافن / نوردباس / كاوسموند | |
+| Waschita / Gelbhaus / Tewa / Pitic / Papigochi / Morgenstadt | واشيتا / غيلبهاوس / تيوا / بيتيك / بابيغوتشي / مورغنشتات | |
+| march (Mark), the thirteen marches | مارك، الماركات الثلاث عشرة | masculine |
+| Ostmark / Rotland / Kansa / Hochebene / Oberland / Küstenland / Bergland | أوستمارك / روتلاند / كانسا / هوخ إيبنه / أوبرلاند / كوستنلاند / بيرغلاند | |
+| the Staked Plain / the Caprock | السهل الموتَّد / جرف كابروك | |
+| the Crossing | العبور | the European migration from the 1400s |
+| American (the language) / the American rite | الأمريكية / الطقس الأمريكي | |
+| the Path / the Messenger / the Speakers | الدرب / المبعوث / الناطقون | custom; see the note above |
+| Commonwealth of the Speakers / the Migration | دولة الناطقين / الرحيل | |
+| the Two Sanctuaries / Warden of the Two Sanctuaries | المزاران / حارس المزارين | |
+| Mound of the Cross / the Black Hill | تلّ الصليب / التلّ الأسود | |
+| Keepers of Paquimé | سدنة باكيمي | the Hashemite Sharifs |
+| the Pilgrimage / the lesser visit | الزيارة / الزيارة الصغرى | |
+| Doctrine of the Two Testimonies / Synod of Chukson | عقيدة البشارتين / مجمع تشوكسون | not «الشهادتان» |
+| Aldermannic / Kindred | شيوخي / قرابي | Sunni / Shia |
+| Plain Rule / Oath of Braunfels | النهج البسيط / قسم براونفيلس | |
+| the Brethren / the Revival | الإخوة / الإحياء | not «الإخوان» |
+| the Eldership / Wardens of Good Order | هيئة كبار القساوسة / حرّاس الآداب | |
+| Landrat / Landjäger / Ground Order / Council of Allegiance | اللاندرات / اللاندييغر / النظام الأساسي / مجلس الولاء | |
+| Turquoise Road | درب الفيروز | |
+| Canadian Empire / High Seat at Hochelaga | الإمبراطورية الكندية / الكرسي العالي في هوشيلاغا | the Ottoman Empire / the Porte |
+| American Revolt (1916) | الثورة الأمريكية | the Arab Revolt |
+| Großfeld / Pecosbecken / Küstenfeld | الحقل الكبير / حوض بيكوس / حقل الساحل | |
+| Amaröl / Kronfonds / Aufbruch 2030 | أمارول / صندوق التاج / الانطلاق 2030 | |
+| thaler | التالر | |
+| riding games / Solmserung | ألعاب الفروسية / الزَّلمسة | |
+| Gulf coalition war | حرب تحالف الخليج | |
+| American League / Gulf Council / Axis of Freedom | جامعة الدول الأمريكية / مجلس الخليج / محور الحرية | |
+| Republic of Mississippi / Ohio Region | جمهورية المسيسيبي / إقليم أوهايو | Iraq / the Kurdistan Region |
+| Christian Republic of Atlantica | جمهورية أتلانتيكا المسيحية | Iran |
+| Cascadian American Republic / Republic of Oregon | الجمهورية الأمريكية الكاسكادية / جمهورية أوريغون | Syria / Lebanon |
+| State of Aztlan / State of California / Kingdom of Colorado | دولة أزتلان / ولاية كاليفورنيا / مملكة كولورادو | Israel / Palestine / Jordan |
+| L.A. Strip / East Basin / Fremont Forests | شريط لوس أنجلوس / الحوض الشرقي / غابات فريمونت | Gaza / the West Bank / the Golan |
+| Ludwigsland / Karankawa / the Counties / Río Grande / Nuevo León / Puerto Rico | لودفيغسلاند / كارانكاوا / المقاطعات / ريو غراندي / نويفو ليون / بورتوريكو | Kuwait / Qatar / the Emirates / Oman / Yemen / Bahrain |
+| Pacific Liberation Committee / Free Cascadian Army | لجنة تحرير المحيط الهادئ / الجيش الكاسكادي الحر | |
+| Wiyohiyanpa / Bismarck Garrisons / Thermopolis Garrison | ويوهيانبا / حاميات بسمارك / حامية ثيرموبوليس | |
+| Kingdom of Heaven on Earth | مملكة السماء على الأرض | |
+| God's Faction / God's Faction in Deseret | فصيل الله / فصيل الله في ديزرت | |
+| C.L.O.–Victory / Armov | منظمة التحرير الكاليفورنية – النصر / أرموف | |
+| the Huastecas / Southern Transition Council | الهواستيكاس / المجلس الانتقالي الجنوبي | |
+| the Base / Santo Templo / People's Knights | تنظيم «الأساس» / أنصار الهيكل المقدس / فرسان الشعب | |
+| A More Fractured Union; Bemon; Body25 | kept in Latin | the map Controglobe branched from, and its authors |
+
 ### Afghanistan and Siberia
 
 | English | العربية |

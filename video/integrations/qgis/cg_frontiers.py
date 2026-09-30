@@ -2,7 +2,7 @@
 
 Run it in QGIS (Python console, or from Claude through the QGIS MCP server's execute_code):
     exec(open(r"C:/path/to/controglobe/video/integrations/qgis/cg_frontiers.py").read())
-    cg_frontiers("africa")          # or "europe"
+    cg_frontiers("africa")          # or "europe", "north-america", then "solms-america"
 
 It does the geographic work in the open application, where it can be seen and checked:
   1. ETOPO 2022 is cut to the region, resampled to three arc-minutes and its sea masked (GDAL),
@@ -83,6 +83,8 @@ def _basins(video: pathlib.Path, R: dict, recompute: bool = False) -> dict:
             processing.run("grass:r.water.outlet", {"input": str(drain), "coordinates": f"{x},{y} [EPSG:4326]",
                                                     "output": str(raster), "GRASS_REGION_PARAMETER": region,
                                                     "GRASS_REGION_CELLSIZE_PARAMETER": 0.05})
+            if vector.exists():                 # polygonize adds to a file that is there: start clean
+                vector.unlink()
             processing.run("gdal:polygonize", {"INPUT": str(raster), "BAND": 1, "FIELD": "v",
                                                "EIGHT_CONNECTEDNESS": False, "OUTPUT": str(vector)})
         layer = QgsVectorLayer(str(vector), name, "ogr")
@@ -117,24 +119,18 @@ def cg_frontiers(region: str = "africa", recompute: bool = False, show: bool = T
         if name and isinstance(name, str):
             rivers.setdefault(name, []).append(g)
     rivers = {k: shapely.union_all(v) for k, v in rivers.items()}
-    R = fr.REGIONS[region]
-    basins = _basins(video, R, recompute)
+    # the marches of one nation (solms-america) are traced on their continent's basins
+    basins = _basins(video, fr.REGIONS[fr.region_basins(region)], recompute)
     ground = fr.Ground(rivers, basins)
 
     store = video / "data" / "atlas"
     spec = yaml.safe_load((store / f"{region}-frontiers.yaml").read_text(encoding="utf8"))
     traced = fr.trace(spec, ground)
-    fr.write_geojson(store / f"{region}-frontiers.geojson", traced)
+    fr.write_geojson(store / f"{region}-frontiers.geojson", traced, name=f"{region}-frontiers")
 
     land_ll = shapely.union_all([g for _, g in _read(f"/vsizip/{(ne / 'ne_10m_land.zip').as_posix()}")] +
                                 [g for _, g in _read(f"/vsizip/{(ne / 'ne_10m_minor_islands.zip').as_posix()}")])
-    land = R["land"](shapely.make_valid(land_ll))
-    rows = fr.read_nations(store / f"{region}-nations.csv")
-    seeds = {r["key"]: [(r["seed_lon"], r["seed_lat"])] for r in rows}
-    for k, pts in (spec.get("seeds") or {}).items():
-        seeds[k] = seeds.get(k, []) + [tuple(p) for p in pts]
-    lines = fr.read_geojson(store / f"{region}-frontiers.geojson")
-    held, unclaimed = fr.nations(lines, land, seeds, spec.get("neutral", []))
+    held, unclaimed, rows, spec = fr.held_nations(region, shapely.make_valid(land_ll), store)
     missing = [r["key"] for r in rows if r["key"] not in held]
     print(f"{region}: {len(traced)} frontiers traced; {len(held)} nations; {len(unclaimed)} neutral pieces"
           + (f"; no ground for {', '.join(missing)}" if missing else ""))

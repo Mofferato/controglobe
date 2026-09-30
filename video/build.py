@@ -19,6 +19,7 @@
   python build.py sitemaps               redraw the encyclopedia's maps of al-Mashriq on the video's borders,
                                          the History page's map of every year and the world maps' ground
   python build.py atlas [--only africa]  redraw the Africa and Europe atlases on the real coast
+  python build.py namaps                 redraw the maps of North America and of Solms-America
   python build.py resolve [--media ...]  the Resolve build script, installed as Workspace > Scripts > cg_resolve_build
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
 """
@@ -77,6 +78,9 @@ def main(argv=None) -> int:
                    help="also redraw the encyclopedia's favicon, touch icon and masthead globe, in every page")
     p = sub.add_parser("atlas", help="redraw the encyclopedia's atlases on real coastlines")
     p.add_argument("--only", choices=["africa", "europe"], default=None, help="redraw one atlas")
+    p = sub.add_parser("namaps", help="redraw the maps of North America and of the Kingdom of Solms-America")
+    p.add_argument("--only", nargs="*", default=None, choices=["political", "marches", "unification", "locator"])
+    p.add_argument("--dump", default=None, help="also write each map as an SVG file into this folder")
     p = sub.add_parser("sitemaps", help="redraw the encyclopedia's maps of al-Mashriq on the video's borders")
     p.add_argument("--bootstrap", action="store_true",
                    help="write config/sitemaps.yaml once from the schematic maps' colours")
@@ -156,6 +160,12 @@ def run(step: str, cfg: dict, args) -> int:
     if step == "atlas":
         from cgvideo import atlas
         for page in atlas.install(cfg, (args.only,) if args.only else ("africa", "europe")):
+            print(f"  {page}")
+        return 0
+
+    if step == "namaps":
+        from cgvideo import namaps
+        for page in namaps.build(cfg, only=args.only, dump=args.dump):
             print(f"  {page}")
         return 0
 
