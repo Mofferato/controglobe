@@ -243,12 +243,28 @@ free for a public repository. [`announce.py`](announce.py) does the work.
    - *Variables* > **New repository variable**: `YOUTUBE_CHANNEL_ID`, the channel's ID (`UC`
      and 22 more characters; YouTube Studio > **Settings** > **Channel** > **Advanced
      settings**, or youtube.com/account_advanced).
+   - *Secrets* > **New repository secret**: `YOUTUBE_API_KEY`, a YouTube Data API key (below).
+     Optional, but YouTube's public feeds have failed for hours at a time since December 2025,
+     and without a key those feeds are all the announcer has.
    - Optional variable `DISCORD_PING_ROLE`: the Video Pings role's ID. Turn on **Developer
      Mode** (User Settings > Advanced), then Server Settings > Roles > Video Pings > ⋯ >
      **Copy Role ID**.
 3. **Switching it on.** GitHub runs scheduled workflows from the default branch, so it starts
    once this is merged into `main`. Its first run only records the videos already on the
    channel; after that each new upload is posted within about half an hour.
+
+**The YouTube Data API key** (free; about five minutes, once):
+
+1. <https://console.cloud.google.com/> > the project menu at the top > **New project**, name it
+   *Controglobe announcer*, **Create**, and select it.
+2. **APIs & Services** > **Library** > search *YouTube Data API v3* > **Enable**.
+3. **APIs & Services** > **Credentials** > **Create credentials** > **API key**. On the key,
+   **Edit API key**: *Application restrictions* None (GitHub's machines change address), *API
+   restrictions* **Restrict key** > YouTube Data API v3. **Save**, then copy the key into the
+   `YOUTUBE_API_KEY` secret.
+
+The key only reads public data. Each run uses 1 unit of the 10,000 the API gives free each day;
+when the day's quota is spent, or the API does not answer, the run falls back to the feeds.
 
 **Posting by hand**: **Actions** > **Discord announcements** > **Run workflow**, type the
 message (`\n` starts a new line), tick *Ping* if it should ping Video Pings. With the message
@@ -259,8 +275,8 @@ GitHub phone app, and Claude can start it too, which is how Claude posts in `#an
 without a Discord connector. On a PC, `python announce.py --message "…"` does the same with
 `DISCORD_ANNOUNCE_WEBHOOK` set.
 
-Until it is set up the workflow does nothing and says so; a YouTube hiccup (its feed now and then
-answers 404 for a channel that exists) is a warning, not a failed run, so it never fills your
+Until it is set up the workflow does nothing and says so; a YouTube hiccup (its public feeds
+answer 404 for a channel that exists for hours at a time) is a warning, not a failed run, so it never fills your
 inbox. GitHub runs "every half hour" when it has spare machines, which in practice can mean every
 few hours; a new video is still announced, just later. GitHub pauses scheduled workflows after 60 days
 without a commit to the repository and emails you first; **Enable workflow** on the Actions tab
