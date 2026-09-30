@@ -1,0 +1,705 @@
+# The frontiers of the Europe atlas, as they lie on the ground (lon, lat).
+#
+# The atlas's own doctrine: what survived independence was the older line under the administrative
+# one, "the Rhine and the Danube, the Carpathian and Dinaric watersheds, the Vistula marshes, the
+# Pyrenean and Alpine crests, the language frontier through the Low Countries, and the ceasefire
+# lines of the 1990s in the south-east"; no meridian and no parallel, the one straight line being
+# the Tornio, which is a river; and no exclave on the Baltic, where Königsberg's ground is
+# Lithuanian north of the Pregolya and Polish south of it. Each frontier is a chain of legs (see
+# cgvideo/frontiers.py):
+#   river:  follow the named Natural Earth river(s) to a point on them
+#   divide: follow the rim of a river basin, as GRASS r.watershed computes it in QGIS (the Pyrenees
+#           are the Ebro's rim, the western Alps the Po's, the Brenner the Danube's, the
+#           Carpathians the Vistula's, the Bohemian Forest the Elbe's)
+#   via:    a smooth curve through points set along a crest, an escarpment, a marsh or a lake
+# `nations` names the two sides; `follows` is what the frontier is, in words. Ground outside the
+# swap (the Caucasus, the Mashriq, Asia beyond the Urals, Cyprus) is left neutral.
+# To move a frontier: edit it here, re-trace it in QGIS with integrations/qgis/cg_frontiers.py
+# (cg_frontiers("europe")), then run `python build.py atlas --only europe`.
+
+nodes:
+  # Iberia and the Pyrenees
+  galicia_corner: [-7.0, 41.93]            # Galicia, Portugal, Spain
+  basque_pyrenees: {at: [-0.75, 42.95], divide: ebro}   # the Basque Country, Spain, Aquitaine
+  andorra: {at: [1.72, 42.62], divide: ebro}           # Spain, Aquitaine, Francia
+  # France, the Low Countries and the Rhine
+  brittany_corner: [-1.08, 48.45]          # Brittany, Normandy, Francia
+  luxembourg_west: [5.75, 49.55]           # Luxembourg, the Low Countries, Francia
+  luxembourg_north: [6.1, 50.15]           # Luxembourg, the Low Countries, Rhenia
+  luxembourg_south: [6.37, 49.47]          # Luxembourg, Francia, Rhenia: Schengen on the Moselle
+  basel: [7.59, 47.585]                    # Francia, Rhenia, Switzerland
+  # the Alps
+  mont_dolent: {at: [7.04, 45.92], divide: po}         # Francia, Switzerland, Italy
+  col_de_tende: {at: [7.6, 44.13], divide: po}         # where the Franco-Italian crest leaves the Po's rim
+  bernina: {at: [9.9, 46.38], divide: po}              # where the Swiss-Italian crest leaves the Po's rim
+  reschen: {at: [10.47, 46.85], divide: danube}        # Switzerland, Austria, Italy
+  tarvisio: {at: [13.72, 46.52], divide: danube}       # Italy, Austria, Slovenia
+  bodensee: [9.52, 47.53]                  # Rhenia, Switzerland, Austria, in the lake
+  lindau: [9.7, 47.54]                     # Rhenia, Bavaria, Austria
+  # Central Europe
+  bavarian_corner: {at: [12.12, 50.3], divide: elbe}   # Bavaria, Rhenia, Czechia
+  dreisessel: {at: [13.83, 48.77], divide: elbe}       # Bavaria, Austria, Czechia
+  neisse_head: [14.82, 50.87]              # Rhenia, Czechia, Poland
+  thaya_mouth: [16.94, 48.62]              # Austria, Czechia, Slovakia
+  beskids: {at: [18.85, 49.52], divide: vistula}       # Czechia, Slovakia, Poland
+  bieszczady: {at: [22.55, 49.08], divide: vistula}    # Slovakia, Poland, Ukraine
+  bratislava: {at: [17.12, 48.1], river: [Donau, Danube]}   # Austria, Slovakia, Hungary
+  raab: [16.12, 46.87]                     # Austria, Hungary, Slovenia
+  mura: [16.6, 46.48]                      # Slovenia, Croatia, Hungary
+  tisza_corner: [22.15, 48.4]              # Hungary, Slovakia, Ukraine
+  tisza_east: [22.9, 47.95]                # Hungary, Romania, Ukraine
+  # the Balkans
+  drava_mouth: [18.87, 45.9]               # Croatia, Hungary, Serbia
+  sava_corner: {at: [19.1, 44.88], river: Sava}        # Croatia, Serbia, Bosnia
+  prevlaka: [18.52, 42.47]                 # Croatia, Bosnia, Montenegro
+  foca: [19.25, 43.5]                      # Bosnia, Serbia, Montenegro
+  kopaonik_west: [20.35, 42.85]            # Serbia, Montenegro, Kosovo
+  prokletije: [19.95, 42.55]               # Montenegro, Kosovo, Albania
+  sar: [20.6, 42.05]                       # Kosovo, Albania, North Macedonia
+  presevo: [21.65, 42.3]                   # Kosovo, Serbia, North Macedonia
+  osogovo: [22.35, 42.32]                  # Serbia, North Macedonia, Bulgaria
+  timok: {at: [22.68, 44.21], river: Danube}           # Serbia, Bulgaria, Romania
+  banat: [20.26, 46.12]                    # Serbia, Romania, Hungary
+  belasica: [22.95, 41.34]                 # North Macedonia, Bulgaria, Greece
+  prespa: [20.95, 40.85]                   # North Macedonia, Albania, Greece
+  evros_corner: {at: [26.35, 41.72], river: Evros}     # Bulgaria, Greece, Turkey
+  # Eastern Europe and the Baltic
+  prut_head: {at: [26.62, 48.26], river: Prut}         # Moldova, Romania, Ukraine
+  dniester_head: {at: [27.35, 48.45], river: Dniester} # Moldova, Ukraine: where the frontier meets the Dniester
+  bug_south: {at: [23.65, 51.55], river: Bug}          # Poland, Ukraine, Belarus
+  suwalki: [23.5, 53.95]                   # Poland, Belarus, Lithuania
+  daugava_bend: [26.6, 55.65]              # Lithuania, Belarus, Latvia
+  sebezh: [28.2, 56.0]                     # Latvia, Belarus, Russia
+  pskov_corner: [27.4, 57.55]              # Latvia, Estonia, Russia
+  bryansk_corner: [31.8, 52.1]             # Belarus, Russia, Ukraine
+  # the north
+  treriksroset: [20.55, 69.06]             # Norway, Sweden, Finland
+  pasvik: [28.93, 69.05]                   # Norway, Finland, Russia
+
+frontiers:
+  # ---- Iberia and the Pyrenees ---------------------------------------------------------------
+  - id: galicia-portugal
+    nations: [galicia, portugal]
+    follows: the Minho, then the Peneda, Gerês and Larouco hills
+    from: [-8.95, 41.87]
+    legs:
+      - {river: Minho, to: [-8.2, 42.12]}
+      - via: [[-8.1, 42.03], [-7.9, 41.88], [-7.55, 41.85], [-7.2, 41.9], galicia_corner]
+  - id: galicia-spain
+    nations: [galicia, spain]
+    follows: the Eo, the Ancares and the Montes de León
+    from: [-7.03, 43.58]
+    legs:
+      - via: [[-7.0, 43.2], [-6.85, 42.85], [-6.95, 42.45], [-6.85, 42.15], galicia_corner]
+  - id: portugal-spain
+    nations: [portugal, spain]
+    follows: the Douro gorges, the Malcata hills, the Tagus, then the Guadiana to the sea
+    from: galicia_corner
+    legs:
+      - via: [[-6.6, 41.9], [-6.25, 41.6], [-6.3, 41.45]]
+      - {river: Duero, to: [-6.93, 41.03]}
+      - via: [[-6.85, 40.6], [-6.95, 40.2], [-7.0, 39.66], [-7.2, 39.35], [-7.05, 38.9], [-7.25, 38.55], [-7.3, 38.15],
+              [-7.45, 37.6], [-7.42, 37.2], [-7.4, 37.1]]
+  - id: basque-spain
+    nations: [basque, spain]
+    follows: the Basque mountains and the upper Ebro, then the Navarrese Pyrenees
+    from: [-3.3, 43.45]
+    legs:
+      - via: [[-3.4, 43.05], [-3.1, 42.7], [-2.5, 42.45], [-1.85, 42.2], [-1.35, 42.35], [-1.0, 42.65], basque_pyrenees]
+  - id: basque-aquitaine
+    nations: [basque, aquitaine]
+    follows: the Soule, then the Adour to the sea
+    from: basque_pyrenees
+    legs:
+      - via: [[-0.85, 43.2], [-0.95, 43.4], [-1.2, 43.52], [-1.55, 43.53], [-1.7, 43.53]]
+  - id: spain-aquitaine
+    nations: [spain, aquitaine]
+    follows: the Pyrenean crest
+    from: basque_pyrenees
+    legs:
+      - {divide: ebro, to: andorra}
+  - id: spain-francia
+    nations: [spain, francia]
+    follows: the eastern Pyrenees, from the Cerdanya to the Albères
+    from: andorra
+    legs:
+      - via: [[2.0, 42.47], [2.4, 42.43], [2.9, 42.46], [3.2, 42.43], [3.35, 42.43]]
+  # ---- France, the duchies, the Low Countries ------------------------------------------------
+  - id: aquitaine-francia
+    nations: [aquitaine, francia]
+    follows: the Ariège, the Garonne and the Gironde
+    from: andorra
+    legs:
+      - {river: [Ariège, Garonne], to: [-0.55, 44.92]}
+      - via: [[-0.8, 45.3], [-1.1, 45.55], [-1.3, 45.72]]
+  - id: brittany-francia
+    nations: [brittany, francia]
+    follows: the marches of Brittany, then the Loire to the sea
+    from: brittany_corner
+    legs:
+      - via: [[-1.05, 48.0], [-1.2, 47.6], [-1.15, 47.38]]
+      - {river: Loire, to: [-1.68, 47.2]}
+      - via: [[-2.05, 47.28], [-2.35, 47.22]]
+  - id: brittany-normandy
+    nations: [brittany, normandy]
+    follows: the Couesnon
+    from: [-1.55, 48.68]
+    legs:
+      - via: [[-1.45, 48.52], brittany_corner]
+  - id: normandy-francia
+    nations: [normandy, francia]
+    follows: the Perche hills, the Epte and the Bresle
+    from: brittany_corner
+    legs:
+      - via: [[-0.7, 48.47], [0.1, 48.45], [0.85, 48.62], [1.5, 49.05], [1.75, 49.35], [1.7, 49.72], [1.4, 50.05], [1.33, 50.14]]
+  - id: francia-low-countries
+    nations: [francia, low_countries]
+    follows: the Artois ridge and the southern Ardennes
+    from: [2.05, 51.07]
+    legs:
+      - via: [[2.3, 50.8], [2.9, 50.65], [3.6, 50.35], [4.2, 50.05], [4.8, 49.85], [5.3, 49.68], luxembourg_west]
+  - id: luxembourg-low-countries
+    nations: [luxembourg, low_countries]
+    follows: the Oesling
+    from: luxembourg_west
+    legs:
+      - via: [[5.85, 49.8], [5.8, 50.1], luxembourg_north]
+  - id: luxembourg-francia
+    nations: [luxembourg, francia]
+    follows: the Minette escarpment
+    from: luxembourg_west
+    legs:
+      - via: [[6.0, 49.46], luxembourg_south]
+  - id: luxembourg-rhenia
+    nations: [luxembourg, rhenia]
+    follows: the Our, the Sauer and the Moselle
+    from: luxembourg_north
+    legs:
+      - via: [[6.15, 49.95], [6.4, 49.8], [6.52, 49.72], luxembourg_south]
+  - id: rhenia-low-countries
+    nations: [rhenia, low_countries]
+    follows: the High Fens, the Meuse terraces, the Rhine gate and the Bourtanger Moor to the Dollart
+    from: luxembourg_north
+    legs:
+      - via: [[6.35, 50.4], [6.1, 50.75], [5.95, 51.05], [6.2, 51.5], [6.15, 51.85], [6.75, 52.05], [7.05, 52.55], [7.2, 53.0],
+              [7.2, 53.25], [7.0, 53.5]]
+  - id: rhenia-francia
+    nations: [rhenia, francia]
+    follows: the Saar and the Lauter, then the Rhine
+    from: luxembourg_south
+    legs:
+      - via: [[6.8, 49.2], [7.4, 49.15], [7.95, 49.04], [8.2, 48.97]]
+      - {river: Rhin, to: basel}
+  - id: francia-switzerland
+    nations: [francia, switzerland]
+    follows: the Jura crest and Lake Geneva
+    from: basel
+    legs:
+      - via: [[7.2, 47.47], [6.95, 47.25], [6.45, 46.9], [6.13, 46.55], [6.1, 46.22], [6.45, 46.4], [6.8, 46.38], mont_dolent]
+  - id: francia-italy
+    nations: [francia, italy]
+    follows: the Alpine crest, the Po's western rim
+    from: mont_dolent
+    legs:
+      - {divide: po, to: col_de_tende}
+      - via: [[7.55, 43.95], [7.52, 43.72]]
+  - id: switzerland-italy
+    nations: [switzerland, italy]
+    follows: the Alpine crest, the Po's northern rim
+    from: mont_dolent
+    legs:
+      - {divide: po, to: bernina}
+      - via: [[10.15, 46.6], reschen]
+  - id: switzerland-rhenia
+    nations: [switzerland, rhenia]
+    follows: the High Rhine and Lake Constance
+    from: basel
+    legs:
+      - {river: [Rhin, Rhein], to: [9.17, 47.66]}
+      - via: [[9.35, 47.6], bodensee]
+  - id: switzerland-austria
+    nations: [switzerland, austria]
+    follows: the Alpine Rhine, the Rätikon and the Silvretta
+    from: bodensee
+    legs:
+      - {river: Rhein, to: [9.5, 47.05]}
+      - via: [[9.85, 46.95], [10.15, 46.85], reschen]
+  - id: rhenia-austria
+    nations: [rhenia, austria]
+    follows: Lake Constance
+    from: bodensee
+    legs:
+      - via: [lindau]
+  - id: italy-austria
+    nations: [italy, austria]
+    follows: the Alpine crest from the Reschen to the Tarvisio, the Danube's southern rim
+    from: reschen
+    legs:
+      - {divide: danube, to: tarvisio}
+  - id: italy-slovenia
+    nations: [italy, slovenia]
+    follows: the Julian Alps and the lower Isonzo
+    from: tarvisio
+    legs:
+      - via: [[13.5, 46.35], [13.55, 46.1], [13.62, 45.95], [13.65, 45.75], [13.62, 45.58]]
+  # ---- Central Europe -------------------------------------------------------------------------
+  - id: bavaria-rhenia
+    nations: [bavaria, rhenia]
+    follows: the Iller, the Ries, the Spessart's edge, the Rhön and the Thuringian and Franconian Forests
+    from: lindau
+    legs:
+      - via: [[10.1, 47.7], [10.05, 48.4], [10.3, 48.9], [9.95, 49.4], [9.35, 49.75], [9.8, 50.35], [10.5, 50.4], [11.1, 50.45],
+              [11.65, 50.4], bavarian_corner]
+  - id: bavaria-austria
+    nations: [bavaria, austria]
+    follows: the Northern Limestone Alps, the Salzach and the Inn
+    from: lindau
+    legs:
+      - via: [[10.1, 47.45], [10.6, 47.55], [11.0, 47.4], [11.6, 47.45], [12.17, 47.6], [12.5, 47.65], [12.9, 47.58], [13.0, 47.8],
+              [12.95, 48.2], [13.3, 48.35], [13.45, 48.57], dreisessel]
+  - id: bavaria-czechia
+    nations: [bavaria, czechia]
+    follows: the Upper Palatine and Bohemian Forests, the Elbe's western rim
+    from: bavarian_corner
+    legs:
+      - {divide: elbe, to: dreisessel}
+  - id: czechia-rhenia
+    nations: [czechia, rhenia]
+    follows: the Ore Mountains and the Lusatian hills
+    from: bavarian_corner
+    legs:
+      - via: [[12.6, 50.4], [13.3, 50.6], [13.9, 50.75], [14.3, 50.95], neisse_head]
+  - id: rhenia-poland
+    nations: [rhenia, poland]
+    follows: the Neisse and the Oder
+    from: neisse_head
+    legs:
+      - via: [[14.95, 51.4], [14.72, 51.9], [14.7, 52.07]]
+      - {river: Oder, to: [14.45, 53.3]}
+      - via: [[14.3, 53.7], [14.2, 54.0]]
+  - id: czechia-poland
+    nations: [czechia, poland]
+    follows: the Sudetes, the Jeseníky and the Moravian Gate
+    from: neisse_head
+    legs:
+      - via: [[15.0, 50.9], [15.5, 50.78], [16.2, 50.65], [16.5, 50.35], [16.9, 50.25], [17.3, 50.3], [17.8, 50.1], [18.35, 49.95],
+              beskids]
+  - id: czechia-austria
+    nations: [czechia, austria]
+    follows: the Šumava and the Novohradské hills, then the Thaya
+    from: dreisessel
+    legs:
+      - {divide: elbe, to: [14.95, 48.85]}
+      - via: [[15.3, 48.95], [15.75, 48.85], [16.2, 48.75], [16.55, 48.8], thaya_mouth]
+  - id: czechia-slovakia
+    nations: [czechia, slovakia]
+    follows: the White Carpathians and the Javorníky
+    from: thaya_mouth
+    legs:
+      - via: [[17.2, 48.85], [17.6, 49.05], [18.1, 49.3], [18.5, 49.45], beskids]
+  - id: poland-slovakia
+    nations: [poland, slovakia]
+    follows: the Carpathian crest, the Vistula's southern rim
+    from: beskids
+    legs:
+      - {divide: vistula, to: bieszczady}
+  - id: austria-slovakia
+    nations: [austria, slovakia]
+    follows: the Morava
+    from: thaya_mouth
+    legs:
+      - {river: Morava, to: [16.97, 48.17]}
+      - via: [bratislava]
+  - id: austria-hungary
+    nations: [austria, hungary]
+    follows: Lake Neusiedl and the Alpine foothills
+    from: bratislava
+    legs:
+      - via: [[17.05, 47.95], [16.85, 47.8], [16.7, 47.6], [16.5, 47.3], [16.45, 47.0], raab]
+  - id: austria-slovenia
+    nations: [austria, slovenia]
+    follows: the Karawanks and the Mur
+    from: tarvisio
+    legs:
+      - via: [[14.1, 46.47], [14.6, 46.42], [15.0, 46.6], [15.5, 46.65], [15.95, 46.68], raab]
+  - id: slovenia-hungary
+    nations: [slovenia, hungary]
+    follows: the Goričko hills
+    from: raab
+    legs:
+      - via: [[16.35, 46.72], mura]
+  - id: hungary-slovakia
+    nations: [hungary, slovakia]
+    follows: the Danube, then the Ipeľ and the Slovak Karst
+    from: bratislava
+    legs:
+      - {river: [Donau, Danube], to: [18.9, 47.82]}
+      - via: [[19.3, 48.05], [19.9, 48.15], [20.5, 48.5], [21.2, 48.5], [21.7, 48.4], tisza_corner]
+  - id: slovakia-ukraine
+    nations: [slovakia, ukraine]
+    follows: the Uzh and the Carpathian foothills
+    from: tisza_corner
+    legs:
+      - via: [[22.3, 48.65], [22.45, 48.9], bieszczady]
+  - id: hungary-ukraine
+    nations: [hungary, ukraine]
+    follows: the Tisza
+    from: tisza_east
+    legs:
+      - {river: Tisza, to: tisza_corner}
+  # ---- the Balkans ----------------------------------------------------------------------------
+  - id: slovenia-croatia
+    nations: [slovenia, croatia]
+    follows: the Dragonja, the Snežnik, the Kupa and the Sotla
+    from: [13.55, 45.49]
+    legs:
+      - via: [[13.95, 45.46], [14.5, 45.55], [15.0, 45.48], [15.3, 45.45], [15.6, 45.8], [15.7, 46.2], [16.3, 46.38], mura]
+  - id: hungary-croatia
+    nations: [hungary, croatia]
+    follows: the Drava
+    from: mura
+    legs:
+      - via: [[16.9, 46.25], [17.5, 45.95], [18.2, 45.8], drava_mouth]
+  - id: croatia-serbia
+    nations: [croatia, serbia]
+    follows: the Danube, then the Fruška Gora
+    from: drava_mouth
+    legs:
+      - {river: Danube, to: [19.4, 45.2]}
+      - via: [[19.2, 45.05], sava_corner]
+  - id: croatia-bosnia
+    nations: [croatia, bosnia]
+    follows: the Sava and the Una, then the Dinaric watershed to the coastal ranges
+    from: sava_corner
+    legs:
+      - {river: Sava, to: [16.95, 45.27]}
+      - via: [[16.4, 45.1], [15.95, 44.75], [15.8, 44.55], [16.2, 44.1], [16.6, 43.85], [17.1, 43.55], [17.5, 43.25],
+              [17.7, 43.05], [18.1, 42.8], [18.45, 42.55], prevlaka]
+  - id: croatia-montenegro
+    nations: [croatia, montenegro]
+    follows: the Prevlaka
+    from: prevlaka
+    legs:
+      - via: [[18.52, 42.38]]
+  - id: bosnia-serbia
+    nations: [bosnia, serbia]
+    follows: the Sava, then the Drina
+    from: sava_corner
+    legs:
+      - {river: [Sava, Drina], to: [19.3, 43.62]}
+      - via: [foca]
+  - id: bosnia-montenegro
+    nations: [bosnia, montenegro]
+    follows: the Piva and the Orjen
+    from: foca
+    legs:
+      - via: [[18.95, 43.25], [18.7, 42.85], prevlaka]
+  - id: serbia-montenegro
+    nations: [serbia, montenegro]
+    follows: the Lim and the Sandžak hills
+    from: foca
+    legs:
+      - via: [[19.6, 43.15], [20.05, 43.05], kopaonik_west]
+  - id: montenegro-kosovo
+    nations: [montenegro, kosovo]
+    follows: the Mokra Gora
+    from: kopaonik_west
+    legs:
+      - via: [[20.1, 42.65], prokletije]
+  - id: montenegro-albania
+    nations: [montenegro, albania]
+    follows: the Prokletije, Lake Skadar and the Bojana
+    from: prokletije
+    legs:
+      - via: [[19.75, 42.45], [19.4, 42.2], [19.37, 41.95], [19.33, 41.82]]
+  - id: kosovo-serbia
+    nations: [kosovo, serbia]
+    follows: the Kopaonik and the Goljak
+    from: kopaonik_west
+    legs:
+      - via: [[20.8, 43.2], [21.4, 42.85], presevo]
+  - id: kosovo-albania
+    nations: [kosovo, albania]
+    follows: the White Drin and the Koritnik
+    from: prokletije
+    legs:
+      - via: [[20.35, 42.3], sar]
+  - id: kosovo-macedonia
+    nations: [kosovo, macedonia]
+    follows: the Šar
+    from: sar
+    legs:
+      - via: [[21.1, 42.2], presevo]
+  - id: serbia-macedonia
+    nations: [serbia, macedonia]
+    follows: the Preševo valley's southern hills
+    from: presevo
+    legs:
+      - via: [[22.0, 42.3], osogovo]
+  - id: serbia-bulgaria
+    nations: [serbia, bulgaria]
+    follows: the Vlasina, the Stara Planina and the Timok
+    from: osogovo
+    legs:
+      - via: [[22.6, 42.9], [22.7, 43.4], [22.5, 43.8], timok]
+  - id: serbia-romania
+    nations: [serbia, romania]
+    follows: the Danube through the Iron Gates, then the Banat
+    from: timok
+    legs:
+      - {river: Danube, to: [21.4, 44.78]}
+      - via: [[21.25, 45.2], [20.8, 45.6], [20.45, 45.95], banat]
+  - id: serbia-hungary
+    nations: [serbia, hungary]
+    follows: the Bačka loess
+    from: banat
+    legs:
+      - via: [[19.9, 46.17], [19.4, 46.05], drava_mouth]
+  - id: hungary-romania
+    nations: [hungary, romania]
+    follows: the edge of the Great Plain below the Apuseni
+    from: banat
+    legs:
+      - via: [[21.1, 46.45], [21.5, 47.2], [22.0, 47.7], [22.5, 47.9], tisza_east]
+  - id: romania-bulgaria
+    nations: [romania, bulgaria]
+    follows: the Danube, then the Dobruja plateau
+    from: timok
+    legs:
+      - {river: Danube, to: [27.28, 44.12]}
+      - via: [[27.7, 43.95], [28.0, 43.8], [28.62, 43.74]]
+  - id: bulgaria-macedonia
+    nations: [bulgaria, macedonia]
+    follows: the Osogovo and the Maleševo
+    from: osogovo
+    legs:
+      - via: [[22.8, 41.95], [22.95, 41.55], belasica]
+  - id: macedonia-greece
+    nations: [macedonia, greece]
+    follows: the Belasica, the Kožuf and the Nidže
+    from: belasica
+    legs:
+      - via: [[22.3, 41.15], [21.6, 40.9], [21.2, 40.85], prespa]
+  - id: macedonia-albania
+    nations: [macedonia, albania]
+    follows: the Korab and Lake Ohrid
+    from: sar
+    legs:
+      - via: [[20.5, 41.75], [20.5, 41.4], [20.7, 41.1], prespa]
+  - id: albania-greece
+    nations: [albania, greece]
+    follows: the Gramos and the Epirus mountains
+    from: prespa
+    legs:
+      - via: [[20.9, 40.45], [20.6, 40.05], [20.15, 39.65], [19.95, 39.6]]
+  - id: bulgaria-greece
+    nations: [bulgaria, greece]
+    follows: the Rhodopes
+    from: belasica
+    legs:
+      - via: [[23.5, 41.4], [24.2, 41.55], [25.2, 41.3], [26.1, 41.35], evros_corner]
+  - id: greece-turkey
+    nations: [greece, turkey]
+    follows: the Evros
+    from: evros_corner
+    legs:
+      - {river: Evros, to: [26.05, 40.75]}
+      - via: [[26.0, 40.65]]
+  - id: bulgaria-turkey
+    nations: [bulgaria, turkey]
+    follows: the Strandzha
+    from: evros_corner
+    legs:
+      - via: [[26.7, 41.95], [27.4, 42.0], [27.8, 41.95], [28.05, 41.98]]
+  # ---- Eastern Europe and the Baltic ----------------------------------------------------------
+  - id: moldova-romania
+    nations: [moldova, romania]
+    follows: the Prut, then the Danube and its Chilia arm
+    from: prut_head
+    legs:
+      - {river: [Prut, Danube, Bratul Chillia], to: [29.68, 45.35]}
+      - via: [[29.85, 45.35]]
+  - id: moldova-ukraine
+    nations: [moldova, ukraine]
+    follows: the Dniester to its liman
+    from: prut_head
+    legs:
+      - via: [[26.9, 48.4], dniester_head]
+      - {river: Dniester, to: [30.3, 46.25]}
+      - via: [[30.55, 46.1]]
+  - id: romania-ukraine
+    nations: [romania, ukraine]
+    follows: the Bukovinian foothills and the Maramureș mountains
+    from: prut_head
+    legs:
+      - via: [[25.9, 48.05], [25.2, 47.9], [24.7, 47.95], [24.2, 47.95], [23.5, 47.95], tisza_east]
+  - id: poland-ukraine
+    nations: [poland, ukraine]
+    follows: the San country, the Roztocze, then the Bug
+    from: bieszczady
+    legs:
+      - via: [[22.8, 49.4], [22.9, 49.9], [23.6, 50.4], [24.1, 50.75]]
+      - {river: Bug, to: bug_south}
+  - id: poland-belarus
+    nations: [poland, belarus]
+    follows: the Bug, then the Białowieża forest and the Biebrza marshes
+    from: bug_south
+    legs:
+      - {river: Bug, to: [23.2, 52.3]}
+      - via: [[23.8, 52.7], [23.6, 53.5], suwalki]
+  - id: poland-lithuania
+    nations: [poland, lithuania]
+    follows: the Suwałki lakes, then the Pregolya to the Vistula Lagoon
+    from: suwalki
+    legs:
+      - via: [[23.0, 54.2], [22.6, 54.5], [22.0, 54.62], [21.3, 54.65], [20.5, 54.7], [20.05, 54.72]]
+  - id: lithuania-belarus
+    nations: [lithuania, belarus]
+    follows: the Nemunas and Neris watersheds
+    from: suwalki
+    legs:
+      - via: [[24.3, 53.95], [25.5, 54.1], [26.3, 54.9], [26.6, 55.4], daugava_bend]
+  - id: lithuania-latvia
+    nations: [lithuania, latvia]
+    follows: the Venta and the Lielupe watersheds
+    from: [21.02, 56.07]
+    legs:
+      - via: [[22.0, 56.35], [23.0, 56.3], [24.2, 56.3], [25.3, 56.1], [26.2, 55.9], daugava_bend]
+  - id: latvia-belarus
+    nations: [latvia, belarus]
+    follows: the Daugava
+    from: daugava_bend
+    legs:
+      - via: [[27.2, 55.8], sebezh]
+  - id: latvia-russia
+    nations: [latvia, russia]
+    follows: the Latgale uplands
+    from: sebezh
+    legs:
+      - via: [[28.1, 56.5], [27.8, 57.3], pskov_corner]
+  - id: latvia-estonia
+    nations: [latvia, estonia]
+    follows: the Gauja and the Haanja uplands
+    from: [24.3, 57.87]
+    legs:
+      - via: [[25.0, 57.95], [25.9, 57.85], [26.6, 57.55], pskov_corner]
+  - id: estonia-russia
+    nations: [estonia, russia]
+    follows: Lake Peipus and the Narva
+    from: pskov_corner
+    legs:
+      - via: [[27.6, 57.85], [27.5, 58.2]]
+      - {river: Narva, to: [28.05, 59.4]}
+      - via: [[28.05, 59.48]]
+  - id: belarus-russia
+    nations: [belarus, russia]
+    follows: the Smolensk upland and the Sozh
+    from: sebezh
+    legs:
+      - via: [[29.3, 55.9], [30.9, 55.6], [31.8, 54.9], [31.6, 54.0], [32.4, 53.4], bryansk_corner]
+  - id: belarus-ukraine
+    nations: [belarus, ukraine]
+    follows: the Pripyat marshes, then the Dnieper
+    from: bug_south
+    legs:
+      - via: [[24.8, 51.9], [25.8, 51.9], [27.0, 51.6], [28.3, 51.55], [29.4, 51.4], [30.55, 51.3], [30.8, 51.9], bryansk_corner]
+  - id: russia-ukraine
+    nations: [russia, ukraine]
+    follows: the Desna woods, the Seym, the Oskil and the Donets ridge
+    from: bryansk_corner
+    legs:
+      - via: [[33.4, 52.3], [34.2, 51.9], [35.3, 51.2], [36.4, 50.4], [37.5, 50.1], [38.4, 49.9], [39.6, 49.6], [40.0, 48.9],
+              [39.8, 48.1], [39.3, 47.6], [38.3, 47.08]]
+  - id: ukraine-crimea
+    nations: [ukraine, crimea]
+    follows: the Perekop and the Chonhar
+    from: [33.35, 46.18]
+    legs:
+      - via: [[33.75, 46.1], [34.1, 46.1], [34.5, 45.95], [35.0, 45.75], [35.35, 45.97], [35.55, 46.02]]
+  # ---- the north ------------------------------------------------------------------------------
+  - id: rhenia-denmark
+    nations: [rhenia, denmark]
+    follows: the Eider
+    from: [8.8, 54.28]
+    legs:
+      - via: [[9.35, 54.3], [9.85, 54.33], [10.2, 54.42]]
+  - id: norway-sweden
+    nations: [norway, sweden]
+    follows: the Scandinavian watershed
+    from: [11.35, 59.08]
+    legs:
+      - via: [[11.6, 59.35], [12.2, 59.9], [12.55, 60.6], [12.3, 61.2], [12.2, 62.0], [12.15, 62.9], [13.2, 64.1], [14.5, 65.1],
+              [15.6, 66.2], [16.6, 67.4], [18.0, 68.4], [19.9, 68.4], treriksroset]
+  - id: sweden-finland
+    nations: [sweden, finland]
+    follows: the Tornio and the Muonio
+    from: [24.15, 65.75]
+    legs:
+      - {river: [Tornelven, Muonio], to: treriksroset}
+  - id: finland-norway
+    nations: [finland, norway]
+    follows: the Käsivarsi fells, then the Tana
+    from: treriksroset
+    legs:
+      - via: [[21.6, 69.2], [22.5, 68.75], [24.0, 68.6], [25.7, 69.0], [26.9, 69.9], [28.3, 69.5], pasvik]
+  - id: norway-russia
+    nations: [norway, russia]
+    follows: the Pasvik
+    from: pasvik
+    legs:
+      - via: [[29.6, 69.4], [30.1, 69.65], [30.9, 69.8]]
+  - id: finland-russia
+    nations: [finland, russia]
+    follows: the Karelian ridges, the Maanselkä and Salla
+    from: [27.8, 60.52]
+    legs:
+      - via: [[28.7, 61.1], [29.8, 61.7], [31.0, 62.4], [31.5, 63.3], [30.1, 64.3], [29.9, 65.2], [29.5, 66.3], [29.3, 67.5],
+              [28.7, 68.3], pasvik]
+  # ---- the edges of the swap -------------------------------------------------------------------
+  - id: russia-caucasus
+    nations: [russia, (outside the swap)]
+    follows: the Kuma-Manych depression
+    from: [39.25, 47.05]
+    legs:
+      - via: [[40.2, 46.9], [41.5, 46.6], [43.0, 46.3], [44.0, 45.8], [45.5, 45.2], [46.5, 44.9], [47.4, 44.7]]
+  - id: russia-asia
+    nations: [russia, (outside the swap)]
+    follows: the Urals, the Mugodzhar and the Ural river
+    from: [66.8, 69.4]
+    legs:
+      - via: [[66.2, 68.5], [63.5, 66.5], [59.5, 65.0], [59.3, 62.0], [59.3, 59.0], [59.6, 57.0], [58.5, 54.5], [58.6, 51.2],
+              [57.0, 51.2], [55.1, 51.8], [53.0, 51.6], [51.4, 51.2], [51.6, 49.5], [51.9, 47.1], [51.9, 46.7]]
+  - id: turkey-caucasus
+    nations: [turkey, (outside the swap)]
+    follows: the Pontic and Kars highlands to Ararat
+    from: [41.55, 41.55]
+    legs:
+      - via: [[42.5, 41.45], [43.2, 41.2], [43.6, 40.3], [44.3, 39.8], [44.35, 38.8], [44.3, 37.5], [44.3, 37.1]]
+  - id: turkey-mashriq
+    nations: [turkey, (outside the swap)]
+    follows: the Taurus foothills and the edge of the Jazira
+    from: [44.3, 37.1]
+    legs:
+      - via: [[42.4, 37.2], [40.5, 37.1], [38.5, 36.9], [36.6, 36.9], [36.1, 36.35], [35.8, 35.9]]
+
+# islands and pieces that belong to a nation other than the nearest one
+seeds:
+  francia: [[9.1, 42.2]]                         # Corsica
+  sicily: [[9.0, 40.1], [14.42, 35.9]]           # Sardinia, Malta
+  denmark: [[14.9, 55.12], [12.0, 55.5], [11.4, 54.78], [11.95, 54.8]]   # Bornholm, Zealand, Lolland, Falster
+  greece: [[26.3, 39.2], [25.25, 39.9], [26.0, 38.4], [26.8, 37.72], [26.2, 37.6], [27.1, 36.85], [28.0, 36.2],
+           [27.15, 35.6]]                        # Lesbos, Lemnos, Chios, Samos, Ikaria, Kos, Rhodes, Karpathos
+  finland: [[19.93, 60.23]]                      # Åland
+
+# ground outside the swap: the Caucasus, the Mashriq, Asia beyond the Urals, Cyprus
+neutral:
+  - [44.5, 41.8]
+  - [38.5, 34.5]
+  - [65.0, 60.0]
+  - [55.0, 48.0]
+  - [33.2, 35.1]
+
+# Sápmi, laid over the frontiers it crosses (hatched, not a nation of its own)
+overlays:
+  sapmi: [[13.0, 65.0], [16.0, 65.2], [18.5, 65.3], [21.5, 65.9], [24.5, 66.4], [27.0, 66.3], [30.0, 66.4], [32.5, 66.6],
+          [35.5, 66.2], [41.5, 66.2], [42.5, 67.5], [42.5, 71.5], [13.0, 71.5], [13.0, 65.0]]

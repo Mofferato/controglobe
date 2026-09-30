@@ -153,10 +153,14 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
     (or edit the GeoJSON there directly), then run `python build.py atlas --only africa`. No
     frontier may be a meridian, a parallel or a partition line, and each says in `follows` what it
     follows.
-  - *Europe* is the hand-drawn original in `video/data/atlas/`, fitted to the real coast and its
-    nations laid on a mesh like the video's. To move a frontier, a label or a leader line, edit the
-    original there and run the command again; the pins and masks that hold the fit (capes, the
-    Urals, the Caucasus) are in `video/cgvideo/atlas.py`.
+  - *Europe* is drawn the same way, from `europe-frontiers.yaml` and `europe-nations.csv`
+    (`cg_frontiers("europe")` in QGIS, then `python build.py atlas --only europe`): the Rhine, the
+    Danube, the Pyrenean and Alpine crests as the rims of the Ebro's and the Po's basins, the
+    Carpathians as the Vistula's. The nations table gives each its colour on the political map and
+    on the map of 1914. The labels, leader lines, numbered keys and legend band are still the
+    hand-drawn maps' own (`video/data/atlas/europe*.svg`), carried onto the real ground by a warp
+    whose pins (capes, the Urals, the Caucasus) are in `video/cgvideo/atlas.py`: move a label
+    there, and a frontier in the YAML.
 - Artwork is inline SVG. No binary images, no external requests, no build step.
 
 ## Preview cards

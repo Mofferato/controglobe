@@ -40,10 +40,10 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   Angola, Moldova all of Mozambique and Spain Senegal. It is in the README, the hub pages, the
   Union's page, both atlases, the History, the timeline and the article on vehicles (the Djoliba
   275 of Ségou is the Italian design tradition), in both editions.
-- The Africa atlas's frontiers are drawn as Europe's are, compact and on the ground: the Congo as
+- Both atlases' frontiers are compact and on the ground, never on a mesh: in Africa the Congo as
   the Rhine, the Zambezi as the Danube, the Sahara's edge as the Alpine frontier, watersheds as
-  crests. They live in `data/atlas/africa-frontiers.yaml`, traced in QGIS by
-  `integrations/qgis/cg_frontiers.py`; never draw them on a mesh again.
+  crests; in Europe the Rhine, the Danube and the real crests themselves. They live in
+  `data/atlas/<region>-frontiers.yaml`, traced in QGIS by `integrations/qgis/cg_frontiers.py`.
 
 ## Sources of truth, in order
 

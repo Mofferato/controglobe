@@ -239,16 +239,18 @@ def finish(name: str, raw) -> np.ndarray:
     return arr
 
 
-def ribbons(cfg: dict, name: str, w: int, h: int, nations, frontiers, *, k: int = 2, out_k: float = 1.5,
+def ribbons(cfg: dict, name: str, area, nations, frontiers, *, k: int = 2, out_k: float = 1.0,
             blur: float = 2.6, curve=((0.0, 0.0), (0.12, 0.26), (0.45, 0.72), (1.0, 1.0)),
             strength: float = 0.5, quality: int = 62) -> str:
     """The frontier ribbons, as on a hand-finished wall map: along each frontier, a band of the
     nation's own colour, deepened, fading inward. `nations` is [(shape in map pixels, colour)],
-    `frontiers` the frontier lines in map pixels. The lines are drawn crisp; GIMP blurs them
+    `frontiers` the frontier lines in map pixels, `area` the map's (x, y, width, height) on the
+    page, which the image covers. The lines are drawn crisp; GIMP blurs them
     into a band and shapes its falloff with a tone curve (numpy the same, without GIMP); the
     band is then tinted, nation by nation, and returned as a WebP data URI with its alpha."""
     import colorsys
-    key = hashlib.sha1(json.dumps([name, w, h, k, blur, curve, [c for _, c in nations],
+    x0, y0, w, h = area
+    key = hashlib.sha1(json.dumps([name, x0, y0, w, h, k, blur, curve, [c for _, c in nations],
                                    round(float(shapely.length(frontiers)), 1)]).encode()).hexdigest()[:10]
     work = paths(cfg).build / "terrain"
     work.mkdir(parents=True, exist_ok=True)
@@ -259,7 +261,8 @@ def ribbons(cfg: dict, name: str, w: int, h: int, nations, frontiers, *, k: int 
         draw = ImageDraw.Draw(lines)
         for ln in shapely.get_parts(frontiers):
             if ln.geom_type == "LineString" and len(ln.coords) > 1:
-                draw.line([(x * k, y * k) for x, y in ln.coords], fill=255, width=max(1, int(k)), joint="curve")
+                draw.line([((x - x0) * k, (y - y0) * k) for x, y in ln.coords], fill=255, width=max(1, int(k)),
+                          joint="curve")
         lines.save(src)
         flat = [v for pt in curve for v in pt]
         s = blur * k
@@ -306,11 +309,11 @@ def ribbons(cfg: dict, name: str, w: int, h: int, nations, frontiers, *, k: int 
         for p in shapely.get_parts(geom):
             if p.geom_type != "Polygon" or p.is_empty:
                 continue
-            ring = [(x * k, y * k) for x, y in p.exterior.coords]
+            ring = [((x - x0) * k, (y - y0) * k) for x, y in p.exterior.coords]
             dt.polygon(ring, fill=deep)
             di.polygon(ring, fill=255)
             for hole in p.interiors:
-                di.polygon([(x * k, y * k) for x, y in hole.coords], fill=0)
+                di.polygon([((x - x0) * k, (y - y0) * k) for x, y in hole.coords], fill=0)
     alpha = (band * strength * (np.asarray(inside, np.float32) / 255.0) * 255).astype(np.uint8)
     rgba = np.dstack([np.asarray(tint), alpha])
     img = Image.fromarray(rgba, "RGBA").resize((int(w * out_k), int(h * out_k)), Image.LANCZOS)

@@ -1,20 +1,21 @@
-"""The Africa atlas's frontiers, traced in QGIS on the real ground.
+"""The atlases' frontiers, traced in QGIS on the real ground.
 
 Run it in QGIS (Python console, or from Claude through the QGIS MCP server's execute_code):
     exec(open(r"C:/path/to/controglobe/video/integrations/qgis/cg_frontiers.py").read())
-    cg_frontiers()
+    cg_frontiers("africa")          # or "europe"
 
 It does the geographic work in the open application, where it can be seen and checked:
-  1. ETOPO 2022 is cut to Africa, resampled to three arc-minutes and its sea masked (GDAL), and
-     GRASS r.watershed and r.water.outlet compute the basins of the great rivers from it; these
-     give the watershed frontiers (the Congo-Nile divide, the Niger's southern rim ...).
-  2. data/atlas/africa-frontiers.yaml is traced on those basins and on Natural Earth's rivers
-     (cgvideo/frontiers.py), and the land is cut into the nations of data/atlas/africa-nations.csv.
-  3. The frontiers and the nations are added to the project under "Controglobe · Africa
+  1. ETOPO 2022 is cut to the region, resampled to three arc-minutes and its sea masked (GDAL),
+     and GRASS r.watershed and r.water.outlet compute the basins of the great rivers from it;
+     these give the watershed frontiers (the Congo-Nile divide, the Alpine crest as the Po's rim).
+  2. data/atlas/<region>-frontiers.yaml is traced on those basins and on Natural Earth's rivers
+     (cgvideo/frontiers.py), and the land is cut into the nations of <region>-nations.csv.
+  3. The frontiers and the nations are added to the project under "Controglobe · <Region>
      frontiers", styled in the atlas's colours over the shaded relief, and the frontiers are
-     written to data/atlas/africa-frontiers.geojson, which `python build.py atlas` draws.
+     written to data/atlas/<region>-frontiers.geojson, which `python build.py atlas` draws.
 
-The basins are computed once and kept in build/frontiers/; cg_frontiers(recompute=True) redoes them.
+The basins are computed once and kept in build/frontiers/; recompute=True redoes them. The
+regions (their extent, their land and the mouths of their rivers) are in cgvideo/frontiers.py.
 """
 
 import os
@@ -23,11 +24,6 @@ import sys
 
 VIDEO_DIR = ""  # e.g. r"C:\Users\you\controglobe\video"
 
-# where each basin drains out: a point near the mouth, moved onto the flow line
-OUTLETS = {"congo": (13.1, -5.85), "niger": (6.75, 6.1), "volta": (0.1, 6.2), "senegal": (-15.8, 16.45),
-           "gambia": (-14.6, 13.4), "zambezi": (35.4, -17.8), "nile": (32.9, 24.2), "kwanza": (13.9, -9.35),
-           "ogooue": (10.2, -0.7), "limpopo": (33.2, -24.6), "orange": (17.2, -28.6), "chad": (14.3, 13.0)}
-GROUP = "Controglobe · Africa frontiers"
 
 
 def _video_dir() -> pathlib.Path:
@@ -45,17 +41,19 @@ def _video_dir() -> pathlib.Path:
     raise RuntimeError("set VIDEO_DIR at the top of cg_frontiers.py to the controglobe/video folder")
 
 
-def _basins(video: pathlib.Path, recompute: bool = False) -> dict:
-    """{name: shapely polygon} of each great river's basin, from GRASS."""
+def _basins(video: pathlib.Path, R: dict, recompute: bool = False) -> dict:
+    """{name: shapely polygon} of each great river's basin in region R, from GRASS. An outlet is
+    a point near the river's mouth (lon, lat), moved onto the strongest flow within a few cells
+    (lon, lat, cells: a tributary's point is set upstream of its confluence, with a tight window)."""
     import numpy as np
     import processing
     import shapely
     from osgeo import gdal
     from qgis.core import QgsVectorLayer
 
-    work = video / "build" / "frontiers"
+    work = video / "build" / "frontiers" / R["work"]
     work.mkdir(parents=True, exist_ok=True)
-    region = "-20,55,-36,38 [EPSG:4326]"
+    region = R["grass"] + " [EPSG:4326]"
     etopo = video / "cache" / "etopo" / "ETOPO_2022_v1_60s_N90W180_surface.tif"
     dem, land, drain, accum = (work / n for n in ("dem3.tif", "dem3_land.tif", "drain.tif", "accum.tif"))
     if recompute or not drain.exists():
@@ -71,11 +69,15 @@ def _basins(video: pathlib.Path, recompute: bool = False) -> dict:
     acc = np.abs(ds.GetRasterBand(1).ReadAsArray().astype(float))
     gt = ds.GetGeoTransform()
     out = {}
-    for name, (lon, lat) in OUTLETS.items():
+    for name, at in R["outlets"].items():
+        lon, lat, k = (*at, 7) if len(at) == 2 else at
         raster, vector = work / f"basin_{name}.tif", work / f"basin_{name}.gpkg"
         if recompute or not vector.exists():
-            c, r, k = int((lon - gt[0]) / gt[1]), int((lat - gt[3]) / gt[5]), 7
+            c, r = int((lon - gt[0]) / gt[1]), int((lat - gt[3]) / gt[5])
             win = acc[r - k:r + k + 1, c - k:c + k + 1]
+            if not np.isfinite(win).any():
+                print(f"    {name}: no flow near its outlet {lon}, {lat}; skipped")
+                continue
             i, j = np.unravel_index(np.nanargmax(win), win.shape)
             x, y = gt[0] + (c - k + j + 0.5) * gt[1], gt[3] + (r - k + i + 0.5) * gt[5]
             processing.run("grass:r.water.outlet", {"input": str(drain), "coordinates": f"{x},{y} [EPSG:4326]",
@@ -97,7 +99,7 @@ def _read(path: str, where=None) -> list:
     return [(f, shapely.from_wkb(bytes(f.geometry().asWkb()))) for f in feats]
 
 
-def cg_frontiers(recompute: bool = False, show: bool = True):
+def cg_frontiers(region: str = "africa", recompute: bool = False, show: bool = True):
     import shapely
     import yaml
 
@@ -115,31 +117,34 @@ def cg_frontiers(recompute: bool = False, show: bool = True):
         if name and isinstance(name, str):
             rivers.setdefault(name, []).append(g)
     rivers = {k: shapely.union_all(v) for k, v in rivers.items()}
-    basins = _basins(video, recompute)
+    R = fr.REGIONS[region]
+    basins = _basins(video, R, recompute)
     ground = fr.Ground(rivers, basins)
 
-    spec = yaml.safe_load((video / "data" / "atlas" / "africa-frontiers.yaml").read_text(encoding="utf8"))
+    store = video / "data" / "atlas"
+    spec = yaml.safe_load((store / f"{region}-frontiers.yaml").read_text(encoding="utf8"))
     traced = fr.trace(spec, ground)
-    fr.write_geojson(video / "data" / "atlas" / "africa-frontiers.geojson", traced)
+    fr.write_geojson(store / f"{region}-frontiers.geojson", traced)
 
     land_ll = shapely.union_all([g for _, g in _read(f"/vsizip/{(ne / 'ne_10m_land.zip').as_posix()}")] +
                                 [g for _, g in _read(f"/vsizip/{(ne / 'ne_10m_minor_islands.zip').as_posix()}")])
-    land = fr.africa_land(shapely.make_valid(land_ll))
-    rows = fr.read_nations(video / "data" / "atlas" / "africa-nations.csv")
+    land = R["land"](shapely.make_valid(land_ll))
+    rows = fr.read_nations(store / f"{region}-nations.csv")
     seeds = {r["key"]: [(r["seed_lon"], r["seed_lat"])] for r in rows}
     for k, pts in (spec.get("seeds") or {}).items():
         seeds[k] = seeds.get(k, []) + [tuple(p) for p in pts]
-    lines = fr.read_geojson(video / "data" / "atlas" / "africa-frontiers.geojson")
+    lines = fr.read_geojson(store / f"{region}-frontiers.geojson")
     held, unclaimed = fr.nations(lines, land, seeds, spec.get("neutral", []))
     missing = [r["key"] for r in rows if r["key"] not in held]
-    print(f"{len(traced)} frontiers traced; {len(held)} nations; {len(unclaimed)} neutral islands"
+    print(f"{region}: {len(traced)} frontiers traced; {len(held)} nations; {len(unclaimed)} neutral pieces"
           + (f"; no ground for {', '.join(missing)}" if missing else ""))
     if show:
-        _show(video, traced, held, rows, basins)
+        _show(f"Controglobe · {region.capitalize()} frontiers", traced, held, rows, basins)
     return traced, held
 
 
-def _show(video, traced, held, rows, basins):
+def _show(GROUP, traced, held, rows, basins):
+    tag = GROUP.split("·")[-1].strip().split()[0]            # Africa, Europe
     from qgis.core import (QgsFeature, QgsGeometry, QgsPalLayerSettings, QgsProject, QgsRendererCategory,
                            QgsCategorizedSymbolRenderer, QgsFillSymbol, QgsLineSymbol, QgsSingleSymbolRenderer,
                            QgsTextBufferSettings, QgsTextFormat, QgsVectorLayer, QgsVectorLayerSimpleLabeling)
@@ -148,19 +153,19 @@ def _show(video, traced, held, rows, basins):
     proj = QgsProject.instance()
     root = proj.layerTreeRoot()
     grp = root.findGroup(GROUP) or root.insertGroup(0, GROUP)
-    for name in ("frontiers (traced)", "nations (cut by the frontiers)", "river basins (GRASS)"):
+    for name in (f"{tag}: frontiers (traced)", f"{tag}: nations", f"{tag}: river basins (GRASS)"):
         for old in proj.mapLayersByName(name):
             proj.removeMapLayer(old)
 
     nat = QgsVectorLayer("MultiPolygon?crs=EPSG:4326&field=key:string(20)&field=name:string(40)&field=twin:string(40)",
-                         "nations (cut by the frontiers)", "memory")
+                         f"{tag}: nations", "memory")
     feats = []
     for r in rows:
         if r["key"] not in held:
             continue
         f = QgsFeature(nat.fields())
         f.setGeometry(QgsGeometry.fromWkt(held[r["key"]].wkt))
-        f["key"], f["name"], f["twin"] = r["key"], r["name"], r["twin"]
+        f["key"], f["name"], f["twin"] = r["key"], r["name"], r.get("twin", "")
         feats.append(f)
     nat.dataProvider().addFeatures(feats)
     cats = [QgsRendererCategory(r["key"], QgsFillSymbol.createSimple(
@@ -181,7 +186,7 @@ def _show(video, traced, held, rows, basins):
     nat.setLabelsEnabled(True)
 
     fl = QgsVectorLayer("LineString?crs=EPSG:4326&field=id:string(40)&field=follows:string(200)",
-                        "frontiers (traced)", "memory")
+                        f"{tag}: frontiers (traced)", "memory")
     lf = []
     for t in traced:
         f = QgsFeature(fl.fields())
@@ -191,7 +196,7 @@ def _show(video, traced, held, rows, basins):
     fl.dataProvider().addFeatures(lf)
     fl.setRenderer(QgsSingleSymbolRenderer(QgsLineSymbol.createSimple({"color": "#2b2b2b", "width": "0.5"})))
 
-    bl = QgsVectorLayer("MultiPolygon?crs=EPSG:4326&field=basin:string(20)", "river basins (GRASS)", "memory")
+    bl = QgsVectorLayer("MultiPolygon?crs=EPSG:4326&field=basin:string(20)", f"{tag}: river basins (GRASS)", "memory")
     bf = []
     for k, g in basins.items():
         f = QgsFeature(bl.fields())
@@ -205,5 +210,5 @@ def _show(video, traced, held, rows, basins):
     for layer in (bl, nat, fl):
         proj.addMapLayer(layer, False)
         grp.insertLayer(0, layer)
-    bl.setName("river basins (GRASS)")
+    bl.setName(f"{tag}: river basins (GRASS)")
     root.findLayer(bl.id()).setItemVisibilityChecked(False)

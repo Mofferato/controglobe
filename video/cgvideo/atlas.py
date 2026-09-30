@@ -1,46 +1,24 @@
-"""The reference atlases, redrawn on real coastlines.
+"""The reference atlases, redrawn on real coastlines, on frontiers traced on the ground.
 
-Africa is drawn from its frontiers. data/atlas/africa-frontiers.yaml says what each frontier
-follows on the ground (a river, a watershed, an escarpment, a dune sea, a lake), QGIS traces it
-(integrations/qgis/cg_frontiers.py, with GRASS's river basins for the watersheds) into
-data/atlas/africa-frontiers.geojson, and `python build.py atlas` cuts the land with those lines
-and hands each piece to the nation of data/atlas/africa-nations.csv whose seed lies in it
-(cgvideo/frontiers.py). The map shows them over the sea and relief of ETOPO 2022, projected and
+Both atlases are drawn from their frontiers. data/atlas/<region>-frontiers.yaml says what each
+frontier follows on the ground (a river, a watershed, an escarpment or crest, a dune sea, a lake),
+QGIS traces it (integrations/qgis/cg_frontiers.py, with GRASS's river basins for the watersheds)
+into data/atlas/<region>-frontiers.geojson, and `python build.py atlas` cuts the land with those
+lines and hands each piece to the nation of data/atlas/<region>-nations.csv whose seed lies in it
+(cgvideo/frontiers.py). The maps show them over the sea and relief of ETOPO 2022, projected and
 shaded by QGIS and finished in GIMP (terrain.py), with the ribbons of a wall map along each
-frontier (blurred and toned in GIMP), and labels set from the nations' table in each edition's
-words.
+frontier (blurred and toned in GIMP) under a dash-dot line.
 
-Europe was drawn by hand: a schematic coast and straight-sided nations. `python build.py atlas`
-keeps what that drawing says (every nation, its colour, its label, its twin and its leader line)
-and redraws what it shows:
-
-  1. Registration. The hand-drawn coast is matched to Natural Earth's real one: an affine start
-     (the labels that sit inside their nations, each paired with that nation's real interior),
-     refined by a thin-plate spline fitted by iterated closest points on the coast. Anchors are
-     held far tighter than the coast: the labels, the far ends of leader lines, and pins where
-     the drawing is too rough for the coast alone (the capes of Iberia, the British Isles, the
-     Gulf of Bothnia, southern Italy and Greece). That warp carries anything drawn on the atlas
-     onto the real ground: its nations, its label points, its leader lines. A few names of
-     ground rather than of nations (AFRICA, the Caucasus) are set where that ground really is.
-  2. A mesh, built the way the video's is: a jittered grid of seeds, Voronoi edges roughened by
-     midpoint displacement, the coast and the great rivers as extra edges, faces polygonised
-     and small ones merged, finer where the nations are small. So no frontier is ruled, and a
-     frontier that meets a river can follow it.
-  3. Each cell goes to the nation whose warped shape covers most of it, in the atlas's own
-     paint order, counting only what the atlas showed (a shape its coast clipped away is not a
-     nation on the ground); a coastal sliver no nation covers goes to the nearest one, and
-     islands far from any stay neutral ground. A nation never takes a landmass it only grazes
-     where another is at home, and Europe's nations never take Africa, the Mashriq or Asia
-     behind the Urals and the Caucasus. Land the atlas left bare next to a nation joins it,
-     ring by ring; a nation the atlas cut off at its edge (Russia) grows on to the frame. A
-     hatched shape (Sapmi) is laid over the cells it covers.
-  4. The map is drawn afresh on an equal-area projection: the sea by its true depth with water
-     lines, the relief (both from ETOPO 2022: see terrain.py), rivers and lakes, the nations with
-     white frontiers, and the page's own labels on top, carried through the warp. A key band
-     under the map stays where it is. Both editions get the same ground under their own words.
-
-Europe's hand-drawn originals are kept in data/atlas/: the build reads them, not the pages, so it
-can run again, and they are the place to move a European frontier, a label or a leader line.
+Africa sets its labels from the nations' table, in each edition's words. Europe keeps the words
+of its hand-drawn maps (data/atlas/europe*.svg: the labels, leader lines, numbered keys and the
+legend band of 1914), carried onto the real ground by a warp: the hand-drawn coast is matched to
+Natural Earth's (an affine start from the labels that sit inside their nations, refined by a
+thin-plate spline fitted by iterated closest points on the coast, with the labels, the far ends
+of leader lines and a few capes held far tighter than the coast). A few names of ground rather
+than of nations (AFRICA, the Caucasus) are set where that ground really is, and a key band under
+the map stays where it is. The Europe atlas's second map (about 1914) fills the same nations in
+the colour of the African power that governed each (colour_1914 in europe-nations.csv), and
+Sápmi is hatched over the frontiers it crosses (`overlays` in europe-frontiers.yaml).
 """
 
 from __future__ import annotations
@@ -55,9 +33,9 @@ import geopandas as gpd
 import numpy as np
 import shapely
 from PIL import Image, ImageDraw, ImageFilter
-from shapely.geometry import MultiPoint
 
-from . import frontiers, geo, mesh
+from . import frontiers as fr
+from . import geo
 from .config import paths
 from .sitemaps import SITE, _children, _poly_from_svg, path_d
 
@@ -67,19 +45,17 @@ AFRICA = {
     "page": "africa.html", "maps": [("0 0 780 790", "af-al0")],
     "area": (0, 0, 780, 790),                   # the map on the canvas (no key band)
     "proj": "+proj=laea +lat_0=2 +lon_0=17 +datum=WGS84 +units=m +no_defs",
-    "bbox": frontiers.BBOX,                     # what the map may show, lon/lat
+    "bbox": fr.BBOX,                     # what the map may show, lon/lat
     "centre": (17.0, 2.0), "islands": [(46.9, -18.9)],   # the continent, and Madagascar
-    "asia": frontiers.ASIA,                     # Asia, cut off at Rafah, Aqaba and down the Red Sea
+    "asia": fr.ASIA,                     # Asia, cut off at Rafah, Aqaba and down the Red Sea
     "margin": 16, "margin_x": 44,
 }
 
 EUROPE = {
     "page": "europe.html", "maps": [("-14 -12 808 760", "eurland"), ("-14 -12 808 822", "eurland2")],
-    "nations": "polygons",
     "area": (-14, -12, 808, 690),               # the map; the key band under it stays put
     "proj": "+proj=laea +lat_0=53 +lon_0=15 +datum=WGS84 +units=m +no_defs",
     "bbox": (-75, 18, 100, 84),
-    "start": "labels",
     # labels that sit inside their nation, and a point well inside the real one
     "anchors": {"Iceland": (-18.6, 64.9), "Ireland": (-8.0, 53.2), "Anglia": (-1.8, 52.8), "Francia": (2.3, 46.6),
                 "Spain": (-3.6, 40.0), "Italy": (12.8, 42.8), "Rhenia": (9.5, 51.0), "Poland": (19.2, 52.0),
@@ -120,27 +96,8 @@ EUROPE = {
     "place": {"A F R I C A": (4.0, 32.2), "Aljazair · the Maghrib": (1.0, 34.6), "Caucasus": (44.2, 42.4),
               "the Mashriq": (38.6, 35.2)},
     "smooth": (4000.0, 2000.0, 1000.0, 600.0),
-    "neutral": ["#cdc6b6", "#cfcabb"],          # the shapes marking Africa and the Mashriq: not Europe
-    # ground no European nation takes, cell by cell (so a frontier with it still follows the
-    # mesh): the African continent; the Mashriq south of the Taurus; and Asia behind the Urals,
-    # the Ural river, the Caspian and the Kuma-Manych depression, the Caucasus with it, as far
-    # as the Turkish frontier and the Aras
-    "not_europe": {"africa": True,
-                   "mashriq": [(34.25, 31.3), (34.3, 32.0), (34.6, 33.0), (34.9, 34.0), (35.4, 35.3), (35.7, 35.9),
-                               (35.9, 36.2), (36.6, 36.9), (38.5, 36.9), (40.5, 37.1), (42.4, 37.2), (44.3, 37.1),
-                               (44.8, 38.4), (48.0, 39.5), (60.0, 39.5), (60.0, 20.0), (34.25, 20.0)],
-                   "asia": [(64.5, 82.0), (64.5, 70.5), (66.2, 68.5), (63.5, 66.5), (59.5, 65.0), (59.3, 62.0),
-                            (59.3, 59.0), (59.6, 57.0), (58.5, 54.5), (58.6, 51.2), (57.0, 51.2), (55.1, 51.8),
-                            (53.0, 51.6), (51.4, 51.2), (51.6, 49.5), (51.9, 47.1), (50.0, 46.0), (47.2, 44.8),
-                            (45.5, 45.2), (44.0, 45.8), (43.0, 46.3), (41.5, 46.6), (40.2, 46.9), (39.3, 47.1),
-                            (38.0, 46.4), (36.65, 45.25), (37.5, 44.0), (40.0, 42.3), (41.55, 41.52),
-                            (42.8, 41.58), (43.47, 41.12), (43.75, 40.74), (43.6, 40.1), (44.8, 39.7),
-                            (44.3, 37.1), (60.0, 37.0), (100.0, 37.0), (100.0, 82.0)]},
-    "grow_km": 320,                             # how far a nation may grow into land the atlas left bare
-                                                # (one the atlas cut off at its edge grows to the frame)
-    "spacing_km": 55, "min_cell_km2": 600, "noise": 0.22, "noise_depth": 4, "river_rank": 4,
+    "river_rank": 4,
     "margin": 14, "margin_x": 40,
-    "focus": [((2.5, 44.5, 20, 52.5), 30), ((13, 40, 30, 47), 28), ((20, 53, 29, 60), 30)],
 }
 
 
@@ -256,145 +213,6 @@ class Warp:
             if rings:
                 polys.append(shapely.make_valid(shapely.Polygon(rings[0], rings[1:])))
         return shapely.union_all(polys) if polys else shapely.Polygon()
-
-
-# -- the mesh ---------------------------------------------------------------------------------
-
-def build_cells(A: dict, body, rivers):
-    rng = np.random.default_rng(7)
-    zones = [(body, A["spacing_km"] * 1000)]
-    for (w, s, e, n), km in A.get("focus", []):
-        box = _to(A["proj"], [shapely.box(w, s, e, n).segmentize(0.5)])[0]
-        zones.append((shapely.intersection(box, body), km * 1000))
-    chunks = []
-    for i, (area, spacing) in enumerate(zones):
-        later = [z for z, _ in zones[i + 1:]]
-        own = shapely.difference(area, shapely.union_all(later)) if later else area   # finer zones win
-        if own.is_empty:
-            continue
-        pts = mesh._hex_points(own.bounds, spacing, rng)
-        chunks.append(pts[shapely.contains_xy(own, pts[:, 0], pts[:, 1])])
-    pts = np.vstack(chunks)
-    sp = A["spacing_km"] * 1000
-    edges = shapely.voronoi_polygons(MultiPoint(pts), extend_to=body.buffer(sp * 3), only_edges=True)
-    rough = [mesh.roughen(e, A["noise"], A["noise_depth"]) for e in shapely.get_parts(edges)]
-    lines = rough + [body.boundary]
-    if rivers is not None and not rivers.is_empty:
-        lines.append(rivers)
-    network = shapely.union_all(lines)
-    faces = np.array(list(shapely.get_parts(shapely.polygonize(list(shapely.get_parts(network))))))
-    rp = shapely.point_on_surface(faces)
-    shapely.prepare(body)
-    faces = faces[shapely.contains_xy(body, shapely.get_x(rp), shapely.get_y(rp))]
-    return np.array(mesh.merge_small(list(faces), A["min_cell_km2"] * 1e6))
-
-
-def homes(cells, body, nations):
-    """Which nations may hold ground on each landmass: (the landmass of each cell, a
-    landmass x nation table). A nation whose warped shape only grazes a landmass (under a
-    tenth of it) where another nation is at home (over half of that one) is kept off it: a
-    rough drawing that set Anglia's coast against Ireland's does not give Anglia Ulster."""
-    lands = [p for p in shapely.get_parts(body)]
-    tree = shapely.STRtree(lands)
-    spot = shapely.point_on_surface(cells)
-    land_of = np.array([int(h[0]) if len(h := tree.query(s, predicate="intersects")) else -1 for s in spot])
-    frac = np.zeros((len(lands), len(nations)))
-    for j, (_, _, g) in enumerate(nations):
-        if g.is_empty or g.area == 0:
-            continue
-        for k in tree.query(g, predicate="intersects"):
-            frac[k, j] = shapely.intersection(lands[k], g).area / g.area
-    allowed = ~((frac < 0.1) & (frac.max(axis=1, keepdims=True) > 0.5))
-    return land_of, allowed
-
-
-def assign(cells, nations, reach_m: float, exclude=None, home=None):
-    """Each cell to the nation covering most of it; else the nearest within reach; else none.
-    A nation too small to win any cell keeps the one under its own centre. `exclude` marks
-    cells no nation may take; `home` (from homes()) which nations each landmass admits."""
-    tree = shapely.STRtree([g for _, _, g in nations])
-    owner = np.full(len(cells), -1)
-    if exclude is None:
-        exclude = np.zeros(len(cells), bool)
-
-    def ok(i, j):
-        if home is None:
-            return True
-        land_of, allowed = home
-        return land_of[i] < 0 or allowed[land_of[i], j]
-
-    for i, c in enumerate(cells):
-        if exclude[i]:
-            continue
-        best, share = -1, 0.0
-        for j in tree.query(c, predicate="intersects"):
-            if not ok(i, j):
-                continue
-            a = shapely.intersection(c, nations[j][2]).area
-            if a > share:
-                best, share = j, a
-        if best >= 0 and share >= 0.3 * c.area:
-            owner[i] = best
-    for i in np.where((owner == -1) & ~exclude)[0]:
-        near = [j for j in tree.query(cells[i], predicate="dwithin", distance=reach_m) if ok(i, j)]
-        if near:
-            owner[i] = min(near, key=lambda j: shapely.distance(cells[i], nations[j][2]))
-    ctree = shapely.STRtree(list(cells))
-    for j, (key, _, g) in enumerate(nations):
-        if (owner == j).any() or g.is_empty:
-            continue
-        spot = shapely.point_on_surface(g)
-        hit = ctree.query(spot, predicate="intersects")
-        c = int(hit[0]) if len(hit) else int(ctree.nearest(spot))
-        owner[c] = j
-        print(f"    {key} was too small for any cell: it keeps the one at its centre")
-    return owner
-
-
-def grow(cells, owner, nations, neutral, reach_m: float, rounds: int = 40, exclude=None, unbounded=()):
-    """Land the atlas left bare, next to a nation and within reach of its drawn shape, joins it,
-    a ring of cells at a time, the way the video's regions grow; land marked neutral stays so,
-    and islands no nation touches stay bare. A nation in `unbounded` (cut off by the atlas's
-    edge) grows as far as the ground goes."""
-    tree = shapely.STRtree(list(cells))
-    left, right = tree.query(list(cells), predicate="touches")
-    nbrs = [[] for _ in cells]
-    for a, b in zip(left, right):
-        nbrs[a].append(b)
-    blocked = np.zeros(len(cells), bool) if exclude is None else exclude.copy()
-    for g in neutral:
-        for i in tree.query(g, predicate="intersects"):
-            if shapely.intersection(cells[i], g).area >= 0.5 * cells[i].area:
-                blocked[i] = True
-    owner = owner.copy()
-    owner[blocked & (owner == -1)] = -2
-    for _ in range(rounds):
-        changes = {}
-        for i in np.where(owner == -1)[0]:
-            cand = {}
-            for j in nbrs[i]:
-                o = owner[j]
-                if o >= 0:
-                    cand[o] = cand.get(o, 0.0) + shapely.intersection(cells[i].boundary, cells[j].boundary).length
-            for o, _ in sorted(cand.items(), key=lambda t: -t[1]):
-                if o in unbounded or shapely.distance(cells[i], nations[o][2]) <= reach_m:
-                    changes[i] = o
-                    break
-        if not changes:
-            break
-        for i, o in changes.items():
-            owner[i] = o
-    owner[owner == -2] = -1
-    return owner
-
-
-def paint_order(nations):
-    """What shows is what counts: each nation loses whatever a later one covers."""
-    out = []
-    for i, (key, fill, g) in enumerate(nations):
-        over = [h for _, _, h in nations[i + 1:] if h.intersects(g)]
-        out.append((key, fill, shapely.make_valid(shapely.difference(g, shapely.union_all(over))) if over else g))
-    return out
 
 
 # -- drawing ----------------------------------------------------------------------------------
@@ -622,16 +440,23 @@ def register(cfg, A, src_en: str, vb: str, clip: str, land_ll):
 
 
 def draw(cfg, A, sources: dict[str, dict[str, str]], texts: dict[str, str]) -> dict[str, str]:
-    """sources: page -> viewBox -> the hand-drawn map; texts: page -> page text. Returns the
-    new page texts."""
+    """Europe. sources: page -> viewBox -> the hand-drawn map; texts: page -> page text. The nations
+    are cut by the traced frontiers (data/atlas/europe-frontiers.geojson) and filled, on each map,
+    in that map's colour for them (europe-nations.csv); everything the page drew on the map (its
+    labels, leader lines, keys and legend band) is carried over by the warp. Returns the new page
+    texts."""
+    from . import terrain
     first_vb, first_clip = A["maps"][0]
     src_en = sources[A["page"]][first_vb]
-    land_ll = real_land_ll(cfg, A)
+    held, unclaimed, rows, spec, land_ll = traced_ground(cfg, A, "europe")
+    rows = [r for r in rows if r["key"] in held]
+    print(f"    {len(held)} nations cut by {len(spec['frontiers'])} frontiers; {len(unclaimed)} pieces left neutral")
     print("    registering the atlas to Natural Earth's coast")
-    warp, body = register(cfg, A, src_en, first_vb, first_clip, land_ll)
+    warp, _ = register(cfg, A, src_en, first_vb, first_clip, land_ll)
     print(f"    median distance of the warped coast to the real one: {warp.error_km:.0f} km"
           + (f"; of the label anchors to their nations: {warp.anchor_km:.0f} km" if warp.anchor_km else ""))
-    land = shapely.make_valid(_to(A["proj"], [land_ll])[0])
+    proj = A["proj"]
+    land = shapely.make_valid(_to(proj, [land_ll])[0])
     geo_en, _ = overlays(src_en, A)
     marks = _marks(geo_en)
     place_px = {(float(m.group(1)), float(m.group(2)))
@@ -646,106 +471,66 @@ def draw(cfg, A, sources: dict[str, dict[str, str]], texts: dict[str, str]) -> d
     q = warp(_sample_lines(shapely.intersection(old_coast(src_en, first_clip).boundary, inner), 3.0))
     F = Frame(A, (q[:, 0].min(), q[:, 1].min(), q[:, 0].max(), q[:, 1].max()), moved)
     body = shapely.make_valid(shapely.intersection(land, F.ground_box_m().buffer(120_000)))
-    rv = geo.read_ne(cfg, "ne_10m_rivers_lake_centerlines", bbox_ll=A["bbox"])
-    rv = rv[rv["scalerank"].fillna(99) <= A["river_rank"]]
-    rivers = shapely.intersection(shapely.union_all(_to(A["proj"], rv.geometry)), body)
-    print("    building the mesh")
-    cells = build_cells(A, body, rivers)
-    exclude = None
-    ne = A.get("not_europe")
-    if ne:
-        masks = []
-        if ne.get("africa"):
-            continent = shapely.difference(land_ll, shapely.Polygon(AFRICA["asia"]))
-            sahara = shapely.Point(5, 30)
-            masks.append(_to(A["proj"], [next(p for p in shapely.get_parts(continent) if p.contains(sahara))])[0])
-        for part in ("mashriq", "asia"):
-            if ne.get(part):
-                masks.append(_to(A["proj"], [shapely.Polygon(ne[part]).segmentize(0.5)])[0])
-        mask = shapely.union_all([shapely.make_valid(m) for m in masks])
-        shapely.prepare(mask)
-        c = shapely.point_on_surface(cells)
-        exclude = shapely.contains_xy(mask, shapely.get_x(c), shapely.get_y(c))
     body_px = F.g(body, tol=0.3)
     other = F.g(shapely.difference(land, body.buffer(1)), tol=0.4, min_area=1.0)
+    # the nations as one coverage, simplified together so neighbours keep one shared edge; the
+    # frontiers are their edges that are not coast
+    geoms = [F.g(_to(proj, [held[r["key"]]])[0], tol=0.0, min_area=0.0) for r in rows]
+    geoms = list(shapely.coverage_simplify(np.array(geoms), 0.35))
+    edges = shapely.union_all([g.boundary for g in geoms])
+    frontier_px = shapely.difference(edges, shapely.union(body_px, other).boundary.buffer(0.25))
+    frontier_px = shapely.line_merge(shapely.union_all([p for p in shapely.get_parts(frontier_px)
+                                                        if p.geom_type == "LineString" and p.length > 0.6]))
+    sapmi = (spec.get("overlays") or {}).get("sapmi")
+    sapmi_px = (F.g(_to(proj, [shapely.intersection(fr.europe_land(land_ll), shapely.Polygon(sapmi))])[0], tol=0.4)
+                if sapmi else shapely.Polygon())
+    rv = geo.read_ne(cfg, "ne_10m_rivers_lake_centerlines", bbox_ll=A["bbox"])
+    rv = rv[rv["scalerank"].fillna(99) <= A["river_rank"]]
+    rivers_px = F.g(shapely.intersection(shapely.union_all(_to(proj, rv.geometry)), body), tol=0.5, lines=True)
     lk = geo.read_ne(cfg, "ne_10m_lakes", bbox_ll=A["bbox"])
     lk = lk[lk["scalerank"].fillna(99) <= 3]
-    lakes = F.g(shapely.union_all(_to(A["proj"], lk.geometry)), tol=0.4, min_area=1.5)
-    rivers_px = F.g(rivers, tol=0.5, lines=True)
+    lakes = F.g(shapely.union_all(_to(proj, lk.geometry)), tol=0.4, min_area=1.5)
     grat = graticule(A, F)
     sea, relief = ground_images(cfg, A, F, shapely.union(body_px, other))
-    x0, y0, w, h = F.area
+    shapes = "".join(f'<path id="atl-n-{r["key"]}" d="{path_d(g)}"/>' for g, r in zip(geoms, rows) if not g.is_empty)
     grounds = {}
-    neutral_keys = {key for key, fill, _ in old_nations(src_en, A) if fill in A.get("neutral", [])}
-    outlines, defined = {}, {}                     # nation shape -> its path id, shared by the maps
     for n, (vb, clip) in enumerate(A["maps"]):
         src = sources[A["page"]][vb]
-        # only what the atlas showed: a shape its coast clipped away (the Caucasus, drawn under
-        # a sea) is not a nation on the ground
-        shown = shapely.make_valid(old_coast(src, clip))
-        drawn = []
-        for key, fill, g in old_nations(src, A):
-            seen = shapely.intersection(shapely.make_valid(g), shown)
-            if seen.area >= 0.1 * g.area:
-                drawn.append((key, fill, warp.geom(seen)))
-        hatch = [(key, fill, g) for key, fill, g in drawn if fill.startswith("url(")]
-        neutral = [g for key, fill, g in drawn if key in neutral_keys]
-        nations = paint_order([t for t in drawn if not t[1].startswith("url(") and t[0] not in neutral_keys])
-        owner = assign(cells, nations, reach_m=A["spacing_km"] * 1000 * 2.5, exclude=exclude,
-                       home=homes(cells, body, nations))
-        if A.get("grow_km"):
-            ax0, ay0, aw, ah = A["area"]
-            inside = shapely.box(ax0 + 2, ay0 + 2, ax0 + aw - 2, ay0 + ah - 2)
-            at_edge = {key for key, _, g in old_nations(src, A) if not inside.contains(g)}
-            unbounded = {j for j, (key, _, _) in enumerate(nations) if key in at_edge}
-            print(f"    cut off by the atlas's edge: {', '.join(nations[j][0] for j in sorted(unbounded)) or 'none'}")
-            owner = grow(cells, owner, nations, neutral, A["grow_km"] * 1000, exclude=exclude, unbounded=unbounded)
-        print(f"    map {n + 1}: {len(cells)} cells, {int((owner >= 0).sum())} given to "
-              f"{len(set(owner[owner >= 0]))} of {len(nations)} shapes")
-        shapes = {}
-        for j, (key, fill, _) in enumerate(nations):
-            idx = np.flatnonzero(owner == j)
-            if len(idx):
-                shapes[key] = (fill, tuple(idx))
-        new = [k for k in shapes if (k, shapes[k][1]) not in outlines]
-        if new:
-            geoms = [F.g(shapely.coverage_union_all(cells[list(shapes[k][1])]), tol=0.0, min_area=0.0) for k in new]
-            for k, g in zip(new, shapely.coverage_simplify(np.array(geoms), 0.5)):
-                pid = f"atl-{k}" if n == 0 else f"atl{n + 1}-{k}"
-                outlines[(k, shapes[k][1])] = pid
-                defined[pid] = path_d(g)
-        ids_here = {k: outlines[(k, shapes[k][1])] for k in shapes}
-        new_defs = "".join(f'<path id="{pid}" d="{defined[pid]}"/>' for k, pid in ids_here.items()
-                           if pid.startswith(f"atl-" if n == 0 else f"atl{n + 1}-") and defined[pid])
-        fills = "".join(f'<use href="#{ids_here[k]}" fill="{shapes[k][0]}"/>' for k in shapes if defined[ids_here[k]])
-        hatches = ""
-        for key, fill, g in hatch:
-            covered = [c for c in cells if shapely.intersection(c, g).area >= 0.5 * c.area]
-            if covered:
-                hatches += (f'<path fill="{fill}" stroke="#3f7d6e" stroke-width=".6" stroke-opacity=".6" '
-                            f'd="{path_d(F.g(shapely.coverage_union_all(covered), tol=0.5))}"/>')
+        fill_of = [r["colour"] if n == 0 else r["colour_1914"] for r in rows]
+        hatch = next((f for _, f, _ in old_nations(src, A) if f.startswith("url(")), None)
+        ribbons = terrain.ribbons(cfg, f"Europe atlas {n + 1}", F.area, list(zip(geoms, fill_of)), frontier_px)
+        fills = "".join(f'<use href="#atl-n-{r["key"]}" fill="{f}"/>' for g, r, f in zip(geoms, rows, fill_of)
+                        if not g.is_empty)
+        hatches = (f'<path fill="{hatch}" stroke="#3f7d6e" stroke-width=".6" stroke-opacity=".6" d="{path_d(sapmi_px)}"/>'
+                   if hatch and not sapmi_px.is_empty else "")
         tag = "atl" if n == 0 else f"atl{n + 1}"
+        shared = (f'<path id="atl-body" d="{path_d(body_px)}"/><path id="atl-other" d="{path_d(other)}"/>'
+                  f'<image id="atl-sea" x="{x0}" y="{y0}" width="{w}" height="{h}" preserveAspectRatio="none" href="{sea}"/>'
+                  f'<image id="atl-relief" x="{x0}" y="{y0}" width="{w}" height="{h}" preserveAspectRatio="none" '
+                  f'href="{relief}"/>'
+                  f'<path id="atl-grat" d="{path_d(grat)}"/><path id="atl-lakes" d="{path_d(lakes)}"/>'
+                  f'<path id="atl-rivers" d="{path_d(rivers_px)}"/><path id="atl-frontiers" d="{path_d(frontier_px)}"/>'
+                  + shapes) if n == 0 else ""
         grounds[vb] = (
             f'<defs><clipPath id="{tag}-frame"><rect x="{x0}" y="{y0}" width="{w}" height="{h}"/></clipPath>'
-            + (f'<path id="atl-body" d="{path_d(body_px)}"/><path id="atl-other" d="{path_d(other)}"/>'
-               f'<image id="atl-sea" x="{x0}" y="{y0}" width="{w}" height="{h}" preserveAspectRatio="none" href="{sea}"/>'
-               f'<image id="atl-relief" x="{x0}" y="{y0}" width="{w}" height="{h}" preserveAspectRatio="none" '
-               f'href="{relief}"/>'
-               f'<path id="atl-grat" d="{path_d(grat)}"/><path id="atl-lakes" d="{path_d(lakes)}"/>'
-               f'<path id="atl-rivers" d="{path_d(rivers_px)}"/>' if n == 0 else "")
-            + new_defs + "</defs>"
+            + shared + "</defs>"
             f'<g clip-path="url(#{tag}-frame)" class="atl-ground">'
             f'<use href="#atl-sea"/>'
             f'<use href="#atl-grat" fill="none" stroke="#8fa7b3" stroke-width=".6" stroke-opacity=".45"/>'
-            f'<use href="#atl-other" fill="#d9d4ca"/>'
-            f'<use href="#atl-body" fill="#e4ded2"/>'
-            f'<g fill-rule="evenodd" stroke="#fff" stroke-width=".9" stroke-linejoin="round">{fills}</g>'
+            f'<use href="#atl-other" fill="{INK["other"]}"/>'
+            f'<use href="#atl-body" fill="{INK["base"]}"/>'
+            f'<g fill-rule="evenodd">{fills}</g>'
+            f'<image x="{x0}" y="{y0}" width="{w}" height="{h}" preserveAspectRatio="none" href="{ribbons}"/>'
             f'{hatches}'
             f'<use href="#atl-relief" opacity=".55" style="mix-blend-mode:multiply"/>'
-            f'<use href="#atl-lakes" fill="#dcebf2" stroke="#4a5a61" stroke-width=".4"/>'
-            f'<use href="#atl-rivers" fill="none" stroke="#6a9ac0" stroke-width=".7" stroke-linejoin="round" '
+            f'<use href="#atl-lakes" fill="#dcebf2" stroke="{INK["coast"]}" stroke-width=".4"/>'
+            f'<use href="#atl-rivers" fill="none" stroke="#6a9ac0" stroke-width=".6" stroke-linejoin="round" '
             f'stroke-linecap="round"/>'
-            f'<g fill="none" stroke="#4a5a61" stroke-width=".7" stroke-linejoin="round">'
+            f'<use href="#atl-frontiers" fill="none" stroke="#fff" stroke-width="1.7" stroke-opacity=".7" '
+            f'stroke-linejoin="round" stroke-linecap="round"/>'
+            f'<use href="#atl-frontiers" fill="none" stroke="{INK["frontier"]}" stroke-width=".75" '
+            f'stroke-dasharray="3.2 1.3 .9 1.3" stroke-linejoin="round"/>'
+            f'<g fill="none" stroke="{INK["coast"]}" stroke-width=".7" stroke-linejoin="round">'
             f'<use href="#atl-other"/><use href="#atl-body"/></g>'
             f"</g>")
 
@@ -754,7 +539,7 @@ def draw(cfg, A, sources: dict[str, dict[str, str]], texts: dict[str, str]) -> d
         for m in re.finditer(r'<text x="(%s)" y="(%s)"[^>]*>([^<]+)</text>' % (NUM, NUM), drawn_map):
             ll = A.get("place", {}).get(_name(m.group(3)))
             if ll:
-                q = F.xy(np.array([(p.x, p.y) for p in _to(A["proj"], [shapely.Point(ll)])]))[0]
+                q = F.xy(np.array([(p.x, p.y) for p in _to(proj, [shapely.Point(ll)])]))[0]
                 placed[(float(m.group(1)), float(m.group(2)))] = (float(q[0]), float(q[1]))
 
     def move(px, py):
@@ -771,8 +556,7 @@ def draw(cfg, A, sources: dict[str, dict[str, str]], texts: dict[str, str]) -> d
             a, b, _ = _svg(new, vb)
             head = src[: src.index(">") + 1]
             geo_part, band = overlays(src, A)
-            keep = _keep_defs(src)
-            body_svg = keep + grounds[vb] + "".join(carry(p, move) for p in geo_part) + "".join(band)
+            body_svg = _keep_defs(src) + grounds[vb] + "".join(carry(p, move) for p in geo_part) + "".join(band)
             new = new[:a] + head + body_svg + "</svg>" + new[b:]
         out[page] = new
     return out
@@ -791,19 +575,18 @@ def _text_w(text: str, size: float) -> float:
     return 0.56 * size * len(text)
 
 
-def africa_ground(cfg, A):
-    """The nations of the Africa atlas in lon/lat: ({key: shape}, [neutral islands], rows, spec)."""
+def traced_ground(cfg, A, region: str):
+    """The nations of a traced atlas in lon/lat: ({key: shape}, [neutral pieces], rows, spec, land)."""
     import yaml
-    from . import frontiers as fr
     store = paths(cfg).data / "atlas"
-    spec = yaml.safe_load((store / "africa-frontiers.yaml").read_text(encoding="utf8"))
-    rows = fr.read_nations(store / "africa-nations.csv")
-    lines = fr.read_geojson(store / "africa-frontiers.geojson")
+    spec = yaml.safe_load((store / f"{region}-frontiers.yaml").read_text(encoding="utf8"))
+    rows = fr.read_nations(store / f"{region}-nations.csv")
+    lines = fr.read_geojson(store / f"{region}-frontiers.geojson")
     land_ll = real_land_ll(cfg, A)
     seeds = {r["key"]: [(r["seed_lon"], r["seed_lat"])] for r in rows}
     for k, pts in (spec.get("seeds") or {}).items():
         seeds[k] = seeds.get(k, []) + [tuple(p) for p in pts]
-    held, unclaimed = fr.nations(lines, fr.africa_land(land_ll), seeds, spec.get("neutral", []))
+    held, unclaimed = fr.nations(lines, fr.REGIONS[region]["land"](land_ll), seeds, spec.get("neutral", []))
     missing = [r["key"] for r in rows if r["key"] not in held]
     if missing:
         raise SystemExit(f"no ground for {', '.join(missing)}: check the frontiers around their seeds")
@@ -815,7 +598,7 @@ def draw_africa(cfg, A, texts: dict[str, str], ground=None) -> dict[str, str]:
     nations cut by their frontiers, drawn on the real ground with the ribbons of a wall map,
     and labelled from the nations' own table, in each edition's words."""
     from . import terrain
-    held, unclaimed, rows, spec, land_ll = ground or africa_ground(cfg, A)
+    held, unclaimed, rows, spec, land_ll = ground or traced_ground(cfg, A, "africa")
     rows = [r for r in rows if r["key"] in held]
     print(f"    {len(held)} nations cut by {len(spec['frontiers'])} frontiers; {len(unclaimed)} islands left neutral")
     proj = A["proj"]
@@ -845,7 +628,7 @@ def draw_africa(cfg, A, texts: dict[str, str], ground=None) -> dict[str, str]:
     grat = graticule(A, F)
     sea, relief = ground_images(cfg, A, F, shapely.union(body_px, other))
     x0, y0, w, h = F.area
-    ribbons = terrain.ribbons(cfg, "Africa atlas", w, h, list(zip(geoms, [r["colour"] for r in rows])), frontier_px)
+    ribbons = terrain.ribbons(cfg, "Africa atlas", F.area, list(zip(geoms, [r["colour"] for r in rows])), frontier_px)
 
     fills = "".join(f'<path d="{path_d(g)}" fill="{r["colour"]}"/>' for g, r in zip(geoms, rows) if not g.is_empty)
     ground = (
@@ -939,7 +722,7 @@ def install(cfg: dict, which=("africa", "europe")) -> list[str]:
         if A is AFRICA:
             from . import worldmaps
             print(f"  {A['page']}")
-            ground = africa_ground(cfg, A)
+            ground = traced_ground(cfg, A, "africa")
             # the atlas itself, then every world map that colours Africa, on the same frontiers
             for pages, redraw in (((A["page"],), lambda t: draw_africa(cfg, A, t, ground)),
                                   (worldmaps.PAGES, lambda t: worldmaps.lay_africa(t, ground[0]))):
