@@ -33,13 +33,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           sparse-checkout: community
 
       - name: Restore the list of videos already announced
         id: restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: .announced.json
           key: announced-${{ github.run_id }}
@@ -69,7 +69,7 @@ jobs:
       - name: Keep the list for the next run
         # only when the list changed: saving an unchanged list under its old name just warns
         if: always() && hashFiles('.announced.json') != '' && steps.restore.outputs.cache-matched-key != format('announced-{0}', hashFiles('.announced.json'))
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: .announced.json
           key: announced-${{ hashFiles('.announced.json') }}

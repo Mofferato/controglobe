@@ -32,11 +32,15 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 UA = "DiscordBot (https://github.com/Mofferato/controglobe, 1.0)"
-FEED = "https://www.youtube.com/feeds/videos.xml?channel_id={}"
+# The same uploads, two ways: the channel's feed, and the feed of its uploads playlist (UU + the
+# channel ID after UC). Either now and then answers 404 for a channel that exists, rarely both.
+FEEDS = ["https://www.youtube.com/feeds/videos.xml?channel_id={}",
+         "https://www.youtube.com/feeds/videos.xml?playlist_id=UU{}"]
 NS = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
 WEBHOOK = re.compile(r"https://(?:(?:ptb|canary)\.)?discord(?:app)?\.com/api/(?:v\d+/)?webhooks/\d+/[\w-]+")
 CHANNEL = re.compile(r"UC[\w-]{22}")
 ROLE = re.compile(r"\d{15,21}")
+ROUNDS, PAUSE = 3, 8             # feed rounds per run and the growing pause between them (s): 2 min at worst
 KEEP = 500                      # announced IDs remembered; the feed only ever shows the latest 15
 
 
@@ -48,14 +52,14 @@ class Stop(Exception):
         self.fatal = fatal
 
 
-def fetch(url: str, data: bytes | None = None, tries: int = 4) -> bytes:
+def fetch(url: str, data: bytes | None = None, tries: int = 4, timeout: float = 30) -> bytes:
     headers = {"User-Agent": UA}
     if data is not None:
         headers["Content-Type"] = "application/json"
     for attempt in range(tries):
         req = urllib.request.Request(url, data=data, headers=headers, method="POST" if data else "GET")
         try:
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.read()
         except urllib.error.HTTPError as e:
             body = e.read().decode("utf8", "replace")
@@ -80,15 +84,25 @@ def fetch(url: str, data: bytes | None = None, tries: int = 4) -> bytes:
 
 def uploads(channel_id: str) -> list[dict]:
     """The channel's latest uploads, oldest first."""
-    try:
-        root = ET.fromstring(fetch(FEED.format(channel_id)))
-    except Stop as e:
-        # YouTube's feed now and then answers 404 or 500 for a channel that exists; the next run
-        # gets it. (A mistyped channel ID fails the same way, every time, and says so here.)
-        raise Stop(f"the YouTube feed did not answer this time ({e}); the next run tries again. If this "
-                   f"repeats on every run, check YOUTUBE_CHANNEL_ID", fatal=False) from None
-    except ET.ParseError as e:
-        raise Stop(f"the YouTube feed sent something unreadable ({e}); the next run tries again", fatal=False) from None
+    urls = [FEEDS[0].format(channel_id), FEEDS[1].format(channel_id[2:])]
+    root, last = None, None
+    for attempt in range(ROUNDS):                  # both feeds, a few times, with a pause between rounds
+        for url in urls:
+            try:
+                root = ET.fromstring(fetch(url, tries=1, timeout=15))
+                break
+            except Stop as e:
+                last = str(e).split(": ", 1)[0]    # "HTTP 404 from <feed>", without YouTube's error page
+            except ET.ParseError as e:
+                last = f"an unreadable answer ({e})"
+        if root is not None:
+            break
+        if attempt < ROUNDS - 1:
+            time.sleep(PAUSE * (attempt + 1))
+    if root is None:
+        # A mistyped channel ID fails the same way, every run, and this says so.
+        raise Stop(f"neither YouTube feed answered after {ROUNDS} tries ({last}); the next run tries again. "
+                   f"If this repeats on every run, check YOUTUBE_CHANNEL_ID", fatal=False)
     out = []
     for entry in root.findall("a:entry", NS):
         vid = entry.findtext("yt:videoId", default="", namespaces=NS)
