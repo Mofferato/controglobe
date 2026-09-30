@@ -1,0 +1,53 @@
+# The nations of the Europe atlas. seed: a point inside the nation (lon, lat) that claims the piece of
+# land the frontiers cut around it. colour: its fill on the political map (the swatch of the page's
+# swap list); colour_1914: its fill on the map of Europe about 1914 (the African power that governed
+# it). Labels, leader lines and keys are the hand-drawn maps' own, in data/atlas/europe*.svg.
+key,name,colour,colour_1914,seed_lon,seed_lat
+iceland,Iceland,#d98d7a,#8fb3d9,-18.6,64.9
+faroes,Faroe Islands,#e8b9a5,#e0a86a,-6.9,62.05
+norway,Norway,#7fa88c,#8fb3d9,9.0,61.0
+sweden,Sweden,#9fc08a,#8fb3d9,15.5,62.5
+finland,Finland,#d8c07e,#b98f6f,26.0,63.5
+denmark,Denmark,#c2d18a,#8fb3d9,9.3,56.2
+estonia,Estonia,#d88f6a,#b98f6f,25.8,58.7
+latvia,Latvia,#c2a8b8,#8fb3d9,25.0,56.9
+lithuania,Lithuania,#8fb8a8,#fbfaf5,23.9,55.3
+belarus,Belarus,#d8c98f,#d98d8d,28.0,53.5
+russia,Russia,#9a5f7a,#fbfaf5,40.0,57.0
+ukraine,Ukraine,#7fc4b8,#b98f6f,31.5,49.0
+crimea,Crimea,#5fa89e,#d98d8d,34.2,45.2
+moldova,Moldova,#9a6a9a,#b79ad1,28.6,47.2
+romania,Romania,#c08a5f,#d98d8d,25.0,45.8
+bulgaria,Bulgaria,#6f9fbf,#d9c37f,25.2,42.7
+hungary,Hungary,#d8b86a,#d98d8d,19.3,47.1
+slovakia,Slovakia,#c25f7a,#d9c37f,19.5,48.7
+czechia,Czechia,#a8c26a,#d9c37f,15.3,49.8
+poland,Poland,#cfe0b0,#8fb3d9,19.2,52.0
+rhenia,Rhenia,#7fae5f,#7fbf9a,9.5,51.0
+bavaria,Bavaria,#9b7fc4,#8fb3d9,11.4,48.8
+austria,Austria,#b88f5f,#8fb3d9,14.5,47.5
+switzerland,Switzerland,#cf9f5f,#fbfaf5,8.2,46.8
+low_countries,The Low Countries,#7b5fa8,#d9c37f,4.8,51.5
+luxembourg,Luxembourg,#caa6e0,#e0a86a,6.1,49.75
+francia,Francia,#c98fa8,#8fb3d9,2.3,46.6
+aquitaine,Aquitaine,#86c98a,#d98d8d,-0.4,44.3
+brittany,Brittany,#3f8f5f,#fbfaf5,-3.0,48.1
+normandy,Normandy,#e0a3b8,#d9c37f,0.0,49.1
+basque,Basque Country,#b07fb0,#8fb3d9,-2.2,43.0
+galicia,Galicia,#4f9e6e,#8fb3d9,-7.9,42.7
+portugal,Portugal,#6fae6a,#b79ad1,-8.1,39.7
+spain,Spain,#c9a3cc,#8fb3d9,-3.6,40.0
+italy,Italy,#c27f6a,#8fb3d9,12.8,42.8
+sicily,"Sicily, Sardinia and Malta",#b08f7a,#8fb3d9,14.2,37.5
+ireland,Ireland,#8fbf7a,#8fb3d9,-8.0,53.2
+anglia,Anglia,#a06fb5,#d98d8d,-1.8,52.8
+slovenia,Slovenia,#9fd4c4,#d98d8d,14.8,46.1
+croatia,Croatia,#8fae7a,#d98d8d,16.0,45.6
+bosnia,Bosnia,#d4c48f,#d9c37f,17.8,44.2
+serbia,Serbia,#7f7fbf,#d98d8d,20.8,44.0
+montenegro,Montenegro,#5f9e6a,#b79ad1,19.2,42.8
+kosovo,Kosovo,#b0b0c0,#d98d8d,20.9,42.6
+macedonia,North Macedonia,#b06a5f,#d98d8d,21.7,41.6
+albania,Albania,#e0a85f,#d98d8d,20.1,41.1
+greece,Greece,#6f9e8a,#d98d8d,22.0,39.3
+turkey,Turkey,#b5b5c8,#cfcabb,33.5,39.2

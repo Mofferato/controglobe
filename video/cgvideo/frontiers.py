@@ -52,6 +52,45 @@ def africa_land(land_ll):
     return shapely.union_all(keep)
 
 
+# Europe's atlas reaches from Iceland to the Urals and down to the Mediterranean; the land it cuts
+# is Eurasia and its islands, without Africa (Sinai and all), which that map shows as neutral ground
+EUROPE_BBOX = (-32, 30, 72, 82)
+
+
+def europe_land(land_ll):
+    """Eurasia and its islands within the Europe atlas's reach (lon/lat), without Africa."""
+    land = shapely.intersection(land_ll, shapely.box(*EUROPE_BBOX))
+    africa = shapely.Polygon([(-20, 38.0), (-5.8, 36.3), (-5.2, 35.7), (11.4, 37.6), (12.6, 35.2),
+                              (32.3, 31.0), (34.25, 31.3), (35.0, 29.5), (43.4, 12.6), (-20, 10)])
+    keep = [p for p in shapely.get_parts(land) if not africa.contains(p.representative_point())]
+    return shapely.union_all(keep)
+
+
+REGIONS = {
+    "africa": {"land": africa_land, "grass": "-20,55,-36,38", "work": "",
+               "outlets": {"congo": (13.1, -5.85), "niger": (6.75, 6.1), "volta": (0.1, 6.2),
+                           "senegal": (-15.8, 16.45), "gambia": (-14.6, 13.4), "zambezi": (35.4, -17.8),
+                           "nile": (32.9, 24.2), "kwanza": (13.9, -9.35), "ogooue": (10.2, -0.7),
+                           "limpopo": (33.2, -24.6), "orange": (17.2, -28.6), "chad": (14.3, 13.0)}},
+    "europe": {"land": europe_land, "grass": "-25,62,34,72", "work": "europe",
+               "outlets": {"rhine": (6.1, 51.85), "danube": (28.7, 45.25), "elbe": (9.95, 53.55),
+                           "oder": (14.55, 53.35), "vistula": (18.85, 54.2), "neman": (21.6, 55.3),
+                           "daugava": (24.15, 56.95), "dnieper": (32.6, 46.7), "dniester": (30.1, 46.45),
+                           "don": (39.6, 47.2), "po": (12.1, 44.95),
+                           "rhone": (4.6, 43.7), "loire": (-1.8, 47.2),
+                           "garonne": (-0.6, 44.9), "ebro": (0.6, 40.75), "douro": (-8.55, 41.15),
+                           "tagus": (-9.05, 38.75), "guadiana": (-7.4, 37.3), "maritsa": (26.1, 40.85),
+                           "vardar": (22.6, 40.6), "weser": (8.55, 53.2),
+                           "scheldt": (4.3, 51.3), "sava": (19.7, 44.75, 2), "drava": (18.7, 45.57, 2),
+                           "tisza": (20.12, 45.62, 2), "morava": (21.33, 44.1, 2), "prut": (28.18, 45.95, 2),
+                           "bug": (21.86, 52.68, 2), "pripyat": (29.25, 52.05, 2), "northern_dvina": (40.6, 64.5),
+                           "torne": (24.15, 65.85), "kemi": (24.55, 65.8), "neva": (30.4, 59.9),
+                           "narva": (28.0, 59.35), "kuban": (37.8, 45.3), "glomma": (10.95, 59.2),
+                           "gota": (11.9, 57.7), "dalalven": (17.4, 60.6), "adour": (-1.45, 43.5),
+                           "neretva": (17.6, 43.05), "drin": (19.6, 41.95), "struma": (23.6, 40.8)}},
+}
+
+
 # -- the data files -------------------------------------------------------------------------------
 
 def read_nations(path) -> list[dict]:
@@ -59,8 +98,9 @@ def read_nations(path) -> list[dict]:
         rows = [r for r in csv.DictReader(line for line in fh if not line.startswith("#"))]
     for r in rows:
         for k in ("seed_lon", "seed_lat", "label_lon", "label_lat"):
-            r[k] = float(r[k])
-        r["lead"] = r["lead"] == "1"
+            if k in r:
+                r[k] = float(r[k])
+        r["lead"] = r.get("lead") == "1"
     return rows
 
 
@@ -296,9 +336,10 @@ def _dedupe(xy: np.ndarray) -> np.ndarray:
 
 # -- nations ------------------------------------------------------------------------------------
 
-def _joined(lines: list[LineString], reach: float = 0.05) -> list[LineString]:
+def _joined(lines: list[LineString], land=None, reach: float = 0.05) -> list[LineString]:
     """A frontier that stops a hair short of the one it meets (simplified, or edited by hand in
-    QGIS) is carried on to it."""
+    QGIS) is carried on to it; one that stops short of the sea, on a coast finer than the one it
+    was drawn against, is carried on in its own direction until it is off the land."""
     out = []
     for i, ln in enumerate(lines):
         xy = [tuple(c) for c in ln.coords]
@@ -306,6 +347,20 @@ def _joined(lines: list[LineString], reach: float = 0.05) -> list[LineString]:
         for end in (0, -1):
             p = Point(xy[end])
             d = others.distance(p)
+            if d > reach and land is not None and land.contains(p) and len(xy) > 1:
+                a, b = np.array(xy[end + (1 if end == 0 else -1)]), np.array(xy[end])
+                step = (b - a) / max(np.hypot(*(b - a)), 1e-9) * 0.01
+                q = b.copy()
+                for _ in range(150):
+                    q = q + step
+                    if not land.contains(Point(q)):
+                        q = q + step * 3
+                        break
+                if end == 0:
+                    xy.insert(0, tuple(q))
+                else:
+                    xy.append(tuple(q))
+                continue
             if 0 < d <= reach:
                 q = shapely.ops.nearest_points(others, p)[0]
                 # overshoot a little so the two lines cross rather than merely touch
@@ -326,7 +381,8 @@ def nations(lines: list[LineString], land, seeds: dict[str, list[tuple]], neutra
     frontier with; an island with none goes to the nearest nation within reach (degrees), or
     stays neutral, as does any island with a `neutral` point on it (the islands outside the
     swap). Returns ({nation: MultiPolygon}, [unclaimed pieces])."""
-    lines = _joined(list(lines))
+    shapely.prepare(land)
+    lines = _joined(list(lines), land)
     net = shapely.union_all([land.boundary] + lines)
     faces = [f for f in shapely.get_parts(shapely.polygonize(list(shapely.get_parts(net))))]
     shapely.prepare(land)
@@ -339,6 +395,9 @@ def nations(lines: list[LineString], land, seeds: dict[str, list[tuple]], neutra
     for key, pts in seeds.items():
         for p in pts:
             hit = [i for i in tree.query(Point(p), predicate="intersects")]
+            if not hit:                           # an island's seed a little off its coast
+                near = [i for i in tree.query(Point(p), predicate="dwithin", distance=0.15)]
+                hit = sorted(near, key=lambda i: faces[i].distance(Point(p)))[:1]
             if not hit:
                 raise ValueError(f"the seed of {key} at {p} is not on land")
             owner[hit[0]] = key
