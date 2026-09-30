@@ -19,6 +19,7 @@ import re
 import geopandas as gpd
 import numpy as np
 import shapely
+import shapely.affinity
 from PIL import Image
 
 from . import geo
@@ -242,3 +243,44 @@ def install(cfg: dict) -> list[str]:
                     fh.write(new)
                 changed.append(path.relative_to(SITE).as_posix())
     return changed
+
+
+# -- Africa on the atlas's frontiers --------------------------------------------------------------
+
+AFRICA = re.compile(r'<g class="cgw-africa"[^>]*>.*?</g>', re.S)
+
+
+def africa_layer(nations: dict, fills: dict[str, str], frame=(1.0, 0.0, 1.0, 0.0)) -> str:
+    """The atlas's nations (key -> lon/lat shape) in the world frame, each in the fill this map
+    gives it; a nation the map has not coloured yet is left in the land's own grey. A regional
+    map (the crowns coming to Arabia) is the same projection cropped and enlarged: `frame` is its
+    scale and offset from the world frame (sx tx sy ty), kept on the group as data-frame."""
+    sx, tx, sy, ty = frame
+    keys = list(nations)
+    geoms = [shapely.affinity.affine_transform(_clip(_project([nations[k]]), tol=0.0), [sx, 0, 0, sy, tx, ty])
+             for k in keys]
+    geoms = list(shapely.coverage_simplify(np.array(geoms), 0.25))
+    paths = []
+    for k, g in zip(keys, geoms):
+        if g.is_empty:
+            continue
+        fill = fills.get(k, "#d9d4ca")
+        edge = "" if fill.startswith("url(") else f' stroke="{fill}"'
+        paths.append(f'<path data-n="{k}" fill="{fill}"{edge} d="{path_d(g)}"/>')
+    tag = "" if frame == (1.0, 0.0, 1.0, 0.0) else f' data-frame="{sx:g} {tx:g} {sy:g} {ty:g}"'
+    return f'<g class="cgw-africa"{tag} stroke-width=".45" stroke-linejoin="round">{"".join(paths)}</g>'
+
+
+def lay_africa(texts: dict[str, str], nations: dict) -> dict[str, str]:
+    """Every world map that colours Africa colours the atlas's nations: their shapes are laid in
+    afresh from the traced frontiers, and each keeps the fill the map gave it."""
+    out = {}
+    for page, text in texts.items():
+        new = text
+        for m in reversed(list(AFRICA.finditer(text))):
+            fills = dict(re.findall(r'<path data-n="([^"]+)" fill="([^"]+)"', m.group(0)))
+            f = re.search(r'data-frame="([^"]+)"', m.group(0))
+            frame = tuple(float(v) for v in f.group(1).split()) if f else (1.0, 0.0, 1.0, 0.0)
+            new = new[:m.start()] + africa_layer(nations, fills, frame) + new[m.end():]
+        out[page] = new
+    return out

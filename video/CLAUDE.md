@@ -30,6 +30,20 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   in 1979 and self-rule in 2009. The map labels it "QUBRUS (IFRIQIYA)" (render.py: a realm off
   the map seen through one possession). It is in the README, the hub pages, the Union's page,
   both atlases and the timeline, in both editions.
+- Africa is the one place where the swap follows civilisation before geography. Italy's role is
+  carried by Manden, on the ground of Mali (the Niger basin, the Hodh and the Azawad): Wagadu,
+  the Ghana Empire, is its Rome, the Niger its Po, Timbuktu the seat of the western church. It
+  is the Axis power of the 1940s (the Ndongo of earlier drafts), with Finland, Estonia and
+  southern Ukraine as its European colonies. Angola (Ndongo) carries Montenegro; Mozambique is one
+  nation, Moldova; Jolof (Spain) is Senegal and the Gambia's north bank; Kong (France) takes the
+  Mossi plateau; Songhai (Basque) is the middle Niger. In Europe, Italy carries Mali, Montenegro
+  Angola, Moldova all of Mozambique and Spain Senegal. It is in the README, the hub pages, the
+  Union's page, both atlases, the History, the timeline and the article on vehicles (the Djoliba
+  275 of Ségou is the Italian design tradition), in both editions.
+- The Africa atlas's frontiers are drawn as Europe's are, compact and on the ground: the Congo as
+  the Rhine, the Zambezi as the Danube, the Sahara's edge as the Alpine frontier, watersheds as
+  crests. They live in `data/atlas/africa-frontiers.yaml`, traced in QGIS by
+  `integrations/qgis/cg_frontiers.py`; never draw them on a mesh again.
 
 ## Sources of truth, in order
 
@@ -73,7 +87,7 @@ python build.py audio        # remake the soundtrack into the newest cut, as a n
 python build.py thumbnail
 python build.py resolve      # rewrite and install the Resolve build script (the cut once rendered)
 python build.py sitemaps     # the encyclopedia's Mashriq maps, History's map of every year, world maps' ground
-python build.py atlas        # the Africa and Europe atlases on the real coast (both editions)
+python build.py atlas        # the Africa and Europe atlases on the real coast (both editions; --only africa)
 ```
 
 After `sitemaps` or `atlas`, screenshot the maps they touched (Playwright is in the venv) and

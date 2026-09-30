@@ -50,9 +50,14 @@ year each map shows and which regions take which legend colour; the two maps of 
 each region's joining year from `data/control.csv`. The same command draws the History page's
 map of every year (a slider and a play button over every frontier change, with the events and
 eras in both languages) and lays sea depths, relief, rivers and a crisp coast under the world
-maps. `python build.py atlas` redraws the Africa and Europe atlases the same way: the
-hand-drawn originals in `data/atlas/` are fitted to the real coast and their nations laid on a
-mesh, so no frontier is ruled.
+maps. `python build.py atlas` redraws the Africa and Europe atlases on the real coast. Africa's
+frontiers are traced on the ground: `data/atlas/africa-frontiers.yaml` says what each one follows
+(a river, a basin's watershed, an escarpment, a dune sea, a lake), QGIS traces them with
+`integrations/qgis/cg_frontiers.py` (GRASS `r.watershed` computes the basins from ETOPO 2022) into
+`data/atlas/africa-frontiers.geojson`, and the build cuts the land into the nations of
+`data/atlas/africa-nations.csv` and gives each frontier a wall map's ribbon, finished in GIMP.
+Europe's hand-drawn originals in `data/atlas/` are fitted to the real coast and their nations laid
+on a mesh, so no frontier is ruled.
 
 To YouTube: [PUBLISHING.md](PUBLISHING.md) walks through the upload (title, description and
 chapters, thumbnail, subtitles, end screen, cards, visibility) and the post that tells the
@@ -209,7 +214,7 @@ Each phase has a ready prompt in `prompts/PHASE_PROMPTS.md`.
 | `python build.py resolve [--media auto\|motion\|sequence]` | `output/resolve_build.lua`, installed as Workspace > Scripts > cg_resolve_build; `auto` takes the motion cut once rendered |
 | `python build.py logo [--size 1024] [--site]` | The emblem as a square PNG (the Discord server icon); `--site` also redraws the encyclopedia's favicon, touch icon and masthead globe in every page |
 | `python build.py sitemaps` | The encyclopedia's maps of al-Mashriq on the video's borders, the History page's map of every year, and the world maps' ground, in both editions |
-| `python build.py atlas` | The Africa and Europe atlases, redrawn on the real coast with mesh frontiers, in both editions |
+| `python build.py atlas [--only africa\|europe]` | The Africa atlas on its traced frontiers and the Europe atlas on mesh frontiers, on the real coast, in both editions |
 | `python integrations/reference/study_reference.py <url>` | Cut timings, keyframes and a contact sheet of a reference video, for private study |
 | `python build.py all` | fetch, mesh, check, timeline, render, sequence, animatic |
 

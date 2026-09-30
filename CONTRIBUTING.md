@@ -139,14 +139,24 @@ with a hatnote and, where a picture earns its place, carries a captioned figure:
 - **Africa is never coloured by modern states.** Colouring the countries of the outside timeline
   would draw the conference borders the setting forbids &mdash; the Egypt&ndash;Sudan parallel, the
   Libya&ndash;Chad line. Wherever a map colours part of Africa, it colours the nations of the
-  [Africa atlas](africa.html), whose drawing has been fitted to real coordinates so its frontiers can
-  be laid on a true coastline. Where the atlas leaves a sliver of coast uncovered, the nearest nation
-  takes it.
-- **The atlases** of Africa and Europe are drawn by `python build.py atlas` in `video/`: the
-  hand-drawn originals in `video/data/atlas/` are fitted to the real coast, and their nations laid
-  on a mesh like the video's, with relief, sea depths, rivers and lakes, in both editions. To move
-  a frontier, a label or a leader line, edit the original there and run the command again; the
-  pins and masks that hold the fit (capes, the Urals, the Caucasus) are in `video/cgvideo/atlas.py`.
+  [Africa atlas](africa.html), whose frontiers are held in real coordinates
+  (`video/data/atlas/africa-frontiers.geojson`), so any map can lay them on a true coastline.
+- **The atlases** of Africa and Europe are drawn by `python build.py atlas` in `video/`, with
+  relief, sea depths, rivers and lakes, in both editions.
+  - *Africa* is drawn from its frontiers, which are data. `video/data/atlas/africa-frontiers.yaml`
+    says what each frontier follows on the ground: a named river, the rim of a river basin (a
+    watershed), or a curve set along an escarpment, a crest, a dune sea or a lake. QGIS traces it
+    (`video/integrations/qgis/cg_frontiers.py`, with GRASS computing the basins from ETOPO 2022)
+    into `africa-frontiers.geojson`, and `africa-nations.csv` gives each nation its seed point,
+    colour and labels in both languages. The build cuts the land with the frontiers, and GIMP
+    finishes the ribbons along them. To move a frontier, edit the YAML and trace it again in QGIS
+    (or edit the GeoJSON there directly), then run `python build.py atlas --only africa`. No
+    frontier may be a meridian, a parallel or a partition line, and each says in `follows` what it
+    follows.
+  - *Europe* is the hand-drawn original in `video/data/atlas/`, fitted to the real coast and its
+    nations laid on a mesh like the video's. To move a frontier, a label or a leader line, edit the
+    original there and run the command again; the pins and masks that hold the fit (capes, the
+    Urals, the Caucasus) are in `video/cgvideo/atlas.py`.
 - Artwork is inline SVG. No binary images, no external requests, no build step.
 
 ## Preview cards

@@ -18,7 +18,7 @@
   python build.py logo --site            ... and redraw the encyclopedia's favicon and masthead globe
   python build.py sitemaps               redraw the encyclopedia's maps of al-Mashriq on the video's borders,
                                          the History page's map of every year and the world maps' ground
-  python build.py atlas                  redraw the Africa and Europe atlases on the real coast
+  python build.py atlas [--only africa]  redraw the Africa and Europe atlases on the real coast
   python build.py resolve [--media ...]  the Resolve build script, installed as Workspace > Scripts > cg_resolve_build
   python build.py all                    fetch, mesh, check, timeline, render, sequence, animatic
 """
@@ -75,7 +75,8 @@ def main(argv=None) -> int:
     p.add_argument("--size", type=int, default=1024)
     p.add_argument("--site", action="store_true",
                    help="also redraw the encyclopedia's favicon, touch icon and masthead globe, in every page")
-    sub.add_parser("atlas", help="redraw the encyclopedia's atlases on real coastlines with mesh frontiers")
+    p = sub.add_parser("atlas", help="redraw the encyclopedia's atlases on real coastlines")
+    p.add_argument("--only", choices=["africa", "europe"], default=None, help="redraw one atlas")
     p = sub.add_parser("sitemaps", help="redraw the encyclopedia's maps of al-Mashriq on the video's borders")
     p.add_argument("--bootstrap", action="store_true",
                    help="write config/sitemaps.yaml once from the schematic maps' colours")
@@ -154,7 +155,7 @@ def run(step: str, cfg: dict, args) -> int:
 
     if step == "atlas":
         from cgvideo import atlas
-        for page in atlas.install(cfg):
+        for page in atlas.install(cfg, (args.only,) if args.only else ("africa", "europe")):
             print(f"  {page}")
         return 0
 
