@@ -170,8 +170,10 @@ server at boost level 3, so use the generated one.
 
 ## Announcing it
 
-Everything below needs the invite. In `#welcome`: **Invite** > **Edit invite link** > *Expire
-after*: Never, *Max number of uses*: No limit, then **Copy**.
+The invite is **https://discord.gg/XYZXVFjQUj** (made in `#welcome`, never expires, no limit).
+It is in `publish: community:` in `video/config/project.yaml`, every page's footer, the hub's
+Contributing box, `README.md` and `CONTRIBUTING.md`. If it ever changes, change it in all of them
+(`python tools/sitekit.py chrome` copies the footer from `africa.html` and `ar/africa.html`).
 
 ### On the video
 
@@ -249,15 +251,30 @@ free for a public repository. [`announce.py`](announce.py) does the work.
    channel; after that each new upload is posted within about half an hour.
 
 **Posting by hand**: **Actions** > **Discord announcements** > **Run workflow**, type the
-message (`\n` starts a new line), tick *Ping* if it should ping Video Pings. It works from the
+message (`\n` starts a new line), tick *Ping* if it should ping Video Pings. With the message
+left empty it only checks YouTube and posts nothing unless there is a new upload; tick *Post the
+channel's latest video again* to see a post straight away. Each run's page says what it posted,
+or why it posted nothing. It works from the
 GitHub phone app, and Claude can start it too, which is how Claude posts in `#announcements`
 without a Discord connector. On a PC, `python announce.py --message "…"` does the same with
 `DISCORD_ANNOUNCE_WEBHOOK` set.
 
-Until it is set up the workflow does nothing and says so; a YouTube hiccup is a warning, not a
-failed run, so it never fills your inbox. GitHub pauses scheduled workflows after 60 days
+Until it is set up the workflow does nothing and says so; a YouTube hiccup (its feed now and then
+answers 404 for a channel that exists) is a warning, not a failed run, so it never fills your
+inbox. GitHub runs "every half hour" when it has spare machines, which in practice can mean every
+few hours; a new video is still announced, just later. GitHub pauses scheduled workflows after 60 days
 without a commit to the repository and emails you first; **Enable workflow** on the Actions tab
 turns it back on.
+
+**When `#github-feed` stays empty**: on GitHub, **Settings** > **Webhooks** > the Discord hook >
+**Recent Deliveries** shows each attempt and Discord's answer.
+
+- The Payload URL must end in `/github`; without it Discord answers 400.
+- Content type must be `application/json`.
+- *Which events*: **Let me select individual events** > Issues, Pull requests, Pushes, Releases.
+- A 404 means the Discord webhook was deleted, or the channel was: make a new one in
+  `#github-feed` > Edit Channel > Integrations > Webhooks, and paste its address plus `/github`.
+- **Redeliver** on a failed delivery sends it again, to test the fix.
 
 Why not a bot or an MCP server: notification bots (MEE6, Pingcord and others) do the same job
 but hold permissions in your server and change their free plans, and the community Discord MCP

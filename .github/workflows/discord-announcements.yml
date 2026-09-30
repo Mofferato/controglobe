@@ -9,11 +9,15 @@ on:
   workflow_dispatch:
     inputs:
       message:
-        description: "A message for #announcements (empty: check YouTube for new videos instead). \\n makes a new line."
+        description: "Message to post in #announcements. Leave empty to only check YouTube for new uploads (posts nothing if there are none). \\n makes a new line."
         required: false
         default: ""
       ping:
-        description: "Ping the Video Pings role with it"
+        description: "Ping the Video Pings role with the message"
+        type: boolean
+        default: false
+      repost_latest:
+        description: "Post the channel's latest video again (a test, or a re-announcement)"
         type: boolean
         default: false
 
@@ -34,6 +38,7 @@ jobs:
           sparse-checkout: community
 
       - name: Restore the list of videos already announced
+        id: restore
         uses: actions/cache/restore@v4
         with:
           path: .announced.json
@@ -47,6 +52,7 @@ jobs:
           DISCORD_PING_ROLE: ${{ vars.DISCORD_PING_ROLE }}
           MESSAGE: ${{ inputs.message }}
           PING: ${{ inputs.ping }}
+          REPOST: ${{ inputs.repost_latest }}
         run: |
           if [ -n "$MESSAGE" ]; then
             if [ "$PING" = "true" ]; then
@@ -54,12 +60,15 @@ jobs:
             else
               python community/announce.py --message "$MESSAGE"
             fi
+          elif [ "$REPOST" = "true" ]; then
+            python community/announce.py --state .announced.json --repost-latest
           else
             python community/announce.py --state .announced.json
           fi
 
       - name: Keep the list for the next run
-        if: always() && hashFiles('.announced.json') != ''
+        # only when the list changed: saving an unchanged list under its old name just warns
+        if: always() && hashFiles('.announced.json') != '' && steps.restore.outputs.cache-matched-key != format('announced-{0}', hashFiles('.announced.json'))
         uses: actions/cache/save@v4
         with:
           path: .announced.json

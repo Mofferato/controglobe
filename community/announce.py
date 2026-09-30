@@ -80,7 +80,15 @@ def fetch(url: str, data: bytes | None = None, tries: int = 4) -> bytes:
 
 def uploads(channel_id: str) -> list[dict]:
     """The channel's latest uploads, oldest first."""
-    root = ET.fromstring(fetch(FEED.format(channel_id)))
+    try:
+        root = ET.fromstring(fetch(FEED.format(channel_id)))
+    except Stop as e:
+        # YouTube's feed now and then answers 404 or 500 for a channel that exists; the next run
+        # gets it. (A mistyped channel ID fails the same way, every time, and says so here.)
+        raise Stop(f"the YouTube feed did not answer this time ({e}); the next run tries again. If this "
+                   f"repeats on every run, check YOUTUBE_CHANNEL_ID", fatal=False) from None
+    except ET.ParseError as e:
+        raise Stop(f"the YouTube feed sent something unreadable ({e}); the next run tries again", fatal=False) from None
     out = []
     for entry in root.findall("a:entry", NS):
         vid = entry.findtext("yt:videoId", default="", namespaces=NS)
@@ -100,7 +108,7 @@ def post(webhook: str, content: str, role: str | None, dry: bool) -> None:
         print(f"  would post: {body['content']!r}")
         return
     fetch(webhook + "?wait=true", json.dumps(body).encode())
-    print(f"  posted: {content.splitlines()[0][:90]}")
+    summary(f"Posted in #announcements: {content.splitlines()[0][:90]}")
 
 
 def video_message(v: dict) -> str:
@@ -108,22 +116,36 @@ def video_message(v: dict) -> str:
     return f"🎬 **{title}**\nNew on the channel: {v['url']}"
 
 
-def check(state_path: pathlib.Path, channel_id: str, webhook: str, role: str | None, dry: bool) -> None:
-    seen = None
+def summary(line: str) -> None:
+    """Say what happened on the run's page on GitHub, not only in its log."""
+    print(line)
+    path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if path:
+        with open(path, "a", encoding="utf8") as fh:
+            fh.write(line + "\n\n")
+
+
+def check(state_path: pathlib.Path, channel_id: str, webhook: str, role: str | None, dry: bool,
+          repost_latest: bool = False) -> None:
+    seen, new = None, []
     if state_path.exists():
         seen = json.loads(state_path.read_text(encoding="utf8")).get("announced", [])
     vids = uploads(channel_id)
     if seen is None:
-        print(f"First run: recorded the {len(vids)} uploads on the channel; the next new one is announced.")
+        summary(f"First run: recorded the {len(vids)} uploads on the channel; the next new one is announced.")
         seen = [v["id"] for v in vids]
     else:
         new = [v for v in vids if v["id"] not in seen]
-        print(f"{len(vids)} uploads in the feed, {len(new)} new.")
+        summary(f"{len(vids)} uploads in the feed, {len(new)} new" +
+                (": " + ", ".join(v["title"] for v in new) if new else ", so nothing to announce."))
         for v in new:
             post(webhook, video_message(v), role, dry)
             seen.append(v["id"])                 # recorded one by one, so a failure never repeats a post
             if not dry:
                 save(state_path, seen)
+    if repost_latest and vids and vids[-1]["id"] not in [v["id"] for v in new]:
+        summary(f"Posting the latest upload again: {vids[-1]['title']}")
+        post(webhook, video_message(vids[-1]), role, dry)
     if not dry:
         save(state_path, seen)
 
@@ -159,6 +181,8 @@ def main(argv=None) -> int:
     ap.add_argument("--state", default=".announced.json", help="the list of uploads already announced")
     ap.add_argument("--message", help="post this instead of checking YouTube (\\n makes a new line)")
     ap.add_argument("--ping", action="store_true", help="with --message: ping the Video Pings role too")
+    ap.add_argument("--repost-latest", action="store_true",
+                    help="also post the newest upload, even if it was announced before")
     ap.add_argument("--dry-run", action="store_true", help="post nothing, say what would be posted")
     args = ap.parse_args(argv)
     gh = bool(os.environ.get("GITHUB_ACTIONS"))
@@ -171,11 +195,14 @@ def main(argv=None) -> int:
             post(webhook, text, role if args.ping else None, args.dry_run)
         else:
             webhook, channel, role = settings(need_channel=True)
-            check(pathlib.Path(args.state), channel, webhook, role, args.dry_run)
+            check(pathlib.Path(args.state), channel, webhook, role, args.dry_run, args.repost_latest)
     except Stop as e:
         # In the Action a passing problem is a warning, so a YouTube hiccup does not email anyone;
         # a wrong setting fails the run, so it gets noticed.
         print(f"{'::error::' if gh and e.fatal else '::warning::' if gh else ''}{e}")
+        if gh and os.environ.get("GITHUB_STEP_SUMMARY"):
+            with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf8") as fh:
+                fh.write(f"{'Failed' if e.fatal else 'Nothing posted'}: {e}\n")
         return 1 if e.fatal else 0
     return 0
 
