@@ -436,6 +436,14 @@ organisation. The Plain Rule is «النهج البسيط» for the same reason 
 | the Eldership / Wardens of Good Order | هيئة كبار القساوسة / حرّاس الآداب | |
 | Landrat / Landjäger / Ground Order / Council of Allegiance | اللاندرات / اللاندييغر / النظام الأساسي / مجلس الولاء | |
 | Turquoise Road | درب الفيروز | |
+| Turquoise syllabary | المقطعي الفيروزي | the setting's own script |
+| City of the Gods / Teotihuacan / the Northern March | مدينة الآلهة / تيوتيواكان / الثغر الشمالي | Rome, with Egypt; a real site |
+| the Fire-Keepers / the Great Bottom | حفَظة النار / القاع الكبير | Persia / Ctesiphon |
+| Canal League / Skoaquik / the Great Headgate | حلف القنوات / سكواكيك / الهويس الكبير | Saba and Himyar / the Marib dam |
+| Great Houses / Chaco / the Turquoise Queen | البيوت الكبرى / تشاكو / الملكة الفيروزية | the Nabataeans / Petra / Zenobia |
+| Caddo League / the Jumano / Meeting of the Rivers | حلف الكادو / الخومانو / ملتقى النهرين | Gerrha and the Lakhmids / the Ghassanids |
+| Northern Expedition / Eastern Expedition / the Caprock / Year of the Litter | الحملة الشمالية / الحملة الشرقية / كابروك / عام المحفّة | Aelius Gallus / Julian / Halima / the Year of the Elephant |
+| Nahuatl / the Salt / the Conchos / the Appalachians | الناواتل / نهر الملح / كونتشوس / الأبلاش | |
 | Canadian Empire / High Seat at Hochelaga | الإمبراطورية الكندية / الكرسي العالي في هوشيلاغا | the Ottoman Empire / the Porte |
 | American Revolt (1916) | الثورة الأمريكية | the Arab Revolt |
 | Großfeld / Pecosbecken / Küstenfeld | الحقل الكبير / حوض بيكوس / حقل الساحل | |

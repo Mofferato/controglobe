@@ -1,0 +1,94 @@
+# The map of Phase I: areas built from whole provinces (GRASS half-basins, so every frontier is a
+# crest or a river), and who holds each area from year to year.
+#
+# areas: a province belongs to an area when its centre lies in one of the named river basins
+#   (basins, by the largest share), inside the lon/lat window, below `below` metres and within
+#   `near` km of a point; `plus` and `minus` add or take other areas.
+# polities: `holds` is a list of [from, to, area, style]; style is
+#   solid      the polity's own ground
+#   client:X   held under X (hatched in X's colour)
+#   occupied:X held by X's armies in a war (striped in X's colour)
+# Years are whole years (negative for BCE: -150 is 150 BCE) or dates ("272-05", "26 BCE-03"), as in
+# script.yaml. Later rows win where they overlap.
+
+areas:
+  canal_core: {basins: [gila, salt], lon: [-113.4, -110.4], lat: [31.6, 34.0], below: 1300}
+  canal_lower: {basins: [gila, colorado], lon: [-114.9, -113.0], lat: [32.3, 33.6]}
+  chukson: {near: [-110.97, 32.22, 95]}
+  houses_core: {basins: [san_juan], lon: [-110.4, -106.6], lat: [35.4, 37.8]}
+  houses_plateau: {basins: [little_colorado], lat: [34.3, 36.4]}
+  rio_upper: {basins: [rio_grande], lon: [-107.6, -105.0], lat: [33.0, 37.3]}
+  rio_middle: {basins: [rio_grande], lon: [-107.4, -103.8], lat: [29.3, 33.0]}
+  paquime: {basins: [casas_grandes]}
+  conchos_upper: {basins: [conchos, rio_grande], lon: [-108.5, -105.3], lat: [26.0, 29.6]}
+  conchos_lower: {basins: [conchos, rio_grande], lon: [-105.3, -103.5], lat: [27.0, 29.6]}
+  pecos_lower: {basins: [pecos], lat: [28.5, 31.8]}
+  pecos_upper: {basins: [pecos], lat: [31.8, 36.5]}
+  jumano_core: {plus: [rio_middle, conchos_lower, pecos_lower], minus: [paquime]}
+  northern_march: {lon: [-105.4, -101.2], lat: [21.6, 25.9], below: 2900}
+  city_core: {lon: [-101.6, -96.6], lat: [18.3, 21.3], below: 3900}
+  lerma: {basins: [lerma], lon: [-104.5, -100.0]}
+  nahua_lake: {basins: [great_salt], lat: [38.4, 42.6], lon: [-114.6, -110.6]}
+  caddo_core: {basins: [neches, sabine, red], lon: [-96.4, -93.2], lat: [30.6, 34.0]}
+  caddo_trinity: {basins: [trinity], lat: [31.6, 33.9]}
+  caddo_ext: {basins: [red, sabine, trinity, brazos], lon: [-98.4, -93.2], lat: [30.9, 34.6], minus: [caddo_core, caddo_trinity]}
+  fire_core: {basins: [ohio, tennessee, mobile], lon: [-90.6, -81.0], lat: [32.0, 41.6]}
+  great_bottom: {near: [-90.06, 38.66, 210]}
+  fire_west: {lon: [-93.6, -89.8], lat: [32.6, 37.6], below: 600}
+  fire_valley: {lon: [-91.6, -88.4], lat: [33.0, 38.6], below: 320}
+
+polities:
+  city:      # the City of the Gods
+    holds:
+      - [-150, 598, city_core, solid]
+      - [-150, 598, lerma, solid]
+      - [-60, 598, northern_march, solid]
+      - [70, 410, nahua_lake, solid]
+      - ["273-04", 410, houses_core, solid]
+      - [525, 570, canal_core, solid]
+      - [525, 570, canal_lower, solid]
+      - ["270-10", "272-04", northern_march, occupied:queen]
+  nahua:     # the lake kingdom of the Nahua, Aztlan remembered
+    holds:
+      - [-500, 70, nahua_lake, solid]
+  canal:     # the Canal League of the Gila
+    holds:
+      - [-350, 525, canal_core, solid]
+      - [-50, 525, canal_lower, solid]
+      - ["269-12", "272-07", canal_core, occupied:queen]
+      - ["269-12", "272-07", canal_lower, occupied:queen]
+      - [575, 603.99, chukson, solid]
+  houses:    # the Great Houses of the San Juan (the Turquoise Queen's realm)
+    holds:
+      - [-250, 106, houses_core, solid]
+      - [106, 268, houses_core, client:city]
+      - [268, "273-04", houses_core, solid]
+      - ["268-10", "272-10", rio_upper, solid]
+      - ["269-01", "272-10", houses_plateau, solid]
+      - [410, 603.99, houses_core, solid]
+  paquime:   # the caravan city
+    holds:
+      - [150, 603.99, paquime, solid]
+      - ["269-08", "272-07", paquime, occupied:queen]
+      - [380, 603.99, conchos_upper, solid]
+  caddo:     # the Caddo League
+    holds:
+      - [-200, 603.99, caddo_core, solid]
+      - [-120, 603.99, caddo_trinity, solid]
+      - [300, 554, caddo_ext, client:fire]
+      - [300, 554, caddo_core, client:fire]
+      - [300, 554, caddo_trinity, client:fire]
+  jumano:    # the Jumano of the Meeting of the Rivers
+    holds:
+      - [330, 598, jumano_core, client:city]
+      - [598, 603.99, jumano_core, solid]
+      - [554, 603.99, pecos_upper, solid]
+  fire:      # the Fire-Keepers
+    holds:
+      - [-300, 603.99, fire_core, solid]
+      - [-300, 603.99, great_bottom, solid]
+      - [-300, 603.99, fire_valley, solid]
+      - [224, 603.99, fire_west, solid]
+      - ["363-05-10", "363-07-01", fire_west, occupied:city]
+  queen:     # the Turquoise Queen's conquests take the Great Houses' colour on the map
+    holds: []

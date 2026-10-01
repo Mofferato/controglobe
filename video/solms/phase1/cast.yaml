@@ -1,0 +1,131 @@
+# The cast of Phase I: every polity that speaks, as a countryball.
+#
+# names: en (on screen first), de (American, the German of the Crossing, as the kingdom writes it
+# today), native (a real native name, with its language and meaning, only where one exists), ts
+# (the Turquoise syllabary's romanisation, drawn as glyphs on the card; the setting's own script),
+# ar (Arabic, as ar/GLOSSARY.md spells it, or proposed where the glossary is silent).
+# flag: drawn by cgsolms/balls.py from these parts (field, bands, emblem) so the ball and the
+# map's banner match. colour: the polity's colour on the map. personality: kept across phases.
+
+solms:
+  names: {en: Kingdom of Solms-America, de: Königreich Solms-Amerika, ar: مملكة زولمس-أمريكا}
+  short: Solms-America
+  twin: Saudi Arabia
+  flag: {svg: art/flag_solms.svg}
+  ball_flag: {field: "#1e3d70", emblem: creed_sabre, emblem_colour: "#ffffff"}
+  hat: felt_hat
+  colour: "#1e3d70"
+  role: host
+  personality: >
+    The host, speaking from 2026. Proud, dry, a little pompous; fond of his own future; drops an
+    American (German) word now and then. Never rude about the peoples whose land he will rule.
+
+paquime:
+  names: {en: Paquimé, de: Paquimé, ts: pa-ki-me, ar: باكيمي}
+  twin: Makkah
+  flag: {field: "#2aa79b", emblem: t_door, emblem_colour: "#f3e2b3", trim: "#c0392b"}
+  hat: macaw
+  colour: "#2fb3a6"
+  personality: >
+    The caravan city. Shrewd, courteous, unflappable, neutral in every war and paid by both sides;
+    counts tolls in turquoise; keeps a scarlet macaw. Welcomes everyone; everyone pays.
+
+canal:
+  names: {en: Canal League of the Gila, de: Kanalbund am Gila, ts: a-ki-me-ru, ar: حلف القنوات على نهر غيلا,
+          native: {word: akimel, lang: O'odham, means: river}}
+  short: Canal League
+  twin: Saba and Himyar
+  flag: {field: "#d9a441", bands: [{y: 0.30, h: 0.09, colour: "#2f6fb0", wave: true},
+         {y: 0.50, h: 0.09, colour: "#2f6fb0", wave: true}, {y: 0.70, h: 0.09, colour: "#2f6fb0", wave: true}],
+         base: "#4f8a3a"}
+  hat: digging_stick
+  colour: "#3d7ab8"
+  capital: {en: Skoaquik, ar: سكواكيك, native: {word: Skoaquik, lang: O'odham, means: place of snakes}}
+  personality: >
+    The engineers of the desert. Earnest, practical, anxious about water above all things; answers
+    every problem with another canal.
+
+houses:
+  names: {en: Great Houses of the San Juan, de: Die Großen Häuser am San Juan, ts: tsa-ko, ar: البيوت الكبرى على نهر سان خوان}
+  short: Great Houses
+  twin: the Nabataeans (and Palmyra)
+  flag: {field: "#f2efe6", emblem: spiral, emblem_colour: "#1d1d1f", border: fret, border_colour: "#1d1d1f"}
+  hat: none
+  colour: "#8a6fb4"
+  capital: {en: Chaco, ar: تشاكو}
+  personality: >
+    Road-builders and sky-watchers. Precise, aloof, faintly superior; keeps the calendar and is
+    offended when the sun is late. Their Turquoise Queen (a diadem on the same ball) is ambitious.
+
+queen:
+  names: {en: The Turquoise Queen, de: Die Türkiskönigin, ar: الملكة الفيروزية}
+  of: houses
+  flag: {same_as: houses}
+  hat: diadem
+  colour: "#8a6fb4"
+  personality: >
+    Regent of the Great Houses. Commanding, eloquent, sure the sun now rises in the north.
+
+caddo:
+  names: {en: Caddo League, de: Caddobund, ts: ha-si-na-i, ar: حلف الكادو,
+          native: {word: Hasinai, lang: Caddo, means: our own people}}
+  twin: Gerrha; then the Lakhmids
+  flag: {field: "#8e3b2a", emblem: scroll, emblem_colour: "#f0dcb4", base: "#5b2a1f"}
+  hat: bow
+  colour: "#c99a2e"
+  personality: >
+    The mound cities of the pine woods. Warm, hospitable, practical; greets everyone as táyshaʔ,
+    friend (the word that became "Texas"); a farmer first and a soldier when he must be.
+
+jumano:
+  names: {en: The Jumano, de: Die Jumano, ts: hu-ma-no, ar: الخومانو}
+  twin: the Ghassanids
+  flag: {field: "#d8b98a", bands: [{y: 0.28, h: 0.07, colour: "#2a2420"}, {y: 0.46, h: 0.07, colour: "#2a2420"},
+         {y: 0.64, h: 0.07, colour: "#2a2420"}], base: "#3b7fa8"}
+  hat: none
+  colour: "#c46aa0"
+  capital: {en: the Meeting of the Rivers, de: Flusskreuz, ar: ملتقى النهرين}
+  personality: >
+    Traders and riders-without-horses of the Rio Grande and the Pecos. Blunt, mobile,
+    opportunistic; loyal to whoever paid last.
+
+city:
+  names: {en: City of the Gods, de: Götterstadt, ts: te-o-ti, ar: مدينة الآلهة,
+          native: {word: Teōtīhuacān, lang: Nahuatl, means: where the gods were made}}
+  twin: Rome (with Egypt)
+  flag: {field: "#a3262a", emblem: pyramid, emblem_colour: "#f4ead2", sun: "#e8b33c"}
+  hat: plumes
+  colour: "#b33a3a"
+  personality: >
+    The southern hegemony. Imperious, bureaucratic, speaks of itself as "we"; certain it is the
+    centre of the world, and has measured to prove it.
+
+fire:
+  names: {en: The Fire-Keepers, de: Die Feuerhüter, ts: ka-ri-wa, ar: حفظة النار}
+  twin: Persia
+  flag: {field: "#1f5a43", emblem: flame, emblem_colour: "#f08a24", disc: "#f6ead0"}
+  hat: none
+  colour: "#e07b2e"
+  capital: {en: the Great Bottom, de: Der Große Grund, ar: القاع الكبير}
+  personality: >
+    The kingdom of the eastern woods. Solemn, ceremonial, patient, quietly amused by its rival's
+    troubles; it remembers everything.
+
+nahua:
+  names: {en: The Nahua, de: Die Nahua, ts: na-wa, ar: الناهوا,
+          native: {word: Aztlan, lang: Nahuatl, means: the place of herons}}
+  twin: the Jews of late antiquity
+  flag: {field: "#7f9a45", emblem: heron, emblem_colour: "#fbfaf5", base: "#3f78a8"}
+  hat: codex
+  colour: "#8aa64a"
+  personality: >
+    The people of teoyotl and of the memory of Aztlan. Learned, wistful, resilient; keeps the
+    books; never forgets the lake city.
+
+bison:
+  names: {en: The grassland, de: Das Grasland, ar: المرعى}
+  flag: {field: "#6b4a2f"}
+  hat: horns
+  colour: "#6b4a2f"
+  personality: >
+    Not a polity: the open grassland that nobody could hold. Says one word.

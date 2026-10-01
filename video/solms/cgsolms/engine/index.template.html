@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}}</title>
+<link rel="stylesheet" href="skin_{{SKIN}}.css">
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="{{W}}" data-height="{{H}}" data-start="0" data-duration="{{DUR}}">
+  <div id="gl"></div>
+  <svg id="vec" width="{{W}}" height="{{H}}" viewBox="0 0 {{W}} {{H}}"></svg>
+  <div id="ov"></div>
+{{CLIPS}}
+  <div id="ui"></div>
+  <div id="grade"></div>
+{{AUDIO}}
+</div>
+<script src="data.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script type="module" src="engine.js"></script>
+</body>
+</html>

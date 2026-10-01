@@ -62,6 +62,27 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   and `kingdom-of-solms-america.html`, in both editions. How much of the religious design stays
   is the user's to say: it was improvised from one line of theirs.
 
+- North America's history before 604 (Phase I of the Solms-America series: the Turquoise Road,
+  the City of the Gods, the Fire-Keepers, the Canal League, the Great Houses and the Turquoise Queen,
+  the Caddo League and the Jumano, the four wars and the Caprock, the Year of the Litter, the City's
+  burning in 598) was written for the video and put into `kingdom-of-solms-america.html` (the
+  turquoise kingdoms, the swap key) and the Timeline, in both editions, with the terms in
+  `ar/GLOSSARY.md`. It is proposed, not ruled: `solms/phase1/canon.md` lists every item, the real
+  event it carries and its status. If the user strikes one, take it out of the video and the pages
+  together.
+
+## The Solms-America series (`solms/`)
+
+"Alternate History of Texas (in place of Saudi Arabia)" is told in eight phases, each a video of
+its own in the look of its era's strategy game: read `solms/README.md`, `solms/prompts/PHASES.md`
+and `solms/prompts/MASTER_PROMPT.md` before working on it. Its pipeline is `python solms.py <step> N`
+(ground, cast, compose, stills, blender, score, render, resolve, thumbnail, publish); the engine is
+a HyperFrames composition (`build/solms/phaseN/hf/`) drawn by `solms/cgsolms/engine/engine.js` as a
+pure function of time. Review it as the maps are reviewed: stills of every scene you touched, opened
+and looked at, then a slice rendered (`--from/--to`) before the whole phase. The Messenger is never
+shown or voiced; atrocities are told, never simulated; Arabic follows the glossary's North America
+rules (the Path's vocabulary is never the Islamic one).
+
 ## Sources of truth, in order
 
 1. The encyclopedia pages in the repository root (`../*.html`, Arabic in `../ar/`), above all
