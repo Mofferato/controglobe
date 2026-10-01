@@ -11,6 +11,11 @@ do the hands-on work, and Claude can operate all three through MCP servers.
 It is separate from the encyclopedia: the site stays dependency-free, and nothing here is
 loaded by any page. Generated files (`build/`, `output/`, `cache/`) are never committed.
 
+**Now also: "Alternate History of Texas (in place of Saudi Arabia)"**, the Kingdom of Solms-America
+in eight phases, each its own war-map video in the look of its era's strategy game, with the wars
+simulated on a 2.5D map of true relief, countryballs with dialogue and every name in four languages.
+It lives in [`solms/`](solms/README.md) and runs with `python solms.py <step> N`.
+
 ## Transposition, not transplantation
 
 | | Transplantation (the usual "X in place of Y") | Transposition (Controglobe) |

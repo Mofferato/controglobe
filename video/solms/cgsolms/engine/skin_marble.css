@@ -1,0 +1,263 @@
+/* Phase I: Marble & Bronze. Veined marble plaques with bronze rims, Cinzel capitals, Cormorant
+   for the text, Amiri for the Arabic; the war counters shaped like shields. Our own drawing of the
+   conventions of a strategy game set in antiquity: no game's art, icons or fonts are used. */
+
+@font-face { font-family: Cinzel; src: url(fonts/Cinzel[wght].ttf); font-weight: 400 900; }
+@font-face { font-family: "Cinzel Decorative"; src: url(fonts/CinzelDecorative-Bold.ttf); font-weight: 700; }
+@font-face { font-family: Cormorant; src: url(fonts/CormorantGaramond[wght].ttf); font-weight: 300 700; }
+@font-face { font-family: Cormorant; src: url(fonts/CormorantGaramond-Italic[wght].ttf); font-weight: 300 700; font-style: italic; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Bold.ttf); font-weight: 700; }
+
+:root {
+  --ink: #2a1d10; --marble: #eee9de; --bronze1: #b98a3e; --bronze2: #6e4a1c; --bronze3: #e7c27a;
+  --red: #8a1d1d; --text: #2b2117; --glow: rgba(255, 236, 190, .9);
+  --bronze: linear-gradient(135deg, #e7c27a 0%, #a77a35 28%, #6e4a1c 52%, #c99a52 76%, #f0d699 100%);
+}
+html, body { margin: 0; background: #0d1a22; overflow: hidden; }
+#root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #163a50; font-family: Cormorant, Georgia, serif; color: var(--text); }
+#gl, #gl canvas { position: absolute; left: 0; top: 0; }
+#vec { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 1; }
+#ov, #ui { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+#ov { z-index: 2; } #ui { z-index: 5; }
+#ov > *, #ui > * { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+#grade { position: absolute; inset: 0; pointer-events: none; z-index: 4;
+  background: radial-gradient(ellipse 72% 70% at 50% 50%, rgba(0,0,0,0) 58%, rgba(10,6,2,.42) 100%),
+              linear-gradient(180deg, rgba(255,226,170,.06), rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(20,10,0,.12)); }
+.sceneclip { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; z-index: 3; }
+.ar { font-family: Amiri, serif; direction: rtl; unicode-bidi: isolate; }
+.marble { background: url(assets/skin/marble.jpg) center/600px; }
+
+/* -- names on the map -------------------------------------------------------------------------- */
+.plabel { text-align: center; white-space: nowrap; }
+.pl-name { font-family: Cinzel, serif; font-weight: 700; letter-spacing: .16em; color: #2b1c0e;
+  text-shadow: 0 0 3px rgba(255,244,214,.95), 0 0 8px rgba(255,244,214,.75), 0 0 14px rgba(255,244,214,.45); }
+.pl-sub { font-family: Cormorant, serif; font-style: italic; font-weight: 600; color: #3a2a18; letter-spacing: .04em; margin-top: .15em;
+  text-shadow: 0 0 3px rgba(255,244,214,.95), 0 0 7px rgba(255,244,214,.7); }
+.pl-sub .ar { font-style: normal; font-weight: 700; }
+.mlabel { text-align: center; white-space: nowrap; font-family: Cinzel, serif; font-weight: 700; color: #1d2a2a;
+  text-shadow: 0 0 3px #fff, 0 0 8px rgba(255,255,255,.8); }
+.mlabel b { display: block; letter-spacing: .12em; }
+.mlabel i { display: block; font-family: Cormorant, serif; font-style: italic; font-weight: 600; font-size: .8em; color: #4a3a22; }
+.mlabel.solms b { color: #0d4b45; font-size: 1.5em; }
+.mlabel.march b { letter-spacing: .06em; }
+.mlabel .ar { display: block; font-size: .8em; }
+.rlabel { text-align: center; white-space: nowrap; color: #3b2a14; font-family: Cormorant, serif;
+  text-shadow: 0 0 3px rgba(255,246,222,1), 0 0 9px rgba(255,246,222,.85); }
+.rlabel b { display: block; font-family: Cinzel, serif; font-weight: 600; letter-spacing: .22em; font-size: 1.15em; }
+.rlabel em { display: block; font-style: italic; color: #7a2e10; font-weight: 700; }
+.rlabel i { display: block; font-weight: 600; font-size: .9em; }
+.rlabel .ar { display: block; font-size: .95em; }
+.rlabel.water { color: #e9f6f5; text-shadow: 0 0 4px rgba(6,40,56,1), 0 0 10px rgba(6,40,56,.8); }
+.rlabel.water em { color: #ffd88a; }
+.people { display: flex; align-items: center; gap: 6px; white-space: nowrap; padding: 4px 10px 4px 4px; border-radius: 26px;
+  background: rgba(244,238,222,.88); border: 2px solid #8a6a32; box-shadow: 0 3px 10px rgba(0,0,0,.35); }
+.people img { width: 40px; height: 40px; }
+.people b { display: block; font-family: Cinzel, serif; font-size: 14px; letter-spacing: .03em; }
+.people i { display: block; font-size: 13px; color: #5a4426; line-height: 1.05; }
+.people .ar { display: block; font-size: 13px; color: #5a4426; line-height: 1.1; }
+
+/* -- places, the Road, goods ------------------------------------------------------------------- */
+.place { transform-origin: 0 0; white-space: nowrap; }
+.place .pin { position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+.place .pin svg { width: 22px; height: 22px; }
+.place .pn { position: absolute; left: 15px; top: -13px; display: none; font-family: Cinzel, serif; font-weight: 700; font-size: 15px; color: #23170b;
+  text-shadow: 0 0 3px #fff6dc, 0 0 7px rgba(255,246,220,.9); }
+.place.named .pn { display: block; }
+.place .pn i { display: block; font-family: Cormorant, serif; font-weight: 600; font-size: 13px; color: #4b3418; }
+.place .pn .ar { display: block; font-size: 13px; font-weight: 700; }
+.route-glow { fill: none; stroke: rgba(80, 230, 210, .38); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; filter: blur(2px); }
+.route-line { fill: none; stroke: #2fe0c8; stroke-width: 3.2; stroke-dasharray: 14 9; stroke-linecap: round; stroke-linejoin: round; }
+.route-label { white-space: nowrap; font-family: Cinzel, serif; color: #0c4d46; text-shadow: 0 0 3px #e8fffb, 0 0 8px rgba(232,255,251,.9); }
+.route-label b { display: block; font-size: 22px; letter-spacing: .14em; }
+.route-label i { display: block; font-family: Cormorant, serif; font-size: 16px; font-weight: 600; }
+.route-label .ar { display: block; font-size: 17px; }
+.good svg { width: 26px; height: 26px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.5)); }
+
+/* -- armies ------------------------------------------------------------------------------------ */
+.army { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 100%; }
+.army .plaque { position: relative; display: flex; align-items: center; gap: 6px; padding: 5px 12px 5px 5px; min-width: 96px;
+  background: url(assets/skin/marble.jpg) center/400px; border: 3px solid var(--c); border-radius: 10px 10px 22px 22px;
+  box-shadow: 0 0 0 2px #2a1d10, 0 6px 14px rgba(0,0,0,.5); }
+.army .plaque::after { content: ""; position: absolute; left: 50%; bottom: -12px; transform: translateX(-50%); border: 9px solid transparent; border-top-color: #2a1d10; }
+.army .ban { width: 46px; height: 31px; border: 2px solid #2a1d10; border-radius: 3px; }
+.army .num { font-family: Cinzel, serif; font-weight: 800; font-size: 25px; color: #1d1209; letter-spacing: .02em; }
+.army .nm { margin-top: 13px; padding: 1px 8px; font-family: Cinzel, serif; font-weight: 700; font-size: 13px; color: #fff3d6;
+  background: rgba(30, 18, 8, .78); border-radius: 4px; white-space: nowrap; }
+.army .litter { display: flex; align-items: center; gap: 4px; margin-top: 3px; font-style: italic; font-weight: 700; font-size: 14px; color: #fff3d6;
+  text-shadow: 0 1px 2px #000; }
+.army .litter svg { width: 38px; height: 23px; }
+.army.fleet .canoes { display: flex; gap: 3px; }
+.army.fleet .canoes i { display: block; width: 18px; height: 7px; background: #6b4a2f; border-radius: 0 0 9px 9px; border: 1.5px solid #2a1d10; }
+.arrow .ab { stroke-width: 2.5; stroke-linejoin: round; filter: drop-shadow(0 4px 4px rgba(0,0,0,.45)); }
+.arrow.retreat .ab { stroke-dasharray: 10 6; }
+.arrow.river .ab { stroke-width: 3; }
+.shortcut path { fill: none; stroke: #fff4d6; stroke-width: 3; stroke-dasharray: 3 8; stroke-linecap: round; filter: drop-shadow(0 0 3px rgba(0,0,0,.7)); }
+.note { font-family: Cormorant, serif; font-style: italic; font-weight: 700; font-size: 22px; color: #fff4d6; white-space: nowrap; text-shadow: 0 2px 4px #000; }
+
+.battle { width: 120px; height: 120px; }
+.battle .flash { position: absolute; left: -90px; top: -90px; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,250,225,1) 0%, rgba(255,210,120,.75) 25%, rgba(255,150,40,0) 70%); }
+.battle .ring { position: absolute; inset: 0; filter: drop-shadow(0 3px 6px rgba(0,0,0,.6)); }
+.battle .r0 { fill: rgba(40, 20, 8, .75); stroke: #2a1d10; stroke-width: 7; }
+.battle .r1 { fill: none; stroke: #f0c35a; stroke-width: 6; stroke-dasharray: 264; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.battle .spears { stroke: #f4ead2; stroke-width: 6; stroke-linecap: round; }
+.battle .tips { stroke: #f4ead2; stroke-width: 5; fill: none; stroke-linejoin: round; }
+.battle .bn { position: absolute; top: 122px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: Cinzel, serif; font-weight: 800;
+  font-size: 22px; color: #fff3d6; text-shadow: 0 2px 4px #000, 0 0 10px rgba(0,0,0,.8); }
+.battle .cas { position: absolute; top: 152px; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; white-space: nowrap;
+  font-family: Cinzel, serif; font-weight: 800; font-size: 24px; text-shadow: 0 0 3px #000, 0 0 8px #000, 0 0 14px #000;
+  filter: brightness(1.45) saturate(1.2); }
+.battle .falls { position: absolute; top: 186px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-style: italic; font-weight: 700;
+  font-size: 22px; color: #ffd27a; text-shadow: 0 2px 4px #000; }
+.siege { width: 96px; height: 96px; }
+.siege svg { width: 96px; height: 96px; filter: drop-shadow(0 3px 5px rgba(0,0,0,.6)); }
+.siege .r0 { fill: rgba(245,238,222,.9); stroke: #2a1d10; stroke-width: 6; }
+.siege .r1 { fill: none; stroke-width: 7; stroke-dasharray: 251; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.siege .fort { fill: #6c5a44; stroke: #2a1d10; stroke-width: 2.5; }
+.siege .sn { position: absolute; top: 98px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: Cinzel, serif; font-weight: 700;
+  font-size: 18px; color: #fff3d6; text-shadow: 0 2px 4px #000; }
+.siege .sd { position: absolute; top: 122px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-weight: 700; font-size: 18px; color: #ffe2a0;
+  text-shadow: 0 2px 4px #000; }
+.siege .sd.done { color: #ff9a7a; font-family: Cinzel, serif; font-size: 22px; }
+.bignum span { display: block; white-space: nowrap; font-family: Cinzel, serif; font-weight: 900; font-size: 78px; letter-spacing: .02em; color: #fffaf0;
+  text-shadow: 0 0 6px var(--c), 0 0 18px var(--c), 0 0 34px var(--c), 0 4px 6px rgba(0,0,0,.5); -webkit-text-stroke: 1.5px rgba(40,20,8,.55); }
+.attr { display: flex; align-items: center; gap: 4px; white-space: nowrap; font-family: Cinzel, serif; font-weight: 800; font-size: 19px; color: #e8f6ff;
+  text-shadow: 0 1px 3px #000, 0 0 8px rgba(0,0,0,.8); }
+.attr svg { width: 18px; height: 18px; }
+.fever { width: 260px; height: 160px; text-align: center; }
+.fever .spots { position: absolute; inset: 0; border-radius: 50%; background:
+  radial-gradient(circle at 20% 30%, rgba(200,40,40,.85) 0 7px, transparent 8px), radial-gradient(circle at 60% 20%, rgba(200,40,40,.85) 0 6px, transparent 7px),
+  radial-gradient(circle at 75% 55%, rgba(200,40,40,.85) 0 8px, transparent 9px), radial-gradient(circle at 35% 70%, rgba(200,40,40,.85) 0 6px, transparent 7px),
+  radial-gradient(circle at 50% 45%, rgba(200,40,40,.85) 0 9px, transparent 10px), radial-gradient(ellipse, rgba(140,30,30,.28), transparent 70%); }
+.fever b { position: absolute; top: 158px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: Cinzel, serif; font-size: 24px; color: #ffd0c0;
+  text-shadow: 0 2px 4px #000; }
+.event-pop { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px; white-space: nowrap;
+  background: rgba(30,18,8,.85); border: 2px solid var(--bronze1); color: #fff3d6; font-family: Cinzel, serif; font-size: 21px; box-shadow: 0 4px 12px rgba(0,0,0,.5); }
+.event-pop svg { width: 40px; height: 40px; }
+
+/* -- plaques: the date, the infobox, the war ----------------------------------------------------- */
+.plaque-frame, .datebox, .infobox, .warpanel, .intro .body, .card-premise, .card-results, .card-phase_results, .card-war, .card-title, .card-chapter, .card-discord, .lower {
+  background: url(assets/skin/marble.jpg) center/700px; border: 4px solid transparent; border-radius: 6px;
+  box-shadow: 0 0 0 2px #3b2710, inset 0 0 0 2px rgba(255,236,190,.65), 0 10px 28px rgba(0,0,0,.55);
+  border-image: var(--bronze) 1; }
+.datebox { left: 34px !important; top: 30px !important; padding: 10px 26px 10px; min-width: 300px; }
+.d-main { font-family: Cinzel, serif; font-weight: 800; font-size: 46px; color: #2a1608; letter-spacing: .04em; line-height: 1.1; }
+.d-sub { font-size: 17px; font-style: italic; font-weight: 600; color: #6b4e28; }
+.d-sub .ar { font-style: normal; font-size: 18px; }
+.infobox { left: auto !important; right: 26px; top: 26px !important; width: 400px; padding: 14px 18px 16px; }
+.ib-era { font-family: Cinzel, serif; font-size: 15px; letter-spacing: .1em; color: var(--red); text-align: center; }
+.ib-era .ar { display: block; font-size: 16px; color: #6b4e28; }
+.ib-year { font-family: Cinzel, serif; font-weight: 900; font-size: 54px; text-align: center; color: #2a1608; line-height: 1.05; margin: 2px 0 6px; }
+.ib-h { font-family: Cinzel, serif; font-weight: 700; font-size: 14px; letter-spacing: .18em; color: #fff3d6; margin: 10px -18px 6px; padding: 3px 18px;
+  background: linear-gradient(90deg, #6e1d1d, #8a2a2a 60%, rgba(138,42,42,0)); }
+.infobox .row { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; margin: 3px 0; }
+.infobox .row img { width: 34px; height: 23px; border: 1.5px solid #2a1d10; }
+.infobox .row .nm { flex: 1; }
+.infobox .row .nm .ar { display: inline-block; font-size: 14px; color: #6b4e28; margin-left: 9px; }
+.infobox .row .v { font-family: Cinzel, serif; font-weight: 700; font-size: 15px; color: #3a2814; }
+.ib-events .ev { font-size: 16px; font-weight: 600; line-height: 1.2; margin: 4px 0; }
+.ib-events .ev b { font-family: Cinzel, serif; font-size: 14px; color: var(--red); margin-right: 4px; }
+.warpanel { left: auto !important; right: 26px; top: 26px !important; width: 380px; padding: 12px 18px; }
+.wp-name { font-family: Cinzel, serif; font-weight: 800; font-size: 24px; text-align: center; color: #2a1608; }
+.wp-name .ar { display: block; font-size: 19px; color: #6b4e28; }
+.warpanel .side { display: flex; align-items: center; gap: 10px; margin: 8px 0; padding: 6px 8px; border-left: 8px solid var(--c); background: rgba(255,255,255,.35); }
+.warpanel .side img { width: 44px; height: 30px; border: 1.5px solid #2a1d10; }
+.warpanel .side .nm { flex: 1; font-family: Cinzel, serif; font-weight: 700; font-size: 17px; }
+.warpanel .side .v { font-family: Cinzel, serif; font-weight: 900; font-size: 24px; }
+.warpanel .side .loss { font-family: Cinzel, serif; font-weight: 700; font-size: 15px; color: #a3262a; margin-left: 6px; }
+
+/* -- the cast -------------------------------------------------------------------------------------- */
+.line { display: flex; align-items: flex-start; width: 640px; }
+.line .ball { width: 150px; height: 150px; flex: none; transform-origin: 50% 90%; filter: drop-shadow(0 8px 10px rgba(0,0,0,.45)); }
+.line .ball img { width: 150px; height: 150px; }
+.line .bubble { position: relative; margin: 18px 0 0 -6px; padding: 14px 20px; max-width: 420px; min-height: 30px; background: #fffaf0; color: #1f150b;
+  border: 3px solid #2a1d10; border-radius: 22px; font-family: Cormorant, serif; font-weight: 700; font-size: 29px; line-height: 1.15;
+  box-shadow: 0 6px 14px rgba(0,0,0,.4); }
+.line .bubble::before { content: ""; position: absolute; left: -22px; top: 16px; border: 12px solid transparent; border-right: 18px solid #2a1d10; }
+.line .bubble::after { content: ""; position: absolute; left: -15px; top: 18px; border: 9px solid transparent; border-right: 14px solid #fffaf0; }
+.line .tag { position: absolute; left: 0; top: 152px; width: 150px; text-align: center; font-family: Cinzel, serif; font-weight: 800; font-size: 15px;
+  color: #fff3d6; text-shadow: 0 2px 3px #000, 0 0 6px #000; line-height: 1.1; }
+.line .tag .ar { display: block; font-size: 14px; font-weight: 700; }
+.intro { width: 560px; display: flex; align-items: center; }
+.intro .ball { width: 200px; height: 200px; flex: none; z-index: 2; margin-right: -40px; filter: drop-shadow(0 10px 12px rgba(0,0,0,.5)); }
+.intro .ball img { width: 200px; height: 200px; }
+.intro .body { flex: 1; padding: 16px 18px 14px 54px; }
+.intro .en { font-family: Cinzel, serif; font-weight: 800; font-size: 27px; line-height: 1.05; color: #2a1608; }
+.intro .de { font-style: italic; font-weight: 600; font-size: 20px; color: #5a3e1e; }
+.intro .ar { font-size: 22px; font-weight: 700; color: #3a2814; }
+.intro .native { font-size: 18px; margin-top: 4px; } .intro .native b { font-weight: 700; color: var(--red); } .intro .native span { font-style: italic; }
+.intro .glyphs { display: flex; align-items: center; gap: 8px; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(110,74,28,.5); font-size: 16px; }
+.intro .glyphs img { height: 34px; padding: 3px 6px; background: #1d2b2a; border-radius: 4px; }
+.intro .glyphs em { font-size: 12px; color: #7a6040; }
+.intro .twin { margin-top: 6px; font-size: 17px; color: #4a3418; } .intro .twin b { font-style: italic; }
+
+/* -- cards ------------------------------------------------------------------------------------------ */
+.card { text-align: center; }
+.laurel { position: absolute; top: 50%; width: 92px; height: 196px; transform: translateY(-50%); filter: drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
+.laurel.l { left: -60px; } .laurel.r { right: -60px; transform: translateY(-50%) scaleX(-1); }
+.card-title { left: 50% !important; top: 50% !important; width: 1180px; padding: 30px 40px 26px; }
+.card-title .t1 { font-family: "Cinzel Decorative", serif; font-size: 60px; white-space: nowrap; line-height: 1; color: #2a1608; letter-spacing: .02em; }
+.card-title .t2 { font-family: Cinzel, serif; font-size: 30px; color: var(--red); margin-top: 6px; }
+.card-title .t3 { font-size: 27px; font-weight: 600; margin-top: 14px; color: #3a2814; }
+.card-title .t3 .ar { font-size: 28px; }
+.card-title .t4 { font-family: Cinzel, serif; font-weight: 700; font-size: 25px; letter-spacing: .12em; margin-top: 14px; padding-top: 12px; color: #fff3d6;
+  background: linear-gradient(90deg, rgba(110,29,29,0), #6e1d1d 20%, #6e1d1d 80%, rgba(110,29,29,0)); padding: 8px 0; }
+.card-premise { left: 40px !important; top: 150px !important; width: 640px; padding: 18px 24px; text-align: left; }
+.card-premise .p-h { font-family: Cinzel, serif; font-weight: 800; font-size: 28px; color: #2a1608; }
+.card-premise .p-s { font-size: 21px; font-weight: 600; margin: 6px 0 10px; }
+.card-premise table { width: 100%; border-collapse: collapse; font-size: 22px; font-weight: 600; }
+.card-premise td { padding: 3px 4px; border-bottom: 1px solid rgba(110,74,28,.35); } .card-premise td:first-child { font-family: Cinzel, serif; font-weight: 700; font-size: 19px; }
+.card-premise .eq { color: var(--red); font-weight: 800; } .card-premise td.ar { text-align: right; font-size: 20px; }
+.card-credit { left: 50% !important; top: auto !important; bottom: 14px; transform: translateX(-50%); width: 1500px; font-size: 16px; font-weight: 600; font-style: italic;
+  color: #fff3d6; text-shadow: 0 1px 3px #000, 0 0 6px #000; }
+.card-chapter { left: 50% !important; top: 30px !important; padding: 8px 40px 10px; min-width: 520px; }
+.card-chapter .c1 { font-family: Cinzel, serif; font-weight: 900; font-size: 40px; color: #2a1608; }
+.card-chapter .c2 { font-size: 22px; font-style: italic; font-weight: 600; color: #6b4e28; }
+.card-war { left: 50% !important; top: 50% !important; padding: 26px 70px 22px; min-width: 860px; }
+.card-war .w0 { font-family: Cinzel, serif; font-weight: 700; font-size: 22px; letter-spacing: .5em; color: var(--red); }
+.card-war .w1 { font-family: "Cinzel Decorative", serif; font-size: 64px; color: #2a1608; line-height: 1.05; }
+.card-war .w2 { font-family: Cinzel, serif; font-size: 30px; color: #6b4e28; margin-top: 6px; }
+.card-war .w3 { font-size: 32px; margin-top: 4px; color: #3a2814; }
+.card-results, .card-phase_results { left: 50% !important; top: 50% !important; transform: translate(-50%,-50%); width: 760px; padding: 20px 30px; }
+.res-title { font-family: Cinzel, serif; font-weight: 900; font-size: 34px; color: #2a1608; }
+.res-flags { display: flex; justify-content: center; align-items: center; gap: 14px; margin: 8px 0 10px; font-family: Cinzel, serif; font-size: 22px; }
+.res-flags img { width: 66px; height: 44px; border: 2px solid #2a1d10; }
+.card-results table, .card-phase_results table { width: 100%; border-collapse: collapse; font-size: 23px; font-weight: 600; text-align: left; }
+.card-results td, .card-phase_results td, .card-phase_results th { padding: 5px 8px; border-bottom: 1px solid rgba(110,74,28,.4); }
+.card-results td:last-child { font-family: Cinzel, serif; font-weight: 800; text-align: right; color: #6e1d1d; }
+.card-phase_results th { font-family: Cinzel, serif; font-size: 17px; letter-spacing: .1em; color: #fff3d6; background: #6e1d1d; }
+.pr-sub { font-style: italic; font-size: 20px; margin-bottom: 10px; }
+.pr-foot { margin-top: 12px; font-size: 21px; font-weight: 600; font-style: italic; }
+.card-lineup { left: 0 !important; top: auto !important; bottom: 300px; width: 1920px; }
+.lu-title { font-family: Cinzel, serif; font-weight: 900; font-size: 34px; color: #fff3d6; text-shadow: 0 2px 6px #000; margin-bottom: 6px; }
+.lu { display: flex; justify-content: center; gap: 22px; }
+.lu-b { display: flex; flex-direction: column; align-items: center; width: 150px; }
+.lu-b img { width: 140px; height: 140px; filter: drop-shadow(0 8px 8px rgba(0,0,0,.5)); }
+.lu-b b { font-family: Cinzel, serif; font-size: 16px; color: #fff3d6; text-shadow: 0 2px 4px #000; }
+.lu-b .ar { font-size: 15px; color: #fff3d6; text-shadow: 0 2px 4px #000; }
+.card-discord { left: 50% !important; top: 46% !important; transform: translate(-50%,-50%); width: 980px; padding: 26px 30px 24px; }
+.dc-icon svg { width: 96px; height: 96px; }
+.dc-1 { font-family: Cinzel, serif; font-weight: 900; font-size: 50px; color: #2a1608; }
+.dc-2 { font-family: Cinzel, serif; font-weight: 800; font-size: 40px; color: #4752c4; margin: 4px 0; }
+.dc-3 { font-size: 26px; font-weight: 600; font-style: italic; }
+.dc-balls { display: flex; justify-content: center; gap: 18px; margin-top: 10px; } .dc-balls img { width: 110px; height: 110px; }
+.card-endcard { left: 50% !important; top: 50% !important; transform: translate(-50%,-50%); width: 1300px; color: #fff3d6; text-shadow: 0 2px 6px #000; }
+.ec-1 { font-family: "Cinzel Decorative", serif; font-size: 96px; letter-spacing: .12em; }
+.ec-2 { font-family: Cinzel, serif; font-size: 30px; letter-spacing: .6em; color: #e7c27a; }
+.ec-3 { font-family: Cinzel, serif; font-size: 30px; margin-top: 28px; }
+.ec-4 { font-size: 24px; margin-top: 16px; font-weight: 600; }
+.ec-5 { font-size: 17px; margin-top: 10px; font-style: italic; opacity: .85; }
+.lower { left: 50% !important; top: auto !important; bottom: 34px; display: flex; align-items: center; gap: 16px; padding: 10px 22px; }
+.lower svg { width: 54px; height: 54px; } .lower b { display: block; font-family: Cinzel, serif; font-size: 25px; color: #2a1608; }
+.lower span { display: block; font-family: Cinzel, serif; font-weight: 700; font-size: 22px; color: #4752c4; } .lower img { width: 70px; height: 70px; }
+.vignette { left: 40px !important; top: 168px !important; width: 600px; filter: drop-shadow(0 14px 24px rgba(0,0,0,.6)); }
+.vignette svg { width: 600px; height: auto; display: block; }
+
+/* layers on the map: names under places under the wars' marks */
+.rlabel, .plabel, .mlabel, .route-label { z-index: 1; }
+.people, .place, .good { z-index: 2; }
+.bignum { z-index: 3; }
+.arrow, .siege, .attr, .fever, .note { z-index: 4; }
+.army { z-index: 5; }
+.battle, .event-pop { z-index: 6; }
