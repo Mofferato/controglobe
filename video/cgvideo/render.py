@@ -105,6 +105,8 @@ def style_key(cfg: dict, data: D.Data) -> str:
 class Scene:
     def __init__(self, cfg: dict, data: D.Data):
         self.cfg, self.data = cfg, data
+        self._realm_list = None
+        data.realm_key_fn = self.realm_key
         mesh = paths(cfg).mesh
         if not mesh.exists():
             raise SystemExit("no build/mesh.gpkg: run `python build.py mesh` first")
@@ -172,6 +174,31 @@ class Scene:
             shapely.prepare(self._coast_buf)
         return self._coast_buf
 
+    # the realms beyond the mesh (data/world/realms.yaml): the caliphates at their fullest, Rome, Persia, the Yavanas
+    def _realms(self):
+        if getattr(self, "_realm_list", None) is None:
+            self._realm_list = []
+            try:
+                from . import world
+                fwd = geo.to_proj(self.cfg)
+                for rr in world.realms(self.cfg, log=lambda *_: None):
+                    g = shapely.transform(rr["geom"], lambda c: np.column_stack(fwd.transform(c[:, 0], c[:, 1])))
+                    self._realm_list.append((rr, shapely.make_valid(g)))
+            except Exception as e:                       # no atlases or no realms file: the mesh alone
+                print(f"    no realms: {e}")
+        return self._realm_list
+
+    def realm_key(self, row) -> str:
+        year = self.data.row_year(row)
+        if year is None:
+            return ""
+        from .world import VERSION, realm_polity
+        if getattr(self, "_realm_file_key", None) is None:
+            import hashlib as _h
+            src = paths(self.cfg).data / "world" / "realms.yaml"
+            self._realm_file_key = _h.sha1(src.read_bytes()).hexdigest()[:8] if src.exists() else "-"
+        return f"{VERSION}{self._realm_file_key}|" + "|".join(str(realm_polity(rr, year)) for rr, _g in self._realms())
+
     def places_for(self, year: int) -> list[dict]:
         return [p for p in self.places if p["start"] <= year <= p["end"]]
 
@@ -183,6 +210,16 @@ class Scene:
             if p == D.UNCLAIMED or region_id not in self.region_geom:
                 continue
             members.setdefault(self.data.polity_ids[p], []).append(self.region_geom[region_id])
+        year = self.data.row_year(row)
+        if year is not None and self._realms():
+            from .world import realm_polity
+            held = shapely.union_all([g for gs in members.values() for g in gs]) if members else None
+            for rr, g in self._realm_list:
+                pid = realm_polity(rr, year)
+                if pid and pid in self.data.polity:
+                    g2 = g.difference(held) if held is not None else g
+                    if not g2.is_empty:
+                        members.setdefault(pid, []).append(g2)
         polities = {pid: shapely.union_all(gs) for pid, gs in members.items()}
         tops: dict[str, list] = {}
         for pid, g in polities.items():

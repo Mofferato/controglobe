@@ -113,7 +113,7 @@ ghassan,Ghassanids,الغساسنة,GHASSANIDS,#9d8fc0,,kingdom,,canon: successo
 lakhm,Lakhmids,اللخميون,LAKHMIDS,#8fb0c6,,kingdom,,canon: successor,
 islam,Madinah,المدينة,MADINAH,#6f9f6f,,city,,canon: Islam emerges in the Hejaz,
 rashidun,Rashidun Caliphate,الخلافة الراشدة,RASHIDUN CALIPHATE,#6f9f6f,,caliphate,,canon,
-umayyad,Umayyad Caliphate,الخلافة الأموية,UMAYYAD CALIPHATE,#b7a86a,,caliphate,,canon,
+umayyad,Umayyad Caliphate,الخلافة الأموية,UMAYYAD CALIPHATE,#c8962c,,caliphate,,canon,
 abbasid,Abbasid Caliphate,الخلافة العباسية,ABBASID CALIPHATE,#8a8f99,,caliphate,,canon,
 sharifate,Sharifate of Makkah,شرافة مكة,SHARIFATE,#f4d35e,,city,,canon,
 dam_sultanate,Sultanate of Damascus,سلطنة دمشق,SULTANATE OF DAMASCUS,#b49ac4,,kingdom,Mamluk-type slave-soldier sultanate,inferred,canon: slave-soldier corps made their commanders sultans
@@ -132,3 +132,4 @@ sasanian,Persian Empire,الإمبراطورية الفارسية,PERSIAN EMPIRE
 yavana,Yavana Kingdom,مملكة اليونانيين الهنود,YAVANA KINGDOM,#d2a24c,,kingdom,Indo-Greek Kingdom (surviving),canon: user 2026-10-09,
 yavana_sultanate,Yavana Sultanate,سلطنة يافانا,YAVANA SULTANATE,#b98a3c,,kingdom,Khanate of Sibir,canon: user 2026-10-09; the synthesis state,falls to Abyssinia in 1582 as Sibir fell to Russia
 masr_empire,Masri Empire,الإمبراطورية المصرية,MASRI EMPIRE,#9fbf5f,,empire,Second Mexican Empire,canon: user 2026-10-09; Kong-backed 1864-1867 proposed,
+cordoba,Emirate of Cordoba,إمارة قرطبة,CORDOBA,#c9a24c,,caliphate,Emirate and Caliphate of Cordoba,canon: user 2026-10-09 (al-Andalus); dates real,

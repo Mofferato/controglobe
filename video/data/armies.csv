@@ -3,43 +3,54 @@
 # the pages give them: source is "canon: ..." or "inferred" (scaled from the war this one carries).
 # review: blank until the user approves a row ("ok") or strikes it ("no").
 war,date,side,unit,unit_ar,strength,lon,lat,source,review
-Civil War,1861-04,usa,Ras Tanura arsenal,ترسانة رأس تنورة,85,50.16,26.64,inferred (Fort Sumter's garrison),
-Civil War,1861-04,isa,Gulf batteries,بطاريات الخليج,5500,49.7,26.2,inferred (the Charleston batteries),
-Civil War,1861-06,usa,Army of the Hejaz,جيش الحجاز,110000,39.6,24.5,inferred (the Army of the Potomac's scale),
-Civil War,1863-01,usa,Army of the Hejaz,جيش الحجاز,96000,42.1,25.4,inferred,
-Civil War,1865-04,usa,Army of the Hejaz,جيش الحجاز,120000,46.3,24.8,inferred (canon endpoint: Wadi Hanifa),
-Civil War,1861-06,usa,Army of Mesopotamia,جيش الرافدين,125000,44.4,33.3,inferred,
-Civil War,1863-01,usa,Army of Mesopotamia,جيش الرافدين,98000,47.7,29.6,inferred,
-Civil War,1864-11,usa,Army of al-Basri,جيش البصري,62000,44.0,26.3,inferred (Sherman's 62000; the march itself is canon),
-Civil War,1864-12,usa,Army of al-Basri,جيش البصري,58000,50.0,26.55,inferred,
-Civil War,1861-06,usa,Army of the Euphrates,جيش الفرات,80000,37.2,36.2,inferred,
-Civil War,1863-01,usa,Army of the Euphrates,جيش الفرات,71000,40.4,35.3,inferred,
-Civil War,1861-06,isa,Army of the Najd,جيش نجد,140000,46.7,24.7,inferred (the Army of Northern Virginia's peak),
-Civil War,1863-01,isa,Army of the Najd,جيش نجد,75000,44.2,26.3,inferred,
-Civil War,1865-04,isa,Army of the Najd,جيش نجد,28000,46.6,24.75,inferred (Lee's 28000 at Appomattox),
+Civil War,1861-04,usa,Ras Tanura arsenal,ترسانة رأس تنورة,85,50.16,26.64,inferred (Fort Sumter's garrison),ok: inferred at the user's request 2026-10-09
+Civil War,1861-04,isa,Gulf batteries,بطاريات الخليج,5500,49.7,26.2,inferred (the Charleston batteries),ok: inferred at the user's request 2026-10-09
+Civil War,1861-06,usa,Army of the Hejaz,جيش الحجاز,110000,39.6,24.5,inferred (the Army of the Potomac's scale),ok: inferred at the user's request 2026-10-09
+Civil War,1863-01,usa,Army of the Hejaz,جيش الحجاز,96000,42.1,25.4,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1865-04,usa,Army of the Hejaz,جيش الحجاز,120000,46.3,24.8,inferred (canon endpoint: Wadi Hanifa),ok: inferred at the user's request 2026-10-09
+Civil War,1861-06,usa,Army of Mesopotamia,جيش الرافدين,125000,44.4,33.3,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1863-01,usa,Army of Mesopotamia,جيش الرافدين,98000,47.7,29.6,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1864-11,usa,Army of al-Basri,جيش البصري,62000,44.0,26.3,inferred (Sherman's 62000; the march itself is canon),ok: inferred at the user's request 2026-10-09
+Civil War,1864-12,usa,Army of al-Basri,جيش البصري,58000,50.0,26.55,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1861-06,usa,Army of the Euphrates,جيش الفرات,80000,37.2,36.2,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1863-01,usa,Army of the Euphrates,جيش الفرات,71000,40.4,35.3,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1861-06,isa,Army of the Najd,جيش نجد,140000,46.7,24.7,inferred (the Army of Northern Virginia's peak),ok: inferred at the user's request 2026-10-09
+Civil War,1863-01,isa,Army of the Najd,جيش نجد,75000,44.2,26.3,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1865-04,isa,Army of the Najd,جيش نجد,28000,46.6,24.75,inferred (Lee's 28000 at Appomattox),ok: inferred at the user's request 2026-10-09
 Civil War,1865-04,isa,Army of the Najd,جيش نجد,0,46.6,24.75,canon: surrenders at Wadi Hanifa 9 April 1865,
-Civil War,1861-06,isa,Army of Tihamah,جيش تهامة,90000,42.5,17.5,inferred,
-Civil War,1863-01,isa,Army of Tihamah,جيش تهامة,52000,42.5,17.5,inferred,
+Civil War,1861-06,isa,Army of Tihamah,جيش تهامة,90000,42.5,17.5,inferred,ok: inferred at the user's request 2026-10-09
+Civil War,1863-01,isa,Army of Tihamah,جيش تهامة,52000,42.5,17.5,inferred,ok: inferred at the user's request 2026-10-09
 # totals on the top bar: men under arms over the whole war
-Civil War,total,usa,Union under arms,تحت السلاح في الاتحاد,2100000,,,inferred (the Union's 2.1 million),
+Civil War,total,usa,Union under arms,تحت السلاح في الاتحاد,2100000,,,inferred (the Union's 2.1 million),ok: inferred at the user's request 2026-10-09
 Civil War,total,usa,European Arabians in Union forces,العرب الأوروبيون في قوات الاتحاد,210000,,,canon: united-states-of-arabia (some 210000),
-Civil War,total,isa,ISA under arms,تحت السلاح في الدول الإسلامية,880000,,,inferred (the Confederacy's 750000-1000000),
+Civil War,total,isa,ISA under arms,تحت السلاح في الدول الإسلامية,880000,,,inferred (the Confederacy's 750000-1000000),ok: inferred at the user's request 2026-10-09
 Civil War,dead,both,soldiers dead,قتلى من الجنود,720000-840000,,,canon: united-states-of-arabia,
 # --- Short 3, every era (user direction 2026-10-09: Rome and Persia, Masr under Jolof and Kong) ---
-Roman-Persian War,627-12,rum,Army of Rum,جيش الروم,50000,43.15,36.36,inferred (Heraclius at Nineveh),
-Roman-Persian War,627-12,sasanian,Army of Persia,جيش فارس,12000,43.15,36.36,inferred,
-Rashidun conquests,636-08,rashidun,Army of the Yarmuk,جيش اليرموك,25000,35.95,32.8,inferred (the real Yarmuk's estimates),
-Rashidun conquests,636-08,rum,Army of Rum,جيش الروم,100000,35.95,32.8,inferred,
-Rashidun conquests,636-11,rashidun,Army of Qadisiyyah,جيش القادسية,30000,44.4,31.8,inferred,
-Rashidun conquests,636-11,sasanian,Army of Persia,جيش فارس,60000,44.4,31.8,inferred,
-Conquest of Masr,1521-08,jolof,Jolof and its allies,جولوف وحلفاؤها,81500,31.24,30.04,inferred (Cortes's 1500 and his 80000 allies),
-Conquest of Masr,1521-08,masr,Army of Masr,جيش مصر,300000,31.24,30.04,inferred,
-Revolutionary War,1781-10,usa,Continental Army and Kong,الجيش القاري وكونغ,23800,54.1,17.0,inferred (Yorktown's 16000 and 7800),
-Revolutionary War,1781-10,hindustan,Chatterjee's army,جيش تشاترجي,8000,54.1,17.0,inferred; the surrender at Zafar is canon,
-Kong intervention,1862-05,masr,Army of Masr,جيش مصر,6000,32.55,29.97,inferred (Puebla),
-Kong intervention,1862-05,kong,Army of Kong,جيش كونغ,4500,32.55,29.97,inferred,
+Roman-Persian War,627-12,rum,Army of Rum,جيش الروم,50000,43.15,36.36,inferred (Heraclius at Nineveh),ok: inferred at the user's request 2026-10-09
+Roman-Persian War,627-12,sasanian,Army of Persia,جيش فارس,12000,43.15,36.36,inferred,ok: inferred at the user's request 2026-10-09
+Rashidun conquests,636-08,rashidun,Army of the Yarmuk,جيش اليرموك,25000,35.95,32.8,inferred (the real Yarmuk's estimates),ok: inferred at the user's request 2026-10-09
+Rashidun conquests,636-08,rum,Army of Rum,جيش الروم,100000,35.95,32.8,inferred,ok: inferred at the user's request 2026-10-09
+Rashidun conquests,636-11,rashidun,Army of Qadisiyyah,جيش القادسية,30000,44.4,31.8,inferred,ok: inferred at the user's request 2026-10-09
+Rashidun conquests,636-11,sasanian,Army of Persia,جيش فارس,60000,44.4,31.8,inferred,ok: inferred at the user's request 2026-10-09
+Conquest of Masr,1521-08,jolof,Jolof and its allies,جولوف وحلفاؤها,81500,31.24,30.04,inferred (Cortes's 1500 and his 80000 allies),ok: inferred at the user's request 2026-10-09
+Conquest of Masr,1521-08,masr,Army of Masr,جيش مصر,300000,31.24,30.04,inferred,ok: inferred at the user's request 2026-10-09
+Revolutionary War,1781-10,usa,Continental Army and Kong,الجيش القاري وكونغ,23800,54.1,17.0,inferred (Yorktown's 16000 and 7800),ok: inferred at the user's request 2026-10-09
+Revolutionary War,1781-10,hindustan,Chatterjee's army,جيش تشاترجي,8000,54.1,17.0,inferred; the surrender at Zafar is canon,ok: inferred at the user's request 2026-10-09
+Kong intervention,1862-05,masr,Army of Masr,جيش مصر,6000,32.55,29.97,inferred (Puebla),ok: inferred at the user's request 2026-10-09
+Kong intervention,1862-05,kong,Army of Kong,جيش كونغ,4500,32.55,29.97,inferred,ok: inferred at the user's request 2026-10-09
 First World War,1918,usa,Arabian troops in Africa,القوات العربية في أفريقيا,2000000,,,canon: two million Arabian troops serve in Africa,
-Second World War,1945,usa,Arabians under arms,عرب تحت السلاح,16000000,,,inferred (the United States' 16 million),
-Cold War,1986,usa,warheads,رؤوس نووية,23000,,,inferred (the United States' 1986 stockpile),
-Cold War,1986,derg,warheads,رؤوس نووية,40000,,,inferred (the Soviet 1986 stockpile),
-Siberian War,2011,usa,Arabian troops in Siberia,القوات العربية في سيبيريا,100000,82.0,58.0,inferred (the 2011 surge),
+Second World War,1945,usa,Arabians under arms,عرب تحت السلاح,16000000,,,inferred (the United States' 16 million),ok: inferred at the user's request 2026-10-09
+Cold War,1986,usa,warheads,رؤوس نووية,23000,,,inferred (the United States' 1986 stockpile),ok: inferred at the user's request 2026-10-09
+Cold War,1986,derg,warheads,رؤوس نووية,40000,,,inferred (the Soviet 1986 stockpile),ok: inferred at the user's request 2026-10-09
+Siberian War,2011,usa,Arabian troops in Siberia,القوات العربية في سيبيريا,100000,82.0,58.0,inferred (the 2011 surge),ok: inferred at the user's request 2026-10-09
+# the canon totals broken into inferred pieces (user 2026-10-09: infer them); the pieces add up to the canon figure
+Civil War,total,usa,European Arabians: Army of the Hejaz,العرب الأوروبيون: جيش الحجاز,60000,,,inferred (piece of the canon 210000),ok: inferred at the user's request 2026-10-09
+Civil War,total,usa,European Arabians: Army of Mesopotamia,العرب الأوروبيون: جيش الرافدين,70000,,,inferred (piece of the canon 210000),ok: inferred at the user's request 2026-10-09
+Civil War,total,usa,European Arabians: Army of the Euphrates,العرب الأوروبيون: جيش الفرات,30000,,,inferred (piece of the canon 210000),ok: inferred at the user's request 2026-10-09
+Civil War,total,usa,European Arabians: the Gulf and Red Sea squadrons,العرب الأوروبيون: أسطولا الخليج والبحر الأحمر,18000,,,inferred (piece of the canon 210000),ok: inferred at the user's request 2026-10-09
+Civil War,total,usa,European Arabians: garrisons and the railway corps,العرب الأوروبيون: الحاميات وفيلق السكك,32000,,,inferred (piece of the canon 210000),ok: inferred at the user's request 2026-10-09
+Civil War,dead,usa,Union soldiers dead,قتلى جنود الاتحاد,380000,,,inferred (piece of the canon 720000-840000; two in three of disease),ok: inferred at the user's request 2026-10-09
+Civil War,dead,isa,ISA soldiers dead,قتلى جنود الدول الإسلامية,340000-460000,,,inferred (piece of the canon 720000-840000),ok: inferred at the user's request 2026-10-09
+Civil War,1861-04,both,dead at Ras Tanura,قتلى رأس تنورة,0,50.16,26.64,inferred (no one died at Fort Sumter's bombardment),ok: inferred at the user's request 2026-10-09
+Civil War,1864-12,both,casualties of the March to the Sea,خسائر الزحف إلى البحر,2100,50.0,26.55,inferred (Sherman's march),ok: inferred at the user's request 2026-10-09
+Civil War,1865-04,isa,paroled at Wadi Hanifa,المُطلق سراحهم في وادي حنيفة,28000,46.6,24.75,inferred (Appomattox),ok: inferred at the user's request 2026-10-09

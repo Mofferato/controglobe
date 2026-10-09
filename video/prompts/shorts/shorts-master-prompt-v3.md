@@ -52,6 +52,10 @@ render them, look at every frame you change, and write the upload kit. The user 
 | coldwar | 1946 to 1991 | radar green glass, scan lines, a DEFCON strip, missile arcs | chip | warheads |
 | modern | 1992 to 2026 | clear glass, white and cyan, thin sans | chip | troops deployed |
 
+The war devices come from the reference the user chose (`prompts/shorts/reference-bountymaps-keyframes.md`), redrawn as
+our own: forces on the map as arrays of the era's glyph, one figure per unit of men, falling as the battle goes; the date
+to the day in battle; encirclement rings; fleets as swarms of ships; the cost along the front.
+
 Every war beat runs: hook, mobilise (banners with numbers), march (arrows grow, the camera follows), battle (flash, shake,
 numbers fall, the popup with two flags, two numbers and a result bar), result (the border changes with a crossfade and a
 caption), cost (a casualty count where canon gives one). Atrocities are told, never simulated.
@@ -62,11 +66,13 @@ caption), cost (a casualty count where canon gives one). Atrocities are told, ne
   terms from `ar/GLOSSARY.md`.
 - Cities and dress follow the Texas series' treatment reversed: Najdi and Hejazi mud-brick towers, Nabataean rock-cut fronts,
   caliphal arches and domes, Gulf wind-towers, Victorian steam depots at Jeddah, the modern skyline.
-- The caliphates at their fullest extent are shown whole, on the globe: northern Europe, the Caucasus, Central Asia, Sindh
-  and the Iberian-Sahelian coasts. Rome and Persia stand until 636 and break; the Yavana kings of Gandhara meet Islam.
+- The caliphates at their fullest extent are shown whole, on the globe and in the long cut: North Africa and all of Iberia,
+  northern Europe, the Caucasus, Central Asia, Sindh and the Iberian-Sahelian coasts. Rome and Persia stand until 636 and break; the Yavana kings of Gandhara meet Islam.
 - Countryballs (`data/countryballs.csv`): a name, two personality words, lines in English and Arabic, at most 8 words, one
   at a time on the bottom third, moods in the eyes only. Affectionate; nothing mocks a faith or a people. Three balls and
-  one big expression in every thumbnail (finished in GIMP), all the cast on the end card.
+  one big expression in every thumbnail, made the way the long video's was (`shorts.flag_thumbnail`: a dark relief map, the
+  country as a glowing flag map, the USArabiaball big in the corner, a white hook over a gold tagline, the emblem in the sea),
+  finished in GIMP; all the cast on the end card.
 
 ## How you work (each Short)
 

@@ -3,7 +3,8 @@
 # <region>-nations.csv) and of rings drawn on the ground (rivers, crests, desert edges; lon lat), clipped to
 # Natural Earth land. QGIS shows them as layers (integrations/qgis/cg_world.py); edit the rings there.
 #
-# Canon: the caliphates "carried Arabic administration across northern Europe, the Caucasus, Central Asia and
+# The caliphates' west follows the real conquests (user, 9 October 2026): North Africa from 698 and Iberia from 711,
+# al-Andalus under Cordoba from 756. Canon: the caliphates "carried Arabic administration across northern Europe, the Caucasus, Central Asia and
 # the Iberian-Sahelian coasts" (History, Union, Timeline). Northern Europe carries northern Africa's history
 # (Europe atlas: Iceland = Morocco, Sweden = Algeria, Denmark = Tunisia, Finland = Libya), so the caliphal
 # west is drawn there. Rome, Persia and the Yavana kingdom: user direction 2026-10-09; extents proposed.
@@ -55,7 +56,21 @@ realms:
     polity: [umayyad, 670, 749, abbasid, 750, 799]
     years: [670, 799]
     nations: {europe: [iceland, sweden, denmark, finland]}
-  - id: caliphate_iberian_sahelian
+  # the west at its fullest (user 2026-10-09: North Africa and Iberia as in the real conquests, beyond the pages' list)
+  - id: caliphate_north_africa
+    polity: [umayyad, 698, 749, abbasid, 750, 799]
+    years: [698, 799]
+    nations: {africa: [morocco, algeria, tunisia, libya]}
+  - id: caliphate_iberia
+    polity: [umayyad, 711, 755, cordoba, 756, 1031]
+    years: [711, 1031]
+    nations: {europe: [spain, portugal]}
+  - id: caliphate_sahel_coast
     polity: [umayyad, 711, 749]
     years: [711, 749]
-    nations: {europe: [spain, portugal], africa: [jolof]}
+    nations: {africa: [jolof]}
+  # Rome's African coast before the conquest (the exarchate role)
+  - id: rum_africa
+    polity: rum
+    years: [533, 697]
+    nations: {africa: [tunisia, libya]}

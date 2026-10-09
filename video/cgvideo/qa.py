@@ -39,8 +39,15 @@ def check(cfg: dict, data: Data) -> tuple[list[str], list[str]]:
     errors += [f"region id '{d}' is defined twice" for d in dupes]
 
     used = set(int(v) for v in set(data.matrix.ravel().tolist())) - {UNCLAIMED}
+    beyond = set()                                   # polities that hold only realms past the mesh
+    rp = paths(cfg).data / "world" / "realms.yaml"
+    if rp.exists():
+        import yaml
+        for r in yaml.safe_load(rp.read_text(encoding="utf8")).get("realms", []):
+            pol = r.get("polity")
+            beyond |= {pol} if isinstance(pol, str) else {pol[i] for i in range(0, len(pol), 3)}
     for k, pid in enumerate(data.polity_ids):
-        if k not in used and not any(q.get("parent") == pid for q in data.polities):
+        if k not in used and pid not in beyond and not any(q.get("parent") == pid for q in data.polities):
             warnings.append(f"polity {pid} never holds a region")
     for j, rid in enumerate(data.region_ids):
         if (data.matrix[:, j] == UNCLAIMED).all() and "filler" not in data.regions[j].get("notes", ""):

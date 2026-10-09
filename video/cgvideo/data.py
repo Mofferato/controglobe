@@ -105,7 +105,22 @@ class Data:
         return None
 
     def state_signature(self, row: np.ndarray) -> str:
-        return hashlib.sha1(row.tobytes()).hexdigest()[:12]
+        h = hashlib.sha1(row.tobytes())
+        fn = getattr(self, "realm_key_fn", None)          # the realms beyond the mesh (render.Scene sets it)
+        if fn:
+            h.update(fn(row).encode())
+        return h.hexdigest()[:12]
+
+    def row_year(self, row: np.ndarray):
+        """The year a row of the matrix belongs to, when it is a view of the matrix (as rows always are)."""
+        try:
+            off = row.__array_interface__["data"][0] - self.matrix.__array_interface__["data"][0]
+            i, r = divmod(off, self.matrix.strides[0])
+            if r == 0 and 0 <= i < len(self.year_list):
+                return self.year_list[i]
+        except Exception:
+            pass
+        return None
 
 
 def load(cfg: dict) -> Data:

@@ -26,7 +26,8 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   synthesis, until Abyssinia takes it in 1582 (as Russia took Sibir). Masr carries Mexico's whole history: Jolof's Viceroyalty
   (`masr_vice`, drawn as Jolof's colony) from 1521, the Cry of Asyut 1810, independence 1821, Kong's intervention and the Masri
   Empire (`masr_empire`) 1862-1867, the revolution 1910-1920. Realms beyond the mesh (the caliphates at their fullest extent,
-  Rome's Balkans, Persia's Khorasan, the Yavana Punjab) are in `data/world/realms.yaml`. Dates and extents beyond the user's
+  North Africa and all of Iberia included, al-Andalus as `cordoba`; Rome's Balkans and African coast; Persia's Khorasan; the
+  Yavana Punjab) are in `data/world/realms.yaml`; the long cut draws them too (render.Scene.state) and pulls back to show them. Dates and extents beyond the user's
   words are proposals: `prompts/shorts/canon-2026-10-09.md` lists them. It is in the README, the Timeline and the History,
   in both editions, with the terms in `ar/GLOSSARY.md`.
 - Afghanistan and Siberia trade histories one for one: Afghanistan is the Abyssinian Empire's,

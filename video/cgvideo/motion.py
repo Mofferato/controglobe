@@ -58,7 +58,7 @@ DEFAULTS = {
     "finale_seconds": 9.0,
     "end_card_seconds": 10.0,  # long enough for YouTube's end-screen elements (5 to 20 s)
     "plate_oversample": 1.5,
-    "max_plate_megapixels": 40,
+    "max_plate_megapixels": 60,   # 60 since the caliphal pull-back (Iberia to Sindh) widened the plates
     "shake_px": 5,
     "inset_rect": None,        # [x, y, w, h] of the inset's map as fractions of the frame; None docks it
     "inset_size": [0.156, 0.19],  # the docked inset's map, as fractions of the frame

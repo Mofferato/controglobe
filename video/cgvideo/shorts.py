@@ -33,7 +33,7 @@ from . import data as D
 from .config import load_config, paths
 
 ENGINE = pathlib.Path(__file__).with_name("shorts_engine")
-VERSION = 4           # bump when plates or the globe are drawn differently
+VERSION = 5           # bump when plates or the globe are drawn differently
 KM_FULL = 3400.0      # zoom 1 shows this many km from the top of the frame to the bottom
 SIDE = {"usa": {"colour": "#2f64a8", "light": "#9fc0ea", "name": "UNION", "name_ar": "الاتحاد"},
         "isa": {"colour": "#b5463a", "light": "#f0a99c", "name": "ISLAMIC STATES", "name_ar": "الدول الإسلامية"}}
@@ -234,8 +234,9 @@ def ball(flag: Image.Image, D_: int, mood: str = "neutral") -> Image.Image:
             cut = Image.fromarray(np.minimum(np.asarray(mask), np.asarray(eye)))
             out.paste(tex.resize((S, S)).point(lambda v: int(v * 0.7)), (0, 0), cut)
             d = ImageDraw.Draw(out)
-            pts = lid[:2]
-            d.line(pts, fill=ink, width=int(lw * 0.7))
+            (x0, y0), (x1, y1) = lid[:2]          # the lid's edge, only across the eye
+            f0, f1 = 0.4 / 2.8, 2.4 / 2.8
+            d.line([(x0 + (x1 - x0) * f0, y0 + (y1 - y0) * f0), (x0 + (x1 - x0) * f1, y0 + (y1 - y0) * f1)], fill=ink, width=int(lw * 0.7))
             d.ellipse(box, outline=ink, width=int(lw * 0.55))
     return out.resize((D_, D_), Image.LANCZOS)
 
@@ -651,3 +652,108 @@ end
 local ok, err = pcall(main)
 if not ok then print("ERROR: " .. tostring(err)) end
 '''
+
+
+# -- thumbnails in the long video's own style (thumbnail.py): a dark relief map, the country as a glowing
+# flag map, the countryball big in the corner, a white hook over a gold tagline, the emblem in the sea ---------
+
+def flag_thumbnail(cfg, data, year, flagged, text, tagline, balls, dest: pathlib.Path, size=(1280, 720),
+                   bbox=(32.0, 10.5, 61.5, 42.5), map_right=0.16) -> pathlib.Path:
+    """flagged: [(polity, flag image)] laid as flag maps over their ground in `year`; balls: [(polity, mood, size as a
+    share of the height, x, y as shares)], the first the USArabiaball of the long video's thumbnail."""
+    import numpy as np
+    from PIL import ImageChops, ImageFilter, ImageFont
+    from . import thumbnail as TH
+    from .logo import emblem
+    from .panel import _fontfile
+    from .render import Scene
+    scene = Scene(cfg, data)
+    row = data.matrix[data.year_index(int(year))]
+    _pols, tops = scene.state(row)
+    W, H = size
+    s = H / 720
+    bx0, by0, bx1, by1 = geo.bbox_polygon(cfg, list(bbox)).bounds
+    if W >= H:
+        h_m = (by1 - by0) * 1.04
+        w_m = h_m * W / H
+        cx = bx0 + (bx1 - bx0) * 0.5 - w_m * map_right
+    else:
+        w_m = (bx1 - bx0) * 1.1
+        h_m = w_m * H / W
+        cx = (bx0 + bx1) / 2
+    cy = (by0 + by1) / 2 - (0 if W >= H else h_m * 0.08)
+    extent = (cx - w_m / 2, cx + w_m / 2, cy - h_m / 2, cy + h_m / 2)
+    grad = np.linspace(0, 1, H)[:, None, None]
+    sea = (np.array([14, 26, 40]) * (1 - grad) + np.array([6, 12, 20]) * grad).astype(np.uint8)
+    img = Image.fromarray(np.broadcast_to(sea, (H, W, 3)).copy())
+    land = TH._mask(TH._land_for(cfg, extent), extent, W, H)
+    img.paste(Image.new("RGB", (W, H), (44, 48, 54)), (0, 0), land)
+    union = Image.new("L", (W, H), 0)
+    for pid, flag in flagged:
+        if pid not in tops:
+            continue
+        country = TH._mask(tops[pid], extent, W, H)
+        union = ImageChops.lighter(union, country)
+        cb = country.getbbox()
+        if cb:
+            fw, fh = cb[2] - cb[0], cb[3] - cb[1]
+            k = max(fw / flag.width, fh / flag.height)
+            f = flag.resize((int(flag.width * k), int(flag.height * k)), Image.LANCZOS)
+            layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            layer.paste(f, (cb[0], cb[1]))
+            img.paste(layer.convert("RGB"), (0, 0), ImageChops.multiply(country, layer.getchannel("A")))
+    glow = union.filter(ImageFilter.GaussianBlur(18 * s))
+    base = img.copy()
+    img.paste(Image.new("RGB", (W, H), (255, 214, 120)), (0, 0), glow.point(lambda v: int(v * 0.55)))
+    img.paste(base, (0, 0), union)
+    from . import relief as R
+    try:
+        shade = R.relief(cfg, extent, W, H).astype(np.float32)
+        flat = float(np.argmax(np.bincount(shade.astype(np.uint8).ravel(), minlength=256)))
+        k = np.clip(shade / max(flat, 1.0), 0.45, 1.3)[..., None]
+        on = (np.asarray(land, np.float32) / 255.0)[..., None]
+        a = np.asarray(img.convert("RGB")).astype(np.float32)
+        img = Image.fromarray(np.clip(a * (1 - on) + a * k * on, 0, 255).astype(np.uint8))
+    except SystemExit:
+        pass
+    edge = union.filter(ImageFilter.FIND_EDGES).point(lambda v: 255 if v > 40 else 0).filter(ImageFilter.MaxFilter(3))
+    img.paste(Image.new("RGB", (W, H), (255, 255, 255)), (0, 0), edge)
+    img = img.convert("RGBA")
+    for pid, mood, share, fx, fy in balls:
+        Dm = int(H * share) if W >= H else int(W * share)
+        b = ball(flag_img(cfg, data, pid, 1200), Dm, mood)
+        bx, by = int(W * fx), int(H * fy)
+        sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(sh).ellipse([bx + Dm * 0.12, by + Dm * 0.9, bx + Dm * 0.92, by + Dm * 1.02], fill=(0, 0, 0, 150))
+        img = Image.alpha_composite(img, sh.filter(ImageFilter.GaussianBlur(10 * s)))
+        img.alpha_composite(b, (bx, by))
+    d = ImageDraw.Draw(img)
+    bold = _fontfile("DejaVuSans-Bold.ttf")
+    lines = text.split("\n")
+    size_ = int((118 if W >= H else 130) * s * (1 if W >= H else 0.62))
+    font = ImageFont.truetype(bold, size_)
+    while max(d.textlength(t, font=font) for t in lines) > W * (0.52 if W >= H else 0.9) and size_ > 30:
+        size_ -= 4
+        font = ImageFont.truetype(bold, size_)
+    x0, y = int(W * 0.035), int(H * (0.06 if W >= H else 0.07))
+    for t in lines:
+        if W >= H:
+            d.text((x0, y), t, font=font, fill=(255, 255, 255, 255), stroke_width=int(9 * s), stroke_fill=(0, 0, 0, 255))
+        else:
+            d.text((W // 2, y), t, font=font, fill=(255, 255, 255, 255), anchor="ma", stroke_width=int(7 * s * .62 + 4), stroke_fill=(0, 0, 0, 255))
+        y += int(size_ * 1.12)
+    tag = " ".join(tagline)
+    tsize = int(29 * s * (1 if W >= H else 0.7))
+    tf = ImageFont.truetype(bold, tsize)
+    while d.textlength(tag, font=tf) > W * (0.45 if W >= H else 0.9) and tsize > 12:
+        tsize -= 1
+        tf = ImageFont.truetype(bold, tsize)
+    if W >= H:
+        d.text((int(W * 0.038), y + int(size_ * 0.06)), tag, font=tf, fill=(236, 190, 92, 255), stroke_width=int(5 * s), stroke_fill=(0, 0, 0, 255))
+    else:
+        d.text((W // 2, y + int(size_ * 0.1)), tag, font=tf, fill=(236, 190, 92, 255), anchor="ma", stroke_width=5, stroke_fill=(0, 0, 0, 255))
+    em = emblem(cfg, int(min(W, H) * (0.24 if W >= H else 0.2)))
+    img.alpha_composite(em, (int(W - em.width - W * 0.02), int(H - em.height - H * 0.02)))
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    img.convert("RGB").save(dest)
+    return dest

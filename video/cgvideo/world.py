@@ -30,7 +30,7 @@ from . import geo
 from .config import paths
 
 Image.MAX_IMAGE_PIXELS = None
-VERSION = 2
+VERSION = 3
 
 
 def _hex(c):
@@ -52,7 +52,7 @@ def realms(cfg, log=print) -> list[dict]:
     src = paths(cfg).data / "world" / "realms.yaml"
     out = paths(cfg).build / "world" / "realms.geojson"
     spec = yaml.safe_load(src.read_text(encoding="utf8"))["realms"]
-    key = hashlib.sha1(src.read_bytes()).hexdigest()[:10]
+    key = hashlib.sha1(src.read_bytes() + f"v{VERSION}".encode()).hexdigest()[:10]
     if out.exists():
         js = json.loads(out.read_text(encoding="utf8"))
         if js.get("key") == key:
@@ -76,6 +76,8 @@ def realms(cfg, log=print) -> list[dict]:
         if r.get("same_as"):
             parts.append(by_id[r["same_as"]])
         g = shapely.make_valid(shapely.union_all(parts)) if parts else shapely.GeometryCollection()
+        if not g.is_empty:                           # close the hairline gaps between neighbouring nations
+            g = shapely.make_valid(g.buffer(0.03).buffer(-0.03).intersection(land))
         by_id[r["id"]] = g
         res.append({**r, "geom": g})
     out.parent.mkdir(parents=True, exist_ok=True)

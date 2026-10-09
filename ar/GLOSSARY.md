@@ -498,3 +498,6 @@ organisation. The Plain Rule is «النهج البسيط» for the same reason 
 | Masri Empire (1864–1867) | الإمبراطورية المصرية |
 | Cry of Asyut | صرخة أسيوط |
 | Masri Revolution | الثورة المصرية |
+| al-Andalus | الأندلس |
+| Emirate (Caliphate) of Cordoba | إمارة (خلافة) قرطبة |
+| Syr Darya | سيحون |

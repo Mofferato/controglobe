@@ -240,7 +240,9 @@ function drawHud(t) {
     const L = ledgerAt(t);
     const y = keyed(D.clock, t);
     setText(T.yr, yearLabel(y));
-    setText(T.mo, L && L.month ? MONTHS[clamp(Math.floor((y - Math.floor(y)) * 12), 0, 11)] : (e.label || ''));
+    const fr = (y - Math.floor(y)) * 12, mi = clamp(Math.floor(fr), 0, 11), day = clamp(Math.floor((fr - mi) * 30.4) + 1, 1, 31);
+    const inBattle = D.battles.some(bb => t > bb.t - 1.2 && t < bb.t + PDUR);
+    setText(T.mo, L && L.month ? (inBattle ? `${day} ${MONTHS[mi]}` : MONTHS[mi]) : (e.label || ''));
     setText(T.war, (L && L.title) || e.title);
     for (const [s, img, nm, men, lbl] of [['a', T.uImg, T.uNm, T.uMen, T.uLbl], ['b', T.iImg, T.iNm, T.iMen, T.iLbl]]) {
       const side = L && L[s];
@@ -260,7 +262,7 @@ function drawHud(t) {
     eraCard.className = 'eracard card-' + c.skin;
     setText(eraCard.querySelector('.k'), c.kicker || ''); setText(eraCard.querySelector('.t'), c.title); setText(eraCard.querySelector('.s'), c.years);
     const d = t - c.t0;
-    place(eraCard, 66, 760, 0.85 + 0.15 * backOut(d / .35), 0, fade(t, c.t0, c.t0 + 1.25, .12, .3));
+    place(eraCard, 66, 1250, 0.85 + 0.15 * backOut(d / .35), 0, fade(t, c.t0, c.t0 + 1.25, .12, .3));
   }
 }
 
@@ -331,6 +333,14 @@ function drawArrows(t) {
     const Q = (x, y) => `${(p1[0] + x * c - y * s).toFixed(1)},${(p1[1] + x * s + y * c).toFixed(1)}`;
     head.setAttribute('d', a.missile ? `M${Q(10, 0)}L${Q(-6, 6)}L${Q(-6, -6)}Z` : `M${Q(L * .55, 0)}L${Q(-L * .45, Wd)}L${Q(-L * .2, 0)}L${Q(-L * .45, -Wd)}Z`);
     g.style.opacity = clamp((a.t1 + 1.0 - t) / .5, 0, 1);
+    if (a.fleet) {
+      if (!g._ships) { g._ships = [...Array(9)].map(() => sv('path', { class: 'ship', d: 'M-9,0 L9,0 L6,4 L-6,4 Z M-1,-1 L-1,-11 L6,-2 Z' }, g)); }
+      g._ships.forEach((sh, i) => {
+        const back = 1 + (i % 3), side = Math.floor(i / 3) - 1;
+        const q = P[Math.max(0, P.length - 1 - back * 2)] || p1;
+        sh.setAttribute('transform', `translate(${(q[0] - side * 14 * s).toFixed(1)},${(q[1] + side * 14 * c + 2 * Math.sin(t * 3 + i)).toFixed(1)}) scale(1.3)`);
+      });
+    }
   }
 }
 
@@ -375,6 +385,54 @@ function drawBattles(t) {
   const sh = lerp(.5, b.winner === b.a.polity ? .86 : .14, smooth((d - .2) / 1.0)) + .015 * Math.sin(t * 19) * (d > 0 && d < 1.2);
   pp.bar.style.width = (sh * 100).toFixed(2) + '%'; pp.mark.style.left = (sh * 100).toFixed(2) + '%';
   setText(pp.res, d > 1.0 ? b.result.toUpperCase() : ''); pp.res.style.opacity = clamp((d - 1.0) / .25, 0, 1);
+}
+
+// ---------------------------------------- forces on the map: arrays of glyphs, one per unit of men, falling
+const GLYPH = {   // one figure per era, our own drawing
+  antiquity: '<path d="M6,2a3,3 0 1,0 0.01,0M3,6h6l1,8h-2l-1,8h-2l-1,-8h-2zM11,4v18" stroke="currentColor" stroke-width="1" fill="currentColor"/>',
+  medieval: '<path d="M6,2a3,3 0 1,0 0.01,0M2,6h8v5c0,4 -2,7 -4,8c-2,-1 -4,-4 -4,-8z" fill="currentColor"/>',
+  renaissance: '<path d="M6,2a3,3 0 1,0 0.01,0M3,6h6l1,8h-2l-1,8h-2l-1,-8h-2zM10,2l2,12" stroke="currentColor" stroke-width="1.2" fill="currentColor"/>',
+  victorian: '<path d="M6,2a3,3 0 1,0 0.01,0M3,6h6l1,8h-2l-1,8h-2l-1,-8h-2zM9,7l4,-6" stroke="currentColor" stroke-width="1.2" fill="currentColor"/>',
+  worldwars: '<path d="M1,6h11v10h-11zM1,6l11,10M12,6l-11,10" stroke="currentColor" stroke-width="1.4" fill="none"/>',
+  coldwar: '<path d="M6,1l2,4v12l2,3h-8l2,-3v-12z" fill="currentColor"/>',
+  modern: '<path d="M1,10l5,-6l5,6l-5,-2z M3,14h6" stroke="currentColor" stroke-width="1.4" fill="currentColor"/>',
+};
+const forceEls = D.battles.filter(b => !b.nopopup).map(b => {
+  const g = el('div', 'forces', ov, `<div class="side a"><div class="grid"></div><b></b></div><div class="side b"><div class="grid"></div><b></b></div><div class="unit"></div>`);
+  const ring = sv('circle', { class: 'encircle', fill: 'none' });
+  return { b, g, ring, ga: g.querySelector('.a .grid'), gb: g.querySelector('.b .grid'), na: g.querySelector('.a b'), nb: g.querySelector('.b b'), unit: g.querySelector('.unit') };
+});
+const nice = x => { const p = Math.pow(10, Math.floor(Math.log10(x))); for (const m of [1, 2, 2.5, 5, 10]) if (m * p >= x) return m * p; return 10 * p; };
+function drawForces(t) {
+  for (const f of forceEls) {
+    const b = f.b, d = t - b.t, on = d > -0.4 && d < PDUR;
+    show(f.g, on); show(f.ring, on); if (!on) continue;
+    const p = proj(b.at[0], b.at[1]);
+    const o = Math.min(1, (d + 0.4) / 0.25) * clamp((PDUR - d) / 0.3, 0, 1);
+    const unit = nice(Math.max(b.a.from, b.b.from) / 22);
+    if (f._unit !== unit || f._skin !== (ERA && ERA.skin)) {
+      f._unit = unit; f._skin = ERA && ERA.skin;
+      const gl = GLYPH[f._skin] || GLYPH.victorian;
+      for (const [grid, side] of [[f.ga, b.a], [f.gb, b.b]]) {
+        while (grid.firstChild) grid.removeChild(grid.firstChild);
+        const n = Math.max(1, Math.ceil(side.from / unit));
+        for (let i = 0; i < n; i++) { const s = document.createElementNS(SVGNS, 'svg'); s.setAttribute('viewBox', '0 0 13 22'); s.setAttribute('width', 30); s.setAttribute('height', 50); s.innerHTML = gl; grid.appendChild(s); }
+      }
+      f.ga.style.color = colour(b.a.polity); f.gb.style.color = colour(b.b.polity);
+      setText(f.unit, `each figure = ${fmt(unit)}`);
+    }
+    const u = smooth(d / 1.1);
+    for (const [grid, side, nEl] of [[f.ga, b.a, f.na], [f.gb, b.b, f.nb]]) {
+      const v = lerp(side.from, side.to, clamp(u, 0, 1));
+      const alive = Math.ceil(v / unit - 1e-6);
+      [...grid.children].forEach((c, i) => { c.style.opacity = i < alive ? 1 : 0.18; c.style.transform = i < alive ? '' : 'translateY(4px)'; });
+      setText(nEl, fmt(v));
+    }
+    place(f.g, 66, 790, 0.92 + 0.08 * backOut((d + 0.4) / 0.4), 0, o);
+    const r = lerp(170, 70, smooth((d + 0.4) / 1.6));
+    f.ring.setAttribute('cx', p[0]); f.ring.setAttribute('cy', p[1]); f.ring.setAttribute('r', r);
+    f.ring.setAttribute('stroke-dashoffset', (t * 40).toFixed(1)); f.ring.style.opacity = o * 0.9;
+  }
 }
 
 // ------------------------------------------------------------------------ captions, lower-thirds
@@ -475,7 +533,7 @@ function render(t) {
   drawHud(t);                            // first: it sets the era's skin
   drawMap(t);
   renderer.render(scene, camera);
-  drawArrows(t); drawArmies(t); drawBattles(t);
+  drawArrows(t); drawArmies(t); drawBattles(t); drawForces(t);
   drawCaptions(t); drawLower(t); drawStamps(t); drawBalls(t);
   drawCost(t); drawHook(t); drawEnd(t);
 }
