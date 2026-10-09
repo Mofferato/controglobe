@@ -87,6 +87,13 @@ def main(argv=None) -> int:
     p = sub.add_parser("resolve", help="write and install the Resolve build script (Workspace > Scripts > cg_resolve_build)")
     p.add_argument("--media", choices=["auto", "motion", "sequence"], default="auto",
                    help="auto: the motion cut if one is rendered, else the yearly stills")
+    p = sub.add_parser("shorts", help="a vertical Short from config/shorts.yaml: composition, stills, render, upload kit")
+    p.add_argument("--id", type=int, required=True)
+    p.add_argument("--stills", nargs="*", type=float, default=None, help="seconds to draw as PNGs (build/shorts/N/stills)")
+    p.add_argument("--render", action="store_true", help="render the MP4 with HyperFrames and write the upload kit")
+    p.add_argument("--from", dest="t_from", type=float, default=None)
+    p.add_argument("--to", dest="t_to", type=float, default=None)
+    p.add_argument("--quality", default="looks", choices=["draft", "looks", "delivery"])
     p = sub.add_parser("all")
     p.add_argument("--workers", type=int, default=None)
     p.add_argument("--audio", default=None)
@@ -119,6 +126,16 @@ def run(step: str, cfg: dict, args) -> int:
         if args.site:
             pages = logo.install_site_icons(cfg, ROOT.parent)
             print(f"  icons redrawn in {len(pages)} pages")
+        return 0
+
+    if step == "shorts":
+        from cgvideo import shorts
+        shorts.compose(args.id, args.config)
+        if args.stills is not None:
+            shorts.stills(args.id, args.stills or [0.6, 3.6, 6.8, 9.9, 14.5, 18.0, 21.9, 25.5, 28.5], args.config)
+        if args.render:
+            mp4 = shorts.render(args.id, args.t_from, args.t_to, quality=args.quality, cfg_path=args.config)
+            shorts.upload_kit(args.id, mp4, args.config)
         return 0
 
     data = D.load(cfg)

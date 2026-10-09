@@ -1,0 +1,136 @@
+/* The Victorian skin of the war Shorts (1763-1913): brass rims and rivets, a ledger of figures in
+   ruled columns, dark green leather, an oxblood wax stamp, railway-poster capitals. Our own drawing
+   of the conventions of a Victorian-era strategy game: no game's art, icons, fonts or textures. */
+
+@font-face { font-family: Cinzel; src: url(fonts/Cinzel[wght].ttf); font-weight: 400 900; }
+@font-face { font-family: Cormorant; src: url(fonts/CormorantGaramond[wght].ttf); font-weight: 300 700; }
+@font-face { font-family: Cormorant; src: url(fonts/CormorantGaramond-Italic[wght].ttf); font-weight: 300 700; font-style: italic; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Bold.ttf); font-weight: 700; }
+
+:root {
+  --brass: linear-gradient(160deg, #f3dc9a 0%, #c79a4a 22%, #7a5524 48%, #d7ac5c 72%, #f6e2a8 100%);
+  --brass-flat: #c49a4f; --leather: #1d3328; --leather2: #12221a; --paper: #efe3c4; --ink: #2a1c10;
+  --oxblood: #7a1f1a; --union: #2f64a8; --isa: #b5463a;
+  --num: "Book Antiqua", "Palatino Linotype", Georgia, serif;
+}
+html, body { margin: 0; background: #0b1218; overflow: hidden; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #22364a; font-family: Cormorant, Georgia, serif; color: var(--ink); }
+#cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+#cam img { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform, opacity; }
+#vec { position: absolute; left: 0; top: 0; z-index: 1; overflow: visible; pointer-events: none; }
+#ov, #ui { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none; }
+#ov { z-index: 2; } #ui { z-index: 6; }
+#ov > *, #ui > * { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+#flash { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at 50% 46%, rgba(255,250,230,1), rgba(255,226,170,.65) 45%, rgba(255,200,120,0) 80%); }
+.clip { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; z-index: 3; }
+.ar { font-family: Amiri, serif; direction: rtl; unicode-bidi: isolate; }
+#grade { position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: radial-gradient(ellipse 90% 70% at 50% 46%, rgba(0,0,0,0) 55%, rgba(12,8,2,.5) 100%),
+              linear-gradient(180deg, rgba(20,12,4,.35), rgba(0,0,0,0) 22%, rgba(0,0,0,0) 62%, rgba(10,8,4,.55)); }
+
+/* brass plates: a rim, rivets at the corners, leather inside */
+.plate { background: var(--leather); border-radius: 10px; box-shadow: 0 0 0 4px #5c3f18, 0 0 0 7px #d9b46a, 0 0 0 9px #4a3312, 0 10px 26px rgba(0,0,0,.55); }
+.plate::before, .plate::after { content: ""; position: absolute; top: 9px; width: 11px; height: 11px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff3c4, #b88a3c 55%, #5c3f18); }
+.plate::before { left: 9px; } .plate::after { right: 9px; }
+.paper { background: var(--paper) repeating-linear-gradient(180deg, transparent 0 33px, rgba(70,100,140,.18) 33px 34px);
+  border-radius: 6px; box-shadow: 0 0 0 3px #6b4b1e, 0 0 0 5px #e2c27e, 0 8px 22px rgba(0,0,0,.5); }
+
+/* the top bar */
+#topbar { width: 884px; height: 150px; }
+#topbar .side { position: absolute; top: 16px; width: 300px; height: 118px; color: #f3e6c4; }
+#topbar .side.u { left: 18px; } #topbar .side.i { right: 18px; text-align: right; }
+#topbar .side img { position: absolute; top: 8px; width: 66px; height: 44px; object-fit: cover; box-shadow: 0 0 0 2px #e2c27e; }
+#topbar .side.u img { left: 6px; } #topbar .side.i img { right: 6px; }
+#topbar .nm { position: absolute; top: 4px; font: 700 23px Cinzel, serif; letter-spacing: .12em; white-space: nowrap; }
+#topbar .side.u .nm { left: 84px; } #topbar .side.i .nm { right: 84px; }
+#topbar .nm .ar { display: block; font-size: 21px; letter-spacing: 0; color: #e2c27e; margin-top: 0; }
+#topbar .men { position: absolute; top: 66px; font: 700 40px var(--num); color: #fff6dc; text-shadow: 0 2px 0 #000; white-space: nowrap; }
+#topbar .side.u .men { left: 8px; } #topbar .side.i .men { right: 8px; }
+#topbar .lbl { position: absolute; top: 108px; font: 600 15px Cinzel, serif; letter-spacing: .14em; color: #c9a862; white-space: nowrap; }
+#topbar .side.u .lbl { left: 10px; } #topbar .side.i .lbl { right: 10px; }
+#dial { position: absolute; left: 442px; top: 75px; width: 210px; height: 210px; margin: -105px 0 0 -105px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #f6ecd2 0 56%, #e6d4a6 57% 60%, transparent 61%), var(--brass);
+  box-shadow: 0 0 0 4px #4a3312, 0 10px 24px rgba(0,0,0,.6); }
+#dial .yr { position: absolute; left: 0; right: 0; top: 70px; text-align: center; font: 700 56px var(--num); color: var(--ink); }
+#dial .mo { position: absolute; left: 0; right: 0; top: 132px; text-align: center; font: 700 19px Cinzel, serif; letter-spacing: .14em; color: var(--oxblood); }
+#dial .war { position: absolute; left: 0; right: 0; top: 46px; text-align: center; font: 700 14px Cinzel, serif; letter-spacing: .2em; color: #6b4b1e; }
+#dial svg { position: absolute; left: 0; top: 0; }
+
+/* the roster of armies */
+#roster { width: 300px; padding: 12px 12px 8px; }
+#roster h4 { margin: 0 0 8px 6px; font: 700 17px Cinzel, serif; letter-spacing: .18em; color: #e2c27e; }
+#roster .row { position: relative; height: 38px; border-top: 1px solid rgba(226,194,126,.25); }
+#roster .row i { position: absolute; left: 4px; top: 11px; width: 26px; height: 17px; border: 1px solid #e2c27e; }
+#roster .row b { position: absolute; left: 40px; top: 7px; font: 700 21px Cormorant, serif; color: #f3e6c4; white-space: nowrap; }
+#roster .row span { position: absolute; right: 4px; top: 6px; font: 700 23px var(--num); color: #fff6dc; }
+
+/* army banners on the map */
+.army { width: 0; height: 0; }
+.army .pole { position: absolute; left: -2px; top: -96px; width: 4px; height: 96px; background: linear-gradient(90deg, #5c3f18, #e2c27e, #5c3f18); }
+.army .flag { position: absolute; left: 2px; top: -96px; width: 76px; height: 46px; }
+.army .tag { position: absolute; left: -84px; top: 6px; width: 168px; text-align: center; padding: 4px 0 5px;
+  background: var(--paper); border-radius: 5px; box-shadow: 0 0 0 2px #6b4b1e, 0 0 0 4px #e2c27e, 0 6px 14px rgba(0,0,0,.55); }
+.army .tag b { display: block; font: 700 32px var(--num); color: var(--ink); line-height: 1; }
+.army .tag em { display: block; font: 700 15px Cinzel, serif; font-style: normal; letter-spacing: .06em; color: #4a3312; white-space: nowrap; }
+.army .base { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid #f6e2a8; }
+
+/* the battle popup */
+#popup { width: 884px; height: 304px; }
+#popup .ttl { position: absolute; left: 0; right: 0; top: 22px; text-align: center; font: 800 36px Cinzel, serif; letter-spacing: .08em; color: #f6e2a8; text-shadow: 0 2px 0 #000; }
+#popup .dt { position: absolute; left: 0; right: 0; top: 72px; text-align: center; font: italic 700 28px Cormorant, serif; color: #e7d6ad; }
+#popup .fl { position: absolute; top: 118px; width: 120px; height: 80px; object-fit: cover; box-shadow: 0 0 0 3px #e2c27e, 0 6px 14px rgba(0,0,0,.6); }
+#popup .fl.a { left: 50px; } #popup .fl.b { right: 50px; }
+#popup .n { position: absolute; top: 122px; font: 700 62px var(--num); color: #fff6dc; text-shadow: 0 3px 0 #000; }
+#popup .n.a { left: 190px; } #popup .n.b { right: 190px; text-align: right; }
+#popup .vs { position: absolute; left: 0; right: 0; top: 134px; text-align: center; font: 800 32px Cinzel, serif; color: #c9a862; }
+#popup .bar { position: absolute; left: 50px; right: 50px; top: 226px; height: 26px; border-radius: 13px; overflow: hidden; box-shadow: 0 0 0 3px #4a3312, 0 0 0 5px #e2c27e; background: var(--isa); }
+#popup .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--union); }
+#popup .bar u { position: absolute; top: -4px; bottom: -4px; width: 6px; margin-left: -3px; background: #fff3c4; box-shadow: 0 0 10px #fff3c4; }
+#popup .res { position: absolute; left: 0; right: 0; top: 258px; text-align: center; font: 700 30px Cinzel, serif; letter-spacing: .06em; color: #fff3c4; }
+
+/* captions, lower-thirds, the stamp */
+.cap { width: 884px; text-align: center; }
+.cap div { display: inline-block; max-width: 840px; padding: 12px 24px 14px; font: 700 40px/1.1 Cormorant, serif; color: var(--ink); }
+.lower { width: 884px; height: 92px; }
+.lower .in { position: absolute; left: 442px; top: 0; height: 92px; display: flex; align-items: center; gap: 18px; white-space: nowrap; color: #f3e6c4; transform: translateX(-50%); }
+.lower .ar { font: 700 46px Amiri, serif; color: #f6e2a8; line-height: 1; }
+.lower .tr { font: italic 600 34px Cormorant, serif; color: #e7d6ad; }
+.lower .en { font: 700 31px Cinzel, serif; letter-spacing: .02em; }
+.lower .dot { width: 9px; height: 9px; transform: rotate(45deg); background: #e2c27e; flex: none; }
+#stamp { font: 800 34px Cinzel, serif; color: var(--oxblood); letter-spacing: .04em; padding: 10px 18px; border: 5px double var(--oxblood);
+  border-radius: 8px; background: rgba(239,227,196,.92); white-space: nowrap; }
+
+/* countryballs */
+.ball { width: 200px; height: 200px; }
+.ball img { width: 200px; height: 200px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.5)); }
+.bubble { max-width: 560px; padding: 14px 22px 16px; background: #fffaf0; border-radius: 26px; box-shadow: 0 0 0 4px #141414, 0 8px 18px rgba(0,0,0,.45); }
+.bubble .en { font: 700 38px/1.1 Georgia, serif; color: #141414; }
+.bubble .ar { font: 700 30px/1.25 Amiri, serif; color: #4a3312; display: block; margin-top: 4px; }
+.bubble::after { content: ""; position: absolute; bottom: 26px; width: 0; height: 0; border: 18px solid transparent; }
+.bubble.l::after { left: -30px; border-right: 18px solid #141414; }
+.bubble.r::after { right: -30px; border-left: 18px solid #141414; }
+
+/* the hook, the cost, the end card */
+#hook { width: 884px; text-align: center; }
+#hook .sub { font: 700 30px Cinzel, serif; letter-spacing: .22em; color: #f6e2a8; text-shadow: 0 2px 6px #000; }
+#hook .ttl { margin-top: 10px; font: 900 78px/1.02 Cinzel, serif; color: #fff; letter-spacing: .02em;
+  text-shadow: 0 4px 0 #3b1410, 0 0 28px rgba(0,0,0,.8); padding: 0 10px; }
+#hook .ttl b { color: #ff9a86; }
+#cost { width: 884px; text-align: center; padding: 30px 0 34px; }
+#cost .k { font: 700 24px Cinzel, serif; letter-spacing: .2em; color: #e2c27e; }
+#cost .n { font: 700 92px var(--num); color: #fff6dc; text-shadow: 0 4px 0 #000; margin: 8px 0 2px; white-space: nowrap; }
+#cost .l { font: 700 38px Cormorant, serif; color: #f3e6c4; }
+#cost .l .ar { font-size: 36px; color: #e2c27e; }
+#endc { width: 1080px; height: 1920px; background: radial-gradient(ellipse at 50% 40%, #24402f, #0f1c15 75%); }
+#endc .box { position: absolute; left: 76px; width: 864px; top: 300px; height: 760px; }
+#endc .ball { position: absolute; left: 0; top: 0; }
+#endc h2 { position: absolute; left: 0; right: 0; top: 60px; margin: 0; text-align: center; font: 900 60px/1.05 Cinzel, serif; color: #f6e2a8; letter-spacing: .04em; }
+#endc p { position: absolute; left: 60px; right: 60px; top: 230px; margin: 0; text-align: center; font: 700 42px/1.15 Cormorant, serif; color: #f3e6c4; }
+#endc .discord { position: absolute; left: 110px; right: 110px; top: 470px; height: 140px; border-radius: 70px; background: #5865f2;
+  box-shadow: 0 0 0 5px #e2c27e, 0 10px 24px rgba(0,0,0,.5); text-align: center; color: #fff; }
+#endc .discord b { display: block; margin-top: 20px; font: 800 30px Cinzel, serif; letter-spacing: .16em; }
+#endc .discord span { display: block; margin-top: 4px; font: 700 46px Georgia, serif; }
+#endc .sub { position: absolute; left: 0; right: 0; top: 655px; text-align: center; font: 700 26px Cinzel, serif; letter-spacing: .18em; color: #c9a862; }

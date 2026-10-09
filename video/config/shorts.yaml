@@ -1,0 +1,115 @@
+# The Shorts: vertical 1080x1920, 30 fps. Each one is a beat sheet the engine
+# (cgvideo/shorts_engine/engine.js) draws as a pure function of time; `python build.py shorts --id N`
+# builds it. Times are seconds into the Short. Map points are lon, lat.
+#
+#   python build.py shorts --id 2 --stills 0.5 3.5 10 ...  single frames to look at (build/shorts/2/stills)
+#   python build.py shorts --id 2 --render                  the MP4 (HyperFrames), with its soundtrack
+#   python build.py shorts --id 2 --render --from 8 --to 13 a slice
+#
+# Rules (prompts/shorts-master-prompt.md): the payoff in the first 2 s; nothing still for more than
+# 3 s; a sound on every border change; captions under 90 characters, one idea each; text inside
+# x 6-88 %, y 8-76 %; the last 3 s are the end card.
+
+defaults:
+  W: 1080
+  H: 1920
+  fps: 30
+  end_card: {discord: "discord.gg/XYZXVFjQUj", line: "Every year, 500 BCE to 2026: the full video is on the channel"}
+
+shorts:
+  - id: 2
+    slug: civil-war
+    title: "Arabia's Civil War: the Islamic States of Arabia (1861-1865)"
+    skin: victorian
+    war: Civil War
+    duration: 30.0
+    # the ground: one plate per map, drawn by render.py over this box, at this many pixels per km
+    plate: {bbox: [31.0, 5.5, 63.0, 43.5], px_per_km: 1.25, label_scale: 1.15}
+    maps:
+      - {key: union, year: 1860}
+      - {key: split, year: 1861}
+      - {key: reunited, year: 1866}
+    # which map is on screen from when (a crossfade and a border cue at each change)
+    map_track: [[0, split], [2.15, union], [2.9, split], [22.2, reunited]]
+    # the camera: [t, lon, lat, zoom, rotation degrees]; zoom 1 shows 3400 km from top to bottom
+    camera:
+      - [2.0, 46.0, 25.8, 1.35, -3]
+      - [5.0, 45.0, 25.0, 1.0, 0]
+      - [8.4, 45.8, 26.6, 1.05, 1]
+      - [10.0, 49.7, 26.3, 2.3, 2]
+      - [12.0, 48.0, 27.0, 1.5, 0]
+      - [16.0, 44.8, 27.2, 1.05, -1]
+      - [19.6, 48.6, 26.2, 1.6, 1]
+      - [21.0, 46.6, 24.8, 2.2, 0]
+      - [23.8, 46.4, 25.0, 1.8, -1]
+      - [27.0, 46.0, 25.5, 0.95, 0]
+    # the date on the top bar: [t, decimal year]
+    clock: [[0, 1861.28], [2.0, 1860.9], [2.9, 1861.28], [10.6, 1861.28], [12.0, 1862.0], [14.0, 1863.0],
+            [16.0, 1864.85], [19.6, 1864.97], [21.0, 1865.27], [27.0, 1865.27]]
+    hook:
+      t1: 2.3
+      globe: {from: [12.0, 22.0], to: [46.0, 25.8], radius: [0.6, 4.5]}   # lon, lat; radius as a share of the width
+      title: "1861: ARABIA SPLITS IN TWO"
+      sub: "Alternate History of Arabia"
+    hud: {t0: 5.0, t1: 27.0}
+    captions:
+      - {t: 3.0, d: 2.2, text: "Eleven states secede as the Islamic States of Arabia."}
+      - {t: 6.0, d: 2.4, text: "Three fronts: the Red Sea coast, the Najd and the Gulf."}
+      - {t: 9.4, d: 2.2, text: "12 April 1861: the federal arsenal at Ras Tanura is bombarded."}
+      - {t: 11.7, d: 1.9, text: "Union ships close every secessionist port."}
+      - {t: 13.8, d: 2.2, text: "1 January 1863: the Manumission Proclamation."}
+      - {t: 16.2, d: 3.0, text: "1864: General Yaqub al-Basri marches from the Najd to the sea."}
+      - {t: 20.8, d: 2.8, text: "9 April 1865: the last army surrenders at Wadi Hanifa."}
+      - {t: 24.0, d: 2.9, text: "The deadliest war in Arabian history."}
+    lower:   # Arabic, transliteration, English, on one line
+      - {t: 3.4, d: 2.0, ar: "الرياض", tr: "ar-Riyāḍ", en: "Riyadh, capital of the secession"}
+      - {t: 6.4, d: 1.8, ar: "أم القرى", tr: "Umm al-Qurā", en: "Umm al-Qura, the federal capital"}
+      - {t: 9.8, d: 1.9, ar: "رأس تنورة", tr: "Raʾs Tanūrah", en: "Ras Tanura"}
+      - {t: 14.2, d: 1.8, ar: "إعلان العتق", tr: "Iʿlān al-ʿItq", en: "the Manumission Proclamation"}
+      - {t: 16.6, d: 2.4, ar: "يعقوب البصري", tr: "Yaʿqūb al-Baṣrī", en: "Yaqub al-Basri"}
+      - {t: 21.2, d: 2.2, ar: "وادي حنيفة", tr: "Wādī Ḥanīfah", en: "Wadi Hanifa"}
+    # army banners: unit names from armies.csv; [t, strength] keys (the number eases between them)
+    armies:
+      - {unit: Army of the Hejaz, side: usa, t0: 5.4, t1: 24.0, path: [[39.6, 24.5], [42.1, 25.4], [44.0, 25.4], [45.9, 25.05]],
+         move: [[12.0, 0], [16.0, 0.55], [21.0, 1.0]], n: [[5.4, 0], [6.2, 110000], [12.0, 110000], [15.5, 96000], [21.5, 120000]]}
+      - {unit: Army of Mesopotamia, side: usa, t0: 5.8, t1: 16.3, path: [[44.4, 33.3], [47.7, 29.6]],
+         move: [[12.0, 0], [16.0, 1.0]], n: [[5.8, 0], [6.6, 125000], [12.0, 125000], [15.8, 98000]]}
+      - {unit: Army of the Euphrates, side: usa, t0: 6.2, t1: 16.3, path: [[37.2, 36.2], [38.9, 35.9], [40.4, 35.3]],
+         move: [[12.0, 0], [16.0, 1.0]], n: [[6.2, 0], [7.0, 80000], [12.0, 80000], [15.8, 71000]]}
+      - {unit: Army of the Najd, side: isa, t0: 5.6, t1: 23.4, path: [[46.7, 24.7], [44.2, 26.3], [46.6, 24.75]],
+         move: [[12.0, 0], [15.0, 0.5], [17.5, 0.5], [20.5, 1.0]], n: [[5.6, 0], [6.4, 140000], [12.0, 140000], [15.5, 75000], [19.5, 52000], [21.6, 28000], [22.6, 0]]}
+      - {unit: Army of Tihamah, side: isa, t0: 6.0, t1: 19.6, path: [[42.5, 17.5]],
+         n: [[6.0, 0], [6.8, 90000], [12.0, 90000], [15.5, 52000], [19.0, 30000]]}
+      - {unit: Army of al-Basri, side: usa, t0: 16.0, t1: 21.0, path: [[44.0, 26.3], [45.4, 26.6], [47.6, 26.0], [49.4, 25.9], [50.0, 26.55]],
+         move: [[16.4, 0], [19.6, 1.0]], n: [[16.0, 0], [16.6, 62000], [19.6, 58000]]}
+    # arrows that grow along a campaign line between t0 and t1 (side colour)
+    arrows:
+      - {side: usa, t0: 12.0, t1: 16.0, path: [[39.6, 24.5], [42.1, 25.4], [44.0, 25.4]]}
+      - {side: usa, t0: 12.0, t1: 16.0, path: [[44.4, 33.3], [47.7, 29.6], [50.0, 26.6]]}
+      - {side: usa, t0: 12.0, t1: 16.0, path: [[37.2, 36.2], [38.9, 35.9], [40.4, 35.3]]}
+      - {side: isa, t0: 12.0, t1: 15.0, path: [[46.7, 24.7], [44.2, 26.3], [41.9, 27.4]]}
+      - {side: usa, t0: 16.4, t1: 19.6, path: [[44.0, 26.3], [45.4, 26.6], [47.6, 26.0], [49.4, 25.9], [50.0, 26.55]], big: true}
+      - {side: usa, t0: 19.8, t1: 21.6, path: [[44.0, 25.4], [45.9, 25.05]]}
+    # ships blockading the coasts
+    blockade: {t0: 11.4, t1: 16.5, ships: [[50.6, 26.9], [51.2, 25.4], [49.0, 28.6], [41.4, 19.4], [39.2, 22.3], [43.0, 14.8], [56.9, 24.6], [45.0, 12.4]]}
+    battles:
+      - {t: 9.6, at: [50.16, 26.64], title: "Bombardment of Ras Tanura", date: "12 April 1861",
+         a: {side: usa, from: 85, to: 0}, b: {side: isa, from: 5500, to: 5480}, result: "Arsenal falls", winner: isa}
+      - {t: 19.4, at: [50.0, 26.55], title: "The March to the Sea", date: "December 1864",
+         a: {side: usa, from: 62000, to: 58000}, b: {side: isa, from: 30000, to: 9000}, result: "The secession's rear is broken", winner: usa}
+      - {t: 21.6, at: [46.6, 24.75], title: "Surrender at Wadi Hanifa", date: "9 April 1865",
+         a: {side: usa, from: 120000, to: 120000}, b: {side: isa, from: 28000, to: 0}, result: "The Union is restored", winner: usa}
+    # the top bar's ledger: men under arms (canon where the pages give them; see armies.csv)
+    ledger:
+      usa: [[5.0, 0], [6.2, 640000], [13.6, 1200000], [14.6, 1410000], [21.0, 2100000]]
+      isa: [[5.0, 0], [6.2, 420000], [13.6, 800000], [21.0, 880000], [22.6, 0]]
+    stamp: {t: 14.4, text: "+210,000 European Arabians join the Union"}
+    cost: {t0: 23.8, t1: 27.0, low: 720000, high: 840000, label: "soldiers dead", ar: "قتيل من الجنود"}
+    balls:
+      - {id: isa, t: 3.6, d: 1.9, line: 0, mood: smug}
+      - {id: usa, t: 5.0, d: 1.6, line: 0, mood: angry}
+      - {id: isa, t: 12.1, d: 1.7, line: 1, mood: surprised}
+      - {id: zagrosia, t: 14.0, d: 2.0, line: 0, mood: happy}
+      - {id: isa, t: 22.4, d: 1.7, line: 2, mood: sad}
+      - {id: usa, t: 24.4, d: 2.3, line: 1, mood: happy}
+    end: {t0: 27.0}

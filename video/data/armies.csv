@@ -1,0 +1,27 @@
+# Armies for the war-simulation Shorts (cgvideo/shorts.py): a banner on the map with a strength
+# number that counts as the battle goes. One row per army per moment. Numbers are invented unless
+# the pages give them: source is "canon: ..." or "inferred" (scaled from the war this one carries).
+# review: blank until the user approves a row ("ok") or strikes it ("no").
+war,date,side,unit,unit_ar,strength,lon,lat,source,review
+Civil War,1861-04,usa,Ras Tanura arsenal,ترسانة رأس تنورة,85,50.16,26.64,inferred (Fort Sumter's garrison),
+Civil War,1861-04,isa,Gulf batteries,بطاريات الخليج,5500,49.7,26.2,inferred (the Charleston batteries),
+Civil War,1861-06,usa,Army of the Hejaz,جيش الحجاز,110000,39.6,24.5,inferred (the Army of the Potomac's scale),
+Civil War,1863-01,usa,Army of the Hejaz,جيش الحجاز,96000,42.1,25.4,inferred,
+Civil War,1865-04,usa,Army of the Hejaz,جيش الحجاز,120000,46.3,24.8,inferred (canon endpoint: Wadi Hanifa),
+Civil War,1861-06,usa,Army of Mesopotamia,جيش الرافدين,125000,44.4,33.3,inferred,
+Civil War,1863-01,usa,Army of Mesopotamia,جيش الرافدين,98000,47.7,29.6,inferred,
+Civil War,1864-11,usa,Army of al-Basri,جيش البصري,62000,44.0,26.3,inferred (Sherman's 62000; the march itself is canon),
+Civil War,1864-12,usa,Army of al-Basri,جيش البصري,58000,50.0,26.55,inferred,
+Civil War,1861-06,usa,Army of the Euphrates,جيش الفرات,80000,37.2,36.2,inferred,
+Civil War,1863-01,usa,Army of the Euphrates,جيش الفرات,71000,40.4,35.3,inferred,
+Civil War,1861-06,isa,Army of the Najd,جيش نجد,140000,46.7,24.7,inferred (the Army of Northern Virginia's peak),
+Civil War,1863-01,isa,Army of the Najd,جيش نجد,75000,44.2,26.3,inferred,
+Civil War,1865-04,isa,Army of the Najd,جيش نجد,28000,46.6,24.75,inferred (Lee's 28000 at Appomattox),
+Civil War,1865-04,isa,Army of the Najd,جيش نجد,0,46.6,24.75,canon: surrenders at Wadi Hanifa 9 April 1865,
+Civil War,1861-06,isa,Army of Tihamah,جيش تهامة,90000,42.5,17.5,inferred,
+Civil War,1863-01,isa,Army of Tihamah,جيش تهامة,52000,42.5,17.5,inferred,
+# totals on the top bar: men under arms over the whole war
+Civil War,total,usa,Union under arms,تحت السلاح في الاتحاد,2100000,,,inferred (the Union's 2.1 million),
+Civil War,total,usa,European Arabians in Union forces,العرب الأوروبيون في قوات الاتحاد,210000,,,canon: united-states-of-arabia (some 210000),
+Civil War,total,isa,ISA under arms,تحت السلاح في الدول الإسلامية,880000,,,inferred (the Confederacy's 750000-1000000),
+Civil War,dead,both,soldiers dead,قتلى من الجنود,720000-840000,,,canon: united-states-of-arabia,

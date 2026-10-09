@@ -1,0 +1,8 @@
+# Countryballs for the Shorts and thumbnails (cgvideo/shorts.py, thumbnail.countryball()).
+# flag: the polity whose flag skins the ball. personality: two words, kept every time it speaks.
+# lines: '|' between lines, at most 8 words each, said one at a time in a bubble on the bottom third.
+# Affectionate, never hateful; nothing mocks a faith or a people.
+id,flag,name,name_ar,personality,lines_en,lines_ar
+usa,usa,the Union,الاتحاد,steadfast; dry,Not one state leaves.|Back together. Now for Reconstruction.|The Union holds.,لن تخرج ولاية واحدة.|عدنا معًا. والآن إعادة الإعمار.|الاتحاد صامد.
+isa,isa,the Islamic States,الدول الإسلامية,proud; stubborn,We secede. Riyadh is our capital!|Our ports are all closed?!|...fine. We surrender.,انفصلنا! الرياض عاصمتنا.|موانئنا كلها مغلقة؟!|...حسنًا. نستسلم.
+zagrosia,zagrosia,Zagrosia,زاغروسيا,calm; welcoming,Night Road travellers welcome here.|I stay out of this one.,أهلًا بمسافري درب الليل.|لن أتدخل في هذه.
