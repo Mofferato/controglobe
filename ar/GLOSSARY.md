@@ -474,3 +474,27 @@ organisation. The Plain Rule is «النهج البسيط» for the same reason 
 | Siberia | سيبيريا |
 | Afghanistan | أفغانستان |
 | Siberian War | حرب سيبيريا |
+
+## Rome, Persia, the Yavanas and Masr (user direction, 2026-10-09)
+
+| English | العربية |
+|---|---|
+| Roman Empire (Rum) | إمبراطورية الروم / الروم |
+| Persian Empire | الإمبراطورية الفارسية |
+| Ardashir | أردشير |
+| Ctesiphon | طيسفون |
+| Heraclius | هرقل |
+| Nineveh | نينوى |
+| Yarmuk | اليرموك |
+| Qadisiyyah | القادسية |
+| Nahavand | نهاوند |
+| Merv | مرو |
+| Yavana (the Indo-Greek kings) | اليافانا (اليونانيون الهنود) |
+| Yavana Kingdom | مملكة اليافانا |
+| Yavana Sultanate | سلطنة يافانا |
+| Gandhara | غاندارا |
+| Bactria | باختريا |
+| Viceroyalty of Masr | نيابة مصر |
+| Masri Empire (1864–1867) | الإمبراطورية المصرية |
+| Cry of Asyut | صرخة أسيوط |
+| Masri Revolution | الثورة المصرية |

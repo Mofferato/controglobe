@@ -71,6 +71,11 @@ right-to-left text.
 Exceptions: Iceland = Morocco, Greenland = Cyprus. Afghanistan and Siberia trade places one for one: Afghanistan is
 the Abyssinian Empire's (later the Derg Union's) vast eastern hinterland, and Siberia is the independent, mountain-ringed
 kingdom that no empire held for long, the ground of the Siberian War. Anatolia is Zagrosian ground, so Turkey is outside the African swap the way Egypt is outside the European one.
+In antiquity the caliphates meet two empires that the swap leaves in the Mashriq: the Roman Empire (Rum), ruled from Constantinople from 330,
+and the Persian Empire founded at Ctesiphon in 224; both break before the Rashidun (Yarmuk and Qadisiyyah, 636). The Indo-Greek
+Yavana kings of Gandhara survive antiquity, and under the Ghaznavids (1001) their kingdom becomes the Yavana Sultanate, where Greek,
+Buddhist and Islamic thought meet. Masr carries Mexico's history: Jolof's Viceroyalty from 1521, independence in 1821, Kong's
+intervention and the Masri Empire (1862–1867) and the revolution of 1910.
 Within Africa the swap follows civilisation before geography: Italy's role is carried by Manden, on the ground of Mali,
 heir to Wagadu (the Ghana Empire) as Italy is heir to Rome, in the Latin west rather than the far south; Angola (Ndongo)
 carries Montenegro instead.

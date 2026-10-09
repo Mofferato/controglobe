@@ -1,0 +1,202 @@
+/* The globe Shorts' skins, one per era, switched by the class on #root (era-<skin>). Each is our own
+   drawing of the look of a genre of strategy game, never a copy of one: no game's logos, icons, fonts,
+   textures or screenshots.
+     antiquity   marble plaques, bronze rims, laurel, square capitals         (a Roman-republic strategy table)
+     medieval    parchment, gold leaf, red and blue initials, blackletter       (an illuminated court and dynasty screen)
+     renaissance carved walnut, gilt filigree, cartouches                      (an age-of-sail map table)
+     victorian   brass dials, ledger columns, leather                          (an industrial-age ledger)
+     worldwars   olive drab, stencil capitals, grease pencil, unit counters   (a wartime operations map)
+     coldwar     radar green on black glass, scan lines, a DEFCON strip        (an operations room)
+     modern      clear glass, white and cyan, thin sans                        (a satellite situation display)  */
+
+@font-face { font-family: Cinzel; src: url(fonts/Cinzel[wght].ttf); font-weight: 400 900; }
+@font-face { font-family: Cormorant; src: url(fonts/CormorantGaramond[wght].ttf); font-weight: 300 700; }
+@font-face { font-family: Cormorant; src: url(fonts/CormorantGaramond-Italic[wght].ttf); font-weight: 300 700; font-style: italic; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Amiri; src: url(fonts/Amiri-Bold.ttf); font-weight: 700; }
+@font-face { font-family: UnifrakturMaguntia; src: url(fonts/UnifrakturMaguntia-Book.ttf); }
+
+:root { --num: "Book Antiqua", "Palatino Linotype", Georgia, serif; }
+html, body { margin: 0; background: #04070c; overflow: hidden; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #04070c; font-family: Cormorant, Georgia, serif;
+  /* the default skin's tokens (victorian) */
+  --panel: #1d3328; --panel2: #12221a; --rim1: #5c3f18; --rim2: #d9b46a; --rim3: #4a3312; --text: #f3e6c4; --accent: #e2c27e;
+  --paper: #efe3c4; --ink: #2a1c10; --stampc: #7a1f1a; --head: Cinzel, serif; --body: Cormorant, Georgia, serif; --radius: 10px;
+  --capfont: 700 40px/1.1 Cormorant, serif; --frontier: #1c1712; --inner: rgba(40,34,28,.55); }
+#stars { position: absolute; inset: 0; background-size: cover; }
+#gl, #gl canvas { position: absolute; left: 0; top: 0; }
+#vec { position: absolute; left: 0; top: 0; z-index: 1; overflow: visible; pointer-events: none; }
+#ov, #ui { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none; }
+#ov { z-index: 2; } #ui { z-index: 6; }
+#ov > *, #ui > * { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+#flash { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at 50% 44%, rgba(255,250,230,1), rgba(255,226,170,.65) 45%, rgba(255,200,120,0) 80%); }
+.clip { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; z-index: 3; }
+.ar { font-family: Amiri, serif; direction: rtl; unicode-bidi: isolate; }
+
+/* frontiers and names on the globe */
+#vec path.f { stroke: var(--frontier); stroke-width: 3.2; stroke-linejoin: round; filter: drop-shadow(0 0 2px rgba(0,0,0,.55)); }
+#vec path.i { stroke: var(--inner); stroke-width: 1.4; stroke-dasharray: 5 4; }
+#vec circle.burst { stroke: #fff3c4; }
+#vec .arrow path.au { stroke: #141414; stroke-linecap: round; stroke-linejoin: round; }
+#vec .arrow path.al { stroke-linecap: round; stroke-linejoin: round; }
+#vec .arrow path.ah { stroke: #141414; stroke-width: 3; }
+.rlabel { text-align: center; white-space: nowrap; font-family: var(--label, Cinzel), serif; font-weight: 800; letter-spacing: .12em; color: #1d1b18;
+  text-shadow: 0 0 3px #fff, 0 0 7px rgba(255,255,255,.8), 0 0 12px rgba(255,255,255,.4); line-height: 1.05; }
+.rlabel .ar { display: block; font-size: .72em; letter-spacing: 0; font-weight: 700; }
+
+/* the plate every panel is drawn on */
+.plate { background: var(--panel); border-radius: var(--radius); color: var(--text);
+  box-shadow: 0 0 0 4px var(--rim1), 0 0 0 7px var(--rim2), 0 0 0 9px var(--rim3), 0 10px 26px rgba(0,0,0,.55); }
+.paper { background: var(--paper); color: var(--ink); border-radius: 6px; box-shadow: 0 0 0 3px var(--rim1), 0 0 0 5px var(--rim2), 0 8px 22px rgba(0,0,0,.5); }
+
+/* the top bar */
+.topbar { width: 884px; height: 150px; }
+.topbar .side { position: absolute; top: 14px; width: 300px; height: 120px; }
+.topbar .side.u { left: 18px; } .topbar .side.i { right: 18px; text-align: right; }
+.topbar .side img { position: absolute; top: 8px; width: 66px; height: 44px; object-fit: cover; box-shadow: 0 0 0 2px var(--accent); }
+.topbar .side.u img { left: 6px; } .topbar .side.i img { right: 6px; }
+.topbar .nm { position: absolute; top: 4px; font: 700 21px var(--head); letter-spacing: .1em; white-space: nowrap; max-width: 220px; overflow: hidden; }
+.topbar .side.u .nm { left: 84px; } .topbar .side.i .nm { right: 84px; }
+.topbar .nm .ar { display: block; font-size: 20px; letter-spacing: 0; color: var(--accent); }
+.topbar .men { position: absolute; top: 64px; font: 700 38px var(--num); text-shadow: 0 2px 0 #000; white-space: nowrap; }
+.topbar .side.u .men { left: 8px; } .topbar .side.i .men { right: 8px; }
+.topbar .lbl { position: absolute; top: 106px; font: 600 14px var(--head); letter-spacing: .14em; color: var(--accent); white-space: nowrap; text-transform: uppercase; }
+.topbar .side.u .lbl { left: 10px; } .topbar .side.i .lbl { right: 10px; }
+.topbar .dial { position: absolute; left: 442px; top: 75px; width: 210px; height: 210px; margin: -105px 0 0 -105px; border-radius: 50%;
+  background: radial-gradient(circle, var(--paper) 0 56%, var(--rim2) 57% 61%, var(--rim1) 62%); box-shadow: 0 0 0 4px var(--rim3), 0 10px 24px rgba(0,0,0,.6); }
+.topbar .dial .war { position: absolute; left: 20px; right: 20px; top: 44px; text-align: center; font: 700 13px var(--head); letter-spacing: .14em; color: var(--rim1); white-space: nowrap; overflow: hidden; }
+.topbar .dial .yr { position: absolute; left: 0; right: 0; top: 66px; text-align: center; font: 700 54px var(--num); color: var(--ink); white-space: nowrap; }
+.topbar .dial .mo { position: absolute; left: 0; right: 0; top: 132px; text-align: center; font: 700 17px var(--head); letter-spacing: .12em; color: var(--stampc); }
+
+/* the era card */
+.eracard { width: 884px; padding: 26px 0 30px; text-align: center; border-radius: var(--radius); background: var(--panel); color: var(--text);
+  box-shadow: 0 0 0 4px var(--rim1), 0 0 0 7px var(--rim2), 0 0 0 9px var(--rim3), 0 18px 40px rgba(0,0,0,.6); }
+.eracard .k { font: 700 22px var(--head); letter-spacing: .3em; color: var(--accent); }
+.eracard .t { font: 900 64px/1.05 var(--head); margin: 10px 30px 8px; }
+.eracard .s { font: italic 600 32px var(--body); color: var(--accent); }
+
+/* army banners */
+.army { width: 0; height: 0; }
+.army .pole { position: absolute; left: -2px; top: -92px; width: 4px; height: 92px; background: linear-gradient(90deg, var(--rim1), var(--rim2), var(--rim1)); }
+.army .flag { position: absolute; left: 2px; top: -92px; width: 76px; height: 46px; }
+.army .tag { position: absolute; left: -90px; top: 6px; width: 180px; text-align: center; padding: 4px 0 5px; background: var(--paper); border-radius: 5px;
+  box-shadow: 0 0 0 2px var(--rim1), 0 0 0 4px var(--rim2), 0 6px 14px rgba(0,0,0,.55); color: var(--ink); }
+.army .tag b { display: block; font: 700 31px var(--num); line-height: 1; }
+.army .tag b.falling { color: #b0261b; }
+.army .tag em { display: block; font: 700 13px var(--head); font-style: normal; letter-spacing: .05em; white-space: nowrap; }
+.army .base { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--rim2); }
+
+/* the battle popup */
+.popup { width: 884px; height: 300px; }
+.popup .ttl { position: absolute; left: 10px; right: 10px; top: 20px; text-align: center; font: 800 34px var(--head); letter-spacing: .06em; color: var(--accent); white-space: nowrap; }
+.popup .dt { position: absolute; left: 0; right: 0; top: 68px; text-align: center; font: italic 700 27px var(--body); }
+.popup .fl { position: absolute; top: 112px; width: 118px; height: 78px; object-fit: cover; box-shadow: 0 0 0 3px var(--accent), 0 6px 14px rgba(0,0,0,.6); }
+.popup .fl.a { left: 44px; } .popup .fl.b { right: 44px; }
+.popup .n { position: absolute; top: 116px; font: 700 58px var(--num); text-shadow: 0 3px 0 #000; }
+.popup .n.falling { color: #ff9a86; }
+.popup .n.a { left: 180px; } .popup .n.b { right: 180px; text-align: right; }
+.popup .vs { position: absolute; left: 0; right: 0; top: 128px; text-align: center; font: 800 30px var(--head); color: var(--accent); }
+.popup .bar { position: absolute; left: 44px; right: 44px; top: 218px; height: 24px; border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 3px var(--rim3), 0 0 0 5px var(--rim2); }
+.popup .bar i { position: absolute; left: 0; top: 0; bottom: 0; }
+.popup .bar u { position: absolute; top: -4px; bottom: -4px; width: 6px; margin-left: -3px; background: #fff3c4; box-shadow: 0 0 10px #fff3c4; }
+.popup .res { position: absolute; left: 0; right: 0; top: 254px; text-align: center; font: 700 28px var(--head); letter-spacing: .05em; }
+
+/* captions, lower-thirds, stamps */
+.cap { width: 884px; text-align: center; }
+.cap div { display: inline-block; max-width: 840px; padding: 12px 24px 14px; font: var(--capfont); }
+.lower { width: 884px; height: 92px; }
+.lower .in { position: absolute; left: 442px; top: 0; height: 92px; display: flex; align-items: center; gap: 18px; white-space: nowrap; transform: translateX(-50%); }
+.lower .ar { font: 700 46px Amiri, serif; color: var(--accent); line-height: 1; }
+.lower .tr { font: italic 600 34px Cormorant, serif; opacity: .9; }
+.lower .en { font: 700 30px var(--head); }
+.lower .dot { width: 9px; height: 9px; transform: rotate(45deg); background: var(--accent); flex: none; }
+.stamp { font: 800 34px var(--head); color: var(--stampc); padding: 10px 18px; border: 5px double var(--stampc); border-radius: 8px; background: rgba(239,227,196,.93); white-space: nowrap; }
+
+/* countryballs */
+.ball { width: 200px; height: 200px; }
+.ball img { width: 200px; height: 200px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.5)); }
+.bubble { max-width: 560px; padding: 12px 22px 16px; background: #fffaf0; border-radius: 26px; box-shadow: 0 0 0 4px #141414, 0 8px 18px rgba(0,0,0,.45); }
+.bubble .who { font: 700 15px var(--head); letter-spacing: .14em; color: #8a6d3b; text-transform: uppercase; }
+.bubble .en { font: 700 36px/1.1 Georgia, serif; color: #141414; }
+.bubble .ar { font: 700 28px/1.25 Amiri, serif; color: #4a3312; display: block; margin-top: 4px; }
+.bubble::after { content: ""; position: absolute; bottom: 26px; width: 0; height: 0; border: 18px solid transparent; }
+.bubble.l::after { left: -30px; border-right: 18px solid #141414; }
+.bubble.r::after { right: -30px; border-left: 18px solid #141414; }
+
+/* hook, cost, end card */
+.hook { width: 884px; text-align: center; }
+.hook .sub { font: 700 28px Cinzel, serif; letter-spacing: .2em; color: #f6e2a8; text-shadow: 0 2px 6px #000; }
+.hook .ttl { margin-top: 10px; font: 900 70px/1.04 Cinzel, serif; color: #fff; text-shadow: 0 4px 0 #3b1410, 0 0 28px rgba(0,0,0,.85); }
+.hook .ttl b { color: #ffd27a; }
+.hook .yr { margin-top: 18px; font: 700 64px var(--num); color: #ffd27a; text-shadow: 0 3px 0 #000, 0 0 20px rgba(0,0,0,.8); }
+.costc { width: 884px; text-align: center; padding: 30px 0 34px; }
+.costc .k { font: 700 22px var(--head); letter-spacing: .2em; color: var(--accent); }
+.costc .n { font: 700 84px var(--num); text-shadow: 0 4px 0 #000; margin: 8px 0 2px; white-space: nowrap; }
+.costc .l { font: 700 36px var(--body); }
+.endc { width: 1080px; height: 1920px; background: radial-gradient(ellipse at 50% 40%, rgba(36,64,47,.96), rgba(10,18,14,.98) 75%); }
+.endc .box { position: absolute; left: 76px; width: 864px; top: 300px; height: 760px; --panel: #1d3328; --rim1: #5c3f18; --rim2: #d9b46a; --rim3: #4a3312; --text: #f3e6c4; }
+.endc h2 { position: absolute; left: 0; right: 0; top: 60px; margin: 0; text-align: center; font: 900 58px/1.05 Cinzel, serif; color: #f6e2a8; letter-spacing: .04em; }
+.endc p { position: absolute; left: 60px; right: 60px; top: 230px; margin: 0; text-align: center; font: 700 42px/1.15 Cormorant, serif; color: #f3e6c4; }
+.endc .discord { position: absolute; left: 110px; right: 110px; top: 470px; height: 140px; border-radius: 70px; background: #5865f2;
+  box-shadow: 0 0 0 5px #e2c27e, 0 10px 24px rgba(0,0,0,.5); text-align: center; color: #fff; }
+.endc .discord b { display: block; margin-top: 20px; font: 800 30px Cinzel, serif; letter-spacing: .16em; }
+.endc .discord span { display: block; margin-top: 4px; font: 700 46px Georgia, serif; }
+.endc .sub { position: absolute; left: 0; right: 0; top: 655px; text-align: center; font: 700 26px Cinzel, serif; letter-spacing: .18em; color: #c9a862; }
+.endc .ball { position: absolute; left: 0; top: 0; }
+
+/* ======================================================================== the eras */
+/* antiquity: veined marble, bronze rims, square capitals */
+#root.era-antiquity { --panel: linear-gradient(135deg, #f1ece1, #ddd5c4 40%, #efe9dc 70%, #d6ccb8); --rim1: #6e4a1c; --rim2: #c99a52; --rim3: #3d2a10;
+  --text: #2b2117; --accent: #8a1d1d; --paper: #f6f1e4; --ink: #2b2117; --stampc: #8a1d1d; --head: Cinzel, serif; --radius: 4px;
+  --frontier: #2b1c0e; }
+#root.era-antiquity .topbar .men, #root.era-antiquity .popup .n, #root.era-antiquity .costc .n { color: #2b2117; text-shadow: 0 1px 0 #fff; }
+#root.era-antiquity .popup .n.falling { color: #8a1d1d; }
+.card-antiquity .t::before, .card-antiquity .t::after { content: "❦"; color: #8a1d1d; margin: 0 .4em; font-size: .6em; vertical-align: middle; }
+
+/* medieval: parchment, gold leaf, an illuminated initial */
+#root.era-medieval { --panel: linear-gradient(180deg, #f4e7c4, #e8d6a6); --rim1: #7a1c1c; --rim2: #d4a838; --rim3: #1d3a7a;
+  --text: #2a1a0c; --accent: #7a1c1c; --paper: #f7ecd0; --ink: #2a1a0c; --stampc: #1d3a7a; --head: Cinzel, serif; --radius: 2px;
+  --capfont: 700 41px/1.1 Cormorant, serif; --frontier: #3a2410; }
+#root.era-medieval .topbar .men, #root.era-medieval .popup .n, #root.era-medieval .costc .n { color: #2a1a0c; text-shadow: none; }
+#root.era-medieval .topbar .nm, #root.era-medieval .lower .en, #root.era-medieval .popup .ttl { letter-spacing: .02em; }
+.card-medieval .t { font-family: UnifrakturMaguntia, Cinzel, serif; font-weight: 400; font-size: 72px; }
+.card-medieval .t::first-letter { color: #7a1c1c; font-size: 1.35em; text-shadow: 2px 2px 0 #d4a838; }
+
+/* renaissance: carved walnut, gilt, a cartouche */
+#root.era-renaissance { --panel: linear-gradient(160deg, #4a2c17, #2e1a0d 55%, #4a2c17); --rim1: #3a200d; --rim2: #e3b84f; --rim3: #24130a;
+  --text: #f6e7c4; --accent: #f0c860; --paper: #f2e2bc; --ink: #3a200d; --stampc: #8a2a12; --head: Cinzel, serif; --radius: 22px 4px 22px 4px;
+  --frontier: #2a160a; }
+
+/* victorian: the defaults */
+#root.era-victorian { }
+
+/* world wars: olive drab, stencil capitals, unit counters */
+#root.era-worldwars { --panel: linear-gradient(180deg, #4b5233, #383d26); --rim1: #262a18; --rim2: #b9a873; --rim3: #1a1c10;
+  --text: #ece6cf; --accent: #e8d38a; --paper: #e9e2c6; --ink: #24261a; --stampc: #9a2a1e; --head: Bahnschrift, "Arial Narrow", sans-serif; --radius: 2px;
+  --capfont: 700 38px/1.12 Bahnschrift, "Arial Narrow", sans-serif; --frontier: #191a10; }
+#root.era-worldwars .popup .ttl, #root.era-worldwars .eracard .t { letter-spacing: .1em; }
+#root.era-worldwars .topbar .dial { border-radius: 8px; }
+
+/* cold war: radar glass */
+#root.era-coldwar { --panel: rgba(4,18,10,.92); --rim1: #0b3a1e; --rim2: #3cff8a; --rim3: #031008; --text: #8dffb8; --accent: #3cff8a;
+  --paper: rgba(4,22,12,.92); --ink: #9dffc4; --stampc: #ff5a4a; --head: Consolas, "Courier New", monospace; --body: Consolas, monospace; --label: Consolas; --radius: 6px;
+  --capfont: 700 34px/1.15 Consolas, "Courier New", monospace; --frontier: #3cff8a; --inner: rgba(60,255,138,.45); }
+#root.era-coldwar .plate, #root.era-coldwar .paper, #root.era-coldwar .eracard {
+  background-image: repeating-linear-gradient(180deg, rgba(60,255,138,.06) 0 2px, transparent 2px 5px); }
+#root.era-coldwar .topbar .men, #root.era-coldwar .popup .n, #root.era-coldwar .costc .n, #root.era-coldwar .army .tag b { text-shadow: 0 0 10px #3cff8a; }
+#root.era-coldwar .topbar .dial { background: radial-gradient(circle, #04160b 0 58%, #3cff8a 59% 61%, #0b3a1e 62%); }
+#root.era-coldwar .topbar .dial .yr { color: #8dffb8; text-shadow: 0 0 12px #3cff8a; }
+#root.era-coldwar .rlabel { color: #b5ffd2; text-shadow: 0 0 4px #000, 0 0 10px #000; }
+#root.era-coldwar #vec path.f { stroke-width: 2.4; filter: drop-shadow(0 0 4px #3cff8a); }
+#root.era-coldwar .lower .tr, #root.era-coldwar .lower .en { font-family: Consolas, monospace; font-style: normal; }
+
+/* modern: clear glass */
+#root.era-modern { --panel: rgba(10,22,34,.62); --rim1: rgba(255,255,255,.08); --rim2: rgba(140,230,255,.75); --rim3: rgba(0,0,0,0);
+  --text: #f2fbff; --accent: #6fe3ff; --paper: rgba(255,255,255,.88); --ink: #0c1a24; --stampc: #e8384f; --head: "Segoe UI", "Segoe UI Variable", sans-serif; --label: "Segoe UI";
+  --body: "Segoe UI", sans-serif; --radius: 16px; --capfont: 600 36px/1.18 "Segoe UI", sans-serif; --frontier: #f2fbff; --inner: rgba(255,255,255,.5); }
+#root.era-modern .plate, #root.era-modern .eracard { backdrop-filter: blur(10px); }
+#root.era-modern .topbar .dial { background: radial-gradient(circle, rgba(10,22,34,.85) 0 58%, #6fe3ff 59% 60%, transparent 61%); }
+#root.era-modern .topbar .dial .yr { color: #f2fbff; font-family: "Segoe UI", sans-serif; font-weight: 300; }
+#root.era-modern #vec path.f { stroke-width: 2.2; filter: drop-shadow(0 0 3px rgba(111,227,255,.8)); }
+#root.era-modern .rlabel { color: #f2fbff; font-weight: 600; text-shadow: 0 0 4px #000, 0 0 10px rgba(0,0,0,.8); }

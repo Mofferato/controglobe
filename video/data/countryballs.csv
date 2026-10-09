@@ -3,6 +3,14 @@
 # lines: '|' between lines, at most 8 words each, said one at a time in a bubble on the bottom third.
 # Affectionate, never hateful; nothing mocks a faith or a people.
 id,flag,name,name_ar,personality,lines_en,lines_ar
-usa,usa,the Union,الاتحاد,steadfast; dry,Not one state leaves.|Back together. Now for Reconstruction.|The Union holds.,لن تخرج ولاية واحدة.|عدنا معًا. والآن إعادة الإعمار.|الاتحاد صامد.
+usa,usa,the Union,الاتحاد,steadfast; dry,Not one state leaves.|Back together. Now for Reconstruction.|The Union holds.|Independence! 25 September 1776.|Twenty-four states. Still arguing.,لن تخرج ولاية واحدة.|عدنا معًا. والآن إعادة الإعمار.|الاتحاد صامد.|الاستقلال! ٢٥ سبتمبر ١٧٧٦.|أربع وعشرون ولاية. وما زلنا نتجادل.
 isa,isa,the Islamic States,الدول الإسلامية,proud; stubborn,We secede. Riyadh is our capital!|Our ports are all closed?!|...fine. We surrender.,انفصلنا! الرياض عاصمتنا.|موانئنا كلها مغلقة؟!|...حسنًا. نستسلم.
 zagrosia,zagrosia,Zagrosia,زاغروسيا,calm; welcoming,Night Road travellers welcome here.|I stay out of this one.,أهلًا بمسافري درب الليل.|لن أتدخل في هذه.
+rum,rum,Rum,الروم,proud; theatrical,Constantinople is eternal.|...eternal-ish.,القسطنطينية خالدة.|...خالدة تقريبًا.
+sasanian,sasanian,Persia,فارس,regal; weary,Ctesiphon bows to no one.|Merv was the last stop.,طيسفون لا تنحني لأحد.|كانت مرو المحطة الأخيرة.
+umayyad,umayyad,the Umayyads,الأمويون,confident; restless,From the Iberian coast to Sindh.,من ساحل إيبيريا إلى السند.
+yavana,yavana,the Yavanas,اليافانا,curious; serene,"Aristotle, the Buddha, al-Kindi: one library.",أرسطو وبوذا والكندي: مكتبة واحدة.
+masr,masr,Masr,مصر,proud; defiant,Jolof? Who invited Jolof?!|Kong. Go. Home.,جولوف؟ من دعا جولوف؟!|كونغ. عُد. إلى بلادك.
+jolof,jolof,Jolof,جولوف,grand; acquisitive,Masr is a viceroyalty now.,مصر نيابة الآن.
+hindustan,hindustan,Hindustan,هندوستان,stiff; stubborn,Zafar? Fine. Keep your desert.,زفار؟ حسنًا. احتفظوا بصحرائكم.
+derg,derg,the Derg Union,اتحاد الدرغ,cold; patient,"Your move, Arabia.|...I'll dissolve now.",دورك يا جزيرة العرب.|...سأنحلّ الآن.

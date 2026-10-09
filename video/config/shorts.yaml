@@ -20,6 +20,13 @@ shorts:
   - id: 2
     slug: civil-war
     title: "Arabia's Civil War: the Islamic States of Arabia (1861-1865)"
+    upload:
+      title: "Arabia's Civil War: the Islamic States of Arabia (1861-1865) #Shorts"
+      description: |
+        1861: Arabia splits in two. In Controglobe's Arabia, eleven states secede as the Islamic States of Arabia, and four
+        years of war on three fronts end at Wadi Hanifa on 9 April 1865.
+      pinned: "Which front would you have defended in 1861: the Red Sea coast, the Najd or the Gulf?"
+      thumbnail: "the frame at 0.6 s (the globe with the split map and the title), or 21.8 s (the surrender popup)"
     skin: victorian
     war: Civil War
     duration: 30.0
@@ -113,3 +120,209 @@ shorts:
       - {id: isa, t: 22.4, d: 1.7, line: 2, mood: sad}
       - {id: usa, t: 24.4, d: 2.3, line: 1, mood: happy}
     end: {t0: 27.0}
+
+  # ---------------------------------------------------------------------------------------------
+  # Short 3: every era on the globe. The maps are the long cut's own years (cgvideo/world.py paints the
+  # mesh and the realms beyond it); each era wears its own HUD skin. Camera keys: [t, lon, lat, distance in
+  # Earth radii, tilt in degrees]. Years with a war carry a ledger (the top bar's two sides).
+  - id: 3
+    slug: every-era
+    title: "Alternate History of Arabia (in place of the United States): every era on the globe"
+    upload:
+      title: "What if Arabia had America's history? Every era on the globe #Shorts"
+      description: |
+        Arabia in place of the United States, from 500 BCE to 2026 in under a minute: Rome and Persia fall to the caliphates,
+        the Yavana kings of Gandhara meet Islam, Jolof takes Masr, the Revolution, the Civil War, two world wars fought in
+        Africa, the Cold War against the Derg Union and the Union of twenty-four states. Each era in the look of its own
+        strategy game, drawn by us.
+      pinned: "Which era should get its own full Short next: the caliphates, the Revolution or the Cold War?"
+      thumbnail: "output/shorts/3/thumbnail_1280x720.png (16:9) and cover_1080x1920.png (the Short's cover frame)"
+    engine: globe
+    duration: 57.0
+    fills_px: 4096
+    hook: {t1: 2.6, rewind: 1.6, sub: "ALTERNATE HISTORY OF ARABIA", title: "WHAT IF ARABIA HAD <b>AMERICA'S</b> HISTORY?",
+           blender: {year: 2026, lens: 58, keys: [[0, 5, 20, 4.2, 0], [1.3, 32, 24, 3.0, 0], [2.9, 44, 26.5, 2.3, 0]], sun: [30, 20]}}
+    states:
+      s2026: 2026
+      a_500: -500
+      a_262: -262
+      a_400: 400
+      a_627: 627
+      m_640: 640
+      m_740: 740
+      m_1001: 1001
+      m_1258: 1258
+      r_1500: 1500
+      r_1530: 1530
+      r_1700: 1700
+      r_1763: 1763
+      v_1783: 1783
+      v_1803: 1803
+      v_1848: 1848
+      v_1862: 1862
+      v_1865: 1865
+      v_1898: 1898
+      w_1917: 1917
+      w_1942: 1942
+      w_1946: 1946
+      c_1960: 1960
+      c_1992: 1992
+      x_2003: 2003
+      x_2021: 2021
+    track: [[0, s2026], [2.6, a_500], [3.9, a_262], [5.4, a_400], [7.4, a_627], [12.2, m_640], [14.4, m_740], [16.4, m_1001],
+            [17.6, m_1258], [18.6, r_1500], [22.0, r_1530], [23.4, r_1700], [24.8, r_1763], [28.2, v_1783], [29.4, v_1803],
+            [30.6, v_1848], [31.4, v_1862], [33.2, v_1865], [33.8, v_1898], [34.6, w_1917], [37.2, w_1942], [39.6, w_1946],
+            [40.6, c_1960], [44.6, c_1992], [46.6, x_2003], [50.2, x_2021], [51.0, s2026]]
+    camera:
+      - [0.0, 45, 25, 2.5, 0]
+      - [2.6, 44, 27, 2.25, 0]
+      - [5.4, 50, 31, 2.9, 0]
+      - [7.4, 42, 34, 2.1, 6]
+      - [10.2, 40, 31, 2.2, 4]
+      - [12.6, 44, 31, 2.0, 4]
+      - [14.4, 30, 40, 3.7, 0]
+      - [16.4, 63, 32, 2.2, 6]
+      - [18.3, 50, 28, 2.6, 0]
+      - [18.6, 40, 15, 3.2, 0]
+      - [20.6, 33, 28, 2.0, 6]
+      - [23.4, 41, 23, 2.2, 4]
+      - [25.8, 44, 24, 2.3, 0]
+      - [27.4, 52, 19, 2.0, 6]
+      - [29.4, 46, 28, 2.4, 0]
+      - [32.0, 34, 28, 2.1, 6]
+      - [34.6, 30, 10, 3.4, 0]
+      - [37.2, 44, 0, 3.0, 0]
+      - [39.0, 49, 21, 2.3, 4]
+      - [40.6, 50, 22, 3.4, 0]
+      - [44.6, 46, 22, 3.0, 0]
+      - [46.6, 70, 45, 3.2, 0]
+      - [48.0, 82, 56, 2.5, 6]
+      - [51.0, 46, 25, 2.5, 0]
+      - [53.8, 46, 25, 2.9, 0]
+    clock: [[0, 2026], [2.6, -500], [3.9, -262], [5.4, 400], [7.4, 602], [9.6, 628], [10.2, 630], [11.0, 636.6], [12.6, 636.9],
+            [14.4, 740], [16.4, 1001], [17.6, 1258], [18.6, 1497], [20.6, 1519], [22.0, 1521.6], [23.4, 1607], [24.8, 1763],
+            [25.8, 1775], [26.2, 1776.73], [27.6, 1781.8], [29.4, 1803], [30.6, 1848], [31.4, 1861.3], [32.2, 1862.35],
+            [33.2, 1864.5], [33.8, 1898], [34.6, 1914], [35.0, 1917.3], [37.2, 1941.93], [39.0, 1945.55], [40.6, 1946],
+            [41.0, 1949.6], [43.0, 1962], [44.4, 1991.98], [46.6, 1992], [47.4, 2001.7], [50.2, 2021.6], [51.0, 2026], [57, 2026]]
+    eras:
+      - {t0: 2.6, t1: 10.2, skin: antiquity, kicker: "ANTIQUITY", title: "THE AGE OF EMPIRES", years: "500 BCE – 609", label: "ANTIQUITY", banner: flag}
+      - {t0: 10.2, t1: 18.6, skin: medieval, kicker: "THE MIDDLE AGES", title: "The Caliphal Centuries", years: "610 – 1257", label: "", banner: shield}
+      - {t0: 18.6, t1: 25.8, skin: renaissance, kicker: "THE RENAISSANCE", title: "THE AGE OF THE CROWNS", years: "1497 – 1762", label: "AGE OF SAIL", banner: flag}
+      - {t0: 25.8, t1: 34.6, skin: victorian, kicker: "THE VICTORIAN AGE", title: "THE AGE OF REVOLUTIONS", years: "1763 – 1913", label: "", banner: flag}
+      - {t0: 34.6, t1: 40.6, skin: worldwars, kicker: "1914 – 1945", title: "THE WORLD WARS", years: "two wars fought in Africa", label: "", banner: block}
+      - {t0: 40.6, t1: 46.6, skin: coldwar, kicker: "1946 – 1991", title: "THE COLD WAR", years: "the Union against the Derg", label: "DEFCON 3", banner: chip}
+      - {t0: 46.6, t1: 53.8, skin: modern, kicker: "1992 – 2026", title: "THE MODERN DAY", years: "twenty-four states", label: "", banner: chip}
+    ledgers:
+      - {t0: 7.4, t1: 10.2, title: "ROMAN–PERSIAN WAR", month: true,
+         a: {polity: rum, name: "ROME", ar: "الروم", label: "legionaries", keys: [[7.4, 0], [7.9, 110000], [8.6, 110000], [9.6, 102000]]},
+         b: {polity: sasanian, name: "PERSIA", ar: "فارس", label: "warriors", keys: [[7.4, 0], [7.9, 95000], [8.6, 95000], [9.6, 40000]]}}
+      - {t0: 10.2, t1: 14.3, title: "THE RASHIDUN CONQUESTS", month: true,
+         a: {polity: rashidun, name: "RASHIDUN", ar: "الراشدون", label: "warriors", keys: [[10.2, 0], [10.7, 55000], [12.6, 55000], [13.6, 48000]]},
+         b: {polity: rum, name: "ROME & PERSIA", ar: "الروم وفارس", label: "soldiers", keys: [[10.2, 160000], [11.4, 90000], [13.2, 35000], [14.0, 0]]}}
+      - {t0: 20.6, t1: 23.2, title: "CONQUEST OF MASR", month: true,
+         a: {polity: jolof, name: "JOLOF", ar: "جولوف", label: "with allies", keys: [[20.6, 0], [21.0, 81500], [22.4, 70000]]},
+         b: {polity: masr, name: "MASR", ar: "مصر", label: "warriors", keys: [[20.6, 0], [21.0, 300000], [22.4, 40000]]}}
+      - {t0: 25.9, t1: 29.2, title: "THE REVOLUTION", month: true,
+         a: {polity: usa, name: "UNION", ar: "الاتحاد", label: "continentals", keys: [[25.9, 0], [26.6, 16000], [27.4, 23800]]},
+         b: {polity: hindustan, name: "HINDUSTAN", ar: "هندوستان", label: "regulars", keys: [[25.9, 0], [26.6, 8000], [28.8, 0]]}}
+      - {t0: 31.6, t1: 33.6, title: "THE KONG INTERVENTION", month: true,
+         a: {polity: masr, name: "MASR", ar: "مصر", label: "soldiers", keys: [[31.6, 0], [32.0, 6000], [33.0, 5600]]},
+         b: {polity: kong, name: "KONG", ar: "كونغ", label: "soldiers", keys: [[31.6, 0], [32.0, 4500], [33.0, 3800]]}}
+      - {t0: 34.7, t1: 40.5, title: "THE WORLD WARS",
+         a: {polity: usa, name: "ARABIA", ar: "جزيرة العرب", label: "under arms", keys: [[34.7, 0], [36.0, 2000000], [37.2, 2000000], [38.6, 16000000]]},
+         b: {polity: hindustan, name: "HINDUSTAN", ar: "هندوستان", label: "under arms", keys: [[37.2, 0], [38.0, 7000000], [39.4, 7000000], [40.2, 0]]}}
+      - {t0: 40.7, t1: 46.5, title: "THE COLD WAR",
+         a: {polity: usa, name: "ARABIA", ar: "جزيرة العرب", label: "warheads", keys: [[40.7, 0], [43.0, 23000], [44.6, 19000]]},
+         b: {polity: derg, name: "DERG UNION", ar: "اتحاد الدرغ", label: "warheads", keys: [[40.7, 0], [43.0, 40000], [44.6, 0]]}}
+      - {t0: 46.7, t1: 50.4, title: "THE SIBERIAN WAR",
+         a: {polity: usa, name: "ARABIA", ar: "جزيرة العرب", label: "troops in Siberia", keys: [[46.7, 0], [48.4, 100000], [50.2, 0]]}}
+    captions:
+      - {t: 3.9, d: 1.5, text: "262 BCE: fourteen oasis leagues swear the Covenant of the Wells."}
+      - {t: 5.6, d: 1.6, text: "Rome and Persia rise; the Yavana kings hold Gandhara."}
+      - {t: 7.6, d: 1.7, text: "602–628: Rome and Persia bleed each other white."}
+      - {t: 10.8, d: 1.5, text: "636: Yarmuk and Qadisiyyah. Rome and Persia break."}
+      - {t: 14.5, d: 1.8, text: "The caliphates at their height: northern Europe to Sindh."}
+      - {t: 16.6, d: 1.0, text: "1001: Greek, Buddhist and Islamic thought meet in Gandhara."}
+      - {t: 19.3, d: 1.3, text: "1497: Kaabu's Mansa Jata rounds the Horn."}
+      - {t: 23.5, d: 1.3, text: "1607: Hindustan's Red Sea Company settles at Jeddah."}
+      - {t: 26.0, d: 1.4, text: "25 September 1776: the Declaration of Independence."}
+      - {t: 29.5, d: 1.0, text: "1803: the Kuwait Purchase doubles the country."}
+      - {t: 30.7, d: 0.9, text: "1848: Masr cedes Oman, Socotra and the Gulf coast."}
+      - {t: 35.0, d: 1.8, text: "April 1917: two million Arabian troops sail for Africa."}
+      - {t: 37.3, d: 1.6, text: "7 December 1941: Hindustan strikes the fleet at Yalang Yalang."}
+      - {t: 39.1, d: 1.4, text: "1945: the first atomic bomb is tested in the Rub' al-Khali."}
+      - {t: 41.0, d: 1.6, text: "1949: the Derg Union's first atomic test ends Arabia's monopoly."}
+      - {t: 44.5, d: 1.6, text: "26 December 1991: the Derg Union is dissolved."}
+      - {t: 47.3, d: 2.0, text: "2001–2021: the Siberian War, Arabia's twenty-year war."}
+      - {t: 51.2, d: 2.2, text: "2026: twenty-four states, the Union of Arabia."}
+    lower:
+      - {t: 4.2, d: 1.2, ar: "حجر", tr: "Ḥajr", en: "Hajr, the Covenant of the Wells"}
+      - {t: 8.2, d: 1.2, ar: "نينوى", tr: "Nīnawā", en: "Nineveh"}
+      - {t: 11.2, d: 1.2, ar: "اليرموك", tr: "al-Yarmūk", en: "the Yarmuk"}
+      - {t: 14.9, d: 1.3, ar: "دمشق", tr: "Dimashq", en: "Damascus, the Umayyad capital"}
+      - {t: 21.8, d: 1.2, ar: "القاهرة", tr: "al-Qāhirah", en: "Cairo"}
+      - {t: 23.9, d: 0.9, ar: "جدة", tr: "Jiddah", en: "Jeddah"}
+      - {t: 27.8, d: 1.0, ar: "ظفار", tr: "Ẓafār", en: "Zafar"}
+      - {t: 32.4, d: 0.9, ar: "السويس", tr: "as-Suways", en: "Suez"}
+      - {t: 37.8, d: 1.0, ar: "قمر", tr: "Qumur", en: "Yalang Yalang, Qumur"}
+      - {t: 48.2, d: 1.6, ar: "سيبيريا", tr: "Sībīriyā", en: "Siberia"}
+    armies:
+      - {unit: "Rum", polity: rum, t0: 7.6, t1: 9.9, path: [[38.5, 38.4], [43.15, 36.36]], move: [[7.6, 0], [8.5, 1]], n: [[7.6, 0], [8.0, 50000], [8.6, 50000], [9.6, 42000]]}
+      - {unit: "Persia", polity: sasanian, t0: 7.7, t1: 9.9, path: [[44.4, 33.1], [43.4, 35.9]], move: [[7.7, 0], [8.5, 1]], n: [[7.7, 0], [8.1, 12000], [8.6, 12000], [9.6, 3000]]}
+      - {unit: "Yarmuk", polity: rashidun, t0: 10.4, t1: 12.2, path: [[39.6, 24.5], [36.6, 30.0], [35.95, 32.8]], move: [[10.4, 0], [11.0, 1]], n: [[10.4, 0], [10.8, 25000], [11.6, 24000]]}
+      - {unit: "Qadisiyyah", polity: rashidun, t0: 11.6, t1: 13.6, path: [[42.5, 27.0], [44.4, 31.8]], move: [[11.6, 0], [12.6, 1]], n: [[11.6, 0], [12.0, 30000], [13.2, 26000]]}
+      - {unit: "Jolof", polity: jolof, t0: 20.8, t1: 22.9, path: [[33.6, 27.0], [32.4, 29.4], [31.24, 30.04]], move: [[20.8, 0], [21.6, 1]], n: [[20.8, 0], [21.2, 81500], [22.4, 70000]]}
+      - {unit: "Continentals", polity: usa, t0: 26.4, t1: 28.8, path: [[50.5, 20.0], [54.1, 17.0]], move: [[26.4, 0], [27.5, 1]], n: [[26.4, 0], [26.8, 23800], [28.2, 22900]]}
+      - {unit: "Siberia", polity: usa, t0: 47.6, t1: 50.2, path: [[60.0, 50.0], [82.0, 58.0]], move: [[47.6, 0], [48.6, 1]], n: [[47.6, 0], [48.4, 100000], [49.6, 100000], [50.2, 0]]}
+    arrows:
+      - {polity: rashidun, t0: 10.4, t1: 11.1, path: [[39.6, 24.5], [36.6, 30.0], [35.95, 32.8]]}
+      - {polity: rashidun, t0: 11.6, t1: 12.6, path: [[42.5, 27.0], [44.4, 31.8]]}
+      - {polity: rashidun, t0: 13.0, t1: 14.2, path: [[44.4, 31.8], [51.7, 34.6], [59.6, 36.3], [61.8, 37.6]], big: true}
+      - {polity: kaabu, t0: 19.3, t1: 20.6, path: [[12.0, -30.0], [35.0, -32.0], [51.5, -5.0], [51.3, 11.8], [45.0, 12.8]], big: true}
+      - {polity: jolof, t0: 20.8, t1: 21.6, path: [[33.6, 27.0], [32.4, 29.4], [31.24, 30.04]]}
+      - {polity: usa, t0: 26.4, t1: 27.5, path: [[50.5, 20.0], [54.1, 17.0]]}
+      - {polity: kong, t0: 31.6, t1: 32.2, path: [[29.8, 31.4], [32.55, 29.97]]}
+      - {polity: usa, t0: 35.2, t1: 36.8, path: [[39.2, 21.5], [36.0, 15.0], [22.0, 5.0], [12.0, 6.0]], big: true}
+      - {polity: usa, t0: 41.6, t1: 42.8, path: [[46.0, 24.0], [38.7, 9.0]], missile: true}
+      - {polity: derg, t0: 41.8, t1: 43.0, path: [[39.0, 10.0], [46.7, 24.7]], missile: true}
+      - {polity: usa, t0: 42.0, t1: 43.2, path: [[47.0, 30.0], [66.0, 34.0]], missile: true}
+      - {polity: derg, t0: 42.2, t1: 43.4, path: [[66.0, 34.0], [50.0, 26.4]], missile: true}
+      - {polity: usa, t0: 47.4, t1: 48.6, path: [[46.0, 30.0], [60.0, 50.0], [82.0, 58.0]], big: true}
+    battles:
+      - {t: 8.6, at: [43.15, 36.36], title: "Battle of Nineveh", date: "December 627",
+         a: {polity: rum, from: 50000, to: 42000}, b: {polity: sasanian, from: 12000, to: 3000}, result: "Persia is broken", winner: rum}
+      - {t: 11.0, at: [35.95, 32.8], title: "Battle of the Yarmuk", date: "August 636",
+         a: {polity: rashidun, from: 25000, to: 22000}, b: {polity: rum, from: 100000, to: 30000}, result: "Rome leaves the Levant", winner: rashidun}
+      - {t: 12.6, at: [44.4, 31.8], title: "Battle of Qadisiyyah", date: "November 636",
+         a: {polity: rashidun, from: 30000, to: 24000}, b: {polity: sasanian, from: 60000, to: 15000}, result: "Persia's army is destroyed", winner: rashidun}
+      - {t: 21.6, at: [31.24, 30.04], title: "The Fall of Cairo", date: "August 1521",
+         a: {polity: jolof, from: 81500, to: 70000}, b: {polity: masr, from: 300000, to: 40000}, result: "The Viceroyalty of Masr", winner: jolof}
+      - {t: 27.6, at: [54.1, 17.0], title: "The Surrender at Zafar", date: "October 1781",
+         a: {polity: usa, from: 23800, to: 22900}, b: {polity: hindustan, from: 8000, to: 0}, result: "General Chatterjee surrenders", winner: usa}
+      - {t: 32.2, at: [32.55, 29.97], title: "Battle of Suez", date: "5 May 1862",
+         a: {polity: masr, from: 6000, to: 5600}, b: {polity: kong, from: 4500, to: 3800}, result: "Masr turns Kong back", winner: masr}
+      - {t: 37.6, at: [43.3, -11.7], title: "Yalang Yalang", date: "7 December 1941", nopopup: true,
+         a: {polity: hindustan, from: 0, to: 0}, b: {polity: usa, from: 0, to: 0}, result: "", winner: hindustan}
+      - {t: 39.2, at: [50.0, 20.0], title: "The Alamut Project", date: "July 1945", nopopup: true, nuke: true,
+         a: {polity: usa, from: 0, to: 0}, b: {polity: usa, from: 0, to: 0}, result: "", winner: usa}
+    stamps:
+      - {t: 17.7, text: "1258 · BAGHDAD IS SACKED"}
+      - {t: 29.9, text: "+ KUWAIT · 60 MILLION RIYALS"}
+      - {t: 31.5, text: "1861 · ELEVEN STATES SECEDE"}
+      - {t: 32.95, d: 1.3, text: "1864 · KONG CROWNS A MASRI EMPEROR"}
+    balls:   # times follow the ElevenLabs takes (build/shorts/voices, sped 1.3x into hf/assets/vo_<t>_<id>.wav)
+      - {id: rum, t: 5.6, d: 1.9, line: 0, mood: smug, side: l, voice: vo_05.90_rum.mp3}
+      - {id: sasanian, t: 7.6, d: 1.8, line: 0, mood: smug, side: r, voice: vo_07.00_sasanian.mp3}
+      - {id: rum, t: 12.4, d: 1.9, line: 1, mood: sad, side: l, voice: vo_12.90_rum.mp3}
+      - {id: umayyad, t: 14.75, d: 2.3, line: 0, mood: happy, side: r, voice: vo_15.00_umayyad.mp3}
+      - {id: yavana, t: 17.1, d: 2.9, line: 0, mood: happy, side: l, voice: vo_16.60_yavana.mp3}
+      - {id: masr, t: 20.9, d: 2.1, line: 0, mood: surprised, side: r, voice: vo_20.90_masr.mp3}
+      - {id: jolof, t: 23.1, d: 1.8, line: 0, mood: smug, side: l, voice: vo_22.40_jolof.mp3}
+      - {id: usa, t: 25.9, d: 2.9, line: 3, mood: happy, side: l, voice: vo_26.30_usa.mp3}
+      - {id: hindustan, t: 28.9, d: 3.4, line: 0, mood: sad, side: r, voice: vo_28.40_hindustan.mp3}
+      - {id: masr, t: 32.7, d: 1.8, line: 1, mood: angry, side: r, voice: vo_32.60_masr.mp3}
+      - {id: derg, t: 42.0, d: 2.2, line: 0, mood: smug, side: r, voice: vo_42.00_derg.mp3}
+      - {id: derg, t: 45.0, d: 1.7, line: 1, mood: sad, side: r, voice: vo_45.00_derg.mp3}
+      - {id: usa, t: 51.6, d: 2.1, line: 4, mood: smug, side: l, voice: vo_51.60_usa.mp3}
+    end: {t0: 53.8, title: "THE FULL HISTORY", balls: [usa, rum, sasanian, masr, yavana],
+          blender: {keys: [[0, 46, 25, 2.9, 0], [3.4, 70, 22, 7.0, 0]], sun: [30, 20]}}

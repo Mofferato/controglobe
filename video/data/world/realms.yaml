@@ -1,0 +1,61 @@
+# Realms beyond the province mesh, for the globe (cgvideo/world.py): the empires whose ground reaches past
+# the frame of the long cut. Each realm is a union of the atlases' traced nations (data/atlas, keys from
+# <region>-nations.csv) and of rings drawn on the ground (rivers, crests, desert edges; lon lat), clipped to
+# Natural Earth land. QGIS shows them as layers (integrations/qgis/cg_world.py); edit the rings there.
+#
+# Canon: the caliphates "carried Arabic administration across northern Europe, the Caucasus, Central Asia and
+# the Iberian-Sahelian coasts" (History, Union, Timeline). Northern Europe carries northern Africa's history
+# (Europe atlas: Iceland = Morocco, Sweden = Algeria, Denmark = Tunisia, Finland = Libya), so the caliphal
+# west is drawn there. Rome, Persia and the Yavana kingdom: user direction 2026-10-09; extents proposed.
+
+realms:
+  - id: rum_outer
+    polity: rum
+    years: [330, 717]
+    nations: {europe: [greece, bulgaria, macedonia, albania, turkey]}
+
+  - id: persia_outer
+    polity: sasanian
+    years: [224, 650]
+    rings:
+      # Khorasan to the Oxus: the Kopet Dag, Merv, the Amu Darya down to Termez, the Hindu Kush, Herat, Sistan
+      - [[53.9, 37.3], [56.5, 38.6], [59.0, 39.6], [61.6, 39.0], [63.6, 38.9], [65.5, 37.8], [67.3, 37.2],
+         [68.0, 35.6], [65.0, 34.6], [62.2, 34.4], [61.0, 31.2], [60.8, 28.8], [58.8, 28.4], [55.5, 33.0], [53.9, 37.3]]
+
+  - id: yavana_core
+    polity: yavana
+    years: [-185, 1000]
+    rings:
+      # Gandhara and the Punjab: the Hindu Kush, the Kashmir valley's rim, the Beas, the Thar's edge, the Indus
+      - [[69.0, 35.9], [71.6, 36.6], [73.8, 36.3], [75.6, 34.2], [76.4, 32.0], [75.8, 30.6], [74.0, 29.4],
+         [72.0, 28.9], [70.6, 29.6], [70.1, 31.2], [69.3, 32.9], [69.0, 35.9]]
+
+  - id: yavana_sultanate_core
+    polity: yavana_sultanate
+    years: [1001, 1581]
+    same_as: yavana_core
+
+  # the caliphates at their fullest extent: the Umayyads (661-749) hold all of it
+  - id: caliphate_east
+    polity: [rashidun, 651, 660, umayyad, 661, 749, abbasid, 750, 873]
+    years: [651, 873]
+    rings:
+      # Transoxiana and Khwarazm to the Syr Darya and Ferghana; Khorasan; Sistan
+      - [[53.0, 37.0], [53.6, 40.4], [55.8, 41.6], [58.4, 45.0], [61.4, 46.2], [65.2, 44.8], [68.4, 42.6],
+         [71.2, 42.2], [73.2, 40.8], [71.4, 39.4], [69.4, 37.6], [68.0, 35.6], [65.0, 34.6], [62.2, 34.4],
+         [61.0, 31.2], [60.8, 28.8], [58.8, 28.4], [55.5, 33.0], [53.0, 37.0]]
+  - id: caliphate_sindh
+    polity: [umayyad, 711, 749, abbasid, 750, 870]
+    years: [711, 870]
+    rings:
+      # Sindh: the Kirthar range, the Indus to Multan, the edge of the Thar, the Rann of Kutch
+      - [[66.6, 25.3], [66.9, 28.6], [69.4, 29.6], [71.6, 30.4], [72.0, 28.9], [71.0, 25.6], [69.6, 24.2],
+         [68.4, 23.5], [67.2, 24.6], [66.6, 25.3]]
+  - id: caliphate_north_europe
+    polity: [umayyad, 670, 749, abbasid, 750, 799]
+    years: [670, 799]
+    nations: {europe: [iceland, sweden, denmark, finland]}
+  - id: caliphate_iberian_sahelian
+    polity: [umayyad, 711, 749]
+    years: [711, 749]
+    nations: {europe: [spain, portugal], africa: [jolof]}

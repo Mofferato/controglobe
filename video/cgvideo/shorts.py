@@ -33,7 +33,7 @@ from . import data as D
 from .config import load_config, paths
 
 ENGINE = pathlib.Path(__file__).with_name("shorts_engine")
-VERSION = 3           # bump when plates or the globe are drawn differently
+VERSION = 4           # bump when plates or the globe are drawn differently
 KM_FULL = 3400.0      # zoom 1 shows this many km from the top of the frame to the bottom
 SIDE = {"usa": {"colour": "#2f64a8", "light": "#9fc0ea", "name": "UNION", "name_ar": "الاتحاد"},
         "isa": {"colour": "#b5463a", "light": "#f0a99c", "name": "ISLAMIC STATES", "name_ar": "الدول الإسلامية"}}
@@ -246,6 +246,11 @@ FLAG_SVG = {
     "isa": ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="#9e3b30"/>'
             '<rect y="84" width="300" height="32" fill="#f4efe6"/><rect width="104" height="200" fill="#1f5a3a"/>{stars}'
             '<rect width="300" height="200" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="4"/></svg>'),
+    "derg": ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="#b8423a"/>'
+             '<rect width="300" height="40" fill="#2f6b3f"/><rect y="40" width="300" height="14" fill="#e3b84f"/>'
+             '<circle cx="150" cy="122" r="44" fill="none" stroke="#e3b84f" stroke-width="10" stroke-dasharray="13 9"/>'
+             '<circle cx="150" cy="122" r="20" fill="#e3b84f"/>'
+             '<rect width="300" height="200" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="4"/></svg>'),
     "zagrosia": ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="#f4efe6"/>'
                  '<rect width="300" height="56" fill="#c9524a"/><rect y="144" width="300" height="56" fill="#c9524a"/>'
                  '<path d="M70,132 L118,74 L140,100 L166,62 L230,132 Z" fill="#2f5d46"/><path d="M166,62 L178,78 L170,76 L160,84 L154,77 Z" fill="#fff"/>'
@@ -293,6 +298,9 @@ def compose(sid: int, cfg_path="config/project.yaml", log=print) -> pathlib.Path
     cfg = load_config(cfg_path)
     spec, raw = spec_for(cfg, sid)
     data = D.load(cfg)
+    if spec.get("engine") == "globe":
+        from .shorts_globe import compose_globe
+        return compose_globe(cfg, data, spec, sid, log)
     out = out_dir(cfg, sid) / "hf"
     (out / "assets").mkdir(parents=True, exist_ok=True)
     plate = Plate(cfg, spec)
@@ -449,7 +457,8 @@ def stills(sid: int, times, cfg_path="config/project.yaml", log=print) -> list[p
     Dd = json.loads((hf / "data.js").read_text(encoding="utf8")[len("window.DATA = "):].rstrip().rstrip(";"))
     res = []
     with serve(hf) as base, sync_playwright() as p:
-        b = p.chromium.launch(channel="chrome", headless=True)
+        b = p.chromium.launch(channel="chrome", headless=True,
+                              args=["--ignore-gpu-blocklist", "--enable-gpu-rasterization", "--use-angle=d3d11", "--enable-unsafe-swiftshader"])
         pg = b.new_page(viewport={"width": Dd["W"], "height": Dd["H"]})
         errs = []
         pg.on("console", lambda m: errs.append(f"{m.type}: {m.text}") if m.type in ("error", "warning") else None)
@@ -458,10 +467,13 @@ def stills(sid: int, times, cfg_path="config/project.yaml", log=print) -> list[p
         pg.wait_for_function("window.__render !== undefined", timeout=120000)
         for t in times:
             pg.evaluate(f"window.__render({t})")
-            pg.evaluate("""async () => { const v = document.getElementById('globe'); if (!v) return;
-                const t = window.__lastT; if (t < +v.dataset.start || t > +v.dataset.start + +v.dataset.duration) return;
-                await new Promise(r => { const done = () => r(); v.addEventListener('seeked', done, {once: true});
-                v.currentTime = t - +v.dataset.start; setTimeout(done, 1500); }); }""")
+            pg.evaluate("""async () => { const t = window.__lastT;
+                for (const v of document.querySelectorAll('video')) {
+                  if (t < +v.dataset.start || t > +v.dataset.start + +v.dataset.duration) continue;
+                  if (v.readyState < 2) await new Promise(r => { v.addEventListener('loadeddata', r, {once: true}); v.load(); setTimeout(r, 4000); });
+                  await new Promise(r => { const done = () => r(); v.addEventListener('seeked', done, {once: true});
+                    v.currentTime = Math.max(0.001, t - +v.dataset.start); setTimeout(done, 2000); });
+                } }""")
             pg.wait_for_timeout(150)
             path = dst / f"short{sid}_{t:06.2f}.png"
             pg.screenshot(path=str(path))
@@ -531,27 +543,28 @@ def upload_kit(sid: int, video: pathlib.Path | None, cfg_path="config/project.ya
     for i, c in enumerate(spec.get("captions", []), 1):
         srt.append(f"{i}\n{ts(c['t'])} --> {ts(c['t'] + c['d'])}\n{c['text']}\n")
     (dst / f"short{sid}.srt").write_text("\n".join(srt), encoding="utf8")
-    tags = ["#Shorts", "#AlternateHistory", "#Mapping", "#Controglobe"]
+    up = spec.get("upload") or {}
+    tags = up.get("tags") or ["#Shorts", "#AlternateHistory", "#Mapping", "#Controglobe"]
+    discord = (spec.get("end_card") or {}).get("discord") or pub.get("community", "")
     kit = f"""# Short {sid}: upload kit
 
-**Title** ({len(spec['title'])} chars): {spec['title']}
+**Title** ({len(up.get('title', spec['title']))} chars): {up.get('title', spec['title'])}
 
 **Description**
 
-{spec['hook']['title'].title()}. In Controglobe's Arabia, eleven states secede as the Islamic States of Arabia, and four
-years of war on three fronts end at Wadi Hanifa on 9 April 1865.
+{up.get('description', '').strip()}
 
 The whole history, every year from 500 BCE to 2026: {pub.get('site', '')}
-Join the Discord: https://{spec.get('end_card', {}).get('discord', pub.get('community', ''))}
+Join the Discord: {discord if discord.startswith('http') else 'https://' + discord}
 
-Army strengths on screen are illustrative (scaled from the war this one carries); dates, places and the toll are the
+Army strengths on screen are illustrative (scaled from the wars these ones carry); dates, places and tolls are the
 encyclopedia's canon.
 
 {' '.join(tags)}
 
-**Pinned comment**: Which front would you have defended in 1861: the Red Sea coast, the Najd or the Gulf?
+**Pinned comment**: {up.get('pinned', '')}
 
-**Thumbnail frame**: the frame at 0.6 s (the globe with the split map and the title), or 21.8 s (the surrender popup).
+**Thumbnail**: {up.get('thumbnail', '')}
 
 **Exports**: one 1080x1920 H.264 master serves YouTube Shorts, TikTok and Instagram Reels (all 9:16, under 60 s).
 
@@ -561,3 +574,80 @@ encyclopedia's canon.
     (dst / f"short{sid}_upload.md").write_text(kit, encoding="utf8")
     log(f"  upload kit: {dst / f'short{sid}_upload.md'}")
     return dst
+
+
+# -- DaVinci Resolve -----------------------------------------------------------------------------------
+
+def resolve_script(ids, cfg_path="config/project.yaml", log=print) -> pathlib.Path:
+    """A Lua menu script (Workspace > Scripts > cg_shorts) that imports each Short's newest render into the
+    open project and builds a new vertical 1080x1920 timeline for it, marked at its captions (blue), battles
+    (red) and end card (green). Free Resolve 21.1 runs menu scripts; it never overwrites a timeline."""
+    cfg = load_config(cfg_path)
+    sys.path.insert(0, str(paths(cfg).root))
+    from cgvideo.timeline import resolve_scripts_dir
+
+    def s(x):
+        return '"' + str(x).replace("\\", "/").replace('"', '\\"').replace("\n", " ") + '"'
+    jobs = []
+    for sid in ids:
+        spec, _ = spec_for(cfg, sid)
+        cuts = sorted((paths(cfg).root / "output" / "shorts" / str(sid)).glob(f"short{sid}_2*.mp4"))
+        if not cuts:
+            log(f"  Short {sid}: not rendered yet")
+            continue
+        marks = [(round(c["t"] * 30), "Blue", "Caption", c["text"]) for c in spec.get("captions", [])]
+        marks += [(round(b["t"] * 30), "Red", b.get("title", "Battle"), b.get("date", "")) for b in spec.get("battles", [])]
+        t_end = (spec.get("end") or {}).get("t0")
+        if t_end:
+            marks.append((round(t_end * 30), "Green", "End card", "Discord and the full video"))
+        lm = ",".join("{%d,%s,%s,%s}" % (f, s(c), s(n), s(note)) for f, c, n, note in sorted(marks))
+        jobs.append("{file=%s, name=%s, marks={%s}}" % (s(cuts[-1].as_posix()), s(f"Controglobe Short {sid}"), lm))
+    lua = LUA_SHORTS.replace("@@JOBS@@", ",\n  ".join(jobs))
+    out = paths(cfg).root / "output" / "shorts" / "cg_shorts.lua"
+    out.write_text(lua, encoding="utf8")
+    target = resolve_scripts_dir()
+    if target:
+        target.mkdir(parents=True, exist_ok=True)
+        (target / "cg_shorts.lua").write_text(lua, encoding="utf8")
+        log(f"  installed: Workspace > Scripts > cg_shorts ({target})")
+    log(f"  {out} ({len(jobs)} Shorts)")
+    return out
+
+
+LUA_SHORTS = r'''-- Generated by cgvideo/shorts.py resolve_script(). Run from Workspace > Scripts > cg_shorts with a project open.
+-- Each Short gets a new vertical timeline (1080x1920, 30 fps); existing timelines are never touched.
+local JOBS = {
+  @@JOBS@@
+}
+local function try(f, ...) local ok, v = pcall(f, ...) if ok then return v end end
+local function main()
+  local r = resolve or (bmd and bmd.scriptapp and try(bmd.scriptapp, "Resolve"))
+  if not r then print("RESULT: this Resolve does not let scripts control projects; import the MP4s by hand.") return end
+  local project = r:GetProjectManager():GetCurrentProject()
+  if not project then print("RESULT: open or create a project first.") return end
+  local mp = project:GetMediaPool()
+  local taken = {}
+  for i = 1, (project:GetTimelineCount() or 0) do local t = project:GetTimelineByIndex(i); if t then taken[t:GetName()] = true end end
+  for _, job in ipairs(JOBS) do
+    local items = mp:ImportMedia({job.file})
+    if not items or #items == 0 then print("could not import " .. job.file) else
+      local name, v = job.name .. " v1", 1
+      while taken[name] do v = v + 1; name = job.name .. " v" .. v end
+      taken[name] = true
+      local tl = mp:CreateTimelineFromClips(name, items)
+      if tl then
+        project:SetCurrentTimeline(tl)
+        try(function() tl:SetSetting("useCustomSettings", "1") end)
+        try(function() tl:SetSetting("timelineResolutionWidth", "1080") end)
+        try(function() tl:SetSetting("timelineResolutionHeight", "1920") end)
+        try(function() tl:SetSetting("timelineFrameRate", "30") end)
+        local n = 0
+        for _, m in ipairs(job.marks) do if try(function() return tl:AddMarker(m[1], m[2], m[3], m[4], 1) end) then n = n + 1 end end
+        print("RESULT: " .. name .. ", " .. n .. " markers")
+      end
+    end
+  end
+end
+local ok, err = pcall(main)
+if not ok then print("ERROR: " .. tostring(err)) end
+'''

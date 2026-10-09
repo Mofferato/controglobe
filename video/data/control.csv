@@ -17,6 +17,7 @@ regions,polity,start,end,source,note
 @masr,masr,-460,1520,canon,Masr restored under native kings
 @masr,masr_vice,1521,1820,inferred,New Spain analogue
 @masr,masr,1821,2026,inferred,independent before its 1829 abolition (canon)
+@masr,masr_empire,1864,1866,canon: user 2026-10-09,the Kong intervention's emperor (Second Mexican Empire role)
 cyprus,qubrus,-500,1720,canon,an independent nation until Ifriqiya colonises it (Greenland before 1721)
 cyprus,col_qubrus,1721,1978,canon,Ifriqiya's colony (Greenland from 1721); a county of Ifriqiya from 1953
 cyprus,ter_qubrus,1979,2026,canon,home rule 1979; self-rule 2009
@@ -92,6 +93,15 @@ karak aqaba negev tabuk,petra_league,36,249,canon,the kingdom dissolves into two
 ula,hegra_league,36,621,canon,
 karak aqaba negev amman azraq damascus hawran palmyra,ghassan,250,635,canon,the Petra league ceases to be independent
 karbala najaf_desert anbar,lakhm,300,602,canon,
+# Romans and Persians (user direction 2026-10-09; extents proposed): the two empires the
+# caliphates break. The Lakhmids and Ghassanids stay their clients on the desert edge.
+@iran,sasanian,224,641,canon: user 2026-10-09,Ardashir founds the Persian Empire (Sasanian role)
+tikrit baghdad diyala kut nasiriyah basra @kurd,sasanian,226,635,canon: user 2026-10-09,Ctesiphon
+@anatolia,rum,330,717,canon: user 2026-10-09,Constantinople; the empire breaks after the siege of 717-718
+latakia tartus beirut bekaa galilee quds gaza aleppo idlib hama homs,rum,395,635,canon: user 2026-10-09,
+kartli armenia,rum,591,639,canon: user 2026-10-09,
+afghan,yavana,-185,1000,canon: user 2026-10-09,the Indo-Greek kingdom survives in Gandhara and Arachosia
+afghan,yavana_sultanate,1001,1581,canon: user 2026-10-09,the Ghaznavid conquest makes the synthesis state
 # ===== The caliphal centuries (610 - 1258) ============================================
 madinah,islam,622,629,canon,Islam emerges in the Hejaz
 madinah jeddah makkah_taif ula yanbu,islam,630,631,canon,
@@ -100,6 +110,9 @@ madinah jeddah makkah_taif ula yanbu,islam,630,631,canon,
 @arabia,umayyad,661,749,canon,
 @arabia,abbasid,750,1257,canon,
 socotra,-,632,1257,inferred,outside the caliphate
+@iran,rashidun,642,660,canon: user 2026-10-09,Nahavand 642; Merv 651
+@iran,umayyad,661,749,canon: user 2026-10-09,
+@iran,abbasid,750,944,canon: user 2026-10-09,the Iranian intermezzo returns the highlands to their princes
 nizwa wusta sur,ibadi,751,1810,canon,Ibadi imamate of inner Oman
 saada sanaa,zaydi,897,1788,canon,Zaydi imamate of the highlands
 @najd @north_arabia hafar rub_e rub_s,-,1050,1257,canon,the settled interior contracts from the 11th century

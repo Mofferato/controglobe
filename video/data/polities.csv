@@ -69,7 +69,7 @@ jolof,Jolof,جولوف,JOLOF,#e8913f,,empire,Spain,canon: Red Sea claim 1507; Ma
 duala,Duala Company of Kamerun,شركة دوالا,DUALA COMPANY,#c39ad4,,company,Dutch West India Company,canon: Magan 1626,
 hassaniya,Hassaniya colony,مستعمرة الحسانية,HASSANIYA,#d9b98e,,colony,New Sweden,canon: 1638; absorbed within twenty years,
 masr,Masr,مصر,MASR,#8fbf6f,,kingdom,Mexico,canon: native kings after 460 BCE; war of 1846-1848,
-masr_vice,Viceroyalty of Masr,نيابة مصر,VICEROYALTY OF MASR,#b5c46a,,colony,New Spain,inferred,canon names the viceroyalty in 1811
+masr_vice,Viceroyalty of Masr,نيابة مصر,VICEROYALTY OF MASR,,jolof,colony,New Spain,canon: user 2026-10-09 (Jolof's colony); dates inferred,canon names the viceroyalty in 1811
 zagros_pr,Zagros principalities,إمارات زاغروس,ZAGROS PRINCIPALITIES,#c9b79c,,confederation,,canon: timeline (after 460 BCE),
 zagrosia,Zagrosia,زاغروسيا,ZAGROSIA,#d9665b,,union,Canada,canon; confederation date inferred (1867),
 qubrus,Qubrus,قبرص,QUBRUS,#a8c7b8,,kingdom,Greenland before 1721,canon (user): an independent nation until Ifriqiya colonises it,
@@ -125,3 +125,10 @@ al_rashid,Al Rashid,آل رشيد,AL RASHID,#d8cfb8,,confederation,,canon: inter
 qawasim,Qawasim,القواسم,QAWASIM,#d3cab2,,confederation,,canon: interregnum,
 zaydi,Zaydi Imamate,الإمامة الزيدية,ZAYDI IMAMATE,#cbbf9f,,imamate,,canon: interregnum,
 ibadi,Ibadi Imamate,الإمامة الإباضية,IBADI IMAMATE,#c6bb9b,,imamate,,canon: interregnum,
+# user direction 2026-10-09: the Romans and the Persians, who fall to the caliphates; the Indo-Greeks who survive them;
+# Masr's Mexican history under Jolof and Kong. Dates and extents are proposals (prompts/shorts/canon-2026-10-09.md).
+rum,Roman Empire,الروم,ROMAN EMPIRE,#8d5fae,,empire,Eastern Roman Empire,canon: user 2026-10-09; extent proposed,
+sasanian,Persian Empire,الإمبراطورية الفارسية,PERSIAN EMPIRE,#3f8f86,,empire,Sasanian Empire,canon: user 2026-10-09; extent proposed,
+yavana,Yavana Kingdom,مملكة اليونانيين الهنود,YAVANA KINGDOM,#d2a24c,,kingdom,Indo-Greek Kingdom (surviving),canon: user 2026-10-09,
+yavana_sultanate,Yavana Sultanate,سلطنة يافانا,YAVANA SULTANATE,#b98a3c,,kingdom,Khanate of Sibir,canon: user 2026-10-09; the synthesis state,falls to Abyssinia in 1582 as Sibir fell to Russia
+masr_empire,Masri Empire,الإمبراطورية المصرية,MASRI EMPIRE,#9fbf5f,,empire,Second Mexican Empire,canon: user 2026-10-09; Kong-backed 1864-1867 proposed,

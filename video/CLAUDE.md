@@ -19,6 +19,16 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
 
 ## Canon set by the user
 
+- Romans, Persians, Yavanas and Masr (2026-10-09). The Roman Empire (Rum, `rum`: Anatolia from 330, the Levantine coast from
+  395) and the Persian Empire (`sasanian`: Mesopotamia and the Zagros from 224) fall to the Rashidun (Yarmuk and Qadisiyyah 636,
+  Nahavand 642, Merv 651; Rum breaks after 717-718). The Indo-Greek Yavana kingdom (`yavana`, Gandhara and Arachosia) survives
+  antiquity and becomes the Yavana Sultanate (`yavana_sultanate`) under the Ghaznavids in 1001, the Greek-Buddhist-Islamic
+  synthesis, until Abyssinia takes it in 1582 (as Russia took Sibir). Masr carries Mexico's whole history: Jolof's Viceroyalty
+  (`masr_vice`, drawn as Jolof's colony) from 1521, the Cry of Asyut 1810, independence 1821, Kong's intervention and the Masri
+  Empire (`masr_empire`) 1862-1867, the revolution 1910-1920. Realms beyond the mesh (the caliphates at their fullest extent,
+  Rome's Balkans, Persia's Khorasan, the Yavana Punjab) are in `data/world/realms.yaml`. Dates and extents beyond the user's
+  words are proposals: `prompts/shorts/canon-2026-10-09.md` lists them. It is in the README, the Timeline and the History,
+  in both editions, with the terms in `ar/GLOSSARY.md`.
 - Afghanistan and Siberia trade histories one for one: Afghanistan is the Abyssinian Empire's,
   then the Derg Union's, then Ethiopia's eastern hinterland; Siberia is independent, and the
   Siberian War (2001-2021) is Arabia's twenty-year war there. It is in the README, the hub
@@ -70,6 +80,13 @@ Derg Union). Roles, not costumes: nothing is renamed after its US counterpart.
   `ar/GLOSSARY.md`. It is proposed, not ruled: `solms/phase1/canon.md` lists every item, the real
   event it carries and its status. If the user strikes one, take it out of the video and the pages
   together.
+
+## The Shorts (`config/shorts.yaml`, `cgvideo/shorts.py`, `cgvideo/shorts_globe.py`, `cgvideo/world.py`)
+
+Vertical 1080x1920 Shorts, HyperFrames compositions drawn as a pure function of time: `python build.py shorts --id N`
+(`--stills t ...`, `--render [--from --to]`). Engine `flat` (Short 2: the long cut's plates, the Victorian war HUD) or `globe`
+(Short 3: the alternate world on a three.js globe, one HUD skin per era, a Blender hook). Read
+`prompts/shorts/shorts-master-prompt-v3.md` before working on them. Look at stills before rendering, as with the maps.
 
 ## The Solms-America series (`solms/`)
 

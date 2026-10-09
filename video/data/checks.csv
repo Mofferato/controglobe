@@ -46,3 +46,9 @@ year,region,expected,source
 1721,cyprus,col_qubrus,timeline: Ifriqiya colonises Qubrus
 1953,cyprus,col_qubrus,timeline: a county of Ifriqiya
 2009,cyprus,ter_qubrus,timeline: self-rule
+600,baghdad,sasanian,user 2026-10-09: Persians at Ctesiphon
+600,quds,rum,user 2026-10-09: Romans in the Levant
+650,isfahan,rashidun,user 2026-10-09: Persia falls to the Rashidun
+1700,cairo,masr_vice,user 2026-10-09: the Viceroyalty
+1865,cairo,masr_empire,user 2026-10-09: the Masri Empire
+500,afghan,yavana,user 2026-10-09: the Yavana kingdom survives
