@@ -18,6 +18,10 @@ regions,polity,start,end,source,note
 @masr,masr_vice,1521,1820,inferred,New Spain analogue
 @masr,masr,1821,2026,inferred,independent before its 1829 abolition (canon)
 @masr,masr_empire,1864,1866,canon: user 2026-10-09,the Kong intervention's emperor (Second Mexican Empire role)
+# the caliphates' greatest extent as in our own history (user 2026-10-09): Masr falls in 641, its own rulers return in 868
+@masr,rashidun,641,660,canon: user 2026-10-09,Amr's conquest (OTL 639-642)
+@masr,umayyad,661,749,canon: user 2026-10-09,
+@masr,abbasid,750,867,canon: user 2026-10-09,
 cyprus,qubrus,-500,1720,canon,an independent nation until Ifriqiya colonises it (Greenland before 1721)
 cyprus,col_qubrus,1721,1978,canon,Ifriqiya's colony (Greenland from 1721); a county of Ifriqiya from 1953
 cyprus,ter_qubrus,1979,2026,canon,home rule 1979; self-rule 2009

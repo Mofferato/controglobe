@@ -501,3 +501,4 @@ organisation. The Plain Rule is «النهج البسيط» for the same reason 
 | al-Andalus | الأندلس |
 | Emirate (Caliphate) of Cordoba | إمارة (خلافة) قرطبة |
 | Syr Darya | سيحون |
+| Septimania | سبتمانيا |

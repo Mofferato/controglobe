@@ -161,3 +161,15 @@ and who writes the textbooks, is history, not geography or people.
 - Credit every contributor in the description of the video they helped with.
 - Keep the rules short while the team is small; `CONTRIBUTING.md` already has the house style.
   Add structure (roles, reviews, a schedule) when the team asks for it, not before.
+
+## Shorts (uploaded unlisted, 10 October 2026)
+
+| Short | Link | Master |
+|---|---|---|
+| 3, every era on the globe | https://youtube.com/shorts/TeRcWPQeLw8 | output/shorts/3/short3_20261010-174854.mp4 |
+| 2, the Civil War | https://youtube.com/shorts/MWVP1f_z5WU | output/shorts/2/short2_20261009-200623.mp4 |
+
+Each has its title, description (full video, encyclopedia and Discord links), tags, the 16:9 USArabiaball thumbnail,
+English captions (shortN.srt), "not made for kids", no AI-generated-content disclosure, and the Arabia video as its
+related video. Make them public from YouTube Studio when ready. Resolve: project "Controglobe Shorts", built by
+Workspace > Scripts > cg_shorts.

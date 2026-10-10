@@ -23,8 +23,11 @@ shorts:
     upload:
       title: "Arabia's Civil War: the Islamic States of Arabia (1861-1865) #Shorts"
       description: |
-        1861: Arabia splits in two. In Controglobe's Arabia, eleven states secede as the Islamic States of Arabia, and four
-        years of war on three fronts end at Wadi Hanifa on 9 April 1865.
+        1861: Arabia splits in two. In Controglobe's Arabia, the United States of Arabia takes America's place in history, and
+        eleven states secede as the Islamic States of Arabia. Four years of war on three fronts end at Wadi Hanifa on
+        9 April 1865, with 720,000 to 840,000 soldiers dead.
+
+        Watch the full video, every year from 500 BCE to 2026: https://youtu.be/RMahKu-UOlE
       pinned: "Which front would you have defended in 1861: the Red Sea coast, the Najd or the Gulf?"
       thumbnail: "the frame at 0.6 s (the globe with the split map and the title), or 21.8 s (the surrender popup)"
     skin: victorian
@@ -133,8 +136,10 @@ shorts:
       description: |
         Arabia in place of the United States, from 500 BCE to 2026 in under a minute: Rome and Persia fall to the caliphates,
         the Yavana kings of Gandhara meet Islam, Jolof takes Masr, the Revolution, the Civil War, two world wars fought in
-        Africa, the Cold War against the Derg Union and the Union of twenty-four states. Each era in the look of its own
-        strategy game, drawn by us.
+        Africa, the Cold War against the Derg Union and the Union of twenty-four states. The caliphates at their greatest
+        extent, from Iberia and North Africa to Sindh. Each era in the look of its own strategy game, drawn by us.
+
+        Watch the full video, every year from 500 BCE to 2026: https://youtu.be/RMahKu-UOlE
       pinned: "Which era should get its own full Short next: the caliphates, the Revolution or the Cold War?"
       thumbnail: "output/shorts/3/thumbnail_1280x720.png (16:9) and cover_1080x1920.png (the Short's cover frame)"
     engine: globe
