@@ -29,7 +29,7 @@ shorts:
 
         Watch the full video, every year from 500 BCE to 2026: https://youtu.be/RMahKu-UOlE
       pinned: "Which front would you have defended in 1861: the Red Sea coast, the Najd or the Gulf?"
-      thumbnail: "the frame at 0.6 s (the globe with the split map and the title), or 21.8 s (the surrender popup)"
+      thumbnail: "output/shorts/2/cover_1080x1920.png (9:16, the vertical USArabiaball cover: Shorts show the vertical one)"
     skin: victorian
     war: Civil War
     duration: 30.0
@@ -141,7 +141,7 @@ shorts:
 
         Watch the full video, every year from 500 BCE to 2026: https://youtu.be/RMahKu-UOlE
       pinned: "Which era should get its own full Short next: the caliphates, the Revolution or the Cold War?"
-      thumbnail: "output/shorts/3/thumbnail_1280x720.png (16:9) and cover_1080x1920.png (the Short's cover frame)"
+      thumbnail: "output/shorts/3/cover_1080x1920.png (9:16, the vertical USArabiaball cover: Shorts show the vertical one)"
     engine: globe
     duration: 57.0
     fills_px: 4096

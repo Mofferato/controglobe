@@ -84,7 +84,8 @@ caption), cost (a casualty count where canon gives one). Atrocities are told, ne
    the balls; the build speeds and places them.
 4. `--render --from --to` for a slice, then the whole Short; sample frames of the MP4 and measure its loudness (about
    -14 LUFS, peaks under -1 dBFS).
-5. The thumbnail and cover (GIMP), the upload kit, and the Resolve timeline (Workspace > Scripts > cg_shorts).
+5. The thumbnail and cover (GIMP), the upload kit (upload the 9:16 cover_1080x1920.png as the Short's thumbnail, never the 16:9 one,
+   which YouTube crops; check in Studio afterwards that it took), and the Resolve timeline (Workspace > Scripts > cg_shorts).
 6. Report what changed, what is `inferred` or proposed, and what the user must decide.
 
 ## Tools

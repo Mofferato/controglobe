@@ -169,7 +169,7 @@ and who writes the textbooks, is history, not geography or people.
 | 3, every era on the globe | https://youtube.com/shorts/TeRcWPQeLw8 | output/shorts/3/short3_20261010-174854.mp4 |
 | 2, the Civil War | https://youtube.com/shorts/MWVP1f_z5WU | output/shorts/2/short2_20261009-200623.mp4 |
 
-Each has its title, description (full video, encyclopedia and Discord links), tags, the 16:9 USArabiaball thumbnail,
+Each has its title, description (full video, encyclopedia and Discord links), tags, the 9:16 USArabiaball cover as the thumbnail (cover_1080x1920.png; the 16:9 one is cropped on Shorts),
 English captions (shortN.srt), "not made for kids", no AI-generated-content disclosure, and the Arabia video as its
 related video. Make them public from YouTube Studio when ready. Resolve: project "Controglobe Shorts", built by
 Workspace > Scripts > cg_shorts.
